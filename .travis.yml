@@ -7,8 +7,10 @@ script:
   - echo "npm test temporarily disabled"
   - npm run build:lib
 
+before_deploy:
+  - cd dist/kalidea/kaligraphi
+
 deploy:
-  local_dir: dist
   provider: npm
   email: $NPM_EMAIL
   api_key: $NPM_TOKEN
