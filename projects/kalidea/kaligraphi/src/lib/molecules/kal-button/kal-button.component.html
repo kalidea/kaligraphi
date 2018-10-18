@@ -1,3 +1,6 @@
-<p>
-  kal-button works!
-</p>
+<button
+  (click)="handleClick($event)"
+  [disabled]="disabled"
+  [tabindex]="tabIndex">
+  {{label}}
+</button>
