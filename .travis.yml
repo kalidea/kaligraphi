@@ -1,7 +1,6 @@
 language: node_js
 node_js:
-  - "iojs"
-  - "7"
+  - "8"
 
 branches:
   only:
@@ -11,4 +10,4 @@ before_script:
   - npm install -g @angular/cli
 
 script:
-  - ng build --prod
+  - ng build
