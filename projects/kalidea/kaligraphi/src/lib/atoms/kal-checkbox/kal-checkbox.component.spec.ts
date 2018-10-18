@@ -1,10 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ElementRef, NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { KalCheckboxComponent } from './kal-checkbox.component';
+import { FormElementComponent } from '../../utils';
 
-describe('KalCheckboxComponent', () => {
+fdescribe('KalCheckboxComponent', () => {
   let component: KalCheckboxComponent;
   let fixture: ComponentFixture<KalCheckboxComponent>;
   let elementRef: ElementRef;
@@ -12,6 +14,7 @@ describe('KalCheckboxComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [ReactiveFormsModule],
       declarations: [
         KalCheckboxComponent,
       ],
@@ -26,7 +29,7 @@ describe('KalCheckboxComponent', () => {
     fixture.detectChanges();
 
     elementRef = fixture.debugElement.injector.get(ElementRef);
-    checkbox = fixture.debugElement.queryAll(By.css('input[type=checkbox]'));
+    checkbox = fixture.debugElement.query(By.css('input[type=checkbox]'));
   });
 
   it('should create', () => {
@@ -34,13 +37,13 @@ describe('KalCheckboxComponent', () => {
   });
 
   it('should contains checkbox element', () => {
-    expect(checkbox.length).toEqual(1);
+    expect(checkbox).toBeTruthy();
   });
 
   it('should have a form control with a true value', () => {
     expect(component.control.value).toBeFalsy();
 
-    checkbox[0].triggerEventHandler('click', null);
+    checkbox.nativeElement.click();
 
     expect(component.control.value).toBeTruthy();
   });
@@ -57,13 +60,25 @@ describe('KalCheckboxComponent', () => {
     expect(component.control.value).toBeTruthy();
   });
 
+  it('should coerce the value to a boolean value', () => {
+    (component.value as any) = 'false';
+    component.ngOnInit();
+
+    expect(component.control.value).toBeFalsy();
+
+    (component.value as any) = 'true';
+    component.ngOnInit();
+
+    expect(component.control.value).toBeTruthy();
+  });
+
   it('should emit an event with the form control value when the value changes', () => {
-    spyOn(component, 'notifyUpdate');
+    const spyNotif = spyOn(FormElementComponent.prototype, 'notifyUpdate');
     spyOn(component.toggled, 'emit');
 
     component.control.patchValue(true);
 
-    expect(component.notifyUpdate).toHaveBeenCalledWith(true);
+    expect(spyNotif).toHaveBeenCalledWith(true);
     expect(component.toggled.emit).toHaveBeenCalledWith(true);
   });
 
