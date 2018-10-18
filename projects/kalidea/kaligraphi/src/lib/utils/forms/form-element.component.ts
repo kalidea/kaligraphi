@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { FormControlAccessComponent } from './form-control-access.component';
 import { uniqid } from '../helpers/uniq';
 
-export abstract class FormElementComponent<T = string> extends FormControlAccessComponent<T> {
+export class FormElementComponent<T = string> extends FormControlAccessComponent<T> {
 
   /**
    * label for this form element

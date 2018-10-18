@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormElementComponent } from 'utils/forms/form-element.component';
-import { buildProviders } from 'utils/forms/form-control-access.component';
+import { buildProviders, FormElementComponent } from '../../utils/index';
 
 @Component({
   selector: 'kal-input',

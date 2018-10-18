@@ -11,12 +11,13 @@
     "dev:lib": "ng build @kalidea/kaligraphi --watch",
     "build:lib": "ng build @kalidea/kaligraphi",
     "copy:styles:lib": "cpx './projects/kalidea/kaligraphi/src/styles/**' ./dist/kalidea/kaligraphi/styles",
-    "compile:styles:lib": "node-sass ./projects/kalidea/kaligraphi/src/styles/styles.sass ./projects/kalidea/kaligraphi/src/styles/styles.css",
-    "postbuild:lib": "npm run compile:styles:lib && npm run copy:styles:lib"
+    "compile:styles:lib": "node-sass ./projects/kalidea/kaligraphi/src/styles/styles.sass ./dist/kalidea/kaligraphi/styles/styles.css",
+    "postbuild:lib": "npm run copy:styles:lib && npm run compile:styles:lib"
   },
   "private": true,
   "dependencies": {
     "@angular/animations": "^6.1.0",
+    "@angular/cdk": "^6.4.7",
     "@angular/common": "^6.1.0",
     "@angular/compiler": "^6.1.0",
     "@angular/core": "^6.1.0",
@@ -32,7 +33,6 @@
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.8.0",
     "@angular-devkit/build-ng-packagr": "~0.8.0",
-    "@angular/cdk": "^6.4.7",
     "@angular/cli": "~6.2.4",
     "@angular/compiler-cli": "^6.1.0",
     "@angular/language-service": "^6.1.0",
