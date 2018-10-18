@@ -6,6 +6,7 @@ import { KalInputModule } from './kal-input/kal-input.module';
 
 export * from './kal-input/kal-input.module';
 export * from './kal-checkbox/kal-checkbox.module';
+export * from './kal-icon/kal-icon.module';
 
 const exports = [
   KalCheckboxModule,
