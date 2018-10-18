@@ -3,7 +3,6 @@ node_js: "8"
 
 deploy:
   script:
-#    - npx ng test @kalidea/kaligraphi
     - npm run build:lib
   provider: npm
   email: $NPM_EMAIL

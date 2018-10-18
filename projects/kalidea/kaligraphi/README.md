@@ -1,3 +1,4 @@
+<img src="https://travis-ci.org/kalidea/kaligraphi.svg?branch=master" alt="build:canceled">
 
 ## Install
 * configure hooks: `git config core.hooksPath hooks`
