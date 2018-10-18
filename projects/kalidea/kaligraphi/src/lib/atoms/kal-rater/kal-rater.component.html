@@ -1,0 +1,5 @@
+<kal-icon *ngFor="let rateValue of rateValues; index as i"
+          [class.active]="value > i"
+          [name]="iconName"
+          (click)="rate(rateValue)">
+</kal-icon>
