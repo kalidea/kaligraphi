@@ -8,6 +8,7 @@ echo "update version"
 version=`npm version patch`
 
 echo "commit files"
+git add .
 git commit -m "version $version"
 
 echo "push to master"
