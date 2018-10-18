@@ -12,7 +12,7 @@ export class KalIconComponent implements OnInit {
   /**
    * Name of an icon within a font set
    */
-  @Input() fontIcon: string;
+  @Input() name: string;
 
   constructor() {
   }

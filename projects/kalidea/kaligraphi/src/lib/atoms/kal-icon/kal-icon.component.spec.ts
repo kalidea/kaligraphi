@@ -26,7 +26,7 @@ describe('KalIconComponent', () => {
   it('should display a material icon according to the given icon name', () => {
     const iconElement = fixture.debugElement.query(By.css('i'));
 
-    component.fontIcon = 'face';
+    component.name = 'face';
 
     // update component view
     fixture.detectChanges();
