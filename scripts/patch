@@ -1,0 +1,9 @@
+#!/bin/sh
+
+#### patch version ####
+cd ./projects/kalidea/kaligraphi
+version=`npm version patch`
+git commit -m "version $version"
+git push
+git tag $version
+git push --tags
