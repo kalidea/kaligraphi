@@ -9,7 +9,6 @@ before_deploy:
   - cd dist/kalidea/kaligraphi
 
 deploy:
-  if: tag IS present
   provider: npm
   email: $NPM_EMAIL
   api_key: $NPM_TOKEN
