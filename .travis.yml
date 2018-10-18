@@ -1,15 +1,10 @@
 language: node_js
 node_js: "8"
 
-branches:
-  only:
-    - master
-
-script:
-  - npm test @kalidea/kaligraphi
-  - npm run build:lib
-
 deploy:
+  script:
+    - npm test @kalidea/kaligraphi
+    - npm run build:lib
   provider: npm
   email: $NPM_EMAIL
   api_key: $NPM_TOKEN
