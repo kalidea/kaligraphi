@@ -1,0 +1,29 @@
+/**
+ * mixin generic for all forms element
+ */
+kal-input {
+  border-width: 2px;
+  border-style: "dashed";
+  border-color: red;
+  border-radius: 20px; }
+
+kal-select {
+  border-width: 2px;
+  border-style: "dashed";
+  border-color: red;
+  border-radius: 20px; }
+
+kal-checkbox {
+  border-width: 2px;
+  border-style: "dashed";
+  border-color: red;
+  border-radius: 20px; }
+
+kal-button input {
+  border: none; }
+
+kal-textarea {
+  border-width: 2px;
+  border-style: "dashed";
+  border-color: red;
+  border-radius: 20px; }
