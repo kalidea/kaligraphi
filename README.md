@@ -2,7 +2,7 @@
 
 Agnostic Graphic Library
 
-<img src="https://travis-ci.org/kalidea/kaligraphi.svg?branch=master" alt="build:canceled">
+[![Build Status](https://travis-ci.org/kalidea/kaligraphi.svg?branch=master)](https://travis-ci.org/kalidea/kaligraphi)
 
 ## Playground
 
