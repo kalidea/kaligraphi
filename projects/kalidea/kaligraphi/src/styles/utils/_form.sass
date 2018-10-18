@@ -1,0 +1,12 @@
+/**
+ * mixin generic for all forms element
+ */
+
+
+=kal-generic-form($parameters)
+  border:
+    width: deep-map-get($parameters, "form", "border", "width")
+    style: deep-map-get($parameters, "form", "border", "style")
+    color: deep-map-get($parameters, "form", "border", "color")
+    radius: deep-map-get($parameters, "form", "border", "radius")
+
