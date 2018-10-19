@@ -163,7 +163,7 @@
       }
     }
   },
-  "defaultProject": "playground",
+  "defaultProject": "@kalidea/kaligraphi",
   "schematics": {
     "@schematics/angular:component": {
       "viewEncapsulation": "None",

@@ -1,11 +1,21 @@
 language: node_js
 node_js: "8"
 
+script:
+  - echo "npm test temporarily disabled"
+  - npm run test
+  - npm run build
+  
+notifications:
+  slack: $SLACK_NOTIFICATION
+
+before_deploy:
+  - cd dist/kalidea/kaligraphi
+
 deploy:
-  script:
-    - npm run build:lib
   provider: npm
   email: $NPM_EMAIL
   api_key: $NPM_TOKEN
+  skip_cleanup: true
   on:
     tags: true

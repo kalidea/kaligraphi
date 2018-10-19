@@ -1,9 +1,19 @@
 #!/bin/sh
 
 #### patch version ####
+echo "going to lib dir"
 cd ./projects/kalidea/kaligraphi
+
+echo "update version"
 version=`npm version patch`
+
+echo "commit files"
+git add .
 git commit -m "version $version"
+
+echo "push to master"
 git push
+
+echo "add tag"
 git tag $version
 git push --tags
