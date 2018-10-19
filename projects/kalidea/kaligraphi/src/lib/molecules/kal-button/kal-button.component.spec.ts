@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { KalButtonComponent } from './kal-button.component';
 import { By } from '@angular/platform-browser';
 
-fdescribe('KalButtonComponent', () => {
+describe('KalButtonComponent', () => {
   let component: KalButtonComponent;
   let fixture: ComponentFixture<KalButtonComponent>;
 

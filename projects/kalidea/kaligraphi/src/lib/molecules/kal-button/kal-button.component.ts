@@ -26,17 +26,19 @@ export class KalButtonComponent implements OnInit {
   /**
    * Is the button disabled ?
    */
+
+  private isDisabled = false;
+
   @Input()
-  get disabled() {
-    return this.isDisabled;
-  }
 
   set disabled(value: boolean) {
     this.isDisabled = coerceBooleanProperty(value);
     this.tabIndex = this.isDisabled ? this.tabIndex : null;
   }
 
-  private isDisabled = false;
+  get disabled() {
+    return this.isDisabled;
+  }
 
 
   /**
@@ -53,8 +55,6 @@ export class KalButtonComponent implements OnInit {
   }
 
   ngOnInit() {
-
-
   }
 
 }
