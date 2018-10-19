@@ -1,7 +1,9 @@
 import {
-  ChangeDetectionStrategy,
+  AfterContentInit,
+  ChangeDetectionStrategy, ChangeDetectorRef,
   Component,
   ContentChildren,
+  Input,
   OnDestroy,
   OnInit,
   QueryList,
@@ -10,6 +12,8 @@ import {
 } from '@angular/core';
 import { CdkConnectedOverlay, Overlay, OverlayRef, PositionStrategy } from '@angular/cdk/overlay';
 import { Portal, TemplatePortal } from '@angular/cdk/portal';
+import { KalOptionComponent } from '../../atoms/kal-option/kal-option.component';
+import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
 
 @Component({
   selector: 'kal-select',
@@ -19,8 +23,10 @@ import { Portal, TemplatePortal } from '@angular/cdk/portal';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class KalSelectComponent implements OnInit, OnDestroy {
+export class KalSelectComponent implements OnInit, OnDestroy, AfterContentInit {
 
+  /** Manages keyboard events for options in the panel. */
+  _keyManager: ActiveDescendantKeyManager<KalOptionComponent>;
 
   overlayPosition: PositionStrategy;
 
@@ -28,49 +34,48 @@ export class KalSelectComponent implements OnInit, OnDestroy {
   @ViewChild(CdkConnectedOverlay) overlayDir: CdkConnectedOverlay;
 
   /** All of the defined select options. */
- // @ContentChildren(KalOption, { descendants: true }) options: QueryList<KalOption>;
+  @ContentChildren(KalOptionComponent, {descendants: true}) options: QueryList<KalOptionComponent>;
 
   @ViewChild('myTemplate') myTemplate: TemplatePortal<any>;
+
+  @Input() disabled: boolean; //Voir pour seulement l'attribut
+
+@Input()placeHolder: string;
+
   portal: Portal<any>;
+  _panelOpen: boolean;
   private _overlayRef: OverlayRef;
 
-  constructor(private overlay: Overlay) {
+  constructor(private overlay: Overlay,  private _changeDetectorRef: ChangeDetectorRef) {
   }
 
-  // openSpaghettiPanel() {
-  //   // TODO(jelbourn): separate overlay demo for connected positioning.
-  //   const strategy = this.overlay.position()
-  //     .connectedTo(
-  //       this._overlayOrigin.elementRef,
-  //       {originX: 'start', originY: 'bottom'},
-  //       {overlayX: 'start', overlayY: 'top'} );
-  //
-  //   const config = new OverlayConfig({positionStrategy: strategy});
-  //   const overlayRef = this.overlay.create(config);
-  //
-  //   overlayRef.attach(new ComponentPortal(SpagettiPanel, this.viewContainerRef));
-  // }
-
-
-  // getOverlayPosition(): PositionStrategy {
-  //   this.overlayPosition = this.overlay.position()
-  //     .connectedTo(
-  //       this.buttonRef,
-  //       {originX: 'start', originY: 'bottom'},
-  //       {overlayX: 'start', overlayY: 'bottom'}
-  //     )
-  //
-  //   return this.overlayPosition;
-  // }
-
   toggleOverlay() {
+    if (!this._panelOpen) {
+
+      this.open();
+    } else {
+      this.close();
+    }
+  }
+
+  open() {
+    if (this.disabled || !this.options || !this.options.length || this._panelOpen) {
+      return;
+    }
+
     this._overlayRef.attach(this.myTemplate);
+    this._panelOpen = true;
   }
 
   close() {
     this._overlayRef.detach();
+    this._panelOpen = false;
   }
 
+  optionSelected(option: KalOptionComponent) {
+    this._changeDetectorRef.markForCheck();
+    this.placeHolder = option.getValueText();
+  }
 
   ngOnInit() {
 
@@ -91,9 +96,19 @@ export class KalSelectComponent implements OnInit, OnDestroy {
 
   }
 
+  ngAfterContentInit() {
+
+    this.options.map(o => {
+      o.selectionChange.subscribe(event => this.optionSelected(event));
+    });
+  }
+
   ngOnDestroy() {
     this._overlayRef.dispose();
   }
 
-
 }
+
+
+//https://github.com/angular/material2/blob/master/src/lib/select/select.html
+//https://github.com/angular/material2/blob/master/src/lib/select/select.ts

@@ -1,4 +1,14 @@
-import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 
 @Component({
   selector: 'kal-option',
@@ -9,7 +19,23 @@ import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@
 })
 export class KalOptionComponent implements OnInit {
 
-  constructor() { }
+  @Input() id: any;
+
+  @Output() readonly selectionChange = new EventEmitter<KalOptionComponent>();
+
+  @ViewChild('text') textElement: ElementRef;
+
+  constructor() {
+  }
+
+  emitSelectionChangeEvent(): void {
+    this.selectionChange.emit(this);
+  }
+
+  getValueText(): string {
+    console.log(this.textElement);
+    return this.textElement.nativeElement.value;
+  }
 
   ngOnInit() {
   }

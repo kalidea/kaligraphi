@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { KalSelectComponent } from './kal-select.component';
 import { PortalModule } from '@angular/cdk/portal';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { KalSelectComponent } from './kal-select.component';
 
 export * from './kal-select.component';
 
