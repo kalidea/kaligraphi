@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { Subscription } from 'rxjs';
 import { buildProviders, FormElementComponent } from '../../utils/index';
 
 @Component({
@@ -11,7 +12,7 @@ import { buildProviders, FormElementComponent } from '../../utils/index';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: buildProviders(KalCheckboxComponent)
 })
-export class KalCheckboxComponent extends FormElementComponent<boolean> implements OnInit {
+export class KalCheckboxComponent extends FormElementComponent<boolean> implements OnInit, OnDestroy {
 
   /**
    * The form control that contains the checkbox value
@@ -19,9 +20,9 @@ export class KalCheckboxComponent extends FormElementComponent<boolean> implemen
   control: FormControl;
 
   /**
-   * Triggered when the checkbox value has changed
+   * Subscription of the valueChanges control
    */
-  @Output() toggled = new EventEmitter<boolean>();
+  controlSubscription: Subscription;
 
   constructor() {
     super();
@@ -39,14 +40,20 @@ export class KalCheckboxComponent extends FormElementComponent<boolean> implemen
       }
     );
 
-    this.control.valueChanges.subscribe(checked => {
+    this.controlSubscription = this.control.valueChanges.subscribe(checked => {
 
       // notify parent when the form control value changes
       super.notifyUpdate(checked);
 
       // emit the form control value
-      this.toggled.emit(checked);
+      this.valueChange.emit(checked);
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.controlSubscription) {
+      this.controlSubscription.unsubscribe();
+    }
   }
 
 }

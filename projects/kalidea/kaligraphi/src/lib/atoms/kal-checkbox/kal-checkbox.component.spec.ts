@@ -1,15 +1,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ElementRef, NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { KalCheckboxComponent } from './kal-checkbox.component';
 import { FormElementComponent } from '../../utils';
 
-fdescribe('KalCheckboxComponent', () => {
+describe('KalCheckboxComponent', () => {
   let component: KalCheckboxComponent;
   let fixture: ComponentFixture<KalCheckboxComponent>;
-  let elementRef: ElementRef;
   let checkbox;
 
   beforeEach(async(() => {
@@ -20,7 +19,7 @@ fdescribe('KalCheckboxComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-      .createComponent(KalCheckboxComponent);
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -28,7 +27,6 @@ fdescribe('KalCheckboxComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
 
-    elementRef = fixture.debugElement.injector.get(ElementRef);
     checkbox = fixture.debugElement.query(By.css('input[type=checkbox]'));
   });
 
@@ -74,12 +72,12 @@ fdescribe('KalCheckboxComponent', () => {
 
   it('should emit an event with the form control value when the value changes', () => {
     const spyNotif = spyOn(FormElementComponent.prototype, 'notifyUpdate');
-    spyOn(component.toggled, 'emit');
+    spyOn(component.valueChange, 'emit');
 
     component.control.patchValue(true);
 
     expect(spyNotif).toHaveBeenCalledWith(true);
-    expect(component.toggled.emit).toHaveBeenCalledWith(true);
+    expect(component.valueChange.emit).toHaveBeenCalledWith(true);
   });
 
   it('should update the form control value when a new value is set', () => {
