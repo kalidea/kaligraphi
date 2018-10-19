@@ -8,7 +8,6 @@ script:
   
 notifications:
     slack: $SLACK_NOTIFICATION 
-    email: $EMAIL_GLE 
 
 before_deploy:
   - cd dist/kalidea/kaligraphi
