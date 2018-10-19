@@ -3,7 +3,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { KalRaterComponent } from './kal-rater.component';
 import { By } from '@angular/platform-browser';
 import { KalIconComponent, KalIconModule } from 'projects/kalidea/kaligraphi/src/lib/atoms/kal-icon/kal-icon.module';
-import { DebugElement } from '@angular/core';
 import { FormControlAccessComponent } from 'projects/kalidea/kaligraphi/src/lib/utils';
 
 describe('KalRaterComponent', () => {
@@ -32,7 +31,7 @@ describe('KalRaterComponent', () => {
   });
 
   it('should display a custom icon', () => {
-    component.iconName = 'face';
+    component.icon = 'face';
 
     // update component view
     fixture.detectChanges();
@@ -43,25 +42,12 @@ describe('KalRaterComponent', () => {
   });
 
   it('should display a number of icons equals to the max rating value', () => {
-    let iconElements: DebugElement[];
+    component.maxRate = 10;
 
     // default value : expect to have 5 elements
     fixture.detectChanges();
 
-    iconElements = fixture.debugElement.queryAll(By.directive(KalIconComponent));
-    expect(iconElements.length).toEqual(component.maxRate);
-
-    // custom value
-    component.maxRate = 3;
-
-    // reset component
-    component.ngOnInit();
-
-    // update view
-    fixture.detectChanges();
-
-    iconElements = fixture.debugElement.queryAll(By.directive(KalIconComponent));
-
+    const iconElements = fixture.debugElement.queryAll(By.directive(KalIconComponent));
     expect(iconElements.length).toEqual(component.maxRate);
   });
 
@@ -73,7 +59,6 @@ describe('KalRaterComponent', () => {
     // update view
     fixture.detectChanges();
 
-    expect(component.value).toEqual(4);
     expect(FormControlAccessComponent.prototype.writeValue).toHaveBeenCalledWith(4);
 
     // we should have 4 icons on 5 with class 'active'
@@ -90,8 +75,7 @@ describe('KalRaterComponent', () => {
     const secondIcon = fixture.debugElement.queryAll(By.directive(KalIconComponent))[1];
     secondIcon.nativeElement.click();
 
-    expect(component.rate).toHaveBeenCalledWith(2);
-    expect(component.value).toEqual(2);
+    expect(component.rate).toHaveBeenCalledWith(1); // 1 = array index
     expect(FormControlAccessComponent.prototype.notifyUpdate).toHaveBeenCalledWith(2);
   });
 });

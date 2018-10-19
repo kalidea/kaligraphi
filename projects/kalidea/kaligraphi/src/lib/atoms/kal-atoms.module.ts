@@ -3,18 +3,19 @@ import { CommonModule } from '@angular/common';
 
 import { KalCheckboxModule } from './kal-checkbox/kal-checkbox.module';
 import { KalInputModule } from './kal-input/kal-input.module';
-import { KalIconComponent } from './kal-icon/kal-icon.component';
-import { KalRaterComponent } from './kal-rater/kal-rater.component';
+import { KalIconModule } from './kal-icon/kal-icon.module';
+import { KalRaterModule } from './kal-rater/kal-rater.module';
 
 export * from './kal-input/kal-input.module';
 export * from './kal-checkbox/kal-checkbox.module';
 export * from './kal-icon/kal-icon.module';
+export * from './kal-rater/kal-rater.module';
 
 const exports = [
   KalCheckboxModule,
   KalInputModule,
-  KalIconComponent,
-  KalRaterComponent,
+  KalIconModule,
+  KalRaterModule,
 ];
 
 @NgModule({

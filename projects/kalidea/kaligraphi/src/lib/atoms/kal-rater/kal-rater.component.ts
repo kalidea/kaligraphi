@@ -2,10 +2,10 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  EventEmitter,
   Input,
+  OnChanges,
   OnInit,
-  Output,
+  SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
 import { buildProviders, FormControlAccessComponent } from '../../utils/index';
@@ -19,7 +19,7 @@ import { coerceNumberProperty } from '@angular/cdk/coercion';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [buildProviders(KalRaterComponent)]
 })
-export class KalRaterComponent extends FormControlAccessComponent implements OnInit {
+export class KalRaterComponent extends FormControlAccessComponent<number> implements OnInit, OnChanges {
 
   /**
    * List of rate values
@@ -27,14 +27,9 @@ export class KalRaterComponent extends FormControlAccessComponent implements OnI
   rateValues: number[];
 
   /**
-   * Event emitted when the user changed the rate
-   */
-  @Output() rateChanged: EventEmitter<number> = new EventEmitter<number>();
-
-  /**
    * Default icon displayed
    */
-  private icon = 'star_rate';
+  private iconName = 'star_rate';
 
   /**
    * Max rate value
@@ -59,30 +54,17 @@ export class KalRaterComponent extends FormControlAccessComponent implements OnI
   }
   set maxRate(rate: number) {
     this.maxRateValue = coerceNumberProperty(rate);
-
-    // update view
-    this.cdr.markForCheck();
   }
 
   /**
    * Name of an icon
    */
   @Input()
-  get iconName(): string {
-    return this.icon;
+  get icon(): string {
+    return this.iconName;
   }
-  set iconName(icon: string) {
-    this.icon = icon;
-  }
-
-  /**
-   * Current rate value
-   */
-  get value() {
-    return this.rateValue;
-  }
-  set value(value: number) {
-    this.rateValue = value;
+  set icon(icon: string) {
+    this.iconName = icon;
   }
 
   /**
@@ -90,20 +72,35 @@ export class KalRaterComponent extends FormControlAccessComponent implements OnI
    */
   writeValue(value) {
     super.writeValue(value);
-    this.value = value;
+    this.rateValue = value;
+  }
+
+  /**
+   * Add `active` class to current element
+   */
+  isActive(arrayIndex: number): boolean {
+    return this.rateValue > arrayIndex;
   }
 
   /**
    * Notify parent form of the new rate value
    */
   rate(rateValue: number): void {
-    this.value = rateValue;
+    // increase rateValue by 1 because we are passing the current array index and it's 0 indexed whereas our rating starts from 1
+    rateValue += 1;
+
+    this.rateValue = rateValue;
     super.notifyUpdate(rateValue);
   }
 
   ngOnInit() {
-    // create an array from 1 indexed because we can't iterate on numbers in the template
-    this.rateValues = Array.from(new Array(this.maxRate), (val, index) => index + 1);
+    // create an array because we can't iterate on numbers in the template
+    this.rateValues = Array(this.maxRate);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // update view
+    this.cdr.markForCheck();
   }
 
 }
