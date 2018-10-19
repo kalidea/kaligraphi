@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Subscription } from 'rxjs';
@@ -12,7 +12,7 @@ import { buildProviders, FormElementComponent } from '../../utils/index';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: buildProviders(KalCheckboxComponent)
 })
-export class KalCheckboxComponent extends FormElementComponent<boolean> implements OnInit, OnDestroy {
+export class KalCheckboxComponent extends FormElementComponent<boolean> implements OnInit, OnChanges, OnDestroy {
 
   /**
    * The form control that contains the checkbox value
@@ -28,8 +28,22 @@ export class KalCheckboxComponent extends FormElementComponent<boolean> implemen
     super();
   }
 
+  /**
+   * @inheritDoc
+   */
   writeValue(value) {
     this.control.patchValue(value, {emitEvent: false});
+  }
+
+  /**
+   * @inheritDoc
+   */
+  setDisabledState(disabled: boolean) {
+    if (disabled) {
+      this.control.disable();
+    } else {
+      this.control.enable();
+    }
   }
 
   ngOnInit() {
@@ -48,6 +62,16 @@ export class KalCheckboxComponent extends FormElementComponent<boolean> implemen
       // emit the form control value
       this.valueChange.emit(checked);
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.disabled && !changes.disabled.isFirstChange()) {
+      if (changes.disabled.currentValue) {
+        this.control.disable();
+      } else {
+        this.control.enable();
+      }
+    }
   }
 
   ngOnDestroy(): void {

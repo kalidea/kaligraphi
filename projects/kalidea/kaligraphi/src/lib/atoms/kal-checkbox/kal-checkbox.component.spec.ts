@@ -87,4 +87,16 @@ describe('KalCheckboxComponent', () => {
 
     expect(component.control.value).toBeTruthy();
   });
+
+  it('should set the disabled state with formControl', () => {
+    expect(component.control.disabled).toBeFalsy();
+
+    component.setDisabledState(true);
+
+    expect(component.control.disabled).toBeTruthy();
+
+    component.setDisabledState(false);
+
+    expect(component.control.disabled).toBeFalsy();
+  });
 });
