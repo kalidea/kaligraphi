@@ -8,7 +8,9 @@ script:
   
 notifications:
     slack: $SLACK_NOTIFICATION 
-    email: $EMAIL_GLE 
+    email: $EMAIL_GLE
+        on_success: always
+        on_failure: always
 
 before_deploy:
   - cd dist/kalidea/kaligraphi
