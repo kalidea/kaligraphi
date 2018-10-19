@@ -1,7 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 
 import { KalButtonComponent } from './kal-button.component';
-import { By } from '@angular/platform-browser';
+
 
 describe('KalButtonComponent', () => {
   let component: KalButtonComponent;
@@ -17,14 +18,13 @@ describe('KalButtonComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(KalButtonComponent);
     component = fixture.componentInstance;
-    // fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should emit event on clic', () => {
+  it('should emit event on click', () => {
 
     const spy = spyOn(component.clicked, 'emit');
     fixture.debugElement.query(By.css('button')).nativeElement.click();
@@ -60,17 +60,17 @@ describe('KalButtonComponent', () => {
   });
 
   it('should create tabIndex', () => {
-    const toto = 5;
-    component.tabIndex = toto;
+    const index = 5;
+    component.tabIndex = index;
     fixture.detectChanges(); // recalcul la vue
     const button = fixture.debugElement.query(By.css('button')).nativeElement;
-    expect(button.tabIndex).toEqual(toto);
+    expect(button.tabIndex).toEqual(index);
 
   });
 
   it('should not create tabIndex if disabled', () => {
-    const toto = 5;
-    component.tabIndex = toto;
+    const index = 5;
+    component.tabIndex = index;
     component.disabled = true;
     fixture.detectChanges(); // recalcul la vue
     const button = fixture.debugElement.query(By.css('button')).nativeElement;
