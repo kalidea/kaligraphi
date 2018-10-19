@@ -1,0 +1,11 @@
+<ng-template cdkPortal #myTemplate="cdkPortal">
+ <ng-content></ng-content>
+</ng-template>
+
+<div (click)="toggleOverlay()" cdk-overlay-origin cdkOverlayOrigin="cdkOverlayOrigin">Montre moi</div>
+
+
+<ng-template cdk-connected-overlay cdkConnectedOverlay="cdkOverlayOrigin"></ng-template>
+
+
+//https://stackblitz.com/edit/overlay-demo?file=app%2Fapp.component.html

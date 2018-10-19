@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { KalSelectComponent } from './kal-select.component';
+import { KalOptionComponent } from './kal-option.component';
 
-describe('KalSelectComponent', () => {
-  let component: KalSelectComponent;
-  let fixture: ComponentFixture<KalSelectComponent>;
+describe('KalOptionComponent', () => {
+  let component: KalOptionComponent;
+  let fixture: ComponentFixture<KalOptionComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ KalSelectComponent ]
+      declarations: [ KalOptionComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(KalSelectComponent);
+    fixture = TestBed.createComponent(KalOptionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

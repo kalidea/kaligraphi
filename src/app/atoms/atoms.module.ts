@@ -16,7 +16,7 @@ import { CheckboxComponent } from './checkbox/checkbox.component';
   declarations: [
     InputComponent,
     SelectComponent,
-    CheckboxComponent
+    CheckboxComponent,
   ]
 })
 export class AtomsModule { }
