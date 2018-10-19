@@ -4,6 +4,9 @@ node_js: "8"
 script:
   - echo "npm test temporarily disabled"
   - npm run build:lib
+  
+notifications:
+  slack: $SLACK_NOTIFICATION
 
 before_deploy:
   - cd dist/kalidea/kaligraphi
