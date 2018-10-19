@@ -3,7 +3,8 @@ node_js: "8"
 
 script:
   - echo "npm test temporarily disabled"
-  - npm run build:lib
+  - npm run test
+  - npm run build
   
 notifications:
   slack: $SLACK_NOTIFICATION

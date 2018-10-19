@@ -3,16 +3,16 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "dev": "ng build --watch",
     "build": "ng build",
-    "test": "ng test",
+    "copy:styles": "cpx './projects/kalidea/kaligraphi/src/styles/**' ./dist/kalidea/kaligraphi/styles",
+    "compile:styles": "node-sass ./projects/kalidea/kaligraphi/src/styles/styles.sass ./dist/kalidea/kaligraphi/styles/styles.css",
+    "postbuild": "npm run copy:styles && npm run compile:styles",
+    "test": "ng test @kalidea/kaligraphi",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "dev:lib": "ng build @kalidea/kaligraphi --watch",
-    "build:lib": "ng build @kalidea/kaligraphi",
-    "copy:styles:lib": "cpx './projects/kalidea/kaligraphi/src/styles/**' ./dist/kalidea/kaligraphi/styles",
-    "compile:styles:lib": "node-sass ./projects/kalidea/kaligraphi/src/styles/styles.sass ./dist/kalidea/kaligraphi/styles/styles.css",
-    "postbuild:lib": "npm run copy:styles:lib && npm run compile:styles:lib"
+    "build:playground": "ng build playground",
+    "serve": "ng serve"
   },
   "private": true,
   "dependencies": {
