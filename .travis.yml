@@ -7,11 +7,9 @@ script:
   - npm run build
   
 notifications:
-    slack:
-    rooms:
-    - $SLACK_NOTIFICATION#kaligraphi-notif
-    on_success: always
-    on_failure: always
+    email: $EMAIL_GLE
+        on_success: always
+        on_failure: always
 
 before_deploy:
   - cd dist/kalidea/kaligraphi
