@@ -1,6 +1,14 @@
 {
   "name": "@kalidea/kaligraphi",
-  "version": "0.0.1",
+  "version": "0.0.12",
+  "public": "true",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kalidea/kaligraphi"
+  },
   "peerDependencies": {
     "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
     "@angular/core": "^6.0.0-rc.0 || ^6.0.0",
