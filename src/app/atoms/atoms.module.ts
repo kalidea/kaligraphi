@@ -6,6 +6,7 @@ import { AtomsRoutingModule } from 'src/app/atoms/atoms-routing.module';
 import { InputComponent } from 'src/app/atoms/input/input.component';
 import { SelectComponent } from './select/select.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
+import { RadioComponent } from './radio/radio.component';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { CheckboxComponent } from './checkbox/checkbox.component';
   declarations: [
     InputComponent,
     SelectComponent,
-    CheckboxComponent
+    CheckboxComponent,
+    RadioComponent
   ]
 })
 export class AtomsModule { }
