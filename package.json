@@ -12,8 +12,8 @@
     "test:ci": "ng test @kalidea/kaligraphi --karma-config=./projects/kalidea/kaligraphi/karma.test.conf.js --code-coverage",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "build:playground": "ng build playground",
-    "serve": "ng serve"
+    "serve": "ng serve --open",
+    "build:playground": "ng build playground --prod"
   },
   "private": true,
   "dependencies": {
