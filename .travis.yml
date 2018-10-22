@@ -3,7 +3,7 @@ node_js: "8"
 
 script:
   - echo "npm test temporarily disabled"
-  - npm run test
+  - npm run test:ci
   - npm run build
   
 notifications:
