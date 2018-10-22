@@ -52,14 +52,14 @@ describe('KalRaterComponent', () => {
   });
 
   it('should have a default rate', () => {
-    spyOn(FormControlAccessComponent.prototype, 'writeValue');
+    const spy = spyOn(FormControlAccessComponent.prototype, 'writeValue');
     // set default value
     component.writeValue(4);
 
     // update view
     fixture.detectChanges();
 
-    expect(FormControlAccessComponent.prototype.writeValue).toHaveBeenCalledWith(4);
+    expect(spy).toHaveBeenCalledWith(4);
 
     // we should have 4 icons on 5 with class 'active'
     expect(fixture.debugElement.queryAll(By.css('.active')).length).toBe(4);
@@ -67,7 +67,7 @@ describe('KalRaterComponent', () => {
 
   it('should emit the new rate value', () => {
     spyOn(component, 'rate').and.callThrough();
-    spyOn(FormControlAccessComponent.prototype, 'notifyUpdate');
+    const spy = spyOn(FormControlAccessComponent.prototype, 'notifyUpdate');
 
     // update view
     fixture.detectChanges();
@@ -76,6 +76,6 @@ describe('KalRaterComponent', () => {
     secondIcon.nativeElement.click();
 
     expect(component.rate).toHaveBeenCalledWith(1); // 1 = array index
-    expect(FormControlAccessComponent.prototype.notifyUpdate).toHaveBeenCalledWith(2);
+    expect(spy).toHaveBeenCalledWith(2);
   });
 });
