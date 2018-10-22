@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { buildProviders, FormElementComponent } from '../../utils/index';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'kal-input',
@@ -11,11 +12,19 @@ import { buildProviders, FormElementComponent } from '../../utils/index';
 })
 export class KalInputComponent extends FormElementComponent<string> implements OnInit {
 
-  constructor() {
+  formControl: FormControl;
+
+  constructor(public cdr: ChangeDetectorRef) {
     super();
   }
 
+  writeValue(value) {
+    this.formControl.setValue(value);
+    super.writeValue(value);
+  }
+
   ngOnInit() {
+    this.formControl = new FormControl(this.value);
   }
 
 }

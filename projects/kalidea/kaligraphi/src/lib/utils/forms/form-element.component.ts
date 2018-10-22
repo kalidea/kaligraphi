@@ -16,7 +16,7 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
   /**
    * placeholder for this form element
    */
-  @Input() placeholder;
+  @Input() placeholder: T;
 
   /**
    * id for this form element
