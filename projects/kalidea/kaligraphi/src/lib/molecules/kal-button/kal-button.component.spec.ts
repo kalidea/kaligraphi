@@ -4,6 +4,7 @@ import { By } from '@angular/platform-browser';
 import { KalButtonComponent } from './kal-button.component';
 import { KalIconComponent } from './../../atoms/kal-icon/kal-icon.component';
 
+
 fdescribe('KalButtonComponent', () => {
   let component: KalButtonComponent;
   let fixture: ComponentFixture<KalButtonComponent>;
@@ -79,11 +80,12 @@ fdescribe('KalButtonComponent', () => {
   });
 
   it('should display icon', () => {
-    const iconName = "back";
-    component.icon = iconName;
+    const kalicon = fixture.debugElement.query(By.css('kal-icon'));
+    expect(kalicon).toBeFalsy();
+    const iconname = 'back';
+    component.name = iconname;
     fixture.detectChanges(); // recalcul la vue
-    const kalicon = fixture.debugElement.query(By.css('button')).children('kal-icon');
-    console.log(this.kalicon);
+    const kalicon = fixture.debugElement.query(By.css('kal-icon'));
     expect(kalicon).toBeDefined();
 
   });

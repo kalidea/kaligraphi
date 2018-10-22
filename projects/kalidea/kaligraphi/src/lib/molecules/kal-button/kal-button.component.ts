@@ -42,7 +42,7 @@ export class KalButtonComponent implements OnInit {
   /**
    * add icon to label button
    */
-  @Input() icon: string;
+  @Input() name: string;
 
   /**
    * Output for a event clic
