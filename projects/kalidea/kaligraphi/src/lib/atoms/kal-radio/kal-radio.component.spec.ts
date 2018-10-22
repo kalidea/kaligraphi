@@ -5,14 +5,15 @@ import { KalRadioModule } from './kal-radio.module';
 @Component({
   template: `
   <kal-radio-group>
-    <kal-radio>
+    <kal-radio value="TEST1">
+      TEST 1
     </kal-radio>
-    <!--<kal-radio value="test2">-->
-      <!--TEST 2-->
-    <!--</kal-radio>-->
-    <!--<kal-radio value="test3">-->
-      <!--TEST 3-->
-    <!--</kal-radio>-->
+    <kal-radio value="test2">
+      TEST 2
+    </kal-radio>
+    <kal-radio value="test3">
+      TEST 3
+    </kal-radio>
   </kal-radio-group>
   `
 })

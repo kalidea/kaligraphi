@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-radio',
@@ -9,7 +10,15 @@ import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@
 })
 export class RadioComponent implements OnInit {
 
+  control = new FormControl('test');
+
+  name = 'test';
+
   constructor() { }
+
+  changeRadioValue(value: string) {
+    this.control.patchValue(value);
+  }
 
   ngOnInit() {
   }
