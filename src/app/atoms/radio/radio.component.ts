@@ -10,14 +10,29 @@ import { FormControl } from '@angular/forms';
 })
 export class RadioComponent implements OnInit {
 
-  control = new FormControl('test');
+  value = 'test';
 
-  name = 'test';
+  control = new FormControl(this.value);
+
+  nameRadioButtonWithControl = 'radioButtonWithControl';
+
+  nameRadioButtonWithEvent = 'radioButtonWithEvent';
+
+  id: string;
 
   constructor() { }
 
-  changeRadioValue(value: string) {
+  changeRadioValueWithControl(value: string) {
     this.control.patchValue(value);
+  }
+
+  changeRadioValueWithEvent(value: string) {
+    this.value = value;
+  }
+
+  displayValue($event) {
+    this.id = $event.source.id;
+    this.value = $event.value;
   }
 
   ngOnInit() {

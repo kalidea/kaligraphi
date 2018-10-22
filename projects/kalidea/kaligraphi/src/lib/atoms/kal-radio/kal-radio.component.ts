@@ -5,29 +5,35 @@ import {
   ContentChildren,
   forwardRef,
   Inject,
-  Input, OnDestroy,
+  Input,
+  OnDestroy,
   OnInit,
   Optional,
   QueryList,
   ViewEncapsulation
 } from '@angular/core';
-import { buildProviders, FormElementComponent } from '../../utils';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { UniqueSelectionDispatcher } from '@angular/cdk/collections';
+import { buildProviders, FormElementComponent } from '../../utils';
+
+let uniqueRadioButtonId = 0;
+
+export class KalRadioChange {
+  constructor(public source: KalRadioComponent, public value: string) {}
+}
 
 @Component({
   selector: 'kal-radio-group',
   template: `
-    <button type="button" (click)="displayCheckedRadio()">Display checked radio</button>"
     <ng-content></ng-content>`,
   providers: [...buildProviders(KalRadioGroupComponent)],
 })
-export class KalRadioGroupComponent extends FormElementComponent<string> implements OnInit {
+export class KalRadioGroupComponent extends FormElementComponent<any> implements OnInit {
 
   @ContentChildren(forwardRef(() => KalRadioComponent), {descendants: true}) radios: QueryList<KalRadioComponent>;
   private selectedRadioButton: KalRadioComponent = null;
   private radioValue: string;
-  private radioButtonName: string;
+  private radioButtonName = `kal-radio-button-name-${uniqueRadioButtonId++}`;
 
   constructor(private cd: ChangeDetectorRef) {
     super();
@@ -38,7 +44,7 @@ export class KalRadioGroupComponent extends FormElementComponent<string> impleme
     return this.radioValue;
   }
 
-  set value(value: string) {
+  set value(value: any) {
     if (this.radioValue !== value) {
       this.radioValue = value;
 
@@ -54,6 +60,14 @@ export class KalRadioGroupComponent extends FormElementComponent<string> impleme
 
   set name(value: string) {
     this.radioButtonName = value;
+
+    if (this.radios) {
+      this.radios.forEach(
+        radio => {
+          radio.name = value;
+        }
+      );
+    }
   }
 
   get selected() {
@@ -62,10 +76,11 @@ export class KalRadioGroupComponent extends FormElementComponent<string> impleme
 
   set selected(radioComponent: KalRadioComponent) {
     this.selectedRadioButton = radioComponent;
-    this.radioValue = radioComponent ? radioComponent.value : null;
+    this.value = radioComponent ? radioComponent.value : null;
   }
 
-  displayCheckedRadio() {
+  emitChangeEvent() {
+    this.valueChange.emit(new KalRadioChange(this.selected, this.value));
   }
 
   updateSelectedRadio() {
@@ -110,13 +125,18 @@ export class KalRadioComponent implements OnInit, OnDestroy {
 
   radioGroup: KalRadioGroupComponent;
 
-  private radioButtonName: string;
-
   private isChecked: boolean;
 
   private radioValue: string;
 
-  private removeUniqueSelectionListener: () => void = () => {};
+  @Input() name: string;
+
+  private uniqueId = `kal-radio-button-id-${++uniqueRadioButtonId}`;
+
+  @Input() id = this.uniqueId;
+
+  private removeUniqueSelectionListener: () => void = () => {
+  }
 
   constructor(@Optional() @Inject(forwardRef(() => KalRadioGroupComponent)) radioGroup: KalRadioGroupComponent,
               private radioDispatcher: UniqueSelectionDispatcher,
@@ -132,20 +152,11 @@ export class KalRadioComponent implements OnInit, OnDestroy {
   }
 
   @Input()
-  get name() {
-    return this.radioButtonName;
-  }
-
-  set name(value) {
-    this.radioButtonName = value;
-  }
-
-  @Input()
   get checked() {
     return this.isChecked;
   }
 
-  set checked(value) {
+  set checked(value: boolean) {
     const isChecked = coerceBooleanProperty(value);
 
     if (this.isChecked !== isChecked) {
@@ -170,27 +181,25 @@ export class KalRadioComponent implements OnInit, OnDestroy {
     return this.radioValue;
   }
 
-  set value(value: string) {
+  set value(value: any) {
     this.radioValue = value;
-  }
-
-  get id() {
-    return '' + this.name + this.value;
-  }
-
-  updateSelectedRadio() {
-    if (this.radioGroup) {
-      this.radioGroup.selected = this;
-    }
   }
 
   changeSelectedRadio($event) {
     $event.stopPropagation();
     this.checked = true;
+
+    if (this.radioGroup) {
+      this.radioGroup.notifyUpdate(this.value);
+      this.radioGroup.emitChangeEvent();
+    }
   }
 
   ngOnInit() {
-    this.checked = this.radioGroup.value === this.value;
+    if (this.radioGroup) {
+      this.name = this.radioGroup.name;
+      this.checked = this.radioGroup.value === this.value;
+    }
   }
 
   ngOnDestroy() {
