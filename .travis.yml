@@ -1,17 +1,13 @@
 language: node_js
 node_js: "8"
 
-script:
-  - echo "npm test temporarily disabled"
-  - npm run test:ci
-  - npm run build
-  
 notifications:
-    email:
-        recipients:
-          - $EMAIL_GLE 
-        on_success: always
-        on_failure: always
+  slack: $SLACK_NOTIFICATION
+
+script:
+- echo "npm test temporarily disabled"
+- npm run test:ci
+- npm run build
 
 before_deploy:
   - cd dist/kalidea/kaligraphi
