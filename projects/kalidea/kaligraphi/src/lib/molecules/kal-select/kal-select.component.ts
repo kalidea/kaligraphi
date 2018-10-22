@@ -1,11 +1,14 @@
 import {
   AfterContentInit,
-  ChangeDetectionStrategy, ChangeDetectorRef,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ContentChildren,
+  EventEmitter,
   Input,
   OnDestroy,
   OnInit,
+  Output,
   QueryList,
   ViewChild,
   ViewEncapsulation
@@ -29,24 +32,28 @@ export class KalSelectComponent implements OnInit, OnDestroy, AfterContentInit {
   _keyManager: ActiveDescendantKeyManager<KalOptionComponent>;
 
   overlayPosition: PositionStrategy;
-
   /** Overlay pane containing the options. */
   @ViewChild(CdkConnectedOverlay) overlayDir: CdkConnectedOverlay;
-
   /** All of the defined select options. */
   @ContentChildren(KalOptionComponent, {descendants: true}) options: QueryList<KalOptionComponent>;
-
   @ViewChild('myTemplate') myTemplate: TemplatePortal<any>;
-
+  @Output() selectedChange = new EventEmitter<KalOptionComponent>();
   @Input() disabled: boolean; //Voir pour seulement l'attribut
-
-@Input()placeHolder: string;
-
+  @Input() placeHolder: string;
   portal: Portal<any>;
   _panelOpen: boolean;
+  private _selectecOption: KalOptionComponent;
   private _overlayRef: OverlayRef;
 
-  constructor(private overlay: Overlay,  private _changeDetectorRef: ChangeDetectorRef) {
+  constructor(private overlay: Overlay, private _changeDetectorRef: ChangeDetectorRef) {
+  }
+
+  get triggerValue(): string {
+    if (!this._selectecOption) {
+      return '';
+    }
+
+    return this._selectecOption.viewValue;
   }
 
   toggleOverlay() {
@@ -73,8 +80,9 @@ export class KalSelectComponent implements OnInit, OnDestroy, AfterContentInit {
   }
 
   optionSelected(option: KalOptionComponent) {
-    this._changeDetectorRef.markForCheck();
-    this.placeHolder = option.getValueText();
+    this._selectecOption = option;
+    this.selectedChange.emit(option);
+    this.close();
   }
 
   ngOnInit() {

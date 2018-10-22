@@ -2,6 +2,15 @@
  <ng-content></ng-content>
 </ng-template>
 
-<div (click)="toggleOverlay()" cdk-overlay-origin cdkOverlayOrigin="cdkOverlayOrigin">{{placeHolder}}</div>
+<div (click)="toggleOverlay()" cdk-overlay-origin cdkOverlayOrigin="cdkOverlayOrigin">
+
+  <div>
+    <div>{{placeHolder}}</div>
+    <div>{{triggerValue}}</div>
+  </div>
+
+
+</div>
+
 
 <ng-template cdk-connected-overlay cdkConnectedOverlay="cdkOverlayOrigin"></ng-template>

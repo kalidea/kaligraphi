@@ -23,18 +23,17 @@ export class KalOptionComponent implements OnInit {
 
   @Output() readonly selectionChange = new EventEmitter<KalOptionComponent>();
 
-  @ViewChild('text') textElement: ElementRef;
 
-  constructor() {
+
+  constructor(private _element: ElementRef<HTMLElement>) {
   }
 
   emitSelectionChangeEvent(): void {
     this.selectionChange.emit(this);
   }
 
-  getValueText(): string {
-    console.log(this.textElement);
-    return this.textElement.nativeElement.value;
+  get viewValue(): string {
+    return (this._element.nativeElement.textContent || '').trim();
   }
 
   ngOnInit() {

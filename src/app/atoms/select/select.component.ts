@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-select',
@@ -9,7 +9,12 @@ import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@
 })
 export class SelectComponent implements OnInit {
 
-  constructor() { }
+  constructor() {
+  }
+
+  selectedChange(e) {
+    console.log(e);
+  }
 
   ngOnInit() {
   }
