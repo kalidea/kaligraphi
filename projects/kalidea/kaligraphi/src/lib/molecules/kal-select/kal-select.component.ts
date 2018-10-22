@@ -28,7 +28,7 @@ import { ESCAPE } from '@angular/cdk/keycodes';
 })
 
 export class KalSelectComponent implements OnInit, OnDestroy, AfterContentInit {
-  @Input() disabled: boolean; //Voir pour seulement l'attribut
+  @Input() disabled: boolean;
   @Input() placeHolder: string;
   @Input() multiple: boolean;
   @Output() selectedChange = new EventEmitter<KalOptionComponent | KalOptionComponent []>();

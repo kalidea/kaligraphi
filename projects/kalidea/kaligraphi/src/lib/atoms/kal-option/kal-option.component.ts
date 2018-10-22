@@ -18,7 +18,7 @@ export class KalOptionComponent implements OnInit {
 
   set active(isActive: boolean) {
     this.isActive = isActive;
-  };
+  }
 
   get viewValue(): string {
     return (this._element.nativeElement.textContent || '').trim();

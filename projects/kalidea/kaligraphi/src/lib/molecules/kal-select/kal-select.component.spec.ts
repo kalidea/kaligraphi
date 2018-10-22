@@ -1,17 +1,34 @@
-import { async, ComponentFixture, TestBed, flush } from '@angular/core/testing';
-import {By} from '@angular/platform-browser';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { CdkPortal } from '@angular/cdk/portal';
 
 import { KalSelectComponent } from './kal-select.component';
+import { Overlay } from '@angular/cdk/overlay';
+import { Component } from '@angular/core';
+import { KalOptionModule } from '../../atoms/kal-option/kal-option.module';
 
-describe('KalSelectComponent', () => {
-  let component: KalSelectComponent;
+@Component({
+  selector: 'kal-test-select',
+  template: `
+    <kal-select>
+      <kal-option>Steak</kal-option>
+      <kal-option>Pizza</kal-option>
+    </kal-select>`
+})
+class TestSelectComponent {
+
+}
+
+fdescribe('KalSelectComponent', () => {
+  let component: TestSelectComponent;
   let fixture: ComponentFixture<KalSelectComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ KalSelectComponent ]
-    })
-    .compileComponents();
+      declarations: [KalSelectComponent, CdkPortal, TestSelectComponent],
+      providers: [Overlay],
+      imports: [KalOptionModule]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -25,13 +42,11 @@ describe('KalSelectComponent', () => {
   });
 
   it('Doit afficher la liste d\'éléments donnée', () => {
-    expect(component).toBeTruthy();
+
   });
 
   it('Doit pouvoir sélectionner une valeur dans la liste', () => {
-    const trigger = fixture.debugElement.query(By.css('mat-option')).nativeElement;
-    trigger.click();
-    fixture.detectChanges();
+    
   });
 
   it('Doit pouvoir avoir un label par défaut', () => {
