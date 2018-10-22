@@ -1,9 +1,9 @@
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ContentChildren,
+  ElementRef,
   EventEmitter,
   Input,
   OnDestroy,
@@ -13,10 +13,11 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { CdkConnectedOverlay, Overlay, OverlayRef, PositionStrategy } from '@angular/cdk/overlay';
-import { Portal, TemplatePortal } from '@angular/cdk/portal';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { TemplatePortal } from '@angular/cdk/portal';
 import { KalOptionComponent } from '../../atoms/kal-option/kal-option.component';
-import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
+import { filter } from 'rxjs/operators';
+import { ESCAPE } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'kal-select',
@@ -27,38 +28,41 @@ import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
 })
 
 export class KalSelectComponent implements OnInit, OnDestroy, AfterContentInit {
-
-  /** Manages keyboard events for options in the panel. */
-  _keyManager: ActiveDescendantKeyManager<KalOptionComponent>;
-
-  overlayPosition: PositionStrategy;
-  /** Overlay pane containing the options. */
-  @ViewChild(CdkConnectedOverlay) overlayDir: CdkConnectedOverlay;
+  @Input() disabled: boolean; //Voir pour seulement l'attribut
+  @Input() placeHolder: string;
+  @Input() multiple: boolean;
+  @Output() selectedChange = new EventEmitter<KalOptionComponent | KalOptionComponent []>();
   /** All of the defined select options. */
   @ContentChildren(KalOptionComponent, {descendants: true}) options: QueryList<KalOptionComponent>;
   @ViewChild('myTemplate') myTemplate: TemplatePortal<any>;
-  @Output() selectedChange = new EventEmitter<KalOptionComponent>();
-  @Input() disabled: boolean; //Voir pour seulement l'attribut
-  @Input() placeHolder: string;
-  portal: Portal<any>;
-  _panelOpen: boolean;
-  private _selectecOption: KalOptionComponent;
+
+  private _panelOpen: boolean;
+  private _selection: KalOptionComponent[];
   private _overlayRef: OverlayRef;
 
-  constructor(private overlay: Overlay, private _changeDetectorRef: ChangeDetectorRef) {
+  constructor(private overlay: Overlay,
+              private connectedTo: ElementRef<HTMLElement>) {
   }
 
   get triggerValue(): string {
-    if (!this._selectecOption) {
+    if (!this._selection || this._selection.length === 0) {
       return '';
     }
 
-    return this._selectecOption.viewValue;
+    if (this.multiple) {
+      const selectedOptions = this._selection.map(option => option.viewValue);
+      return selectedOptions.join(', ');
+    }
+
+    return this._selection[0].viewValue;
+  }
+
+  get selected(): KalOptionComponent | KalOptionComponent[] {
+    return this.multiple ? this._selection : this._selection[0];
   }
 
   toggleOverlay() {
     if (!this._panelOpen) {
-
       this.open();
     } else {
       this.close();
@@ -80,35 +84,48 @@ export class KalSelectComponent implements OnInit, OnDestroy, AfterContentInit {
   }
 
   optionSelected(option: KalOptionComponent) {
-    this._selectecOption = option;
-    this.selectedChange.emit(option);
-    this.close();
+
+    if (this.multiple) {
+      if (option.isActive) {
+        option.active = false;
+        this._selection.splice(this._selection.indexOf(option), 1);
+      } else {
+        option.active = true;
+        this._selection.push(option);
+      }
+
+      this.selectedChange.emit(this._selection);
+    }
+
+    if (!this.multiple) {
+      option.active = true;
+      this._selection = [option];
+      this.selectedChange.emit(option);
+      this.close();
+    }
   }
 
   ngOnInit() {
+    this._selection = [];
+    this._overlayRef = this.overlay.create({
+      hasBackdrop: true
+    });
 
-    // this.portal = new ComponentPortal(this.myTemplate);
-
-    this._overlayRef = this.overlay.create();
-
-
-    // Subscribe to a stream that emits when the backdrop was clicked
     this._overlayRef.backdropClick().subscribe(() => console.log('ok'));
+    this._overlayRef.keydownEvents()
+      .pipe(filter(event => event.keyCode === ESCAPE))
+      .subscribe(() => this.close());
     // const userProfilePortal = new ComponentPortal(this.myTemplate);
-
-
-    // this.overlayRef = this.overlay.create({
-    //   positionStrategy: this.getOverlayPosition(),
-    //   width: 200,
-    // });
-
   }
 
   ngAfterContentInit() {
-
     this.options.map(o => {
       o.selectionChange.subscribe(event => this.optionSelected(event));
     });
+
+    if (this.options.length === 1) {
+      this.optionSelected(this.options.first);
+    }
   }
 
   ngOnDestroy() {

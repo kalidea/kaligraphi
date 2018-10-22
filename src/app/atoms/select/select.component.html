@@ -2,3 +2,15 @@
   <kal-option>OPTION 1</kal-option>
   <kal-option>OPTION 2</kal-option>
 </kal-select>
+
+<hr>
+
+<kal-select placeHolder="Selectionner" [multiple]="true" (selectedChange)="selectedChange($event)">
+  <kal-option>Commerce</kal-option>
+  <kal-option>Famille</kal-option>
+</kal-select>
+
+
+<kal-select placeHolder="Selectionner" (selectedChange)="selectedChange($event)">
+  <kal-option>Uno un</kal-option>
+</kal-select>
