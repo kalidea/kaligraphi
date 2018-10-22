@@ -24,7 +24,13 @@ describe('KalProgressBarComponent', () => {
   });
 
   it('should change the progress-bar color according to a CSS class', () => {
+    const progressBar = fixture.debugElement.query(By.css('div'));
+    component.color = 'yellow';
 
+    // update view
+    fixture.detectChanges();
+
+    expect(progressBar.nativeElement.className).toEqual(component.color);
   });
 
   it('should have a default progress value', () => {
