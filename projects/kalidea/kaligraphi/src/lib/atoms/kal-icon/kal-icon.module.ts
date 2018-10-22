@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { KalIconComponent } from './kal-icon.component';
 
-export * from './kal-icon.component';
+import { KalIconComponent } from './kal-icon.component';
+export { KalIconComponent } from './kal-icon.component';
 
 const exports = [
   KalIconComponent
