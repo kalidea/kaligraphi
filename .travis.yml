@@ -7,7 +7,11 @@ script:
   - npm run build
   
 notifications:
-    email: $EMAIL_GLE 
+    email:
+        recipients:
+          - $EMAIL_GLE 
+        on_success: always
+        on_failure: always
 
 before_deploy:
   - cd dist/kalidea/kaligraphi
