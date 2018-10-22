@@ -1,3 +1,7 @@
-<input type="radio" [name]="name" [checked]="checked" [value]="value"/>
+<input type="radio"
+       [name]="name"
+       [checked]="checked"
+       [value]="value"
+       (change)="changeSelectedRadio($event)">
 
 <ng-content></ng-content>

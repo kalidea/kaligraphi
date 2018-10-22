@@ -1,4 +1,5 @@
-<kal-radio-group [formControl]="control">
+<kal-radio-group [formControl]="control" name="test">
+
   <kal-radio value="test">test</kal-radio><br />
   <kal-radio value="test1">test 1</kal-radio><br />
   <kal-radio value="test2">test 2</kal-radio><br />
@@ -6,10 +7,11 @@
   <kal-radio value="test4">test 4</kal-radio><br />
   <kal-radio value="test5">test 5</kal-radio><br />
   <kal-radio value="test6">test 6</kal-radio><br />
+
 </kal-radio-group>
 
 <br />
-<input #inputElement type="text"/>
+<input #inputElement type="text" value="test6">
 <button (click)="changeRadioValue(inputElement.value)"> Change radio value</button>
 
 <br />
