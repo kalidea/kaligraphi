@@ -1,7 +1,18 @@
 
-<input
-  type="text"
-  [placeholder]="placeholder"
-  [formControl]="formControl">
+<div>
+  <input
+    type="text"
+    [title]="label"
+    [name]="name"
+    [placeholder]="placeholder"
+    #te
+    [formControl]="control">
+  <kal-icon name="clear" *ngIf="clearable"></kal-icon>
+</div>
 
-PP {{ placeholder }} PP
+{{ countable | json }}
+qsqd
+<div class="counter" *ngIf="countable">
+  {{ control.value.length }} / {{ max }}
+</div>
+
