@@ -1,6 +1,8 @@
 <button
   (click)="handleClick($event)"
   [disabled]="disabled"
-  [tabindex]="tabIndex">
+  [tabindex]="tabIndex"
+  [icon]="icon">
+  <kal-icon *ngIf="icon" [icon]="icon"></kal-icon>
   {{label}}
 </button>

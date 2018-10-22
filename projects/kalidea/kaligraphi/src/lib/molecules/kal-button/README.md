@@ -5,3 +5,4 @@
 * Doit bloquer le clic sur le bouton lorsqu'il est disabled
 * Doit enlever le tabIndex lorsque le bouton est disabled
 * Doit générer automatiquement un tabIndex
+* Doit accepter l'affichage d'une icone

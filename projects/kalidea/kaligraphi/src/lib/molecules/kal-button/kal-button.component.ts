@@ -30,7 +30,6 @@ export class KalButtonComponent implements OnInit {
   private isDisabled = false;
 
   @Input()
-
   set disabled(value: boolean) {
     this.isDisabled = coerceBooleanProperty(value);
     this.tabIndex = this.isDisabled ? this.tabIndex : null;
@@ -40,6 +39,10 @@ export class KalButtonComponent implements OnInit {
     return this.isDisabled;
   }
 
+  /**
+   * add icon to label button
+   */
+  @Input() icon: string;
 
   /**
    * Output for a event clic

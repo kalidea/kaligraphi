@@ -2,15 +2,15 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { KalButtonComponent } from './kal-button.component';
+import { KalIconComponent } from './../../atoms/kal-icon/kal-icon.component';
 
-
-describe('KalButtonComponent', () => {
+fdescribe('KalButtonComponent', () => {
   let component: KalButtonComponent;
   let fixture: ComponentFixture<KalButtonComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [KalButtonComponent]
+      declarations: [KalButtonComponent, KalIconComponent]
     })
       .compileComponents();
   }));
@@ -75,6 +75,16 @@ describe('KalButtonComponent', () => {
     fixture.detectChanges(); // recalcul la vue
     const button = fixture.debugElement.query(By.css('button')).nativeElement;
     expect(button.tabindex).toBeUndefined();
+
+  });
+
+  it('should display icon', () => {
+    const iconName = "back";
+    component.icon = iconName;
+    fixture.detectChanges(); // recalcul la vue
+    const kalicon = fixture.debugElement.query(By.css('button')).children('kal-icon');
+    console.log(this.kalicon);
+    expect(kalicon).toBeDefined();
 
   });
 
