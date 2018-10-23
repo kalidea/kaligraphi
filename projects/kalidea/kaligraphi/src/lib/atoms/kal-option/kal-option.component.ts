@@ -1,4 +1,15 @@
-import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewEncapsulation
+} from '@angular/core';
+import { Highlightable } from '@angular/cdk/a11y';
 
 @Component({
   selector: 'kal-option',
@@ -7,13 +18,20 @@ import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, On
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalOptionComponent implements OnInit {
+export class KalOptionComponent implements OnInit, Highlightable {
 
   @Input() id?: any;
+  @Input() value?: any;
   @Output() readonly selectionChange = new EventEmitter<KalOptionComponent>();
-  isActive: boolean;
 
-  constructor(private _element: ElementRef<HTMLElement>) {
+  isHighligh: boolean;
+  private isActive: boolean;
+
+  constructor(private _element: ElementRef<HTMLElement>, private cd: ChangeDetectorRef) {
+  }
+
+  get active() {
+    return this.isActive;
   }
 
   set active(isActive: boolean) {
@@ -24,8 +42,22 @@ export class KalOptionComponent implements OnInit {
     return (this._element.nativeElement.textContent || '').trim();
   }
 
-  emitSelectionChangeEvent(): void {
+  emitSelectionEvent(): void {
     this.selectionChange.emit(this);
+  }
+
+  getLabel(): string {
+    return this.viewValue;
+  }
+
+  setActiveStyles(): void {
+    this.isHighligh = true;
+    this.cd.markForCheck();
+  }
+
+  setInactiveStyles(): void {
+    this.isHighligh = false;
+    this.cd.markForCheck();
   }
 
   ngOnInit() {

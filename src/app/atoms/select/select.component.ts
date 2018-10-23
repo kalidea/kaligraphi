@@ -13,7 +13,7 @@ export class SelectComponent implements OnInit {
   }
 
   selectedChange(e) {
-    console.log(e);
+
   }
 
   ngOnInit() {
