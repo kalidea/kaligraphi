@@ -8,8 +8,8 @@ Agnostic Graphic Library
 
 ## Playground
 
-* `ng serve --open` for a dev server. Navigate to `http://localhost:4200/`
-* `ng build --prod` for a production build
+* `npm run serve:playground` for a dev server. Navigate to `http://localhost:4200/`
+* `npm run build:playground` for a production build
 
 ## Library
 

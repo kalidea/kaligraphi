@@ -4,19 +4,51 @@ node_js: "8"
 notifications:
   slack: $SLACK_NOTIFICATION
 
-script:
-- echo "npm test temporarily disabled"
-- npm run lint
-- npm run test:ci
-- npm run build
+stages:
+  - test
+  - build
+  - name: deploy_npm
+    if: tag IS present
 
-before_deploy:
-  - cd dist/kalidea/kaligraphi
+jobs:
+  include:
+    - stage: test
+      before_script:
+        - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+        - chmod +x ./cc-test-reporter
+        - ./cc-test-reporter before-build
+      script:
+        - echo "npm test temporarily disabled"
+        - npm run test:ci
+      after_script:
+        - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
-deploy:
-  provider: npm
-  email: $NPM_EMAIL
-  api_key: $NPM_TOKEN
-  skip_cleanup: true
-  on:
-    tags: true
+    # BUILD LIB
+    - stage: build
+      script:
+        - npm run build
+        - npm run build:playground -- --base-href https://kalidea.github.io/kaligraphi/
+      deploy:
+        provider: pages
+        skip-cleanup: true
+        github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+        keep-history: true
+        verbose: true
+        local-dir: dist/playground/
+        on:
+          branch: master
+
+    #DEPLOY TO NPM
+    - stage: deploy_npm
+      script:
+        - echo "Deploying to npm ..."
+        - npm run build
+      before_deploy:
+        - cd dist/kalidea/kaligraphi
+      deploy:
+        provider: npm
+        email: $NPM_EMAIL
+        api_key: $NPM_TOKEN
+        skip_cleanup: true
+        on:
+          tags: true
