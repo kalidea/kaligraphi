@@ -1,18 +1,17 @@
 
 <div>
   <input
-    type="text"
     [title]="label"
+    [type]="htmlInputType"
     [name]="name"
-    [placeholder]="placeholder"
-    #te
+    [attr.placeholder]="placeholder"
     [formControl]="control">
-  <kal-icon name="clear" *ngIf="clearable"></kal-icon>
+  <kal-icon name="clear" *ngIf="clearable" (click)="clearField()"></kal-icon>
 </div>
 
-{{ countable | json }}
-qsqd
-<div class="counter" *ngIf="countable">
-  {{ control.value.length }} / {{ max }}
-</div>
+<ng-container *ngIf="limit">
+  <div class="counter">
+    {{ value?.length || 0}} / {{ limit }}
+  </div>
+</ng-container>
 

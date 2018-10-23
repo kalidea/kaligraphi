@@ -13,6 +13,7 @@ import { KalIconModule } from '../kal-icon/kal-icon.module';
     <kal-input
       [formControl]="inputControl"
       [type]="type"
+      [limit]="limit"
       [placeholder]="placeholder"></kal-input>
   `
 })
@@ -21,9 +22,12 @@ class TestComponent {
 
   inputControl: FormControl = new FormControl();
 
+  limit: number;
+
   type = 'text';
 
   @ViewChild(KalInputComponent) inputComponent: KalInputComponent;
+
 
   constructor() {
   }
@@ -139,39 +143,30 @@ describe('KalInputComponent', () => {
     component.value = userInput;
   }));
 
-  it('should manage max - min limiter for number', (done) => {
-    component.inputComponent.type = 'number';
-    component.inputComponent.max = 4;
-    const userInput = '5';
-    component.valueChanges.pipe(take(1)).subscribe(value => {
-      expect(value).toBe(4, 'emited value should max value');
-      done();
-    });
-    component.value = userInput;
-
-  });
-
-  it('should manage min limiter for number', (done) => {
-    component.inputComponent.type = 'number';
-    component.inputComponent.min = 4;
-    const userInput = '3';
-    component.valueChanges.pipe(take(1)).subscribe(value => {
-      expect(value).toBe(4, 'emited value should be min value');
-      done();
-    });
-    component.value = userInput;
-  });
 
   it('should add an icon to clear field', () => {
+    const text = 'abcdefgh';
     component.inputComponent.clearable = true;
     fixture.detectChanges();
-    expect(fixture.debugElement.query(By.css('kal-icon'))).toBeTruthy();
+    component.value = text;
+    expect(component.inputComponent.value).toEqual(text);
+    const icon = fixture.debugElement.query(By.css('kal-icon'));
+    expect(icon).toBeTruthy();
+    icon.nativeElement.click();
+    expect(component.inputComponent.value).toEqual('');
   });
 
-  fit('should count chars if text and max setted', () => {
-    component.inputComponent.type = 'text';
-    component.inputComponent.max = 4;
+  it('should count chars if limit is set', () => {
+    const text = 'abcdefgh';
+    const max = 10;
+    component.limit = max;
     fixture.detectChanges();
-    component.value = 'sdfsdfsdf';
+    component.value = text;
+    expect(fixture.debugElement.query(By.css('.counter'))).toBeTruthy();
+    expect(fixture.debugElement.query(By.css('.counter')).nativeElement.textContent.trim()).toEqual(`${text.length} / ${max}`);
+    component.value += text;
+    expect(fixture.debugElement.query(By.css('.counter')).nativeElement.textContent.trim()).toEqual(`${text.length * 2} / ${max}`);
   });
+
+
 });
