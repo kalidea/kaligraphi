@@ -1,131 +1,312 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { KalRadioModule } from './kal-radio.module';
+import { KalRadioChange, KalRadioComponent, KalRadioGroupComponent } from './kal-radio.component';
 
 @Component({
   template: `
-  <kal-radio-group>
-    <kal-radio value="TEST1">
-      TEST 1
-    </kal-radio>
-    <kal-radio value="test2">
-      TEST 2
-    </kal-radio>
-    <kal-radio value="test3">
-      TEST 3
-    </kal-radio>
-  </kal-radio-group>
+    <kal-radio-group [formControl]="control">
+      <kal-radio value="test1">
+        TEST 1
+      </kal-radio>
+      <kal-radio value="test2">
+        TEST 2
+      </kal-radio>
+      <kal-radio value="test3">
+        TEST 3
+      </kal-radio>
+    </kal-radio-group>
   `
 })
-
-class TestRadioGroupComponent {
+class TestRadioGroupWithControlComponent {
+  control = new FormControl('');
 }
 
-describe('Radio buttons inside a group', () => {
-  let component: TestRadioGroupComponent;
-  let fixture: ComponentFixture<TestRadioGroupComponent>;
-  // let groupInstance;
-  // let radioInstances: KalRadioComponent[];
-  // let groupDebugElement;
-  // let radioDebugElements: DebugElement[];
-  // let radiosList;
+@Component({
+  template: `
+    <kal-radio-group [value]="value"
+                     [disabled]="disabled"
+                     (valueChange)="displayValue($event)">
+      <kal-radio value="test1">
+        TEST 1
+      </kal-radio>
+      <kal-radio value="test2">
+        TEST 2
+      </kal-radio>
+      <kal-radio value="test3">
+        TEST 3
+      </kal-radio>
+    </kal-radio-group>
+  `
+})
+class TestRadioGroupWithEventComponent {
+  value = '';
+
+  disabled = false;
+
+  displayValue($event: KalRadioChange) {
+    this.value = $event.value;
+  }
+}
+
+describe('Radio buttons inside a group with control', () => {
+  let component: TestRadioGroupWithControlComponent;
+  let fixture: ComponentFixture<TestRadioGroupWithControlComponent>;
+  let groupInstance;
+  let radioInstances: KalRadioComponent[];
+  let groupDebugElement;
+  let radioDebugElements: DebugElement[];
+  let radiosList: DebugElement[];
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
+        ReactiveFormsModule,
         KalRadioModule
       ],
       declarations: [
-        TestRadioGroupComponent,
+        TestRadioGroupWithControlComponent,
       ],
-      // schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TestRadioGroupComponent);
+    fixture = TestBed.createComponent(TestRadioGroupWithControlComponent);
     component = fixture.componentInstance;
 
     fixture.detectChanges();
 
-    // groupDebugElement = fixture.debugElement.query(By.directive(KalRadioGroupComponent));
-    //
-    // groupInstance = groupDebugElement.injector.get(KalRadioGroupComponent);
-    // radioInstances = radioDebugElements.map(debugEl => debugEl.componentInstance);
-    //
-    // radioDebugElements = fixture.debugElement.queryAll(By.directive(KalRadioComponent));
+    groupDebugElement = fixture.debugElement.query(By.directive(KalRadioGroupComponent));
+    groupInstance = groupDebugElement.injector.get(KalRadioGroupComponent);
 
-    // radiosList = fixture.debugElement.queryAll(By.css('input[type=radio]'));
+    radioDebugElements = fixture.debugElement.queryAll(By.directive(KalRadioComponent));
+    radioInstances = radioDebugElements.map(debugEl => debugEl.componentInstance);
+    radiosList = fixture.debugElement.queryAll(By.css('input[type="radio"]'));
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  // it('should display all radios buttons that contains in radio group', () => {
-  //   expect(radiosList.length).toEqual(3);
-  // });
+  it('should display all radios buttons that contains in radio group', () => {
+    expect(radioDebugElements.length).toEqual(3);
+  });
 
-  // it('should contains checkbox element', () => {
-  //   expect(radiosList.length).toEqual(0);
-  //
-  //   component.radiosList = [
-  //     'TEST 1',
-  //     'TEST 2',
-  //     'TEST 3',
-  //   ];
-  //
-  //   expect(radiosList.length).toEqual(3);
-  // });
-  //
-  // it('should have a form control with a true value', () => {
-  //   expect(component.control.value).toBeFalsy();
-  //
-  //   checkbox.nativeElement.click();
-  //
-  //   expect(component.control.value).toBeTruthy();
-  // });
-  //
-  // it('should have the formControl value to true', () => {
-  //   component.value = false;
-  //   component.ngOnInit();
-  //
-  //   expect(component.control.value).toBeFalsy();
-  //
-  //   component.value = true;
-  //   component.ngOnInit();
-  //
-  //   expect(component.control.value).toBeTruthy();
-  // });
-  //
-  // it('should emit an event with the form control value when the value changes', () => {
-  //   const spyNotif = spyOn(FormElementComponent.prototype, 'notifyUpdate');
-  //   spyOn(component.valueChange, 'emit');
-  //
-  //   component.control.patchValue(true);
-  //
-  //   expect(spyNotif).toHaveBeenCalledWith(true);
-  //   expect(component.valueChange.emit).toHaveBeenCalledWith(true);
-  // });
-  // it('should update the form control value when a new value is set', () => {
-  //   expect(component.control.value).toBeFalsy();
-  //
-  //   component.writeValue(true);
-  //
-  //   expect(component.control.value).toBeTruthy();
-  // });
-  //
-  // it('should set the disabled state with formControl', () => {
-  //   expect(component.control.disabled).toBeFalsy();
-  //
-  //   component.setDisabledState(true);
-  //
-  //   expect(component.control.disabled).toBeTruthy();
-  //
-  //   component.setDisabledState(false);
-  //
-  //   expect(component.control.disabled).toBeFalsy();
-  // });
+  it('should set all radio button names according to the group name', () => {
+    expect(groupDebugElement.name).toBeTruthy();
+
+    radioInstances.forEach(
+      radio => {
+        expect(radio.name).toEqual(groupInstance.name);
+      }
+    );
+  });
+
+  it('should set a different id for each radio button', () => {
+    const radioButtonsId = [];
+
+    radioInstances.forEach(
+      radio => {
+        radioButtonsId.push(radio.id);
+        expect(radio.id).toBeTruthy();
+      }
+    );
+
+    const isExistingId = radioButtonsId.some((element, index, self) => self.indexOf(element) !== index);
+
+    expect(isExistingId).toBeFalsy();
+  });
+
+  it('should add a class to set the label position', () => {
+    expect(groupInstance.labelPosition).toEqual('after');
+
+    radioInstances.forEach(
+      radio => {
+        expect(radio.labelPosition).toEqual('after');
+      }
+    );
+
+    groupInstance.labelPosition = 'before';
+
+    expect(groupInstance.labelPosition).toEqual('before');
+
+    radioInstances.forEach(
+      radio => {
+        expect(radio.labelPosition).toEqual('before');
+      }
+    );
+  });
+
+  it('should check a radio button', () => {
+    let selectedRadioButton = radioInstances.find(radio => radio.checked);
+
+    expect(selectedRadioButton).toBeFalsy();
+
+    component.control.patchValue('test1');
+
+    selectedRadioButton = radioInstances.find(radio => radio.checked);
+
+    expect(selectedRadioButton).toBeTruthy();
+
+  });
+
+  it('should toggle disabled state', () => {
+    expect(groupInstance.disabled).toBeFalsy();
+
+    radioInstances.forEach(
+      radio => {
+        expect(radio.disabled).toBeFalsy();
+      }
+    );
+
+    component.control.disable();
+
+    expect(groupInstance.disabled).toBeTruthy();
+    radioInstances.forEach(
+      radio => {
+        expect(radio.disabled).toBeTruthy();
+      }
+    );
+
+    component.control.enable();
+
+    expect(groupInstance.disabled).toBeFalsy();
+
+    radioInstances.forEach(
+      radio => {
+        expect(radio.disabled).toBeFalsy();
+      }
+    );
+  });
+
+  it('should update form control value when a radio button is clicked', () => {
+    expect(component.control.value).toEqual('');
+
+    radiosList[0].nativeElement.click();
+
+    expect(component.control.value).toEqual('test1');
+
+    radiosList[1].nativeElement.click();
+
+    expect(component.control.value).toEqual('test2');
+
+    radiosList[2].nativeElement.click();
+
+    expect(component.control.value).toEqual('test3');
+  });
+
+  it('should select a radio button', () => {
+    expect(groupInstance.selected).toBeNull();
+
+    component.control.patchValue('test1');
+
+    expect(groupInstance.selected).toEqual(radioInstances[0]);
+  });
+});
+
+describe('Radio buttons inside a group with event', () => {
+  let component: TestRadioGroupWithEventComponent;
+  let fixture: ComponentFixture<TestRadioGroupWithEventComponent>;
+  let groupInstance;
+  let radioInstances: KalRadioComponent[];
+  let groupDebugElement;
+  let radioDebugElements: DebugElement[];
+  let radiosList: DebugElement[];
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        ReactiveFormsModule,
+        KalRadioModule
+      ],
+      declarations: [
+        TestRadioGroupWithEventComponent,
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
+    })
+      .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(TestRadioGroupWithEventComponent);
+    component = fixture.componentInstance;
+
+    fixture.detectChanges();
+
+    groupDebugElement = fixture.debugElement.query(By.directive(KalRadioGroupComponent));
+    groupInstance = groupDebugElement.injector.get(KalRadioGroupComponent);
+
+    radioDebugElements = fixture.debugElement.queryAll(By.directive(KalRadioComponent));
+    radioInstances = radioDebugElements.map(debugEl => debugEl.componentInstance);
+
+    radiosList = fixture.debugElement.queryAll(By.css('input[type=radio]'));
+
+  });
+
+  it('should update the group value', () => {
+    expect(groupInstance.value).toEqual('');
+
+    radioInstances.forEach(
+      radio => {
+        expect(radio.checked).toBeFalsy();
+      }
+    );
+
+    component.value = 'test1';
+
+    fixture.detectChanges();
+
+    expect(groupInstance.value).toEqual('test1');
+
+    const checkedRadio = radioInstances.find(radio => radio.checked);
+
+    expect(checkedRadio).toBeTruthy(groupInstance[0]);
+  });
+
+  it('should set the value when a radio button is clicked', () => {
+    spyOn(component, 'displayValue');
+
+    expect(groupInstance.value).toEqual('');
+
+    radiosList[0].nativeElement.click();
+
+    expect(component.displayValue).toHaveBeenCalledWith(new KalRadioChange(radioInstances[0], 'test1'));
+
+    expect(groupInstance.value).toEqual('test1');
+
+    radiosList[1].nativeElement.click();
+
+    expect(component.displayValue).toHaveBeenCalledWith(new KalRadioChange(radioInstances[1], 'test2'));
+
+    expect(groupInstance.value).toEqual('test2');
+
+    radiosList[2].nativeElement.click();
+
+    expect(component.displayValue).toHaveBeenCalledWith(new KalRadioChange(radioInstances[2], 'test3'));
+
+    expect(groupInstance.value).toEqual('test3');
+  });
+
+  it('should toggle the disabled state', () => {
+    expect(groupInstance.disabled).toBeFalsy();
+
+    radioInstances.forEach(radio => {
+      expect(radio.disabled).toBeFalsy();
+    });
+
+    component.disabled = true;
+
+    fixture.detectChanges();
+
+    expect(groupInstance.disabled).toBeTruthy();
+
+    radioInstances.forEach(radio => {
+      expect(radio.disabled).toBeTruthy();
+    });
+  });
 
 });

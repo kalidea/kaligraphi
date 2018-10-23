@@ -2,13 +2,13 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ContentChildren,
+  ContentChildren, EventEmitter,
   forwardRef,
   Inject,
   Input,
   OnDestroy,
   OnInit,
-  Optional,
+  Optional, Output,
   QueryList,
   ViewEncapsulation
 } from '@angular/core';
@@ -16,8 +16,15 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { UniqueSelectionDispatcher } from '@angular/cdk/collections';
 import { buildProviders, FormElementComponent } from '../../utils';
 
+/**
+ * Set a Unique radio button id
+ * @type {number}
+ */
 let uniqueRadioButtonId = 0;
 
+/**
+ * The object that sent when a radio button is clicked
+ */
 export class KalRadioChange {
   constructor(public source: KalRadioComponent, public value: string) {}
 }
@@ -30,15 +37,44 @@ export class KalRadioChange {
 })
 export class KalRadioGroupComponent extends FormElementComponent<any> implements OnInit {
 
+  /**
+   * The list of all radio buttons component
+   */
   @ContentChildren(forwardRef(() => KalRadioComponent), {descendants: true}) radios: QueryList<KalRadioComponent>;
+
+  /**
+   * The selected radio button
+   */
   private selectedRadioButton: KalRadioComponent = null;
+
+  /**
+   * The value of the selected radio button
+   */
   private radioValue: string;
+
+  /**
+   * The HTML name attribute that given to all radio button in the group template
+   */
   private radioButtonName = `kal-radio-button-name-${uniqueRadioButtonId++}`;
 
-  constructor(private cd: ChangeDetectorRef) {
+  /**
+   * Is the radio button gorup disabled
+   */
+  private disabledGroup = false;
+
+  /**
+   * The position of label after or before the radio buttons. Defaults to after
+   */
+  private labelRadioPosition: 'before' | 'after' = 'after';
+
+  constructor(private cdr: ChangeDetectorRef) {
     super();
   }
 
+  /**
+   * Value of the selected radio button.
+   * if the value changes, all radio buttons will be updated with the new checked value.
+   */
   @Input()
   get value() {
     return this.radioValue;
@@ -49,10 +85,14 @@ export class KalRadioGroupComponent extends FormElementComponent<any> implements
       this.radioValue = value;
 
       this.updateSelectedRadio();
-      this.cd.markForCheck();
+      this.cdr.markForCheck();
     }
   }
 
+  /**
+   * Name of the radio button group.
+   * This name is given at all radio button in this group.
+   */
   @Input()
   get name() {
     return this.radioButtonName;
@@ -70,6 +110,34 @@ export class KalRadioGroupComponent extends FormElementComponent<any> implements
     }
   }
 
+  /**
+   * Is the radio group button disabled
+   */
+  @Input()
+  get disabled() {
+    return this.disabledGroup;
+  }
+  set disabled(value: boolean) {
+    this.disabledGroup = coerceBooleanProperty(value);
+    this.markRadiosForCheck();
+  }
+
+  /**
+   * The position of the label after or before the radio button. Defaults to after
+   */
+  @Input()
+  get labelPosition(): 'before' | 'after' {
+    return this.labelRadioPosition;
+  }
+  set labelPosition(position: 'before' | 'after') {
+    this.labelRadioPosition = position === 'before' ? 'before' : 'after';
+    this.markRadiosForCheck();
+  }
+
+  /**
+   * The selected radio button
+   * If a new radio button is selected, the radio button group value will be updated
+   */
   get selected() {
     return this.selectedRadioButton;
   }
@@ -79,10 +147,25 @@ export class KalRadioGroupComponent extends FormElementComponent<any> implements
     this.value = radioComponent ? radioComponent.value : null;
   }
 
+  /**
+   * Mark for check on all radio buttons component
+   */
+  markRadiosForCheck() {
+    if (this.radios) {
+      this.radios.forEach(radio => radio.markForCheck());
+    }
+  }
+
+  /**
+   * Emit an event with the selected radio buttons component and its value
+   */
   emitChangeEvent() {
     this.valueChange.emit(new KalRadioChange(this.selected, this.value));
   }
 
+  /**
+   * Update the selected radio button according to the form control value
+   */
   updateSelectedRadio() {
     const isAlreadySelected = this.selected !== null && this.selected.value === this.radioValue;
 
@@ -104,9 +187,20 @@ export class KalRadioGroupComponent extends FormElementComponent<any> implements
     }
   }
 
+  /**
+   * Set the disabled state of the radio button group
+   */
+  setDisabledState(disabled: boolean) {
+    this.disabled = disabled;
+  }
+
+  /**
+   * @inheritDoc
+   */
   writeValue(value: string) {
+    super.writeValue(value);
     this.value = value;
-    this.cd.markForCheck();
+    this.cdr.markForCheck();
   }
 
   ngOnInit() {
@@ -123,24 +217,59 @@ export class KalRadioGroupComponent extends FormElementComponent<any> implements
 })
 export class KalRadioComponent implements OnInit, OnDestroy {
 
+  /**
+   * The unique id of the radio button
+   */
+  private readonly uniqueId = `kal-radio-button-id-${++uniqueRadioButtonId}`;
+
+  /**
+   * The given radio group
+   */
   radioGroup: KalRadioGroupComponent;
 
-  private isChecked: boolean;
-
-  private radioValue: string;
-
+  /**
+   * The HTML name attribute that given to the radio button
+   */
   @Input() name: string;
 
-  private uniqueId = `kal-radio-button-id-${++uniqueRadioButtonId}`;
-
+  /**
+   * The unique id
+   */
   @Input() id = this.uniqueId;
 
-  private removeUniqueSelectionListener: () => void = () => {
-  }
+  /**
+   * Is the radio button checked
+   */
+  private isChecked: boolean;
+
+  /**
+   * The radio button value
+   */
+  private radioValue: string;
+
+  /**
+   * Is the radio disabled
+   */
+  private disabledRadio = false;
+
+  /**
+   * The position of the label after or before the radio button. Defaults to after
+   */
+  labelRadioPosition: 'before' | 'after';
+
+  /**
+   * Triggered when the radio button value has changed
+   */
+  @Output() valueChange = new EventEmitter<KalRadioChange>();
+
+  /**
+   * Unregister function for radioDispatcher
+   */
+  private removeUniqueSelectionListener: () => void = () => {};
 
   constructor(@Optional() @Inject(forwardRef(() => KalRadioGroupComponent)) radioGroup: KalRadioGroupComponent,
               private radioDispatcher: UniqueSelectionDispatcher,
-              private cd: ChangeDetectorRef) {
+              private cdr: ChangeDetectorRef) {
     this.radioGroup = radioGroup;
 
     this.removeUniqueSelectionListener =
@@ -151,6 +280,41 @@ export class KalRadioComponent implements OnInit, OnDestroy {
       });
   }
 
+  /**
+   * Emit an event with the radio buttons component and its value
+   */
+  private emitChangeEvent() {
+    this.valueChange.emit(new KalRadioChange(this, this.value));
+  }
+
+  /**
+   * The position of the label after or before the radio button. Default to after
+   */
+  @Input()
+  get labelPosition(): 'before' | 'after' {
+    return this.labelRadioPosition || (this.radioGroup && this.radioGroup.labelPosition) || 'after';
+  }
+
+  set labelPosition(position: 'before' | 'after') {
+    this.labelRadioPosition = position === 'before' ? 'before' : 'after';
+    this.cdr.markForCheck();
+  }
+
+  /**
+   * Is the radio button disabled
+   */
+  @Input() get disabled() {
+    return this.disabledRadio || (this.radioGroup !== null && this.radioGroup.disabled);
+  }
+
+  set disabled(value: boolean) {
+    this.disabledRadio = coerceBooleanProperty(value);
+    this.cdr.markForCheck();
+  }
+
+  /**
+   * If the radio button is checked, call the notify method of the radio button group
+   */
   @Input()
   get checked() {
     return this.isChecked;
@@ -173,21 +337,35 @@ export class KalRadioComponent implements OnInit, OnDestroy {
         this.radioDispatcher.notify(this.id, this.name);
       }
     }
-    this.cd.markForCheck();
+    this.cdr.markForCheck();
   }
 
+  /**
+   * The value of the radio button
+   */
   @Input()
   get value() {
     return this.radioValue;
   }
-
   set value(value: any) {
     this.radioValue = value;
   }
 
-  changeSelectedRadio($event) {
+  /**
+   * Mark for check on the raio button
+   */
+  markForCheck() {
+    this.cdr.markForCheck();
+  }
+
+  /**
+   * Called when the radio button is clicked
+   */
+  changeSelectedRadio($event: Event) {
     $event.stopPropagation();
     this.checked = true;
+
+    this.emitChangeEvent();
 
     if (this.radioGroup) {
       this.radioGroup.notifyUpdate(this.value);
