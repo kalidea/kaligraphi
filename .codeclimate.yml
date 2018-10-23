@@ -10,6 +10,5 @@ exclude_patterns:
   - node_modules
   - scripts
   - src
-  - projects
   - "**/*.spec.ts"
-  - "!projects/kalidea/kaligraphi/src"
+  - "**/*.js"
