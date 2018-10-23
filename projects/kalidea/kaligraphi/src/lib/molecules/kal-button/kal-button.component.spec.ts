@@ -85,7 +85,6 @@ fdescribe('KalButtonComponent', () => {
     const iconname = 'back';
     component.name = iconname;
     fixture.detectChanges(); // recalcul la vue
-    const kalicon = fixture.debugElement.query(By.css('kal-icon'));
     expect(kalicon).toBeDefined();
 
   });
