@@ -1,7 +1,8 @@
+version: "2"
 plugins:
   tslint:
     enabled: true
-    config: ./projects/kalidea/kaligraphi/tslint.json
+    config: tslint.json
 
 exclude_patterns:
   - coverage
@@ -12,3 +13,4 @@ exclude_patterns:
   - src
   - "**/*.spec.ts"
   - "**/*.js"
+  - "**/test.ts"
