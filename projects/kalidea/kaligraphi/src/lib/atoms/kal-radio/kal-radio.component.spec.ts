@@ -121,7 +121,7 @@ describe('Radio buttons inside a group with control', () => {
     expect(isExistingId).toBeFalsy();
   });
 
-  it('should add a class to set the label position', () => {
+  it('should set the label position for the radio button group', () => {
     expect(groupInstance.labelPosition).toEqual('after');
 
     radioInstances.forEach(

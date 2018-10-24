@@ -11,37 +11,70 @@ import { KalRadioChange } from '../../../../projects/kalidea/kaligraphi/src/lib/
 })
 export class RadioComponent implements OnInit {
 
+  /**
+   * Value of radio button group
+   */
   value = 'test';
 
+  /**
+   * The form control of the radio button group
+   */
   control = new FormControl(this.value);
 
+  /**
+   * The name of radio button group by using control
+   */
   nameRadioButtonWithControl = 'radioButtonWithControl';
 
+  /**
+   * The name of radio button group by using event
+   */
   nameRadioButtonWithEvent = 'radioButtonWithEvent';
 
+  /**
+   * Is radio button group disabled
+   */
   disabled = false;
 
+  /**
+   * Id of selected radio button
+   */
   id: string;
 
   constructor() { }
 
+  /**
+   * Change radio button group value by using control
+   */
   changeRadioValueWithControl(value: string) {
     this.control.patchValue(value);
   }
 
+  /**
+   * Change radio button group value by using input
+   */
   changeRadioValueWithEvent(value: string) {
     this.value = value;
   }
 
+  /**
+   * Display the selected radio button id and its value
+   */
   displayValue($event: KalRadioChange) {
     this.id = $event.source.id;
     this.value = $event.value;
   }
 
+  /**
+   * Disabled the radio button group that using control
+   */
   disableGroupByControl() {
     this.control.disable();
   }
 
+  /**
+   * Disabled the radio button group that using input
+   */
   disableGroupByInput() {
     this.disabled = !this.disabled;
   }
