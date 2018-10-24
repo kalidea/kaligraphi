@@ -34,7 +34,7 @@ export type KalExpansionPanelState = 'expanded' | 'collapsed';
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [kalExpansionAnimations.bodyExpansion],
   providers: [
-    // Provide MatAccordion as undefined to prevent nested expansion panels from registering
+    // Provide KalAccordion as undefined to prevent nested expansion panels from registering
     // to the same accordion.
     {provide: KAL_ACCORDION, useValue: undefined},
   ]
@@ -46,7 +46,9 @@ export class KalExpansionPanelComponent extends CdkAccordionItem implements OnCh
    */
   readonly inputChanges = new Subject<SimpleChanges>();
 
-  /** ID for the associated header element. Used for a11y labelling. */
+  /**
+   * ID for the associated header element. Used for a11y labelling.
+   */
   readonly headerId = uniqid('kal-expansion-panel-header-');
 
   /**
