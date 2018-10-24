@@ -1,0 +1,20 @@
+<div>
+
+  <h1>HEADER</h1>
+
+  <kal-tab-header></kal-tab-header>
+
+</div>
+
+<div>
+
+  <h1>BODY</h1>
+
+  <kal-tab-body [content]="contentTemplatePortal"
+                *ngIf="contentTemplatePortal">
+  </kal-tab-body>
+
+</div>
+
+<ng-template cdkPortalOutlet>
+</ng-template>
