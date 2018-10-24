@@ -1,7 +1,6 @@
 import { EventEmitter, Input, Output } from '@angular/core';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { Observable } from 'rxjs/internal/Observable';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { FormControlAccessComponent } from './form-control-access.component';
 import { uniqid } from '../helpers/uniq';

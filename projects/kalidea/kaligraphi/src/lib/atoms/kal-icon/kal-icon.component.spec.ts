@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 
 import { KalIconComponent } from './kal-icon.component';
 
@@ -8,18 +9,28 @@ describe('KalIconComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ KalIconComponent ]
+      declarations: [KalIconComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(KalIconComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should display a material icon according to the given icon name', () => {
+    const iconElement = fixture.debugElement.query(By.css('i'));
+
+    component.name = 'face';
+
+    // update component view
+    fixture.detectChanges();
+
+    expect(iconElement.nativeElement.textContent.trim()).toBe('face');
   });
 });

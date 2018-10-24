@@ -17,7 +17,6 @@ export function buildProviders(type) {
   ];
 }
 
-
 /**
  * How To use:
  * 1) create a component
@@ -32,7 +31,6 @@ export function buildProviders(type) {
  *   export class CustomComponent extends FormControlAccessComponent
  */
 export abstract class FormControlAccessComponent<T = any> implements ControlValueAccessor, AsyncValidator {
-
 
   /**
    * previous value
