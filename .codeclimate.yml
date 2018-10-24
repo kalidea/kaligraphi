@@ -1,0 +1,16 @@
+version: "2"
+plugins:
+  tslint:
+    enabled: true
+    config: tslint.json
+
+exclude_patterns:
+  - coverage
+  - dist
+  - e2e
+  - node_modules
+  - scripts
+  - src
+  - "**/*.spec.ts"
+  - "**/*.js"
+  - "**/test.ts"
