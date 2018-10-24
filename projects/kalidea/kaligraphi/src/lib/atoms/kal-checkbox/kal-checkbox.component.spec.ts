@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -9,7 +9,7 @@ import { FormElementComponent } from '../../utils';
 describe('KalCheckboxComponent', () => {
   let component: KalCheckboxComponent;
   let fixture: ComponentFixture<KalCheckboxComponent>;
-  let checkbox;
+  let checkbox: DebugElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

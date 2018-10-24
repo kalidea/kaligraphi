@@ -60,6 +60,9 @@ export class CheckboxComponent implements OnInit {
     }
   }
 
+  /**
+   * Toggle disabled state of the checkbox with input
+   */
   toggleDisableStateByInput() {
     this.disabled = !this.disabled;
   }
