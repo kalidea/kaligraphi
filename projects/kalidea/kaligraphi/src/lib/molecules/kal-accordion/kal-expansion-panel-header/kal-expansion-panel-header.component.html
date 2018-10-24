@@ -1,0 +1,6 @@
+<ng-content></ng-content>
+
+<span *ngIf="showToggle()">
+  <i class="material-icons"
+     [@indicatorRotate]="getExpandedState()">expand_more</i>
+</span>
