@@ -1,6 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
+
+// Accordion
+import { KalAccordionComponent } from './kal-accordion.component';
+export { KalAccordionComponent } from './kal-accordion.component';
+
 // Panel
 import { KalExpansionPanelComponent } from './kal-expansion-panel/kal-expansion-panel.component';
 export { KalExpansionPanelComponent } from './kal-expansion-panel/kal-expansion-panel.component';
@@ -18,6 +23,7 @@ import { KalActionRowComponent } from './kal-action-row/kal-action-row.component
 export { KalActionRowComponent } from './kal-action-row/kal-action-row.component';
 
 const exports = [
+  KalAccordionComponent,
   KalExpansionPanelComponent,
   KalExpansionPanelHeaderComponent,
   KalExpansionPanelContentComponent,
@@ -26,6 +32,7 @@ const exports = [
 @NgModule({
   imports: [
     CommonModule,
+    CdkAccordionModule
   ],
   exports: exports,
   declarations: exports
