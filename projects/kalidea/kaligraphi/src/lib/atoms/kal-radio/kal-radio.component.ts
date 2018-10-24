@@ -18,7 +18,6 @@ import { buildProviders, FormElementComponent } from '../../utils';
 
 /**
  * Set a Unique radio button id
- * @type {number}
  */
 let uniqueRadioButtonId = 0;
 
