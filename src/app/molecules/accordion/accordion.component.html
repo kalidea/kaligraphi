@@ -1,0 +1,33 @@
+<kal-accordion>
+
+  <kal-expansion-panel [disabled]="isOpen">
+    <kal-expansion-panel-header>header1</kal-expansion-panel-header>
+
+    <kal-expansion-panel-content>
+      accordion 1
+    </kal-expansion-panel-content>
+
+    <kal-action-row>
+      <button type="button">Submit</button>
+    </kal-action-row>
+  </kal-expansion-panel>
+
+  <kal-expansion-panel>
+    <kal-expansion-panel-header>header2</kal-expansion-panel-header>
+
+    <kal-expansion-panel-content>
+      accordion 2
+    </kal-expansion-panel-content>
+  </kal-expansion-panel>
+
+  <kal-expansion-panel>
+    <kal-expansion-panel-header>header3</kal-expansion-panel-header>
+
+    <kal-expansion-panel-content>
+      accordion 3
+    </kal-expansion-panel-content>
+  </kal-expansion-panel>
+
+</kal-accordion>
+
+<button type="button" (click)="toggleDisabled()">Disable</button>
