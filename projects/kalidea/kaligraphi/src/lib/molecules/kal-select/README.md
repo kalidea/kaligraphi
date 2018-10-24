@@ -2,7 +2,14 @@
 
 # Purpose
 
-Graphic Element to manage a select list
+`<kal-select>` allows to manage a selection list
+
+```html
+<kal-select>
+    <kal-option>Option 1</kal-option>
+    <kal-option>Option 2</kal-option>
+</kal-select>
+```
 
 # Specifications
 
@@ -15,3 +22,5 @@ Graphic Element to manage a select list
 * Should select an option in option list
 * Should select multiple option in option list
 * Should select options via the UP/DOWN arrow keys
+* Should select multiple options via the UP/DOWN arrow keys on multiple select
+* Should select the first option when there is only one option

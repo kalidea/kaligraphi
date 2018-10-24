@@ -1,12 +1,12 @@
-import { async, ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { CdkPortal } from '@angular/cdk/portal';
-import { KalSelectComponent } from './kal-select.component';
-import { Overlay, OverlayContainer } from '@angular/cdk/overlay';
-import { Component, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { KalOptionComponent, KalOptionModule } from '../../atoms/kal-option/kal-option.module';
-import { Platform } from '@angular/cdk/platform';
-import { DOWN_ARROW, ENTER } from '@angular/cdk/keycodes';
+import {async, ComponentFixture, fakeAsync, flush, TestBed} from '@angular/core/testing';
+import {By} from '@angular/platform-browser';
+import {CdkPortal} from '@angular/cdk/portal';
+import {KalSelectComponent} from './kal-select.component';
+import {Overlay, OverlayContainer} from '@angular/cdk/overlay';
+import {Component, QueryList, ViewChild, ViewChildren} from '@angular/core';
+import {KalOptionComponent, KalOptionModule} from '../../atoms/kal-option/kal-option.module';
+import {Platform} from '@angular/cdk/platform';
+import {DOWN_ARROW, ENTER} from '@angular/cdk/keycodes';
 
 function configureTestingModule(declarations: any[]) {
   TestBed.configureTestingModule({
@@ -16,11 +16,9 @@ function configureTestingModule(declarations: any[]) {
   }).compileComponents();
 }
 
-function dispatchKeyboardEvent(eventName: string, keyName: number) {
-  let event;
-  event = document.createEvent('KeyboardEvent');
-  event.initEvent(eventName, true, true);
-  document.dispatchEvent(event);
+function GetKeyBoardKeyDownEvent(code: number) {
+  // @ts-ignore
+  return new KeyboardEvent('keydown', {keyCode: code});
 }
 
 describe('TestSelectComponent', () => {
@@ -82,8 +80,7 @@ describe('TestSelectComponent', () => {
     it('should display given options', () => {
       trigger.click();
 
-      expect(overlayContainerElement.textContent).toContain('Steak');
-      expect(overlayContainerElement.textContent).toContain('Pizza');
+      component.options.map(o => expect(overlayContainerElement.textContent).toContain(o.viewValue));
     });
 
     it('should set a default label', () => {
@@ -128,17 +125,51 @@ describe('TestSelectComponent', () => {
 
     it('should select options via the UP/DOWN arrow keys', () => {
       component.select.focus();
-      const event = new KeyboardEvent('keydown', {
-        'key': '40'
-      });
+      component.select.handleKeydown(GetKeyBoardKeyDownEvent(ENTER));
+      component.select.handleKeydown(GetKeyBoardKeyDownEvent(DOWN_ARROW));
+      component.select.handleKeydown(GetKeyBoardKeyDownEvent(ENTER));
 
-      const escapeEvent: any = document.createEvent('KeyboardEvent');
-      escapeEvent.which = 27;
-      escapeEvent.initEvent('keydown', true, true);
-      document.dispatchEvent(escapeEvent);
-
-
+      expect(component.select.options.first.isHighligh).toBeTruthy();
+      expect(component.select.options.first.active).toBeTruthy();
       expect(component.select.selected).toEqual(component.options.first);
+
+      component.select.handleKeydown(GetKeyBoardKeyDownEvent(ENTER));
+      component.select.handleKeydown(GetKeyBoardKeyDownEvent(DOWN_ARROW));
+      component.select.handleKeydown(GetKeyBoardKeyDownEvent(ENTER));
+
+      const optionsPos1 = component.select.options.find((item, index) => index === 1);
+      expect(optionsPos1.isHighligh).toBeTruthy();
+      expect(optionsPos1.active).toBeTruthy();
+      expect(component.select.selected).toEqual(optionsPos1);
+
+      expect(component.select.options.first.isHighligh).toBeFalsy();
+      expect(component.select.options.first.active).toBeFalsy();
+    });
+
+    it('should select multiple options via the UP/DOWN arrow keys on multiple select', () => {
+      component.select.multiple = true;
+      component.select.focus();
+      component.select.handleKeydown(GetKeyBoardKeyDownEvent(ENTER));
+      component.select.handleKeydown(GetKeyBoardKeyDownEvent(DOWN_ARROW));
+      component.select.handleKeydown(GetKeyBoardKeyDownEvent(ENTER));
+
+      expect(component.select.options.first.isHighligh).toBeTruthy();
+      expect(component.select.options.first.active).toBeTruthy();
+
+      let selectedOptions = component.select.selected as KalOptionComponent[];
+      expect(selectedOptions.length).toEqual(1);
+
+      component.select.handleKeydown(GetKeyBoardKeyDownEvent(DOWN_ARROW));
+      component.select.handleKeydown(GetKeyBoardKeyDownEvent(ENTER));
+
+      const optionsPos1 = component.select.options.find((item, index) => index === 1);
+      expect(optionsPos1.isHighligh).toBeTruthy();
+      expect(optionsPos1.active).toBeTruthy();
+      expect(component.select.options.first.isHighligh).toBeFalsy();
+      expect(component.select.options.first.active).toBeTruthy();
+
+      selectedOptions = component.select.selected as KalOptionComponent[];
+      expect(selectedOptions.length).toEqual(2);
     });
 
   });
@@ -157,9 +188,9 @@ describe('TestSelectComponent', () => {
       fixture.detectChanges();
     });
 
-    it('Doit sélectionner la première valeur lorsqu\'il n\'y a qu\'un seul élément', () => {
+    it('should select the first option when there is only one option', () => {
       const selectedOption = component.select.selected as KalOptionComponent;
-      expect(selectedOption.viewValue).toEqual('Steak');
+      expect(selectedOption.viewValue).toEqual(component.options.first.viewValue);
     });
 
   });
@@ -170,8 +201,7 @@ describe('TestSelectComponent', () => {
   selector: 'kal-test-select',
   template: `
     <kal-select placeHolder="Sélectionnez un élément">
-      <kal-option>Steak</kal-option>
-      <kal-option>Pizza</kal-option>
+      <kal-option *ngFor="let i of [0, 1, 2, 3]">Option {{i}}</kal-option>
     </kal-select>`
 })
 class TestSelectComponent {

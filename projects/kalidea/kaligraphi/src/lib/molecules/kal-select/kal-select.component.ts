@@ -14,13 +14,13 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { Overlay, OverlayRef } from '@angular/cdk/overlay';
-import { TemplatePortal } from '@angular/cdk/portal';
-import { KalOptionComponent } from '../../atoms/kal-option/kal-option.component';
-import { filter } from 'rxjs/operators';
-import { DOWN_ARROW, ENTER, ESCAPE, SPACE, UP_ARROW } from '@angular/cdk/keycodes';
-import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
-import { FormElementComponent } from '../../utils';
+import {Overlay, OverlayRef} from '@angular/cdk/overlay';
+import {TemplatePortal} from '@angular/cdk/portal';
+import {KalOptionComponent} from '../../atoms/kal-option/kal-option.component';
+import {filter} from 'rxjs/operators';
+import {DOWN_ARROW, ENTER, ESCAPE, SPACE, UP_ARROW} from '@angular/cdk/keycodes';
+import {ActiveDescendantKeyManager} from '@angular/cdk/a11y';
+import {FormElementComponent} from '../../utils';
 
 @Component({
   selector: 'kal-select',
@@ -153,6 +153,10 @@ export class KalSelectComponent extends FormElementComponent<any> implements OnI
    * Close the overlay select
    */
   close() {
+    if (this.selection.indexOf(this.keyManager.activeItem) < 0) {
+      this.keyManager.setActiveItem(this.selection[0]);
+    }
+
     this.overlayRef.detach();
     this.isPanelOpen = false;
   }
@@ -218,16 +222,14 @@ export class KalSelectComponent extends FormElementComponent<any> implements OnI
   /**
    * Handles all keydown events on the select
    */
-  @HostListener('document:keydown', ['$event'])
+  @HostListener('keydown', ['$event'])
   handleKeydown(event: KeyboardEvent): void {
     const keyCode = event.keyCode;
     const isOpenKey = keyCode === ENTER || keyCode === SPACE;
     const isArrowKey = keyCode === DOWN_ARROW || keyCode === UP_ARROW;
 
     if (this.focused) {
-      console.log(keyCode);
       if (isOpenKey) {
-        console.log('open');
         if (!this.panelOpen) {
           event.preventDefault();
           this.open();
@@ -269,7 +271,7 @@ export class KalSelectComponent extends FormElementComponent<any> implements OnI
       this.isFocused = false;
       this.close();
     });
-    
+
     this.overlayRef.keydownEvents()
       .pipe(filter(event => event.keyCode === ESCAPE))
       .subscribe(() => this.close());
