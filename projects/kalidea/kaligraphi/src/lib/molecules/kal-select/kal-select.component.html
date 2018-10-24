@@ -1,12 +1,16 @@
 <div class="kal-select-trigger" (click)="toggleOverlay()">
   <div>
-    <div class="kal-select-placeholder">{{ placeHolder }}</div>
-    <div>{{triggerValue}}</div>
+    <ng-container *ngIf="triggerValue; else placeHolderTemplate">
+      <div>{{triggerValue}}</div>
+    </ng-container>
+    <ng-template #placeHolderTemplate>
+      <div class="kal-select-placeholder">{{ placeHolder }}</div>
+    </ng-template>
   </div>
 </div>
 
-<ng-template cdkPortal #myTemplate="cdkPortal">
+<ng-template cdkPortal #optionsPortal="cdkPortal">
   <div style="background: red">
-  <ng-content></ng-content>
+    <ng-content></ng-content>
   </div>
 </ng-template>
