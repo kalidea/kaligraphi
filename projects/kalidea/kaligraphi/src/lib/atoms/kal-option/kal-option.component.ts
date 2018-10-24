@@ -56,6 +56,7 @@ export class KalOptionComponent implements OnInit, Highlightable {
    */
   set active(isActive: boolean) {
     this.isActive = isActive;
+    this.cd.markForCheck();
   }
 
   /**

@@ -1,17 +1,17 @@
-<kal-select placeHolder="Selectionner" (selectedChange)="selectedChange($event)">
+<kal-select tabindex="1" placeHolder="Selectionner un élément" (selectedChange)="selectedChange($event)">
   <kal-option>OPTION 1</kal-option>
   <kal-option>OPTION 2</kal-option>
+  <kal-option>OPTION 3</kal-option>
+  <kal-option>OPTION 4</kal-option>
+  <kal-option>OPTION 5</kal-option>
 </kal-select>
 
 <hr>
 
-<kal-select placeHolder="Selectionner" [multiple]="true" (selectedChange)="selectedChange($event)">
+<kal-select tabindex="2" placeHolder="Selectionner plusieurs élements" [multiple]="true" (selectedChange)="selectedChange($event)">
   <kal-option>Commerce</kal-option>
   <kal-option>Famille</kal-option>
+  <kal-option>Finances</kal-option>
+  <kal-option>Ressource humaine</kal-option>
 </kal-select>
 
-<hr>
-
-<kal-select placeHolder="Selectionner" (selectedChange)="selectedChange($event)">
-  <kal-option>Uno un</kal-option>
-</kal-select>

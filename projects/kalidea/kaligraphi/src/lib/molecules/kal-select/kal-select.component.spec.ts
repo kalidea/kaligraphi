@@ -1,12 +1,12 @@
 import { async, ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { CdkPortal } from '@angular/cdk/portal';
-
 import { KalSelectComponent } from './kal-select.component';
 import { Overlay, OverlayContainer } from '@angular/cdk/overlay';
 import { Component, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { KalOptionComponent, KalOptionModule } from '../../atoms/kal-option/kal-option.module';
 import { Platform } from '@angular/cdk/platform';
+import { DOWN_ARROW, ENTER } from '@angular/cdk/keycodes';
 
 function configureTestingModule(declarations: any[]) {
   TestBed.configureTestingModule({
@@ -14,6 +14,13 @@ function configureTestingModule(declarations: any[]) {
     providers: [Overlay],
     imports: [KalOptionModule]
   }).compileComponents();
+}
+
+function dispatchKeyboardEvent(eventName: string, keyName: number) {
+  let event;
+  event = document.createEvent('KeyboardEvent');
+  event.initEvent(eventName, true, true);
+  document.dispatchEvent(event);
 }
 
 describe('TestSelectComponent', () => {
@@ -48,7 +55,7 @@ describe('TestSelectComponent', () => {
     it('should open the panel when trigger is clicked', () => {
       trigger.click();
 
-      expect(component.select.panelOpen).toBe(true);
+      expect(component.select.panelOpen).toBeTruthy();
     });
 
     it('should close the panel when a click occurs outside the panel', fakeAsync(() => {
@@ -62,39 +69,39 @@ describe('TestSelectComponent', () => {
       flush();
 
       expect(overlayContainerElement.textContent).toEqual('');
-      expect(fixture.componentInstance.select.panelOpen).toBe(false);
+      expect(fixture.componentInstance.select.panelOpen).toBeFalsy();
     }));
 
-    it('should to have so many option as html when is open', () => {
+    it('should to have so many option as option components when is open', () => {
       component.select.open();
       const options = fixture.debugElement.queryAll(By.css('kal-option'));
 
       expect(component.select.options.length).toBe(options.length);
     });
 
-    it('Doit afficher la liste d\'éléments donnée', () => {
+    it('should display given options', () => {
       trigger.click();
 
       expect(overlayContainerElement.textContent).toContain('Steak');
       expect(overlayContainerElement.textContent).toContain('Pizza');
     });
 
-    it('Doit pouvoir avoir un label par défaut', () => {
+    it('should set a default label', () => {
       fixture.detectChanges();
       const placeHolder = fixture.debugElement.query(By.css('.kal-select-placeholder'));
 
       expect(placeHolder.nativeElement.textContent).toEqual('Sélectionnez un élément');
     });
 
-    it('Doit fermer lorsque lon selection', () => {
+    it('should close when option is clicked', () => {
       trigger.click();
       const options = fixture.debugElement.query(By.css('.kal-option-selection')).nativeElement;
       options.click();
 
-      expect(component.select.panelOpen).toEqual(false);
+      expect(component.select.panelOpen).toBeFalsy();
     });
 
-    it('Doit pouvoir sélectionner une valeur dans la liste', () => {
+    it('should select an option in option list', () => {
       trigger.click();
       const options = fixture.debugElement.query(By.css('.kal-option-selection')).nativeElement;
       options.click();
@@ -102,10 +109,10 @@ describe('TestSelectComponent', () => {
       const selectedOption = component.select.selected as KalOptionComponent;
 
       expect(component.select.selected).toEqual(component.options.first);
-      expect(selectedOption.active).toEqual(true);
+      expect(selectedOption.active).toBeTruthy();
     });
 
-    it('Doit pouvoir sélectionner plusieurs valeurs', () => {
+    it('should select multiple option in option list', () => {
       component.select.multiple = true;
 
       trigger.click();
@@ -116,11 +123,22 @@ describe('TestSelectComponent', () => {
 
       expect(selectedOptions.length).toEqual(component.options.length);
       expect(component.select.options.filter(o => o.active).length).toEqual(component.options.length);
-      expect(component.select.panelOpen).toEqual(true);
+      expect(component.select.panelOpen).toBeTruthy();
     });
 
-    it('Doit pouvoir selectionner une valeur lorsqu\'on utilise les flèches', () => {
+    it('should select options via the UP/DOWN arrow keys', () => {
+      component.select.focus();
+      const event = new KeyboardEvent('keydown', {
+        'key': '40'
+      });
 
+      const escapeEvent: any = document.createEvent('KeyboardEvent');
+      escapeEvent.which = 27;
+      escapeEvent.initEvent('keydown', true, true);
+      document.dispatchEvent(escapeEvent);
+
+
+      expect(component.select.selected).toEqual(component.options.first);
     });
 
   });

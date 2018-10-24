@@ -1,13 +1,4 @@
-# SELECT
-
-* Doit afficher la liste d'éléments donnée
-* Doit pouvoir sélectionner une valeur dans la liste
-* Doit pouvoir sélectionner plusieurs valeurs
-* Doit pouvoir avoir un label par défaut
-* Doit pouvoir personnaliser le label par défaut
-* Doit pouvoir selectionner une valeur lorsqu'on utilise les flèches
-* Doit pouvoir fermer le select lorsqu'on clique en dehors de celui ci
-* Doit sélectionner la première valeur lorsqu'il n'y a qu'un seul élément
+## SELECT
 
 # Purpose
 
@@ -15,7 +6,12 @@ Graphic Element to manage a select list
 
 # Specifications
 
-* Defines the type of icon to display
-* Displays a number of custom icons according to a max rating value
-* Defines a default notation value
-* Returns the value of the rating
+* Should open the panel when trigger is clicked
+* Should close the panel when a click occurs outside the panel
+* Should to have so many option as option components when is open
+* Should display given options
+* Should set a default label
+* Should close when option is clicked
+* Should select an option in option list
+* Should select multiple option in option list
+* Should select options via the UP/DOWN arrow keys

@@ -18,8 +18,9 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { KalOptionComponent } from '../../atoms/kal-option/kal-option.component';
 import { filter } from 'rxjs/operators';
-import { DOWN_ARROW, ENTER, ESCAPE, LEFT_ARROW, RIGHT_ARROW, SPACE, UP_ARROW } from '@angular/cdk/keycodes';
+import { DOWN_ARROW, ENTER, ESCAPE, SPACE, UP_ARROW } from '@angular/cdk/keycodes';
 import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
+import { FormElementComponent } from '../../utils';
 
 @Component({
   selector: 'kal-select',
@@ -28,7 +29,7 @@ import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalSelectComponent implements OnInit, OnDestroy, AfterContentInit {
+export class KalSelectComponent extends FormElementComponent<any> implements OnInit, OnDestroy, AfterContentInit {
 
   @Input() disabled: boolean;
 
@@ -84,6 +85,7 @@ export class KalSelectComponent implements OnInit, OnDestroy, AfterContentInit {
 
   constructor(private overlay: Overlay,
               private elementRef: ElementRef<HTMLElement>) {
+    super();
   }
 
   /**
@@ -163,11 +165,22 @@ export class KalSelectComponent implements OnInit, OnDestroy, AfterContentInit {
     this.isFocused = true;
   }
 
-  @HostListener('blur')
+  /**
+   * Listen focus event
+   */
+  @HostListener('focus')
   onFocus() {
-    console.log('focus');
-    if (!this.disabled) {
-      this.isFocused = true;
+    this.isFocused = true;
+  }
+
+  /**
+   * Listen blur event
+   */
+  @HostListener('blur')
+  onBlur() {
+    if (!this.panelOpen) {
+      this.isFocused = false;
+      this.close();
     }
   }
 
@@ -190,6 +203,11 @@ export class KalSelectComponent implements OnInit, OnDestroy, AfterContentInit {
     }
 
     if (!this.multiple) {
+      const currentselected = this.selected as KalOptionComponent;
+      if (currentselected) {
+        currentselected.active = false;
+      }
+
       option.active = true;
       this.selection = [option];
       this.selectedChange.emit(option);
@@ -203,16 +221,28 @@ export class KalSelectComponent implements OnInit, OnDestroy, AfterContentInit {
   @HostListener('document:keydown', ['$event'])
   handleKeydown(event: KeyboardEvent): void {
     const keyCode = event.keyCode;
-    const isArrowKey = keyCode === DOWN_ARROW || keyCode === UP_ARROW ||
-      keyCode === LEFT_ARROW || keyCode === RIGHT_ARROW;
     const isOpenKey = keyCode === ENTER || keyCode === SPACE;
+    const isArrowKey = keyCode === DOWN_ARROW || keyCode === UP_ARROW;
 
     if (this.focused) {
-      this.keyManager.onKeydown(event);
+      console.log(keyCode);
+      if (isOpenKey) {
+        console.log('open');
+        if (!this.panelOpen) {
+          event.preventDefault();
+          this.open();
+        } else if (this.keyManager.activeItem) {
+          event.preventDefault();
+          this.optionSelected(this.keyManager.activeItem);
+        }
+      } else {
 
-      if ((keyCode === ENTER || keyCode === SPACE) && this.keyManager.activeItem) {
-        event.preventDefault();
-        this.optionSelected(this.keyManager.activeItem);
+        this.keyManager.onKeydown(event);
+
+        if (!this.panelOpen && isArrowKey && !this.multiple && this.keyManager.activeItem) {
+          event.preventDefault();
+          this.optionSelected(this.keyManager.activeItem);
+        }
       }
     }
   }
@@ -235,11 +265,14 @@ export class KalSelectComponent implements OnInit, OnDestroy, AfterContentInit {
       hasBackdrop: true
     });
 
-    this.overlayRef.backdropClick().subscribe(() => this.close());
+    this.overlayRef.backdropClick().subscribe(() => {
+      this.isFocused = false;
+      this.close();
+    });
+    
     this.overlayRef.keydownEvents()
       .pipe(filter(event => event.keyCode === ESCAPE))
       .subscribe(() => this.close());
-    // const userProfilePortal = new ComponentPortal(this.myTemplate);
   }
 
   ngAfterContentInit() {
@@ -259,7 +292,3 @@ export class KalSelectComponent implements OnInit, OnDestroy, AfterContentInit {
   }
 
 }
-
-
-//https://github.com/angular/material2/blob/master/src/lib/select/select.html
-//https://github.com/angular/material2/blob/master/src/lib/select/select.ts
