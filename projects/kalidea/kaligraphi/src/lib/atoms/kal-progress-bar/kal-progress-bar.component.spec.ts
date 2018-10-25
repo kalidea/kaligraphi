@@ -30,7 +30,7 @@ describe('KalProgressBarComponent', () => {
     // update view
     fixture.detectChanges();
 
-    expect(progressBar.nativeElement.className).toEqual(component.color);
+    expect(progressBar.styles['background-color']).toEqual(component.color);
   });
 
   it('should have a default progress value', () => {

@@ -18,7 +18,7 @@ import { clamp } from '../../utils/helpers/numbers';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalProgressBarComponent implements OnInit, OnChanges {
+export class KalProgressBarComponent implements OnChanges {
 
   /**
    * Progress bar default value
@@ -42,9 +42,6 @@ export class KalProgressBarComponent implements OnInit, OnChanges {
   }
   set value(newValue: number) {
     this.progressValue = clamp(coerceNumberProperty(newValue));
-  }
-
-  ngOnInit() {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
