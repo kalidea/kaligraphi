@@ -15,7 +15,16 @@
 // utils
 @import "utils/form"
 
+// typography
+@import "includes/typography"
+
+// reset
+@import "includes/reset"
+
 =kaligraphi($parameters)
+  // typography
+  +kal-typography($parameters)
+
   // atoms
   +kal-input($parameters)
   +kal-select($parameters)

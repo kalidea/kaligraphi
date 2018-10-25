@@ -1,0 +1,38 @@
+/**
+ * define default typography
+ **/
+=kal-typography($parameters)
+
+  // global
+  body
+    font-family: deep-map-get($parameters, "text", "font-family")
+    font-size: deep-map-get($parameters, "text", "font-size")
+    color: deep-map-get($parameters, "text", "color")
+
+  // text
+  p
+    font-size: 1em
+
+  a
+    font-family: inherit
+    font-size: inherit
+    color: inherit
+
+
+  strong
+    font-weight: bold
+
+  em
+    font-style: italic
+
+  // headings
+  @each $key, $value in deep-map-get($parameters, "heading")
+    h#{$key}
+      font-family: nth($value, 1)
+      font-size: nth($value, 2)
+      line-height: nth($value, 3)
+
+
+
+
+
