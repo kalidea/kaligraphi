@@ -67,7 +67,7 @@ export class KalOptionComponent implements OnInit, Highlightable {
   }
 
   /**
-   * Emits the selection change event
+   * Emit the selection change event
    */
   emitSelectionEvent(): void {
     this.selectionChange.emit(this);

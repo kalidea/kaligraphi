@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { KalOptionComponent } from './kal-option.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { By } from '@angular/platform-browser';
 
 describe('KalOptionComponent', () => {
   let component: KalOptionComponent;
@@ -23,5 +24,13 @@ describe('KalOptionComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should call event method on click', () => {
+    const spy = spyOn(component, 'emitSelectionEvent');
+    const option = fixture.debugElement.query(By.css('.kal-option-selection')).nativeElement;
+    option.click();
+
+    expect(spy).toHaveBeenCalled();
   });
 });
