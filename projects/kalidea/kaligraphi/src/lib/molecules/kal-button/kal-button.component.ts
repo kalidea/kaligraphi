@@ -32,7 +32,7 @@ export class KalButtonComponent implements OnInit {
   @Input()
   set disabled(value: boolean) {
     this.isDisabled = coerceBooleanProperty(value);
-    this.tabIndex = this.isDisabled ? this.tabIndex : null;
+    this.tabIndex = this.disabled ? this.tabIndex : null;
   }
 
   get disabled() {
