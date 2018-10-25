@@ -170,7 +170,7 @@ export class KalSelectComponent extends FormElementComponent<any> implements OnI
   }
 
   /**
-   * Focuse the select element
+   * Focus the select element
    */
   @HostListener('focus')
   focus(): void {
@@ -199,23 +199,28 @@ export class KalSelectComponent extends FormElementComponent<any> implements OnI
     const isOpenKey = keyCode === ENTER || keyCode === SPACE;
     const isArrowKey = keyCode === DOWN_ARROW || keyCode === UP_ARROW;
 
-    if (this.focused) {
-      if (isOpenKey) {
-        if (!this.panelOpen) {
-          event.preventDefault();
-          this.open();
-        } else if (this.keyManager.activeItem) {
-          event.preventDefault();
-          this.optionSelected(this.keyManager.activeItem);
-        }
-      } else {
-        this.keyManager.onKeydown(event);
+    if (!this.focused) {
+      return;
+    }
 
-        if (!this.panelOpen && isArrowKey && !this.multiple && this.keyManager.activeItem) {
-          event.preventDefault();
-          this.optionSelected(this.keyManager.activeItem);
-        }
+    if (isOpenKey) {
+      if (!this.panelOpen) {
+        event.preventDefault();
+        this.open();
+      } else if (this.keyManager.activeItem) {
+        event.preventDefault();
+        this.optionSelected(this.keyManager.activeItem);
       }
+
+      return;
+    }
+
+    this.keyManager.onKeydown(event);
+
+    // If panel is closed and is not the multiple mode ,the arrows change the selection
+    if (!this.multiple && !this.panelOpen && isArrowKey && this.keyManager.activeItem) {
+      event.preventDefault();
+      this.optionSelected(this.keyManager.activeItem);
     }
   }
 
