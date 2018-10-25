@@ -1,1 +1,26 @@
-<kal-checkbox></kal-checkbox>
+<h1>Checkbox by using control</h1>
+
+<kal-checkbox
+  label="Checkbox with control"
+  [formControl]="control">
+</kal-checkbox>
+
+<p>Value : {{ valueByControl }}</p>
+
+<a (click)="toggleDisableStateByControl()">Toggle disabled state of the checkbox by using control</a>
+
+<br />
+<br />
+
+<h1>Checkbox by using input</h1>
+
+<kal-checkbox
+  label="Checkbox with input"
+  [value]="true"
+  [disabled]="disabled"
+  (valueChange)="setValue($event)">
+</kal-checkbox>
+
+<p>Value : {{ valueByOutput }}</p>
+
+<a (click)="toggleDisableStateByInput()">Toggle disabled state of the checkbox by using input</a>
