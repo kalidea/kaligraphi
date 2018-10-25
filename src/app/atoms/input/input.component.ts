@@ -9,6 +9,10 @@ import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@
 })
 export class InputComponent implements OnInit {
 
+  type = 'text';
+  placeholder = '';
+  clearable = false;
+
   constructor() { }
 
   ngOnInit() {
