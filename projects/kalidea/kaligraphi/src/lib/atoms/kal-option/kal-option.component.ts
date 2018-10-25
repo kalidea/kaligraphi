@@ -18,7 +18,7 @@ import { Highlightable } from '@angular/cdk/a11y';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalOptionComponent implements OnInit, Highlightable {
+export class KalOptionComponent implements Highlightable {
 
   /**
    * The unique ID of the option
@@ -31,7 +31,7 @@ export class KalOptionComponent implements OnInit, Highlightable {
   @Output() readonly selectionChange = new EventEmitter<KalOptionComponent>();
 
   /**
-   *  Whether or not the option is currently highligh
+   *  Whether or not the option is currently highlighted
    */
   isHighlighted: boolean;
 
@@ -52,7 +52,6 @@ export class KalOptionComponent implements OnInit, Highlightable {
 
   /**
    * Set active param
-   * @param isActive
    */
   set active(isActive: boolean) {
     this.isActive = isActive;
@@ -91,9 +90,6 @@ export class KalOptionComponent implements OnInit, Highlightable {
   setInactiveStyles(): void {
     this.isHighlighted = false;
     this.cdr.markForCheck();
-  }
-
-  ngOnInit() {
   }
 
 }

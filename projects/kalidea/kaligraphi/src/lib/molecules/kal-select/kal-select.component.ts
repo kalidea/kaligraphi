@@ -246,7 +246,6 @@ export class KalSelectComponent extends FormElementComponent<any> implements OnI
           this.optionSelected(this.keyManager.activeItem);
         }
       } else {
-
         this.keyManager.onKeydown(event);
 
         if (!this.panelOpen && isArrowKey && !this.multiple && this.keyManager.activeItem) {

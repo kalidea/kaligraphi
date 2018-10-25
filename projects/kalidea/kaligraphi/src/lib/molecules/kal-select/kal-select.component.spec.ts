@@ -72,7 +72,7 @@ describe('TestSelectComponent', () => {
 
     it('should to have so many option as option components when is open', () => {
       component.select.open();
-      const options = fixture.debugElement.queryAll(By.css('kal-option'));
+      const options = fixture.debugElement.queryAll(By.directive(KalOptionComponent));
 
       expect(component.select.options.length).toBe(options.length);
     });
