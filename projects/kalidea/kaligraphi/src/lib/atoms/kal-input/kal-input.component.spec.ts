@@ -5,7 +5,7 @@ import { Component, ViewChild } from '@angular/core';
 import { take } from 'rxjs/operators';
 
 import { KalInputComponent } from './kal-input.component';
-import { KalIconModule } from '../kal-icon/kal-icon.module';
+import { KalIconComponent, KalIconModule } from '../kal-icon/kal-icon.module';
 
 @Component({
   selector: 'kal-test',
@@ -108,7 +108,6 @@ describe('KalInputComponent', () => {
     const userInput = '12.0';
     component.valueChanges.pipe(take(1)).subscribe(value => {
       expect(value).toBe(12, 'emited value should be formatted in number');
-      // component.inputComponent.focusOut();
       expect(component.inputComponent.value).toBe('12,00', 'user input should be formatted');
       done();
     });
@@ -122,7 +121,6 @@ describe('KalInputComponent', () => {
     const userInput = '12a';
     component.valueChanges.pipe(take(1)).subscribe(value => {
       expect(value).toBe(0, 'emited value should be formatted in number');
-      // component.inputComponent.focusOut();
       expect(component.inputComponent.value).toBe('0,00', 'user input should be formatted');
       done();
     });
@@ -150,7 +148,7 @@ describe('KalInputComponent', () => {
     fixture.detectChanges();
     component.value = text;
     expect(component.inputComponent.value).toEqual(text);
-    const icon = fixture.debugElement.query(By.css('kal-icon'));
+    const icon = fixture.debugElement.query(By.directive(KalIconComponent));
     expect(icon).toBeTruthy();
     icon.nativeElement.click();
     expect(component.inputComponent.value).toEqual('');

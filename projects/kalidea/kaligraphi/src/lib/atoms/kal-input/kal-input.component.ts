@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
-import { AbstractControl, FormControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormControl } from '@angular/forms';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { of } from 'rxjs';
 
 import { buildProviders, FormElementComponent } from '../../utils/index';
 import { InputFormater } from './format/input-formater';
@@ -8,7 +9,6 @@ import { NumberFormat } from './format/number.format';
 import { CurrencyFormat } from './format/currency.format';
 import { PhoneFormat } from './format/phone.format';
 import { StringFormat } from './format/string.format';
-import { of } from 'rxjs';
 
 @Component({
   selector: 'kal-input',
@@ -36,20 +36,22 @@ export class KalInputComponent extends FormElementComponent<string> implements O
    */
   @Input() type = 'text';
 
+  /**
+   * chars limit
+   */
   @Input() limit: number;
 
   control: FormControl;
 
+  /**
+   * event to trigger change
+   */
   private updateOnEvent: 'change' | 'blur' | 'submit' = 'change';
 
   private isClearable = false;
 
-  constructor(public cdr: ChangeDetectorRef) {
+  constructor(private cdr: ChangeDetectorRef) {
     super();
-  }
-
-  clearField() {
-    this.control.setValue('');
   }
 
   get htmlInputType() {
@@ -60,14 +62,21 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     }
   }
 
+  @Input()
   get clearable() {
     return this.isClearable;
   }
 
-  @Input()
   set clearable(clearable) {
     this.isClearable = coerceBooleanProperty(clearable);
     this.cdr.markForCheck();
+  }
+
+  /**
+   * get formater for this type
+   */
+  get formater(): InputFormater {
+    return KalInputComponent.formatersList[this.type] || KalInputComponent.formatersList['text'];
   }
 
   @Input()
@@ -78,11 +87,8 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     this.updateOnEvent = event;
   }
 
-  /**
-   * get formater for this type
-   */
-  get formater(): InputFormater {
-    return KalInputComponent.formatersList[this.type] || KalInputComponent.formatersList['text'];
+  clearField() {
+    this.control.reset();
   }
 
   /**
@@ -92,6 +98,7 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     this.value = value;
     value = this.formater.toUser(value);
     this.control.setValue(value, {emitEvent: true});
+    super.writeValue(value);
   }
 
   /**

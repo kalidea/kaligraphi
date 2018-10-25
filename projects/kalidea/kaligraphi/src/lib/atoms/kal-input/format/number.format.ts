@@ -9,7 +9,6 @@ export class NumberFormat extends InputFormater {
     value = (value + '')
       .replace(/[^0-9\.\,]/g, '') // keep only numbers
       .replace(',', '.'); // replace comma by decimal point
-    // return +value || 0;
     return value ? +value : '';
   }
 

@@ -33,11 +33,10 @@ export class CurrencyFormat extends InputFormater {
       // replace decimal point by a comma
       return ('' + formattedNumber).replace('.', ',');
 
-    } else {
-
-      return '';
-
     }
+
+    return '';
+
   }
 
 }

@@ -8,9 +8,9 @@ export function formatPhoneNumber(phoneNumber: string): string {
     const value = phoneNumber.replace(/\s/g, '');
 
     if (value.substring(0, 2) === '00') {
-      formatted = formatPhoneNumberWithSpaces(value, (i) => i >= 4 && i % 2 === 1);
+      formatted = formatPhoneNumberWithSpaces(value, (i) => (i >= 4 && i <= 5) || (i >= 6 && i % 2 === 1));
     } else if (value.charAt(0) === '+') {
-      formatted = formatPhoneNumberWithSpaces(value, (i) => i >= 3 && i % 2 === 0);
+      formatted = formatPhoneNumberWithSpaces(value, (i) => (i >= 3 && i <= 4) || (i >= 5 && i % 2 === 0));
     } else {
       formatted = formatPhoneNumberWithSpaces(value, (i) => i % 2 === 0 && i > 0);
     }
