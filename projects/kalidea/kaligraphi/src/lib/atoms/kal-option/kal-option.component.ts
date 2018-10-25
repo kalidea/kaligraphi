@@ -23,7 +23,7 @@ export class KalOptionComponent implements OnInit, Highlightable {
   /**
    * The unique ID of the option
    */
-  @Input() id?: any;
+  @Input() value: any;
 
   /**
    * Event emitted when the option is selected or deselected
@@ -33,14 +33,14 @@ export class KalOptionComponent implements OnInit, Highlightable {
   /**
    *  Whether or not the option is currently highligh
    */
-  isHighligh: boolean;
+  isHighlighted: boolean;
 
   /**
    *  Whether or not the option is currently active / selected
    */
   private isActive: boolean;
 
-  constructor(private _element: ElementRef<HTMLElement>, private cd: ChangeDetectorRef) {
+  constructor(private _element: ElementRef<HTMLElement>, private cdr: ChangeDetectorRef) {
   }
 
   /**
@@ -56,7 +56,7 @@ export class KalOptionComponent implements OnInit, Highlightable {
    */
   set active(isActive: boolean) {
     this.isActive = isActive;
-    this.cd.markForCheck();
+    this.cdr.markForCheck();
   }
 
   /**
@@ -79,8 +79,8 @@ export class KalOptionComponent implements OnInit, Highlightable {
    * events will display the proper options as active on arrow key events.
    */
   setActiveStyles(): void {
-    this.isHighligh = true;
-    this.cd.markForCheck();
+    this.isHighlighted = true;
+    this.cdr.markForCheck();
   }
 
   /**
@@ -89,8 +89,8 @@ export class KalOptionComponent implements OnInit, Highlightable {
    * events will display the proper options as active on arrow key events.
    */
   setInactiveStyles(): void {
-    this.isHighligh = false;
-    this.cd.markForCheck();
+    this.isHighlighted = false;
+    this.cdr.markForCheck();
   }
 
   ngOnInit() {

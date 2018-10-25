@@ -8,15 +8,15 @@ export * from './kal-select.component';
 
 const exports = [
   KalSelectComponent,
-  OverlayModule
 ];
 
 @NgModule({
   imports: [
     CommonModule,
     PortalModule,
+    OverlayModule
   ],
   exports: exports,
-  declarations: [KalSelectComponent]
+  declarations: exports
 })
 export class KalSelectModule { }

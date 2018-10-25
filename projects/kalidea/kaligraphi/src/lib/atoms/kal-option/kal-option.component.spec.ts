@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { KalOptionComponent } from './kal-option.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
+
+import { KalOptionComponent } from './kal-option.component';
 
 describe('KalOptionComponent', () => {
   let component: KalOptionComponent;

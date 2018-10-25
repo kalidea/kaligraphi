@@ -1,6 +1,6 @@
 import {
   AfterContentInit,
-  ChangeDetectionStrategy,
+  ChangeDetectionStrategy, ChangeDetectorRef,
   Component,
   ContentChildren,
   ElementRef,
@@ -16,11 +16,12 @@ import {
 } from '@angular/core';
 import {Overlay, OverlayRef} from '@angular/cdk/overlay';
 import {TemplatePortal} from '@angular/cdk/portal';
-import {KalOptionComponent} from '../../atoms/kal-option/kal-option.component';
-import {filter} from 'rxjs/operators';
-import {DOWN_ARROW, ENTER, ESCAPE, SPACE, UP_ARROW} from '@angular/cdk/keycodes';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import {ActiveDescendantKeyManager} from '@angular/cdk/a11y';
+import {DOWN_ARROW, ENTER, ESCAPE, SPACE, UP_ARROW} from '@angular/cdk/keycodes';
+import {filter} from 'rxjs/operators';
 import {FormElementComponent} from '../../utils';
+import {KalOptionComponent} from '../../atoms/kal-option/kal-option.component';
 
 @Component({
   selector: 'kal-select',
@@ -31,17 +32,16 @@ import {FormElementComponent} from '../../utils';
 })
 export class KalSelectComponent extends FormElementComponent<any> implements OnInit, OnDestroy, AfterContentInit {
 
-  @Input() disabled: boolean;
-
-  /**
-   * The placeholder displayed of the select
-   */
-  @Input() placeHolder: string;
-
   /**
    * Whether the component is in multiple selection mode
    */
-  @Input() multiple: boolean;
+  @Input()
+  get multiple(): boolean {
+    return this.isMultiple;
+  }
+  set multiple(multiple: boolean) {
+    this.isMultiple = coerceBooleanProperty(multiple);
+  }
 
   /**
    * Event emitted when selection change
@@ -57,6 +57,11 @@ export class KalSelectComponent extends FormElementComponent<any> implements OnI
    * Overlay Portal Options
    */
   @ViewChild('optionsPortal') optionsPortal: TemplatePortal<any>;
+
+  /**
+   * Whether the component is in multiple selection mode
+   */
+  private isMultiple: boolean;
 
   /**
    * The currently selected option
@@ -84,7 +89,8 @@ export class KalSelectComponent extends FormElementComponent<any> implements OnI
   private isPanelOpen: boolean;
 
   constructor(private overlay: Overlay,
-              private elementRef: ElementRef<HTMLElement>) {
+              private elementRef: ElementRef<HTMLElement>,
+              private cdr: ChangeDetectorRef) {
     super();
   }
 
@@ -207,9 +213,9 @@ export class KalSelectComponent extends FormElementComponent<any> implements OnI
     }
 
     if (!this.multiple) {
-      const currentselected = this.selected as KalOptionComponent;
-      if (currentselected) {
-        currentselected.active = false;
+      const currentSelected = this.selected as KalOptionComponent;
+      if (currentSelected) {
+        currentSelected.active = false;
       }
 
       option.active = true;
@@ -217,6 +223,8 @@ export class KalSelectComponent extends FormElementComponent<any> implements OnI
       this.selectedChange.emit(option);
       this.close();
     }
+
+    this.cdr.markForCheck();
   }
 
   /**

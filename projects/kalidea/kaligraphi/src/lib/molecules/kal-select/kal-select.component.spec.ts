@@ -129,7 +129,7 @@ describe('TestSelectComponent', () => {
       component.select.handleKeydown(GetKeyBoardKeyDownEvent(DOWN_ARROW));
       component.select.handleKeydown(GetKeyBoardKeyDownEvent(ENTER));
 
-      expect(component.select.options.first.isHighligh).toBeTruthy();
+      expect(component.select.options.first.isHighlighted).toBeTruthy();
       expect(component.select.options.first.active).toBeTruthy();
       expect(component.select.selected).toEqual(component.options.first);
 
@@ -138,11 +138,11 @@ describe('TestSelectComponent', () => {
       component.select.handleKeydown(GetKeyBoardKeyDownEvent(ENTER));
 
       const optionsPos1 = component.select.options.find((item, index) => index === 1);
-      expect(optionsPos1.isHighligh).toBeTruthy();
+      expect(optionsPos1.isHighlighted).toBeTruthy();
       expect(optionsPos1.active).toBeTruthy();
       expect(component.select.selected).toEqual(optionsPos1);
 
-      expect(component.select.options.first.isHighligh).toBeFalsy();
+      expect(component.select.options.first.isHighlighted).toBeFalsy();
       expect(component.select.options.first.active).toBeFalsy();
     });
 
@@ -153,7 +153,7 @@ describe('TestSelectComponent', () => {
       component.select.handleKeydown(GetKeyBoardKeyDownEvent(DOWN_ARROW));
       component.select.handleKeydown(GetKeyBoardKeyDownEvent(ENTER));
 
-      expect(component.select.options.first.isHighligh).toBeTruthy();
+      expect(component.select.options.first.isHighlighted).toBeTruthy();
       expect(component.select.options.first.active).toBeTruthy();
 
       let selectedOptions = component.select.selected as KalOptionComponent[];
@@ -163,9 +163,9 @@ describe('TestSelectComponent', () => {
       component.select.handleKeydown(GetKeyBoardKeyDownEvent(ENTER));
 
       const optionsPos1 = component.select.options.find((item, index) => index === 1);
-      expect(optionsPos1.isHighligh).toBeTruthy();
+      expect(optionsPos1.isHighlighted).toBeTruthy();
       expect(optionsPos1.active).toBeTruthy();
-      expect(component.select.options.first.isHighligh).toBeFalsy();
+      expect(component.select.options.first.isHighlighted).toBeFalsy();
       expect(component.select.options.first.active).toBeTruthy();
 
       selectedOptions = component.select.selected as KalOptionComponent[];
@@ -200,7 +200,7 @@ describe('TestSelectComponent', () => {
 @Component({
   selector: 'kal-test-select',
   template: `
-    <kal-select placeHolder="Sélectionnez un élément">
+    <kal-select placeholder="Sélectionnez un élément">
       <kal-option *ngFor="let i of [0, 1, 2, 3]">Option {{i}}</kal-option>
     </kal-select>`
 })
