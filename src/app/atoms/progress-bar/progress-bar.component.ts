@@ -9,7 +9,7 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
 })
 export class ProgressBarComponent {
 
-  progressBarValue = 0;
+  progressBarValue = 25;
   progressBarColor = '';
 
   setValue($event): void {

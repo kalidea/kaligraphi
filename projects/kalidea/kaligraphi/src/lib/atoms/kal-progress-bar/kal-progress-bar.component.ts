@@ -25,13 +25,24 @@ export class KalProgressBarComponent implements OnChanges {
    */
   private progressValue = 0;
 
+  /**
+   * Progress bar color
+   */
+  private progressBarColor = '';
+
   constructor(private cdr: ChangeDetectorRef) {
   }
 
   /**
    * Progress-bar color
    */
-  @Input() color: string;
+  @Input()
+  get color(): string {
+    return this.progressBarColor;
+  }
+  set color(color: string) {
+    this.progressBarColor = color;
+  }
 
   /**
    * Value of the progress-bar. Defaults to zero. Max to 100

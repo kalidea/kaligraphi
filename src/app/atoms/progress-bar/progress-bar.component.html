@@ -5,11 +5,12 @@
 <label for="progressBarValue">Progress bar value :</label>
 <input id="progressBarValue"
        type="number"
+       value="25"
        min="0"
        max="100"
        (keyup)="setValue($event)">
 
 <label for="progressBarColor">Progress bar color :</label>
 <input id="progressBarColor"
-       type="text"
-       (focusout)="setColor($event)">
+       type="color"
+       (change)="setColor($event)">
