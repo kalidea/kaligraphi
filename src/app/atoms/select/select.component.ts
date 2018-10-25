@@ -11,11 +11,7 @@ export class SelectComponent implements OnInit {
 
   constructor() {
   }
-
-  selectedChange(e) {
-
-  }
-
+  
   ngOnInit() {
   }
 
