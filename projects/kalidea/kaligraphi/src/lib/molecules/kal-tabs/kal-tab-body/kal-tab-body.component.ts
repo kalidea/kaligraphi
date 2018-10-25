@@ -19,9 +19,15 @@ import { CdkPortalOutlet, TemplatePortal } from '@angular/cdk/portal';
 })
 export class KalTabBodyComponent implements OnInit, AfterViewInit {
 
-  @ViewChild(CdkPortalOutlet) portalOutlet: CdkPortalOutlet;
-
+  /**
+   * Content to display in template
+   */
   @Input() content: TemplatePortal<any>;
+
+  /**
+   * The reference to the cdk portal outlet
+   */
+  @ViewChild(CdkPortalOutlet) portalOutlet: CdkPortalOutlet;
 
   constructor(private cdr: ChangeDetectorRef) {
   }
@@ -33,6 +39,9 @@ export class KalTabBodyComponent implements OnInit, AfterViewInit {
     this.attachTemplatePortal();
   }
 
+  /**
+   * Attach a template portal
+   */
   private attachTemplatePortal() {
     if (this.content) {
       this.portalOutlet.attachTemplatePortal(this.content);

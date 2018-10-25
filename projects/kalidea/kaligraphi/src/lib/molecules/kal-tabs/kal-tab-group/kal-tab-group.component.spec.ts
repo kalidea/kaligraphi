@@ -3,7 +3,7 @@ import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { PortalModule } from '@angular/cdk/portal';
 
-import { KalTabGroupComponent } from './kal-tab-group.component';
+import { KalTabChange, KalTabGroupComponent } from './kal-tab-group.component';
 import { KalTabComponent } from '../kal-tab/kal-tab.component';
 import { KalTabHeaderComponent } from '../kal-tab-header/kal-tab-header.component';
 import { KalTabBodyComponent } from '../kal-tab-body/kal-tab-body.component';
@@ -31,11 +31,11 @@ describe('KalTabGroupComponent', () => {
   let component: TestTabGroupComponent;
   let fixture: ComponentFixture<TestTabGroupComponent>;
   let groupDebugElement: DebugElement;
-  let tabBodyDebugElements: DebugElement[];
   let tabHeaderDebugElements: DebugElement[];
+  let tabBodyDebugElements: DebugElement[];
   let groupInstance: KalTabGroupComponent;
-  let tabBodyInstances: KalTabBodyComponent[];
   let tabHeaderInstances: KalTabHeaderComponent[];
+  let tabBodyInstances: KalTabBodyComponent[];
   let headers: DebugElement[];
 
   beforeEach(async(() => {
@@ -151,5 +151,17 @@ describe('KalTabGroupComponent', () => {
 
     expect(groupInstance.selectedIndex).toEqual(1);
 
+  });
+
+  it('should emit an event with the selected tab index', () => {
+    spyOn(groupInstance.selectedTab, 'emit');
+
+    expect(groupInstance.selectedIndex).toEqual(0);
+
+    headers[2].nativeElement.click();
+
+    expect(groupInstance.selectedIndex).toEqual(2);
+
+    expect(groupInstance.selectedTab.emit).toHaveBeenCalled();
   });
 });

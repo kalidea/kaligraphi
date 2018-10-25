@@ -10,31 +10,47 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 })
 export class KalTabHeaderComponent implements OnInit {
 
+  /**
+   * The label of the header
+   */
   @Input() label = '';
 
-  private selectedTab = false;
+  /**
+   * Is the header selected
+   */
+  private isSelected = false;
 
-  private disabledTab = false;
+  /**
+   * Is the header disabled
+   */
+  private isDisabled = false;
 
   constructor(private cdr: ChangeDetectorRef) {
   }
 
+  /**
+   * Is the header disabled
+   */
   @Input()
   get disabled() {
-    return this.disabledTab;
+    return this.isDisabled;
   }
+
   set disabled(value: boolean) {
-    this.disabledTab = value;
+    this.isDisabled = value;
     this.cdr.markForCheck();
   }
 
+  /**
+   * Is the header selected
+   */
   @Input()
   get selected() {
-    return this.selectedTab;
+    return this.isSelected;
   }
 
   set selected(value: boolean) {
-    this.selectedTab = coerceBooleanProperty(value);
+    this.isSelected = coerceBooleanProperty(value);
     this.cdr.markForCheck();
   }
 
