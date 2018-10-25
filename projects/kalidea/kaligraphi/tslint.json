@@ -1,17 +1,22 @@
 {
-    "extends": "../../../tslint.json",
-    "rules": {
-        "directive-selector": [
-            true,
-            "attribute",
-            "kal",
-            "camelCase"
-        ],
-        "component-selector": [
-            true,
-            "element",
-            "kal",
-            "kebab-case"
-        ]
-    }
+  "extends": [
+    "../../../tslint.json",
+    "tslint-jasmine-rules"
+  ],
+  "rules": {
+    "no-focused-tests": true,
+    "no-disabled-tests": true,
+    "directive-selector": [
+      true,
+      "attribute",
+      "kal",
+      "camelCase"
+    ],
+    "component-selector": [
+      true,
+      "element",
+      "kal",
+      "kebab-case"
+    ]
+  }
 }

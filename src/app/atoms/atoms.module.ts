@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { KaligraphiModule } from '@kalidea/kaligraphi';
 
 import { AtomsRoutingModule } from 'src/app/atoms/atoms-routing.module';
@@ -14,6 +14,7 @@ import { RaterComponent } from 'src/app/atoms/rater/rater.component';
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    FormsModule,
     AtomsRoutingModule,
     KaligraphiModule,
   ],
