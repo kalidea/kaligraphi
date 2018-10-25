@@ -21,8 +21,8 @@ export function formatPhoneNumber(phoneNumber: string): string {
  */
 function getPhoneFormatter(value): (i: number) => boolean {
 
-  let positionMin = 0;
-  let modulo = 1;
+  let positionMin = 1;
+  let modulo = 0;
   let indexes = [];
 
   if (value.substring(0, 2) === '00') {
