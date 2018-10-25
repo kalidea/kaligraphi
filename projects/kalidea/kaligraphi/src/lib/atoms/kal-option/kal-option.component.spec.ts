@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { KalOptionComponent } from './kal-option.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('KalOptionComponent', () => {
   let component: KalOptionComponent;
@@ -8,9 +9,10 @@ describe('KalOptionComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ KalOptionComponent ]
+      declarations: [KalOptionComponent],
+      schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

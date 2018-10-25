@@ -12,8 +12,9 @@
     "test:ci": "ng test @kalidea/kaligraphi --karma-config=./projects/kalidea/kaligraphi/karma.test.conf.js --code-coverage",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "build:playground": "ng build playground",
-    "serve": "ng serve"
+    "serve:playground": "npm run serve",
+    "build:playground": "ng build playground --prod",
+    "serve": "ng serve --open"
   },
   "private": true,
   "dependencies": {
@@ -27,6 +28,7 @@
     "@angular/platform-browser": "^6.1.0",
     "@angular/platform-browser-dynamic": "^6.1.0",
     "@angular/router": "^6.1.0",
+    "@kalidea/kaligraphi": "0.0.12",
     "core-js": "^2.5.4",
     "rxjs": "~6.2.0",
     "zone.js": "~0.8.26"
