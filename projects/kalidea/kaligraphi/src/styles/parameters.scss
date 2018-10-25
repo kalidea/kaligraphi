@@ -1,17 +1,87 @@
-
-$base-font-color: #000 !default;
 $base-font-family: Asap !default;
-$base-font-size: 16px;
-$base-radius: 5px !default;
+$base-font-style: normal !default;;
+$base-font-size: 17px !default;;
+$base-font-lineheight: 21 !default;;
+$base-font-weight: 400 !default;;
+$base-font-color: $color-neutre0 !default;
+
+$base-radius: 3px !default;
+
+$palettes: (
+  claire: (
+    primary: (
+      'orange': hsl(32, 79%, 56%)
+    ),
+    status: (
+      danger: hsl(14, 64%, 53%),
+      warning: hsl(49, 75%, 55%),
+      info: hsl(188, 74%, 49%),
+      success: hsl(162, 74%, 47%)
+    ),
+    neutral: (
+      neutre0: hsl(0, 0%, 12%),
+      neutre5: hsl(0, 0%, 24%),
+      neutre10: hsl(0, 0%, 36%),
+      neutre30: hsl(0, 0%, 48%),
+      neutre50: hsl(0, 0%, 72%),
+      neutre70: hsl(0, 0%, 84%),
+      neutre90: hsl(0, 0%, 96%),
+      neutre100: hsl(0, 0%, 100%)
+    )
+  ),
+  sombre: (
+    primary: (
+      'orange': hsl(32, 79%, 56%)
+    ),
+    status: (
+      danger: hsl(14, 64%, 53%),
+      warning: hsl(49, 75%, 55%),
+      info: hsl(188, 74%, 49%),
+      success: hsl(162, 74%, 47%)
+    ),
+    neutral: (
+      neutre0: hsl(0, 0%, 12%),
+      neutre5: hsl(0, 0%, 24%),
+      neutre10: hsl(0, 0%, 36%),
+      neutre30: hsl(0, 0%, 48%),
+      neutre50: hsl(0, 0%, 72%),
+      neutre70: hsl(0, 0%, 84%),
+      neutre90: hsl(0, 0%, 96%),
+      neutre100: hsl(0, 0%, 100%)
+    )
+  )
+);
+
+$headings: (
+  1: (
+    $base-font-family,
+    $base-font-size + 25,
+    54px
+  ),
+  2: (
+    $base-font-family, $base-font-size + 19,
+    45px
+  ),
+  3: (
+    $base-font-family, $base-font-size + 14,
+    39px
+  ),
+  4: (
+    $base-font-family, $base-font-size + 10,
+    36px
+  ),
+  5: (
+    $base-font-family, $base-font-size + 5,
+    30px
+  ),
+  6: (
+    $base-font-family,
+    $base-font-size,
+    28px
+  )
+);
 
 $parameters: (
-  // base text
-  text: (
-    font-family: $base-font-family,
-    font-size: $base-font-size,
-    color: $base-font-color
-  ),
-  // base form
   form: (
     font: $base-font-family,
     border: (
@@ -20,15 +90,7 @@ $parameters: (
       color: #000,
       radius: $base-radius
     )
-  ),
-  // base heading
-  heading: (
-    1: ($base-font-family, $base-font-size + 2, 10px),
-    2: ($base-font-family, $base-font-size + 4, 12px),
-    3: ($base-font-family, $base-font-size + 6, 14px),
-    4: ($base-font-family, $base-font-size + 8, 18px),
-    5: ($base-font-family, $base-font-size + 10, 20px),
-    6: ($base-font-family, $base-font-size + 12, 22px)
   )
 );
+
 

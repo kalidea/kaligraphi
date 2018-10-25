@@ -4,10 +4,16 @@
 =kal-typography($parameters)
 
   // global
+  html
+    font-family: Arial, Helvetica, Sans-Serif
+    text-rendering: optimizeLegibility
+    height: 100vh
+
   body
-    font-family: deep-map-get($parameters, "text", "font-family")
-    font-size: deep-map-get($parameters, "text", "font-size")
-    color: deep-map-get($parameters, "text", "color")
+    font-family: $base-font-family
+    font-size: $base-font-size
+    color: deep-map-get($palettes,"claire", "neutral", "neutre0")
+    background-color: deep-map-get($palettes, "claire","neutral", "neutre100")
 
   // text
   p
@@ -16,8 +22,8 @@
   a
     font-family: inherit
     font-size: inherit
-    color: inherit
-
+    color: deep-map-get($palettes, "claire", "primary", "orange")
+    text-decoration: none
 
   strong
     font-weight: bold
@@ -26,13 +32,20 @@
     font-style: italic
 
   // headings
-  @each $key, $value in deep-map-get($parameters, "heading")
+  @each $key, $value in deep-map-get($headings)
     h#{$key}
       font-family: nth($value, 1)
       font-size: nth($value, 2)
       line-height: nth($value, 3)
 
+small
+  font-size: 80%
 
+mark
+  padding: .1em
 
-
+pre
+  word-wrap: break-word /* IE 5.5-7 */
+  white-space: -moz-pre-wrap /* Firefox 1.0-2.0 */
+  white-space: pre-wrap /* current browsers */
 
