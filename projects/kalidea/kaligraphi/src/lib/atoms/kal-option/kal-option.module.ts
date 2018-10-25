@@ -13,6 +13,6 @@ const exports = [
     CommonModule
   ],
   exports: exports,
-  declarations: [KalOptionComponent]
+  declarations: exports
 })
 export class KalOptionModule { }

@@ -1,6 +1,7 @@
 import {
   AfterContentInit,
-  ChangeDetectionStrategy, ChangeDetectorRef,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ContentChildren,
   ElementRef,
@@ -14,14 +15,14 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import {Overlay, OverlayRef} from '@angular/cdk/overlay';
-import {TemplatePortal} from '@angular/cdk/portal';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { TemplatePortal } from '@angular/cdk/portal';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import {ActiveDescendantKeyManager} from '@angular/cdk/a11y';
-import {DOWN_ARROW, ENTER, ESCAPE, SPACE, UP_ARROW} from '@angular/cdk/keycodes';
-import {filter} from 'rxjs/operators';
-import {FormElementComponent} from '../../utils';
-import {KalOptionComponent} from '../../atoms/kal-option/kal-option.component';
+import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
+import { DOWN_ARROW, ENTER, ESCAPE, SPACE, UP_ARROW } from '@angular/cdk/keycodes';
+import { filter } from 'rxjs/operators';
+import { FormElementComponent } from '../../utils';
+import { KalOptionComponent } from '../../atoms/kal-option/kal-option.component';
 
 @Component({
   selector: 'kal-select',
@@ -39,6 +40,7 @@ export class KalSelectComponent extends FormElementComponent<any> implements OnI
   get multiple(): boolean {
     return this.isMultiple;
   }
+
   set multiple(multiple: boolean) {
     this.isMultiple = coerceBooleanProperty(multiple);
   }
@@ -168,63 +170,23 @@ export class KalSelectComponent extends FormElementComponent<any> implements OnI
   }
 
   /**
-   * Focuses the select element
+   * Focuse the select element
    */
+  @HostListener('focus')
   focus(): void {
     this.elementRef.nativeElement.focus();
     this.isFocused = true;
   }
 
   /**
-   * Listen focus event
-   */
-  @HostListener('focus')
-  onFocus() {
-    this.isFocused = true;
-  }
-
-  /**
-   * Listen blur event
+   * Blur the select element
    */
   @HostListener('blur')
-  onBlur() {
+  blur() {
     if (!this.panelOpen) {
       this.isFocused = false;
       this.close();
     }
-  }
-
-  /**
-   * Event emitted when an option is selected
-   * Set the option as active
-   * @param option KalOptionComponent
-   */
-  optionSelected(option: KalOptionComponent) {
-    if (this.multiple) {
-      if (option.active) {
-        option.active = false;
-        this.selection.splice(this.selection.indexOf(option), 1);
-      } else {
-        option.active = true;
-        this.selection.push(option);
-      }
-
-      this.selectedChange.emit(this.selection);
-    }
-
-    if (!this.multiple) {
-      const currentSelected = this.selected as KalOptionComponent;
-      if (currentSelected) {
-        currentSelected.active = false;
-      }
-
-      option.active = true;
-      this.selection = [option];
-      this.selectedChange.emit(option);
-      this.close();
-    }
-
-    this.cdr.markForCheck();
   }
 
   /**
@@ -254,6 +216,51 @@ export class KalSelectComponent extends FormElementComponent<any> implements OnI
         }
       }
     }
+  }
+
+  /**
+   * Event emitted when an option is selected
+   * Set the option as active
+   * @param option KalOptionComponent
+   */
+  private optionSelected(option: KalOptionComponent) {
+    if (this.multiple) {
+      this.optionSelectedOnMultipleMode(option);
+    } else {
+      this.optionSelectedOnSimpleMode(option);
+    }
+
+    this.cdr.markForCheck();
+  }
+
+  /**
+   * Select an option in simple mode
+   */
+  private optionSelectedOnSimpleMode(option: KalOptionComponent): void {
+    const currentSelected = this.selected as KalOptionComponent;
+    if (currentSelected) {
+      currentSelected.active = false;
+    }
+
+    option.active = true;
+    this.selection = [option];
+    this.selectedChange.emit(option);
+    this.close();
+  }
+
+  /**
+   * Select an option in multiple mode
+   */
+  private optionSelectedOnMultipleMode(option: KalOptionComponent): void {
+    if (option.active) {
+      option.active = false;
+      this.selection.splice(this.selection.indexOf(option), 1);
+    } else {
+      option.active = true;
+      this.selection.push(option);
+    }
+
+    this.selectedChange.emit(this.selection);
   }
 
   /**
