@@ -5,10 +5,10 @@ import { KaligraphiModule } from '@kalidea/kaligraphi';
 
 import { AtomsRoutingModule } from 'src/app/atoms/atoms-routing.module';
 import { InputComponent } from 'src/app/atoms/input/input.component';
-import { SelectComponent } from './select/select.component';
-import { CheckboxComponent } from './checkbox/checkbox.component';
-import { IconComponent } from './icon/icon.component';
-import { RaterComponent } from './rater/rater.component';
+import { SelectComponent } from 'src/app/atoms/select/select.component';
+import { CheckboxComponent } from 'src/app/atoms/checkbox/checkbox.component';
+import { IconComponent } from 'src/app/atoms/icon/icon.component';
+import { RaterComponent } from 'src/app/atoms/rater/rater.component';
 
 @NgModule({
   imports: [
@@ -16,7 +16,7 @@ import { RaterComponent } from './rater/rater.component';
     ReactiveFormsModule,
     FormsModule,
     AtomsRoutingModule,
-    KaligraphiModule
+    KaligraphiModule,
   ],
   declarations: [
     InputComponent,
