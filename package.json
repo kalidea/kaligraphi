@@ -31,10 +31,10 @@
     "@kalidea/kaligraphi": "0.0.12",
     "core-js": "^2.5.4",
     "rxjs": "~6.2.0",
-    "tslint-jasmine-rules": "^1.5.1",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {
+    "tslint-jasmine-rules": "^1.5.1",
     "@angular-devkit/build-angular": "~0.8.0",
     "@angular-devkit/build-ng-packagr": "~0.8.0",
     "@angular/cli": "~6.2.4",
