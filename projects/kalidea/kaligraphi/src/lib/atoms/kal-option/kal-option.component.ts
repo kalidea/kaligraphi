@@ -4,11 +4,12 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  Input,
+  Input, OnInit,
   Output,
   ViewEncapsulation
 } from '@angular/core';
 import { Highlightable } from '@angular/cdk/a11y';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'kal-option',
@@ -17,7 +18,7 @@ import { Highlightable } from '@angular/cdk/a11y';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalOptionComponent implements Highlightable {
+export class KalOptionComponent implements OnInit, Highlightable {
 
   /**
    * The unique ID of the option
@@ -33,6 +34,11 @@ export class KalOptionComponent implements Highlightable {
    *  Whether or not the option is currently highlighted
    */
   isHighlighted: boolean;
+
+  /**
+   *  Form Control on the active property
+   */
+  formControl: FormControl;
 
   /**
    *  Whether or not the option is currently active / selected
@@ -54,6 +60,7 @@ export class KalOptionComponent implements Highlightable {
    */
   set active(isActive: boolean) {
     this.isActive = isActive;
+    this.formControl.setValue(isActive);
     this.cdr.markForCheck();
   }
 
@@ -89,6 +96,10 @@ export class KalOptionComponent implements Highlightable {
   setInactiveStyles(): void {
     this.isHighlighted = false;
     this.cdr.markForCheck();
+  }
+
+  ngOnInit(): void {
+    this.formControl = new FormControl(false);
   }
 
 }

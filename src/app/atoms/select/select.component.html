@@ -1,17 +1,16 @@
 <kal-select tabindex="1" placeholder="Selectionner un élément">
-  <kal-option>OPTION 1</kal-option>
-  <kal-option>OPTION 2</kal-option>
-  <kal-option>OPTION 3</kal-option>
-  <kal-option>OPTION 4</kal-option>
-  <kal-option>OPTION 5</kal-option>
+  <kal-option *ngFor="let i of [0, 1, 2, 3, 10]">
+    <kal-icon name="thumb_up"></kal-icon>
+    OPTION {{i}}
+  </kal-option>
 </kal-select>
 
 <hr>
 
 <kal-select tabindex="2" multiple placeholder="Selectionner plusieurs élements">
-  <kal-option>Commerce</kal-option>
-  <kal-option>Famille</kal-option>
-  <kal-option>Finances</kal-option>
-  <kal-option>Ressource humaine</kal-option>
+  <kal-option #option *ngFor="let i of [0, 1, 2, 3, 10]" >
+    <kal-checkbox [formControl]="option.formControl"></kal-checkbox>
+    OPTION {{i}}
+  </kal-option>
 </kal-select>
 
