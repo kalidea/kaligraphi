@@ -4,9 +4,7 @@ import {
   ChangeDetectorRef,
   Component,
   Input,
-  OnChanges,
   OnInit,
-  SimpleChanges,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
@@ -19,7 +17,7 @@ import { CdkPortalOutlet, TemplatePortal } from '@angular/cdk/portal';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalTabBodyComponent implements OnInit, OnChanges, AfterViewInit {
+export class KalTabBodyComponent implements OnInit, AfterViewInit {
 
   @ViewChild(CdkPortalOutlet) portalOutlet: CdkPortalOutlet;
 
@@ -35,14 +33,10 @@ export class KalTabBodyComponent implements OnInit, OnChanges, AfterViewInit {
     this.attachTemplatePortal();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.content && !changes.content.isFirstChange()) {
-      this.attachTemplatePortal();
-    }
-  }
-
   private attachTemplatePortal() {
-    this.portalOutlet.attachTemplatePortal(this.content);
-    this.cdr.markForCheck();
+    if (this.content) {
+      this.portalOutlet.attachTemplatePortal(this.content);
+      this.cdr.markForCheck();
+    }
   }
 }

@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 @Component({
   selector: 'kal-tab-header',
@@ -9,9 +10,36 @@ import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@
 })
 export class KalTabHeaderComponent implements OnInit {
 
-  constructor() { }
+  @Input() label = '';
+
+  private selectedTab = false;
+
+  private disabledTab = false;
+
+  constructor(private cdr: ChangeDetectorRef) {
+  }
+
+  @Input()
+  get disabled() {
+    return this.disabledTab;
+  }
+  set disabled(value: boolean) {
+    this.disabledTab = value;
+    this.cdr.markForCheck();
+  }
+
+  @Input()
+  get selected() {
+    return this.selectedTab;
+  }
+
+  set selected(value: boolean) {
+    this.selectedTab = coerceBooleanProperty(value);
+    this.cdr.markForCheck();
+  }
 
   ngOnInit() {
+    this.cdr.markForCheck();
   }
 
 }

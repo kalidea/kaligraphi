@@ -1,11 +1,12 @@
 import {
-  AfterViewInit,
+  AfterContentInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChildren,
   OnInit,
-  QueryList, ViewChild,
+  QueryList,
+  ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 import { CdkPortalOutlet, TemplatePortal } from '@angular/cdk/portal';
@@ -18,29 +19,43 @@ import { KalTabComponent } from '../kal-tab/kal-tab.component';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalTabGroupComponent implements OnInit, AfterViewInit {
+export class KalTabGroupComponent implements OnInit, AfterContentInit {
 
   contentTemplatePortal: TemplatePortal;
 
-  @ContentChildren(KalTabComponent) tabs: QueryList<KalTabComponent>;
-
   @ViewChild(CdkPortalOutlet) portalOutlet: CdkPortalOutlet;
 
+  @ContentChildren(KalTabComponent) tabs: QueryList<KalTabComponent>;
+
+  private selectedTabIndex = 0;
+
   constructor(private cdr: ChangeDetectorRef) {
+  }
+
+  selectTabHeader(tab: KalTabComponent, tabIndex: number) {
+    if (!tab.disabled) {
+      this.selectedTabIndex = tabIndex;
+    }
+  }
+
+  get selectedIndex(): number {
+    return this.selectedTabIndex;
   }
 
   ngOnInit() {
   }
 
-  ngAfterViewInit() {
+  ngAfterContentInit() {
 
     this.tabs.forEach(
-      tab => {
-        this.contentTemplatePortal = tab.content;
+      (tab, index) => {
+        if (tab.selected) {
+          this.selectedTabIndex = index;
+          return;
+        }
       }
     );
 
-    this.portalOutlet.attachTemplatePortal(this.contentTemplatePortal);
     this.cdr.markForCheck();
 
   }

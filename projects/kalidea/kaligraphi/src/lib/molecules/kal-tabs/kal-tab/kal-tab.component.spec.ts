@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { KalTabComponent } from './kal-tab.component';
+import { PortalModule } from '@angular/cdk/portal';
 
 describe('KalTabComponent', () => {
   let component: KalTabComponent;
@@ -8,7 +9,12 @@ describe('KalTabComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ KalTabComponent ]
+      imports: [
+        PortalModule
+      ],
+      declarations: [
+        KalTabComponent
+      ]
     })
     .compileComponents();
   }));

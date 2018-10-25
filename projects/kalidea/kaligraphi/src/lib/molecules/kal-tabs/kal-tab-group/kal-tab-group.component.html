@@ -2,7 +2,12 @@
 
   <h1>HEADER</h1>
 
-  <kal-tab-header></kal-tab-header>
+  <kal-tab-header *ngFor="let tab of tabs; index as i"
+                  [label]="tab.label"
+                  [selected]="i === selectedIndex"
+                  [disabled]="tab.disabled"
+                  (click)="selectTabHeader(tab, i)">
+  </kal-tab-header>
 
 </div>
 
@@ -10,11 +15,10 @@
 
   <h1>BODY</h1>
 
-  <kal-tab-body [content]="contentTemplatePortal"
-                *ngIf="contentTemplatePortal">
+  <kal-tab-body *ngFor="let tab of tabs; index as i"
+                class="test"
+                [class.kal-tab-body-is-active]="i === selectedIndex"
+                [content]="tab.content">
   </kal-tab-body>
 
 </div>
-
-<ng-template cdkPortalOutlet>
-</ng-template>
