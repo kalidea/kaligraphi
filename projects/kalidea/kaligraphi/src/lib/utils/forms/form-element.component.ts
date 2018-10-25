@@ -13,11 +13,6 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
   @Input() label: string;
 
   /**
-   * Name for this form element
-   */
-  @Input() name: string;
-
-  /**
    * placeholder for this form element
    */
   @Input() placeholder: T;

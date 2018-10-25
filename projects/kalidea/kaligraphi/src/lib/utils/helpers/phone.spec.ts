@@ -1,6 +1,6 @@
 import { formatPhoneNumber } from './phone';
 
-fdescribe('Helper phone', () => {
+describe('Helper phone', () => {
 
   it('should format standard number', () => {
     expect(formatPhoneNumber('0383838383')).toEqual('03 83 83 83 83');
