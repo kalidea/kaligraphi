@@ -1,8 +1,13 @@
 {
+  "extends": [
+    "tslint-jasmine-rules"
+  ],
   "rulesDirectory": [
     "node_modules/codelyzer"
   ],
   "rules": {
+    "no-focused-tests": true,
+    "no-disabled-tests": true,
     "arrow-return-shorthand": true,
     "callable-types": true,
     "class-name": true,
