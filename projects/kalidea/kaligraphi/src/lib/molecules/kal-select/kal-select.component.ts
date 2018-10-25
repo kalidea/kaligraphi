@@ -194,7 +194,8 @@ export class KalSelectComponent extends FormElementComponent<any> implements OnI
    */
   @HostListener('keydown', ['$event'])
   handleKeydown(event: KeyboardEvent): void {
-    const keyCode = event.keyCode;
+    const {keyCode} = event;
+
     const isOpenKey = keyCode === ENTER || keyCode === SPACE;
     const isArrowKey = keyCode === DOWN_ARROW || keyCode === UP_ARROW;
 

@@ -7,6 +7,7 @@ import {Component, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {KalOptionComponent, KalOptionModule} from '../../atoms/kal-option/kal-option.module';
 import {Platform} from '@angular/cdk/platform';
 import {DOWN_ARROW, ENTER} from '@angular/cdk/keycodes';
+import { createKeyboardEvent } from '../../utils/tests/event-keyboard';
 
 function configureTestingModule(declarations: any[]) {
   TestBed.configureTestingModule({
@@ -14,11 +15,6 @@ function configureTestingModule(declarations: any[]) {
     providers: [Overlay],
     imports: [KalOptionModule]
   }).compileComponents();
-}
-
-function GetKeyBoardKeyDownEvent(code: number) {
-  // @ts-ignore
-  return new KeyboardEvent('keydown', {keyCode: code});
 }
 
 describe('TestSelectComponent', () => {
@@ -125,17 +121,18 @@ describe('TestSelectComponent', () => {
 
     it('should select options via the UP/DOWN arrow keys', () => {
       component.select.focus();
-      component.select.handleKeydown(GetKeyBoardKeyDownEvent(ENTER));
-      component.select.handleKeydown(GetKeyBoardKeyDownEvent(DOWN_ARROW));
-      component.select.handleKeydown(GetKeyBoardKeyDownEvent(ENTER));
+
+      component.select.handleKeydown(createKeyboardEvent('keydown', ENTER));
+      component.select.handleKeydown(createKeyboardEvent('keydown', DOWN_ARROW));
+      component.select.handleKeydown(createKeyboardEvent('keydown', ENTER));
 
       expect(component.select.options.first.isHighlighted).toBeTruthy();
       expect(component.select.options.first.active).toBeTruthy();
       expect(component.select.selected).toEqual(component.options.first);
 
-      component.select.handleKeydown(GetKeyBoardKeyDownEvent(ENTER));
-      component.select.handleKeydown(GetKeyBoardKeyDownEvent(DOWN_ARROW));
-      component.select.handleKeydown(GetKeyBoardKeyDownEvent(ENTER));
+      component.select.handleKeydown(createKeyboardEvent('keydown', ENTER));
+      component.select.handleKeydown(createKeyboardEvent('keydown', DOWN_ARROW));
+      component.select.handleKeydown(createKeyboardEvent('keydown', ENTER));
 
       const optionsPos1 = component.select.options.find((item, index) => index === 1);
       expect(optionsPos1.isHighlighted).toBeTruthy();
@@ -149,9 +146,9 @@ describe('TestSelectComponent', () => {
     it('should select multiple options via the UP/DOWN arrow keys on multiple select', () => {
       component.select.multiple = true;
       component.select.focus();
-      component.select.handleKeydown(GetKeyBoardKeyDownEvent(ENTER));
-      component.select.handleKeydown(GetKeyBoardKeyDownEvent(DOWN_ARROW));
-      component.select.handleKeydown(GetKeyBoardKeyDownEvent(ENTER));
+      component.select.handleKeydown(createKeyboardEvent('keydown', ENTER));
+      component.select.handleKeydown(createKeyboardEvent('keydown', DOWN_ARROW));
+      component.select.handleKeydown(createKeyboardEvent('keydown', ENTER));
 
       expect(component.select.options.first.isHighlighted).toBeTruthy();
       expect(component.select.options.first.active).toBeTruthy();
@@ -159,8 +156,8 @@ describe('TestSelectComponent', () => {
       let selectedOptions = component.select.selected as KalOptionComponent[];
       expect(selectedOptions.length).toEqual(1);
 
-      component.select.handleKeydown(GetKeyBoardKeyDownEvent(DOWN_ARROW));
-      component.select.handleKeydown(GetKeyBoardKeyDownEvent(ENTER));
+      component.select.handleKeydown(createKeyboardEvent('keydown', DOWN_ARROW));
+      component.select.handleKeydown(createKeyboardEvent('keydown', ENTER));
 
       const optionsPos1 = component.select.options.find((item, index) => index === 1);
       expect(optionsPos1.isHighlighted).toBeTruthy();
