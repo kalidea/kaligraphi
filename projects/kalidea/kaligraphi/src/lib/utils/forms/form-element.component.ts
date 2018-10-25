@@ -13,19 +13,19 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
   @Input() label: string;
 
   /**
-   * Name for this form element
-   */
-  @Input() name: string;
-
-  /**
    * placeholder for this form element
    */
-  @Input() placeholder;
+  @Input() placeholder: T;
 
   /**
-   * id for this form element
+   * id of this form element
    */
   @Input() id = uniqid('form-');
+
+  /**
+   * name of this form element
+   */
+  @Input() name = this.id;
 
   /**
    * value for this form element
