@@ -1,7 +1,6 @@
 import { EventEmitter, Input, Output } from '@angular/core';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { Observable } from 'rxjs/internal/Observable';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { FormControlAccessComponent } from './form-control-access.component';
 import { uniqid } from '../helpers/uniq';
@@ -16,12 +15,17 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
   /**
    * placeholder for this form element
    */
-  @Input() placeholder;
+  @Input() placeholder: T;
 
   /**
-   * id for this form element
+   * id of this form element
    */
   @Input() id = uniqid('form-');
+
+  /**
+   * name of this form element
+   */
+  @Input() name = this.id;
 
   /**
    * value for this form element

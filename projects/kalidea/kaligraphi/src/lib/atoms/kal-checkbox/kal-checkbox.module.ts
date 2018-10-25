@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { KalCheckboxComponent } from './kal-checkbox.component';
-export { KalCheckboxComponent } from './kal-checkbox.component';
+export * from './kal-checkbox.component';
 
 const exports = [
   KalCheckboxComponent
@@ -10,7 +11,8 @@ const exports = [
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    ReactiveFormsModule
   ],
   exports: exports,
   declarations: exports

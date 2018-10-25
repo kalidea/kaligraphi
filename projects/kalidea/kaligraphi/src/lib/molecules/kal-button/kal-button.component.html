@@ -1,3 +1,7 @@
-<p>
-  kal-button works!
-</p>
+<button
+  (click)="handleClick($event)"
+  [disabled]="disabled"
+  [tabindex]="tabIndex"
+  [name]="name">
+  <kal-icon *ngIf="name" [name]="name"></kal-icon>{{label}}
+</button>

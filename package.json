@@ -3,16 +3,18 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "dev": "ng build --watch",
+    "dev": "ng build --watch @kalidea/kaligraphi",
     "build": "ng build",
     "copy:styles": "cpx './projects/kalidea/kaligraphi/src/styles/**' ./dist/kalidea/kaligraphi/styles",
     "compile:styles": "node-sass ./projects/kalidea/kaligraphi/src/styles/styles.sass ./dist/kalidea/kaligraphi/styles/styles.css",
     "postbuild": "npm run copy:styles && npm run compile:styles",
     "test": "ng test @kalidea/kaligraphi",
+    "test:ci": "ng test @kalidea/kaligraphi --karma-config=./projects/kalidea/kaligraphi/karma.test.conf.js --code-coverage",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "build:playground": "ng build playground",
-    "serve": "ng serve"
+    "serve:playground": "npm run serve",
+    "build:playground": "ng build playground --prod",
+    "serve": "ng serve --open"
   },
   "private": true,
   "dependencies": {
@@ -26,11 +28,13 @@
     "@angular/platform-browser": "^6.1.0",
     "@angular/platform-browser-dynamic": "^6.1.0",
     "@angular/router": "^6.1.0",
+    "@kalidea/kaligraphi": "0.0.12",
     "core-js": "^2.5.4",
     "rxjs": "~6.2.0",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {
+    "tslint-jasmine-rules": "^1.5.1",
     "@angular-devkit/build-angular": "~0.8.0",
     "@angular-devkit/build-ng-packagr": "~0.8.0",
     "@angular/cli": "~6.2.4",
