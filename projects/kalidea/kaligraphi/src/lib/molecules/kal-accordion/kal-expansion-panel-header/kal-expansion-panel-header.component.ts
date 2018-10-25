@@ -22,10 +22,7 @@ import { kalExpansionAnimations } from '../expansion-animations';
   styleUrls: ['./kal-expansion-panel-header.component.sass'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [
-    kalExpansionAnimations.indicatorRotate,
-    kalExpansionAnimations.expansionHeaderHeight
-  ]
+  animations: [kalExpansionAnimations.indicatorRotate]
 })
 export class KalExpansionPanelHeaderComponent implements OnDestroy, FocusableOption {
 
@@ -190,6 +187,7 @@ export class KalExpansionPanelHeaderComponent implements OnDestroy, FocusableOpt
         break;
       default:
         if (this.panel.accordion) {
+          console.log(this.panel);
           this.panel.accordion.handleHeaderKeydown(event);
         }
 
