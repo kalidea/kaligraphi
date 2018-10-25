@@ -1,5 +1,31 @@
-<p>
-  input works!
-</p>
+<h1>
+  Kal-input
+</h1>
 
-<kal-input></kal-input>
+<kal-input
+  [type]="type"
+  [clearable]="clearable"
+  [placeholder]="placeholder"></kal-input>
+<hr />
+
+<label>
+  Type
+  <select [(ngModel)]="type">
+    <option value="text">text</option>
+    <option value="password">password</option>
+    <option value="number">number</option>
+    <option value="currency">currency</option>
+    <option value="phone">phone</option>
+    <option value="text">text</option>
+  </select>
+</label>
+
+<label>
+  Placeholder
+  <input [(ngModel)]="placeholder">
+</label>
+
+<label>
+  Clearable
+  <input type="checkbox" [(ngModel)]="clearable">
+</label>
