@@ -2,41 +2,40 @@
  * Format phone number
  */
 
-enum PhoneFormatter {
-  Double0 = '00',
-  Plus = '+',
-  Default = 'default'
-}
-
 export function formatPhoneNumber(phoneNumber: string): string {
-  let formatted: string[] = [];
+  let explodedPhoneNumber: string[] = [];
 
   if (phoneNumber) {
     const value = phoneNumber.replace(/\s/g, '');
 
-    formatted = formatPhoneNumberWithSpaces(value, getPhoneFormatter(value));
+
+    explodedPhoneNumber = formatPhoneNumberWithSpaces(value, getPhoneFormatter(value));
 
   }
 
-  return formatted.join('');
+  return explodedPhoneNumber.join('');
 }
 
-function getPhoneFormatter(value): (number) => boolean {
+/**
+ * helper function to build formatter
+ */
+function buildFormatterFunction(positionMin, modulo, indexes = []): (i: number) => boolean {
+  return (i) => indexes.indexOf(i) >= 0 || (i >= positionMin && i % 2 === modulo);
+}
 
-  let formatter = PhoneFormatter.Default;
+/**
+ * get phone formatter for the given value
+ */
+function getPhoneFormatter(value): (i: number) => boolean {
+
   if (value.substring(0, 2) === '00') {
-    formatter = PhoneFormatter.Double0;
+    return buildFormatterFunction(6, 1, [4, 5]);
   } else if (value.charAt(0) === '+') {
-    formatter = PhoneFormatter.Plus;
+    return buildFormatterFunction(5, 0, [3, 4]);
   }
 
-  const phoneFormatter = {
-    [PhoneFormatter.Double0]: (i) => (i >= 4 && i <= 5) || (i >= 6 && i % 2 === 1),
-    [PhoneFormatter.Plus]: (i) => (i >= 3 && i <= 4) || (i >= 5 && i % 2 === 0),
-    [PhoneFormatter.Default]: (i) => i > 0 && i % 2 === 0
-  };
+  return buildFormatterFunction(1, 0);
 
-  return phoneFormatter[formatter];
 }
 
 function formatPhoneNumberWithSpaces(value, includeSpace: (i: number) => boolean): string[] {
