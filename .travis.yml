@@ -10,7 +10,8 @@ notifications:
 
 jobs:
   include:
-    - stage: test
+    - stage: "CI"
+      name: "Code Quality"
       before_script:
         - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
         - chmod +x ./cc-test-reporter
@@ -22,7 +23,8 @@ jobs:
         - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
     # BUILD LIB
-    - stage: build
+    - stage: "CI"
+      name: "Build library & playground"
       script:
         - npm run build
         - npm run build:playground -- --base-href https://kalidea.github.io/kaligraphi/
