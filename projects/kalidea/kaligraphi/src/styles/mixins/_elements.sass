@@ -1,54 +1,39 @@
-/* ITCSS : ELEMENTS */
-
 =kal-elements($parameters)
-
+  /* ELEMENTS :  Reboots */
   html
     font-family: Sans-Serif
     text-rendering: optimizeLegibility
     height: 100vh
     color: $color-neutre0
-
   body
     font-family: $base-font-family
     font-size: $base-font-size
     color: $color-neutre0
     background-color: $color-neutre100
-
   p
     font-family: $base-font-family
     font-size: $base-font-size
     line-height: $base-font-lineheight
-
   a
     font-family: inherit
     font-size: inherit
     color: $color-orange
     text-decoration: none
-
   strong
     font-weight: bold
-
   em
     font-style: italic
-
+  small
+    font-size: 80%
+  mark
+    padding: .1em
+  pre
+    word-wrap: break-word //* IE 5.5-7 */
+    white-space: -moz-pre-wrap //* Firefox 1.0-2.0 */
+    white-space: pre-wrap //* current browsers */
   // headings
   @each $key, $value in deep-map-get($headings)
     h#{$key}
       font-family: nth($value, 1)
       font-size: nth($value, 2)
       line-height: nth($value, 3)
-
-  small
-    font-size: 80%
-
-  mark
-    padding: .1em
-
-  pre
-    word-wrap: break-word
-    /* IE 5.5-7 */
-    white-space: -moz-pre-wrap
-    /* Firefox 1.0-2.0 */
-    white-space: pre-wrap
-  /* current browsers */
-

@@ -1,20 +1,28 @@
-/* ITCSS : ELEMENTS */
-/* ITCSS ORGANISATION */
+/**
+ *
+ * ITCSS ORGANISATION
+ *
+ */
+/* SETTINGS : Variables */
+/* TOOLS: Functions */
+/* TOOLS : Mixins */
+/* GENERICS : Font faces */
 @font-face {
-  font-family: AsapRegular;
+  font-family: "AsapRegular";
   src: url("assets/fonts/Asap-Regular.woff2") format("woff2");
   font-weight: normal;
   font-style: normal; }
 @font-face {
-  font-family: AsapMedium;
+  font-family: "AsapMedium";
   src: url("assets/fonts/Asap-Medium.woff2") format("woff2");
   font-weight: 500;
   font-style: normal; }
 @font-face {
-  font-family: AsapSemibold;
+  font-family: "AsapSemiBold";
   src: url("assets/fonts/Asap-SemiBold.woff2") format("woff2");
   font-weight: 600;
   font-style: normal; }
+/* GENERICS :  Reset */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -57,6 +65,7 @@ table {
   border-collapse: collapse;
   border-spacing: 0; }
 
+/* ELEMENTS :  Reboots */
 html {
   font-family: Sans-Serif;
   text-rendering: optimizeLegibility;
@@ -85,6 +94,17 @@ strong {
 
 em {
   font-style: italic; }
+
+small {
+  font-size: 80%; }
+
+mark {
+  padding: 0.1em; }
+
+pre {
+  word-wrap: break-word;
+  white-space: -moz-pre-wrap;
+  white-space: pre-wrap; }
 
 h1 {
   font-family: "AsapMedium";
@@ -116,20 +136,12 @@ h6 {
   font-size: 20px;
   line-height: 28px; }
 
-small {
-  font-size: 80%; }
-
-mark {
-  padding: 0.1em; }
-
-pre {
-  word-wrap: break-word;
-  /* IE 5.5-7 */
-  white-space: -moz-pre-wrap;
-  /* Firefox 1.0-2.0 */
-  white-space: pre-wrap; }
-
-/* current browsers */
+/**
+ *
+ * ATOMIC ORGANIZATION
+ *
+ */
+/* Atoms */
 kal-input {
   border-width: 1px;
   border-style: "solid";
@@ -157,6 +169,7 @@ kal-checkbox {
 kal-icon > i {
   padding: 0.5rem; }
 
+/* Molecules */
 kal-button input {
   border: none; }
 

@@ -3,37 +3,33 @@
 @import "../lib/atoms/kal-checkbox/kal-checkbox.component"
 @import "../lib/atoms/kal-icon/kal-icon.component"
 @import "../lib/molecules/kal-rater/kal-rater.component"
-
 // molecules
 @import "../lib/molecules/kal-button/kal-button.component"
 @import "../lib/molecules/kal-select/kal-select.component"
 @import "../lib/molecules/kal-textarea/kal-textarea.component"
-
-// functions
+/* TOOLS: Functions */
 @import "functions/deep-map-get"
-
-// Mixins
+/* TOOLS : Mixins */
 @import "mixins/fontfaces"
 @import "mixins/reset"
 @import "mixins/elements"
 @import "mixins/form"
 
 =kaligraphi($parameters)
-
-  /* ITCSS ORGANISATION */
-  // variables in parameters
-  // fontfaces
   +kal-fontfaces($parameters)
-  // reset
   +kal-reset($parameters)
-  // elements
   +kal-elements($parameters)
-  // atoms
+  /**
+   *
+   * ATOMIC ORGANIZATION
+   *
+   */
+  /* Atoms */
   +kal-input($parameters)
   +kal-select($parameters)
   +kal-checkbox($parameters)
   +kal-icon($parameters)
   +kal-rater($parameters)
-  // molecules
+  /* Molecules */
   +kal-button($parameters)
   +kal-textarea($parameters)
