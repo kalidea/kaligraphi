@@ -1,0 +1,16 @@
+// ---------------------------------------------------------
+// calcuteRem
+// calculate rem to px
+//
+// Required arguments:
+// `$size` String
+//
+// Example of use:
+// str-explode('some-things-will-never-change', '-')
+//
+// @return List
+// ---------------------------------------------------------
+@function calculateRem($size) {
+  $remSize: $size / $base-font-size;
+  @return $remSize * 1rem;
+}

@@ -10,16 +10,16 @@
 @import "../lib/molecules/kal-textarea/kal-textarea.component"
 
 // functions
-@import "functions/deep-map-get"
+@import "02_Tools/Functions/deep-map-get"
 
-// utils
-@import "utils/form"
+// Mixins
+@import "02_Tools/Mixins/form"
+@import "02_Tools/Mixins/font-face"
+@import "02_Tools/Mixins/typography"
 
-// reset
-@import "includes/reset"
-
-// typography
-@import "includes/typography"
+// Reset html
+@import "03_Generics/fontface"
+@import "03_Generics/reset"
 
 
 =kaligraphi($parameters)

@@ -13,22 +13,29 @@ $color-neutre70: #D6D6D6 !default; // rgb(214,214,214)
 $color-neutre90: #F5F5F5 !default; // rgb(245,245,245)
 $color-neutre100: #FFFFFF !default; // rgb(255,255,255)
 
+
 //FONT PARAMETERS
-$base-font-family: Asap !default;
+$font-face-regular: 'AsapRegular' !default;
+$font-face-medium: 'AsapMedium' !default;
+$font-face-semibold: 'AsapSemiBold' !default;
+
+$base-font-family: $font-face-regular !default;
 $base-font-style: normal !default;
 $base-font-size: 17px !default;
-$base-font-lineheight: 21 !default;
+$base-font-lineheight: 24px !default;
 $base-font-weight: 400 !default;
 $base-radius: 3px !default;
 
+
+
 // HEADINGS PARAMETERS
 $headings: (
-  1: ( $base-font-family, $base-font-size + 25, 54px ),
-  2: ( $base-font-family, $base-font-size + 19, 45px ),
-  3: ( $base-font-family, $base-font-size + 14, 39px ),
-  4: ( $base-font-family, $base-font-size + 10, 36px ),
-  5: ( $base-font-family, $base-font-size + 5, 30px ),
-  6: ( $base-font-family, $base-font-size, 28px )
+  1: ( $font-face-medium, $base-font-size + 25, 54px ),
+  2: ( $font-face-semibold, $base-font-size + 19, 45px ),
+  3: ( $font-face-medium, $base-font-size + 14, 39px ),
+  4: ( $font-face-semibold, $base-font-size + 10, 36px ),
+  5: ( $font-face-semibold, $base-font-size + 5, 30px ),
+  6: ( $font-face-medium, $base-font-size + 3, 28px )
 );
 
 $parameters: (
