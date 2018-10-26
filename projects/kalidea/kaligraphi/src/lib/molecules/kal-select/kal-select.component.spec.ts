@@ -1,12 +1,12 @@
-import {async, ComponentFixture, fakeAsync, flush, TestBed} from '@angular/core/testing';
-import {By} from '@angular/platform-browser';
-import {CdkPortal} from '@angular/cdk/portal';
-import {KalSelectComponent} from './kal-select.component';
-import {Overlay, OverlayContainer} from '@angular/cdk/overlay';
-import {Component, QueryList, ViewChild, ViewChildren} from '@angular/core';
-import {KalOptionComponent, KalOptionModule} from '../../atoms/kal-option/kal-option.module';
-import {Platform} from '@angular/cdk/platform';
-import {DOWN_ARROW, ENTER} from '@angular/cdk/keycodes';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { CdkPortal } from '@angular/cdk/portal';
+import { KalSelectComponent } from './kal-select.component';
+import { Overlay, OverlayContainer } from '@angular/cdk/overlay';
+import { Component, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { KalOptionComponent, KalOptionModule } from '../../atoms/kal-option/kal-option.module';
+import { Platform } from '@angular/cdk/platform';
+import { DOWN_ARROW, ENTER } from '@angular/cdk/keycodes';
 import { createKeyboardEvent } from '../../utils/tests/event-keyboard';
 
 function configureTestingModule(declarations: any[]) {
@@ -52,7 +52,7 @@ describe('TestSelectComponent', () => {
       expect(component.select.panelOpen).toBeTruthy();
     });
 
-    it('should close the panel when a click occurs outside the panel', fakeAsync(() => {
+    it('should close the panel when a click occurs outside the panel', () => {
       trigger.click();
       fixture.detectChanges();
 
@@ -60,11 +60,10 @@ describe('TestSelectComponent', () => {
 
       backdrop.click();
       fixture.detectChanges();
-      flush();
 
       expect(overlayContainerElement.textContent).toEqual('');
       expect(fixture.componentInstance.select.panelOpen).toBeFalsy();
-    }));
+    });
 
     it('should to have so many option as option components when is open', () => {
       component.select.open();
@@ -95,6 +94,7 @@ describe('TestSelectComponent', () => {
     });
 
     it('should select an option in option list', () => {
+      const spy = spyOn(component.select.valueChange, 'emit');
       trigger.click();
       const options = fixture.debugElement.query(By.css('.kal-option-selection')).nativeElement;
       options.click();
@@ -103,9 +103,29 @@ describe('TestSelectComponent', () => {
 
       expect(component.select.selected).toEqual(component.options.first);
       expect(selectedOption.active).toBeTruthy();
+      expect(spy).toHaveBeenCalledWith(selectedOption);
+    });
+
+    it('should emit an event when selection change', () => {
+      const spy = spyOn(component.select.valueChange, 'emit');
+
+      component.select.open();
+      const options = fixture.debugElement.query(By.css('.kal-option-selection')).nativeElement;
+      options.click();
+
+      expect(spy).toHaveBeenCalled();
+    });
+
+    it('should select an option in option list by select method', () => {
+      component.select.select('Option 2');
+      const selectedOption = component.select.selected as KalOptionComponent;
+
+      expect(selectedOption).toEqual(component.select.options.find((item, index) => index === 2));
+      expect(selectedOption.active).toBeTruthy();
     });
 
     it('should select multiple option in option list', () => {
+      const spy = spyOn(component.select.valueChange, 'emit');
       component.select.multiple = true;
 
       trigger.click();
@@ -117,6 +137,7 @@ describe('TestSelectComponent', () => {
       expect(selectedOptions.length).toEqual(component.options.length);
       expect(component.select.options.filter(o => o.active).length).toEqual(component.options.length);
       expect(component.select.panelOpen).toBeTruthy();
+      expect(spy).toHaveBeenCalledWith(selectedOptions);
     });
 
     it('should select options via the UP/DOWN arrow keys', () => {

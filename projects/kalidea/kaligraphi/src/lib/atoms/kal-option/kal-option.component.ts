@@ -1,15 +1,18 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
-  Input, OnInit,
+  Input,
+  OnInit,
   Output,
   ViewEncapsulation
 } from '@angular/core';
 import { Highlightable } from '@angular/cdk/a11y';
 import { FormControl } from '@angular/forms';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 @Component({
   selector: 'kal-option',
@@ -18,34 +21,46 @@ import { FormControl } from '@angular/forms';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalOptionComponent implements OnInit, Highlightable {
+export class KalOptionComponent implements OnInit, AfterViewInit, Highlightable {
 
   /**
-   * The unique ID of the option
+   * The value of the option
    */
   @Input() value: any;
-
   /**
    * Event emitted when the option is selected or deselected
    */
   @Output() readonly selectionChange = new EventEmitter<KalOptionComponent>();
-
   /**
    *  Whether or not the option is currently highlighted
    */
   isHighlighted: boolean;
-
   /**
    *  Form Control on the active property
    */
   formControl: FormControl;
-
   /**
    *  Whether or not the option is currently active / selected
    */
   private isActive: boolean;
+  /**
+   *  Whether or not the option is disabled
+   */
+  private isDisabled: boolean;
 
   constructor(private _element: ElementRef<HTMLElement>, private cdr: ChangeDetectorRef) {
+  }
+
+  /**
+   *  Whether or not the option is disabled
+   */
+  @Input()
+  get disabled(): boolean {
+    return this.isDisabled;
+  }
+
+  set disabled(disabled: boolean) {
+    this.isDisabled = coerceBooleanProperty(disabled);
   }
 
   /**
@@ -75,7 +90,9 @@ export class KalOptionComponent implements OnInit, Highlightable {
    * Emit the selection change event
    */
   emitSelectionEvent(): void {
-    this.selectionChange.emit(this);
+    if (!this.disabled) {
+      this.selectionChange.emit(this);
+    }
   }
 
   /**
@@ -100,6 +117,12 @@ export class KalOptionComponent implements OnInit, Highlightable {
 
   ngOnInit(): void {
     this.formControl = new FormControl(false);
+  }
+
+  ngAfterViewInit(): void {
+    if (this.value === undefined) {
+      this.value = this.viewValue;
+    }
   }
 
 }

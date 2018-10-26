@@ -5,12 +5,10 @@ import {
   Component,
   ContentChildren,
   ElementRef,
-  EventEmitter,
   HostListener,
   Input,
   OnDestroy,
   OnInit,
-  Output,
   QueryList,
   ViewChild,
   ViewEncapsulation
@@ -31,7 +29,48 @@ import { KalOptionComponent } from '../../atoms/kal-option/kal-option.component'
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalSelectComponent extends FormElementComponent<any> implements OnInit, OnDestroy, AfterContentInit {
+export class KalSelectComponent
+  extends FormElementComponent<KalOptionComponent | KalOptionComponent []>
+  implements OnInit, OnDestroy, AfterContentInit {
+
+  /**
+   * All of the defined select options
+   */
+  @ContentChildren(KalOptionComponent, {descendants: true}) options: QueryList<KalOptionComponent>;
+  /**
+   * Overlay Portal Options
+   */
+  @ViewChild('optionsPortal') optionsPortal: TemplatePortal<any>;
+  /**
+   * Whether the component is in multiple selection mode
+   */
+  private isMultiple: boolean;
+  /**
+   * The currently selected option
+   */
+  private selection: KalOptionComponent | KalOptionComponent [];
+  /**
+   * Overlay Reference
+   */
+  private overlayRef: OverlayRef;
+  /**
+   * Manages keyboard events for options in the panel
+   */
+  private keyManager: ActiveDescendantKeyManager<KalOptionComponent>;
+  /**
+   * Whether or not the select is focus
+   */
+  private isFocused: boolean;
+  /**
+   * Whether or not the overlay panel is open
+   */
+  private isPanelOpen: boolean;
+
+  constructor(private overlay: Overlay,
+              private elementRef: ElementRef<HTMLElement>,
+              private cdr: ChangeDetectorRef) {
+    super();
+  }
 
   /**
    * Whether the component is in multiple selection mode
@@ -46,57 +85,6 @@ export class KalSelectComponent extends FormElementComponent<any> implements OnI
   }
 
   /**
-   * Event emitted when selection change
-   */
-  @Output() selectedChange = new EventEmitter<KalOptionComponent | KalOptionComponent []>();
-
-  /**
-   * All of the defined select options
-   */
-  @ContentChildren(KalOptionComponent, {descendants: true}) options: QueryList<KalOptionComponent>;
-
-  /**
-   * Overlay Portal Options
-   */
-  @ViewChild('optionsPortal') optionsPortal: TemplatePortal<any>;
-
-  /**
-   * Whether the component is in multiple selection mode
-   */
-  private isMultiple: boolean;
-
-  /**
-   * The currently selected option
-   */
-  private selection: KalOptionComponent[];
-
-  /**
-   * Overlay Reference
-   */
-  private overlayRef: OverlayRef;
-
-  /**
-   * Manages keyboard events for options in the panel
-   */
-  private keyManager: ActiveDescendantKeyManager<KalOptionComponent>;
-
-  /**
-   * Whether or not the select is focus
-   */
-  private isFocused: boolean;
-
-  /**
-   * Whether or not the overlay panel is open
-   */
-  private isPanelOpen: boolean;
-
-  constructor(private overlay: Overlay,
-              private elementRef: ElementRef<HTMLElement>,
-              private cdr: ChangeDetectorRef) {
-    super();
-  }
-
-  /**
    * Whether or not the overlay panel is open
    */
   get panelOpen(): boolean {
@@ -107,23 +95,20 @@ export class KalSelectComponent extends FormElementComponent<any> implements OnI
    * Get the value to display on the change selection
    */
   get triggerValue(): string {
-    if (!this.selection || this.selection.length === 0) {
+    if (!this.selection) {
       return null;
     }
 
-    if (this.multiple) {
-      const selectedOptions = this.selection.map(option => option.viewValue);
-      return selectedOptions.join(', ');
-    }
-
-    return this.selection[0].viewValue;
+    return (this.multiple) ?
+      (this.selection as KalOptionComponent[]).map(option => option.viewValue).join(', ') :
+      (this.selection as KalOptionComponent).viewValue;
   }
 
   /**
    * The currently selected option
    */
   get selected(): KalOptionComponent | KalOptionComponent[] {
-    return this.multiple ? this.selection : this.selection[0];
+    return this.selection;
   }
 
   /**
@@ -147,7 +132,7 @@ export class KalSelectComponent extends FormElementComponent<any> implements OnI
   /**
    * Open the overlay select
    */
-  open() {
+  open(): void {
     if (this.disabled || !this.options || !this.options.length || this.isPanelOpen) {
       return;
     }
@@ -160,13 +145,18 @@ export class KalSelectComponent extends FormElementComponent<any> implements OnI
   /**
    * Close the overlay select
    */
-  close() {
-    if (this.selection.indexOf(this.keyManager.activeItem) < 0) {
-      this.keyManager.setActiveItem(this.selection[0]);
-    }
-
+  close(): void {
+    this.checkResetActiveItem();
     this.overlayRef.detach();
     this.isPanelOpen = false;
+  }
+
+  select(value: any): void {
+    const optionSelect = this.options.find((item) => item.value === value);
+    if (optionSelect) {
+      this.keyManager.setActiveItem(optionSelect);
+      this.optionSelected(this.keyManager.activeItem);
+    }
   }
 
   /**
@@ -225,6 +215,14 @@ export class KalSelectComponent extends FormElementComponent<any> implements OnI
   }
 
   /**
+   * @inheritDoc
+   */
+  writeValue(options: KalOptionComponent | KalOptionComponent[]) {
+    this.selection = options;
+    super.writeValue(options);
+  }
+
+  /**
    * Event emitted when an option is selected
    * Set the option as active
    * @param option KalOptionComponent
@@ -236,6 +234,8 @@ export class KalSelectComponent extends FormElementComponent<any> implements OnI
       this.optionSelectedOnSimpleMode(option);
     }
 
+    super.notifyUpdate(this.selection);
+    this.valueChange.emit(this.selection);
     this.cdr.markForCheck();
   }
 
@@ -243,14 +243,13 @@ export class KalSelectComponent extends FormElementComponent<any> implements OnI
    * Select an option in simple mode
    */
   private optionSelectedOnSimpleMode(option: KalOptionComponent): void {
-    const currentSelected = this.selected as KalOptionComponent;
+    const currentSelected = this.selection as KalOptionComponent;
     if (currentSelected) {
       currentSelected.active = false;
     }
 
     option.active = true;
-    this.selection = [option];
-    this.selectedChange.emit(option);
+    this.selection = option;
     this.close();
   }
 
@@ -258,15 +257,14 @@ export class KalSelectComponent extends FormElementComponent<any> implements OnI
    * Select an option in multiple mode
    */
   private optionSelectedOnMultipleMode(option: KalOptionComponent): void {
+    const currentSelected = this.selection as KalOptionComponent[];
     if (option.active) {
       option.active = false;
-      this.selection.splice(this.selection.indexOf(option), 1);
+      currentSelected.splice(currentSelected.indexOf(option), 1);
     } else {
       option.active = true;
-      this.selection.push(option);
+      currentSelected.push(option);
     }
-
-    this.selectedChange.emit(this.selection);
   }
 
   /**
@@ -278,6 +276,21 @@ export class KalSelectComponent extends FormElementComponent<any> implements OnI
     this.keyManager.tabOut.subscribe(() => {
       this.close();
     });
+  }
+
+  /**
+   * Reset the active item on a active option if it don't
+   */
+  private checkResetActiveItem(): void {
+    if (this.multiple) {
+      if ((this.selection as KalOptionComponent[]).indexOf(this.keyManager.activeItem) < 0) {
+        this.keyManager.setActiveItem(this.selection[0]);
+      }
+    } else {
+      if ((this.selection as KalOptionComponent) !== this.keyManager.activeItem) {
+        this.keyManager.setActiveItem(this.selection as KalOptionComponent);
+      }
+    }
   }
 
   ngOnInit() {

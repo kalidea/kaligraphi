@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-select',
@@ -9,10 +10,15 @@ import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@
 })
 export class SelectComponent implements OnInit {
 
+
+
   constructor() {
   }
 
   ngOnInit() {
+    // TODO TEST RESET ACTIVE ITEM
+    // TODO CLASS SIMPLE OPTION
+
   }
 
 }
