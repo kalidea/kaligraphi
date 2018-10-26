@@ -1,23 +1,19 @@
-/**
- * mixin generic for all forms element
- */
-/**
- * define default typography
- */
+/* ITCSS : ELEMENTS */
+/* ITCSS ORGANISATION */
 @font-face {
-  font-family: "AsapRegular";
+  font-family: AsapRegular;
   src: url("assets/fonts/Asap-Regular.woff2") format("woff2");
   font-weight: normal;
   font-style: normal; }
 @font-face {
-  font-family: "AsapSemiBold";
-  src: url("assets/fonts/Asap-SemiBold.woff2") format("woff2");
-  font-weight: 600;
-  font-style: normal; }
-@font-face {
-  font-family: "AsapMedium";
+  font-family: AsapMedium;
   src: url("assets/fonts/Asap-Medium.woff2") format("woff2");
   font-weight: 500;
+  font-style: normal; }
+@font-face {
+  font-family: AsapSemibold;
+  src: url("assets/fonts/Asap-SemiBold.woff2") format("woff2");
+  font-weight: 600;
   font-style: normal; }
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -54,7 +50,7 @@ blockquote, q {
 
 blockquote:before, blockquote:after,
 q:before, q:after {
-  content: '';
+  content: "";
   content: none; }
 
 table {
@@ -62,7 +58,7 @@ table {
   border-spacing: 0; }
 
 html {
-  font-family: Arial, Helvetica, Sans-Serif;
+  font-family: Sans-Serif;
   text-rendering: optimizeLegibility;
   height: 100vh;
   color: #1F1F1F; }

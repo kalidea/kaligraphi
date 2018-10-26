@@ -1,4 +1,4 @@
-// COLOR PARAMETERS
+//*  COLOR PARAMETERS  */
 $color-orange: #e89536 !default; // rgb(232,149,54)
 $color-danger: #d35e3a !default; // rgb(211,94,58)
 $color-warning: #E2C135 !default; // rgb(226,193,53)
@@ -13,8 +13,7 @@ $color-neutre70: #D6D6D6 !default; // rgb(214,214,214)
 $color-neutre90: #F5F5F5 !default; // rgb(245,245,245)
 $color-neutre100: #FFFFFF !default; // rgb(255,255,255)
 
-
-//FONT PARAMETERS
+//*  FONT PARAMETERS  */
 $font-face-regular: 'AsapRegular' !default;
 $font-face-medium: 'AsapMedium' !default;
 $font-face-semibold: 'AsapSemiBold' !default;
@@ -26,9 +25,14 @@ $base-font-lineheight: 24px !default;
 $base-font-weight: 400 !default;
 $base-radius: 3px !default;
 
+//*  FONTFACES PARAMETERS  */
+$fontfaces: (
+  Regular: ( AsapRegular, Asap-Regular, normal, normal ),
+  Medium: ( AsapMedium, Asap-Medium, 500, normal),
+  SemiBold: ( AsapSemibold, Asap-SemiBold, 600, normal )
+);
 
-
-// HEADINGS PARAMETERS
+//*  HEADINGS PARAMETERS  */
 $headings: (
   1: ( $font-face-medium, $base-font-size + 25, 54px ),
   2: ( $font-face-semibold, $base-font-size + 19, 45px ),
@@ -38,6 +42,7 @@ $headings: (
   6: ( $font-face-medium, $base-font-size + 3, 28px )
 );
 
+//*  GENERIC PARAMETERS  */
 $parameters: (
   palette: (
     primary: (

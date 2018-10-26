@@ -10,29 +10,30 @@
 @import "../lib/molecules/kal-textarea/kal-textarea.component"
 
 // functions
-@import "02_Tools/Functions/deep-map-get"
+@import "functions/deep-map-get"
 
 // Mixins
-@import "02_Tools/Mixins/form"
-@import "02_Tools/Mixins/font-face"
-@import "02_Tools/Mixins/typography"
-
-// Reset html
-@import "03_Generics/fontface"
-@import "03_Generics/reset"
-
+@import "mixins/fontfaces"
+@import "mixins/reset"
+@import "mixins/elements"
+@import "mixins/form"
 
 =kaligraphi($parameters)
-  // typography
-  +kal-typography($parameters)
 
+  /* ITCSS ORGANISATION */
+  // variables in parameters
+  // fontfaces
+  +kal-fontfaces($parameters)
+  // reset
+  +kal-reset($parameters)
+  // elements
+  +kal-elements($parameters)
   // atoms
   +kal-input($parameters)
   +kal-select($parameters)
   +kal-checkbox($parameters)
   +kal-icon($parameters)
   +kal-rater($parameters)
-
   // molecules
   +kal-button($parameters)
   +kal-textarea($parameters)
