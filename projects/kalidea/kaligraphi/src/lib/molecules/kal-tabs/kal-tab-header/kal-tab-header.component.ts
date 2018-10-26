@@ -1,5 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { CdkPortalOutlet, TemplatePortal } from '@angular/cdk/portal';
 
 @Component({
   selector: 'kal-tab-header',
@@ -8,12 +13,17 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalTabHeaderComponent implements OnInit {
+export class KalTabHeaderComponent implements OnInit, AfterViewInit {
 
   /**
    * The label of the header
    */
   @Input() label = '';
+
+  /**
+   * If the label contains icons, we need to use the templateLabel
+   */
+  @Input() templateLabel: TemplatePortal<any> = null;
 
   /**
    * Is the header selected
@@ -24,6 +34,11 @@ export class KalTabHeaderComponent implements OnInit {
    * Is the header disabled
    */
   private isDisabled = false;
+
+  /**
+   * The reference to the cdk portal outlet
+   */
+  @ViewChild(CdkPortalOutlet) portalOutlet: CdkPortalOutlet;
 
   constructor(private cdr: ChangeDetectorRef) {
   }
@@ -56,6 +71,20 @@ export class KalTabHeaderComponent implements OnInit {
 
   ngOnInit() {
     this.cdr.markForCheck();
+  }
+
+  ngAfterViewInit() {
+    this.attachTemplatePortal();
+  }
+
+  /**
+   * Attach a template portal
+   */
+  private attachTemplatePortal() {
+    if (this.templateLabel) {
+      this.portalOutlet.attachTemplatePortal(this.templateLabel);
+      this.cdr.detectChanges();
+    }
   }
 
 }

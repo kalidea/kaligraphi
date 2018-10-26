@@ -10,7 +10,6 @@ import {
   QueryList,
   ViewEncapsulation
 } from '@angular/core';
-import { TemplatePortal } from '@angular/cdk/portal';
 import { KalTabComponent } from '../kal-tab/kal-tab.component';
 
 export class KalTabChange {
@@ -26,11 +25,6 @@ export class KalTabChange {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class KalTabGroupComponent implements OnInit, AfterContentInit {
-
-  /**
-   * Content to display in the tab body component
-   */
-  contentTemplatePortal: TemplatePortal;
 
   /**
    * This event is emitted when a tab is selected

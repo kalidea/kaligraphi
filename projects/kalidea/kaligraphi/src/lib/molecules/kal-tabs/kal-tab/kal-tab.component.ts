@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ContentChild, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { KalTabLabelDirective } from '../kal-tab-label.directive';
 
 @Component({
   selector: 'kal-tab',
@@ -15,6 +16,11 @@ export class KalTabComponent implements OnInit {
    * Label of the header
    */
   @Input() label = '';
+
+  /**
+   * Template label of the header
+   */
+  @ContentChild(KalTabLabelDirective) templateLabel: KalTabLabelDirective;
 
   /**
    * The reference to the template portal
