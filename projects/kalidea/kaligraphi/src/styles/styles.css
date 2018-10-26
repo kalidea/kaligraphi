@@ -46,27 +46,17 @@ table {
 /**
  * define default typography
  */
-small {
-  font-size: 80%; }
-
-mark {
-  padding: 0.1em; }
-
-pre {
-  word-wrap: break-word;
-  white-space: -moz-pre-wrap;
-  white-space: pre-wrap; }
-
 html {
   font-family: Arial, Helvetica, Sans-Serif;
   text-rendering: optimizeLegibility;
-  height: 100vh; }
+  height: 100vh;
+  color: #1F1F1F; }
 
 body {
   font-family: Asap;
   font-size: 17px;
-  color: #1f1f1f;
-  background-color: white; }
+  color: #1F1F1F;
+  background-color: #FFFFFF; }
 
 p {
   font-size: 1em; }
@@ -74,7 +64,7 @@ p {
 a {
   font-family: inherit;
   font-size: inherit;
-  color: #e79536;
+  color: #e89536;
   text-decoration: none; }
 
 strong {
@@ -113,23 +103,46 @@ h6 {
   font-size: 17px;
   line-height: 28px; }
 
+small {
+  font-size: 80%; }
+
+mark {
+  padding: 0.1em; }
+
+pre {
+  word-wrap: break-word;
+  /* IE 5.5-7 */
+  white-space: -moz-pre-wrap;
+  /* Firefox 1.0-2.0 */
+  white-space: pre-wrap; }
+
+/* current browsers */
 kal-input {
   border-width: 1px;
   border-style: "solid";
   border-color: #000;
   border-radius: 3px; }
+  kal-input.ng-invalid {
+    border-left: 2px solid green; }
 
 kal-select {
   border-width: 1px;
   border-style: "solid";
   border-color: #000;
   border-radius: 3px; }
+  kal-select.ng-invalid {
+    border-left: 2px solid green; }
 
 kal-checkbox {
   border-width: 1px;
   border-style: "solid";
   border-color: #000;
   border-radius: 3px; }
+  kal-checkbox.ng-invalid {
+    border-left: 2px solid green; }
+
+kal-icon > i {
+  padding: 0.5rem; }
 
 kal-button input {
   border: none; }
@@ -139,5 +152,7 @@ kal-textarea {
   border-style: "solid";
   border-color: #000;
   border-radius: 3px; }
+  kal-textarea.ng-invalid {
+    border-left: 2px solid green; }
 
 /*# sourceMappingURL=styles.css.map */

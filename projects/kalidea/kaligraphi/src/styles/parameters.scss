@@ -1,87 +1,58 @@
-$base-font-family: Asap !default;
-$base-font-style: normal !default;;
-$base-font-size: 17px !default;;
-$base-font-lineheight: 21 !default;;
-$base-font-weight: 400 !default;;
-$base-font-color: $color-neutre0 !default;
+// COLOR PARAMETERS
+$color-orange: #e89536 !default; // rgb(232,149,54)
+$color-danger: #d35e3a !default; // rgb(211,94,58)
+$color-warning: #E2C135 !default; // rgb(226,193,53)
+$color-info: #21C0D9 !default; // rgb(33,192,217)
+$color-success: #1FD29D !default; // rgb(31,210,157)
+$color-neutre0: #1F1F1F !default; // rgb(31,31,31)
+$color-neutre5: #3D3D3D !default; // rgb(61,61,61)
+$color-neutre10: #5C5C5C !default; // rgb(92,92,92)
+$color-neutre30: #7A7A7A !default; // rgb(122,122,122)
+$color-neutre50: #B8B8B8 !default; // rgb(184,184,184)
+$color-neutre70: #D6D6D6 !default; // rgb(214,214,214)
+$color-neutre90: #F5F5F5 !default; // rgb(245,245,245)
+$color-neutre100: #FFFFFF !default; // rgb(255,255,255)
 
+//FONT PARAMETERS
+$base-font-family: Asap !default;
+$base-font-style: normal !default;
+$base-font-size: 17px !default;
+$base-font-lineheight: 21 !default;
+$base-font-weight: 400 !default;
 $base-radius: 3px !default;
 
-$palettes: (
-  claire: (
-    primary: (
-      'orange': hsl(32, 79%, 56%)
-    ),
-    status: (
-      danger: hsl(14, 64%, 53%),
-      warning: hsl(49, 75%, 55%),
-      info: hsl(188, 74%, 49%),
-      success: hsl(162, 74%, 47%)
-    ),
-    neutral: (
-      neutre0: hsl(0, 0%, 12%),
-      neutre5: hsl(0, 0%, 24%),
-      neutre10: hsl(0, 0%, 36%),
-      neutre30: hsl(0, 0%, 48%),
-      neutre50: hsl(0, 0%, 72%),
-      neutre70: hsl(0, 0%, 84%),
-      neutre90: hsl(0, 0%, 96%),
-      neutre100: hsl(0, 0%, 100%)
-    )
-  ),
-  sombre: (
-    primary: (
-      'orange': hsl(32, 79%, 56%)
-    ),
-    status: (
-      danger: hsl(14, 64%, 53%),
-      warning: hsl(49, 75%, 55%),
-      info: hsl(188, 74%, 49%),
-      success: hsl(162, 74%, 47%)
-    ),
-    neutral: (
-      neutre0: hsl(0, 0%, 12%),
-      neutre5: hsl(0, 0%, 24%),
-      neutre10: hsl(0, 0%, 36%),
-      neutre30: hsl(0, 0%, 48%),
-      neutre50: hsl(0, 0%, 72%),
-      neutre70: hsl(0, 0%, 84%),
-      neutre90: hsl(0, 0%, 96%),
-      neutre100: hsl(0, 0%, 100%)
-    )
-  )
-);
-
+// HEADINGS PARAMETERS
 $headings: (
-  1: (
-    $base-font-family,
-    $base-font-size + 25,
-    54px
-  ),
-  2: (
-    $base-font-family, $base-font-size + 19,
-    45px
-  ),
-  3: (
-    $base-font-family, $base-font-size + 14,
-    39px
-  ),
-  4: (
-    $base-font-family, $base-font-size + 10,
-    36px
-  ),
-  5: (
-    $base-font-family, $base-font-size + 5,
-    30px
-  ),
-  6: (
-    $base-font-family,
-    $base-font-size,
-    28px
-  )
+  1: ( $base-font-family, $base-font-size + 25, 54px ),
+  2: ( $base-font-family, $base-font-size + 19, 45px ),
+  3: ( $base-font-family, $base-font-size + 14, 39px ),
+  4: ( $base-font-family, $base-font-size + 10, 36px ),
+  5: ( $base-font-family, $base-font-size + 5, 30px ),
+  6: ( $base-font-family, $base-font-size, 28px )
 );
 
 $parameters: (
+  palette: (
+    primary: (
+      $color-orange
+    ),
+    status: (
+      $color-danger,
+      $color-warning,
+      $color-info,
+      $color-success
+    ),
+    neutral: (
+      $color-neutre0,
+      $color-neutre5,
+      $color-neutre10,
+      $color-neutre30,
+      $color-neutre50,
+      $color-neutre70,
+      $color-neutre90,
+      $color-neutre100
+    )
+  ),
   form: (
     font: $base-font-family,
     border: (
