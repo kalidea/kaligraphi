@@ -32,7 +32,7 @@ export class KalRadioChange {
   selector: 'kal-radio-group',
   template: `
     <ng-content></ng-content>`,
-  providers: [...buildProviders(KalRadioGroupComponent)],
+  providers: buildProviders(KalRadioGroupComponent),
 })
 export class KalRadioGroupComponent extends FormElementComponent<any> implements OnInit {
 

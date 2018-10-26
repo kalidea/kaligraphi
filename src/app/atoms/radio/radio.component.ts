@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { KalRadioChange } from '../../../../projects/kalidea/kaligraphi/src/lib/atoms/kal-radio/kal-radio.component';
 
@@ -41,7 +41,8 @@ export class RadioComponent implements OnInit {
    */
   id: string;
 
-  constructor() { }
+  constructor() {
+  }
 
   /**
    * Change radio button group value by using control
@@ -69,7 +70,11 @@ export class RadioComponent implements OnInit {
    * Disabled the radio button group that using control
    */
   disableGroupByControl() {
-    this.control.disable();
+    if (!this.control.disabled) {
+      this.control.disable();
+    } else {
+      this.control.enable();
+    }
   }
 
   /**

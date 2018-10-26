@@ -5,8 +5,8 @@ import { KalRadioComponent, KalRadioGroupComponent } from './kal-radio.component
 export * from './kal-radio.component';
 
 const exports = [
-  KalRadioComponent,
-  KalRadioGroupComponent
+  KalRadioGroupComponent,
+  KalRadioComponent
 ];
 
 @NgModule({
