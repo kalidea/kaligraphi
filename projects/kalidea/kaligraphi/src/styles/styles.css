@@ -87,7 +87,8 @@ a {
   font-family: inherit;
   font-size: inherit;
   color: #e89536;
-  text-decoration: none; }
+  text-decoration: none;
+  cursor: pointer; }
 
 strong {
   font-weight: bold; }
