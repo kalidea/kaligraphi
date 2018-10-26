@@ -167,9 +167,6 @@ kal-checkbox {
   kal-checkbox.ng-invalid {
     border-left: 2px solid green; }
 
-kal-icon > i {
-  padding: 0.5rem; }
-
 /* Molecules */
 kal-button input {
   border: none; }
