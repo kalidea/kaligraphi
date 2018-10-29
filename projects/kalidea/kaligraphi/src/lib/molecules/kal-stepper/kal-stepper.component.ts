@@ -1,75 +1,38 @@
 import {
   AfterContentInit,
-  ChangeDetectionStrategy, ChangeDetectorRef,
+  ChangeDetectionStrategy,
   Component,
-  ContentChildren, ElementRef, Input,
-  OnDestroy,
+  ContentChildren,
+  Directive,
+  ElementRef, forwardRef,
+  HostBinding, Input,
   QueryList,
   ViewEncapsulation
 } from '@angular/core';
 import { CdkStepper } from '@angular/cdk/stepper';
+import { FocusableOption } from '@angular/cdk/a11y';
 import { takeUntil } from 'rxjs/operators';
 
 import { KalStepComponent } from './kal-step/kal-step.component';
-import { Subscription } from 'rxjs';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 
-@Component({
-  selector: 'mat-step-header',
-  templateUrl: 'step-header.html',
-  styleUrls: ['step-header.css'],
-  host: {
-    'class': 'mat-step-header',
-    'role': 'tab',
-  },
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+// bug in cdk, should provide this class ourselves
+// https://github.com/angular/material2/pull/10614/files#diff-6c5ad0b93867d084db7acfd30f02d32bR247
+// should remove in cdk 7.x
+@Directive({
+  selector: '[kalStepHeader]',
 })
-export class MatStepHeader implements OnDestroy {
-  private _intlSubscription: Subscription;
+export class KalStepHeaderDirective implements FocusableOption {
 
-  /** State of the given step. */
-  @Input() state: string;
-
-  /** Index of the given step. */
-  @Input() index: number;
-
-  /** Whether the given step is selected. */
-  @Input() selected: boolean;
-
-  /** Whether the given step label is active. */
-  @Input() active: boolean;
-
-  /** Whether the given step is optional. */
-  @Input() optional: boolean;
-
-  constructor(
-    private _element: ElementRef<HTMLElement>,
-    changeDetectorRef: ChangeDetectorRef) {
+  constructor(protected _elementRef: ElementRef<HTMLElement>) {
   }
 
-  ngOnDestroy() {
-  }
-
-  /** Returns string label of given step if it is a text label. */
-  _stringLabel() {
-  }
-
-  /** Returns MatStepLabel if the label of given step is a template label. */
-  _templateLabel() {
-  }
-
-  /** Returns the host HTML element. */
-  _getHostElement() {
-    return this._element.nativeElement;
-  }
-
-
+  /** Focuses the step header. */
   focus() {
-    this._getHostElement().focus();
+    this._elementRef.nativeElement.focus();
   }
 }
-
 
 @Component({
   selector: 'kal-stepper',
@@ -80,24 +43,18 @@ export class MatStepHeader implements OnDestroy {
 })
 export class KalStepperComponent extends CdkStepper implements AfterContentInit {
 
-  /** Steps that the stepper holds. */
-  @ContentChildren(KalStepComponent) _steps: QueryList<KalStepComponent>;
+  @HostBinding('attr.role') role = 'tablist';
+  @HostBinding('attr.aria-orientation') orientation = this._orientation;
 
-  @ContentChildren(MatStepHeader) _stepHeader: QueryList<MatStepHeader>;
+  /** Steps that the stepper holds. */
+  @ContentChildren(forwardRef(() => KalStepComponent)) _steps: QueryList<KalStepComponent>;
+
+  @ContentChildren(KalStepHeaderDirective) _stepHeader: QueryList<KalStepHeaderDirective>;
 
   ngAfterContentInit(): void {
-    this._steps.changes.pipe(takeUntil(this._destroyed)).subscribe(() => this._stateChanged());
+    this._steps.changes.pipe(
+      takeUntil(this._destroyed)
+    ).subscribe(() => this._stateChanged());
   }
 
-
 }
-
-
-/**
- * @license
- * Copyright Google LLC All Rights Reserved.
- *
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://angular.io/license
- */
-

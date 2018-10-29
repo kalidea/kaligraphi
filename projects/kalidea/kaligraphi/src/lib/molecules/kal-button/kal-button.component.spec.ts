@@ -5,7 +5,7 @@ import { KalButtonComponent } from './kal-button.component';
 import { KalIconComponent } from './../../atoms/kal-icon/kal-icon.component';
 
 
-fdescribe('KalButtonComponent', () => {
+describe('KalButtonComponent', () => {
   let component: KalButtonComponent;
   let fixture: ComponentFixture<KalButtonComponent>;
 

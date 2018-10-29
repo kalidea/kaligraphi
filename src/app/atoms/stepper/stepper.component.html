@@ -1,0 +1,30 @@
+
+<kal-stepper [linear]="true" >
+
+  <kal-step [stepControl]="firstFormGroup">
+
+    <ng-template kalStepLabel> First step</ng-template>
+
+    <form [formGroup]="firstFormGroup">
+
+      <kal-input formControlName="email"></kal-input>
+      <div>
+        <button >Next 1</button>
+      </div>
+    </form>
+
+  </kal-step>
+
+  <kal-step [stepControl]="secondFormGroup">
+
+    <ng-template kalStepLabel>Second Step</ng-template>
+
+    <form [formGroup]="secondFormGroup">
+      <kal-input formControlName="firstname"></kal-input>
+      <div>
+        <button >Next 2</button>
+      </div>
+    </form>
+
+  </kal-step>
+</kal-stepper>

@@ -1,0 +1,17 @@
+<div class="kal-step-header-ripple" ></div>
+<div [class.kal-step-icon]="state !== 'number' || selected"
+     [class.kal-step-icon-not-touched]="state == 'number' && !selected"
+     [ngSwitch]="state">
+
+</div>
+<div class="kal-step-label"
+     [class.kal-step-label-active]="active"
+     [class.kal-step-label-selected]="selected">
+  <!-- If there is a label template, use it. -->
+  <ng-container *ngIf="templateLabel()" [ngTemplateOutlet]="templateLabel()!.template">
+  </ng-container>
+  <!-- It there is no label template, fall back to the text label. -->
+  <div class="kal-step-text-label" *ngIf="stringLabel()">{{label}}</div>
+
+  <!--<div class="kal-step-optional" *ngIf="optional">{{_intl.optionalLabel}}</div>-->
+</div>
