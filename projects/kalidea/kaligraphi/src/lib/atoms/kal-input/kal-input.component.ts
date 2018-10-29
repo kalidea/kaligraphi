@@ -88,7 +88,7 @@ export class KalInputComponent extends FormElementComponent<string> implements O
   }
 
   clearField() {
-    this.control.reset();
+    this.control.setValue('');
   }
 
   /**
