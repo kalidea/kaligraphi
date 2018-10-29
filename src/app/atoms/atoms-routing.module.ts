@@ -6,6 +6,7 @@ import { CheckboxComponent } from 'src/app/atoms/checkbox/checkbox.component';
 import { RadioComponent } from 'src/app/atoms/radio/radio.component';
 import { IconComponent } from 'src/app/atoms/icon/icon.component';
 import { RaterComponent } from 'src/app/atoms/rater/rater.component';
+import { ProgressBarComponent } from 'src/app/atoms/progress-bar/progress-bar.component';
 
 const routes: Routes = [
   {path: 'input', component: InputComponent},
@@ -14,6 +15,7 @@ const routes: Routes = [
   {path: 'radio', component: RadioComponent},
   {path: 'icon', component: IconComponent},
   {path: 'rater', component: RaterComponent},
+  {path: 'progress-bar', component: ProgressBarComponent},
 ];
 
 @NgModule({
