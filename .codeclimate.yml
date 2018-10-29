@@ -1,4 +1,13 @@
 version: "2"
+
+checks:
+  method-complexity:
+    config:
+      threshold: 7
+  file-lines:
+    config:
+      threshold: 500
+
 plugins:
   tslint:
     enabled: true
