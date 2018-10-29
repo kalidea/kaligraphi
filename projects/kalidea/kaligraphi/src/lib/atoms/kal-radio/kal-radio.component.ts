@@ -1,13 +1,17 @@
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component, ContentChildren, EventEmitter,
+  Component,
+  ContentChildren,
+  EventEmitter,
   forwardRef,
   Inject,
   Input,
   OnDestroy,
   OnInit,
-  Optional, Output, QueryList,
+  Optional,
+  Output,
+  QueryList,
   ViewEncapsulation
 } from '@angular/core';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
@@ -21,7 +25,7 @@ import { KalRadioChange } from './kal-radio-change';
     <ng-content></ng-content>`,
   providers: buildProviders(KalRadioGroupComponent),
 })
-export class KalRadioGroupComponent extends FormElementComponent<any> implements OnInit {
+export class KalRadioGroupComponent extends FormElementComponent<any> {
 
   /**
    * The list of all radio buttons component
@@ -191,9 +195,6 @@ export class KalRadioGroupComponent extends FormElementComponent<any> implements
     this.cdr.markForCheck();
   }
 
-  ngOnInit() {
-  }
-
 }
 
 @Component({
@@ -206,11 +207,6 @@ export class KalRadioGroupComponent extends FormElementComponent<any> implements
 export class KalRadioComponent implements OnInit, OnDestroy {
 
   /**
-   * The unique id of the radio button
-   */
-  private readonly uniqueId = uniqid('kal-radio-button-id-');
-
-  /**
    * The given radio group
    */
   radioGroup: KalRadioGroupComponent;
@@ -219,6 +215,21 @@ export class KalRadioComponent implements OnInit, OnDestroy {
    * The HTML name attribute that given to the radio button
    */
   @Input() name: string;
+
+  /**
+   * The position of the label after or before the radio button. Defaults to after
+   */
+  labelRadioPosition: 'before' | 'after';
+
+  /**
+   * Triggered when the radio button value has changed
+   */
+  @Output() valueChange = new EventEmitter<KalRadioChange>();
+
+  /**
+   * The unique id of the radio button
+   */
+  private readonly uniqueId = uniqid('kal-radio-button-id-');
 
   /**
    * The unique id
@@ -241,19 +252,10 @@ export class KalRadioComponent implements OnInit, OnDestroy {
   private disabledRadio = false;
 
   /**
-   * The position of the label after or before the radio button. Defaults to after
-   */
-  labelRadioPosition: 'before' | 'after';
-
-  /**
-   * Triggered when the radio button value has changed
-   */
-  @Output() valueChange = new EventEmitter<KalRadioChange>();
-
-  /**
    * Unregister function for radioDispatcher
    */
-  private removeUniqueSelectionListener: () => void = () => {};
+  private removeUniqueSelectionListener: () => void = () => {
+  }
 
   constructor(@Optional() @Inject(forwardRef(() => KalRadioGroupComponent)) radioGroup: KalRadioGroupComponent,
               private radioDispatcher: UniqueSelectionDispatcher,
@@ -266,13 +268,6 @@ export class KalRadioComponent implements OnInit, OnDestroy {
           this.checked = false;
         }
       });
-  }
-
-  /**
-   * Emit an event with the radio buttons component and its value
-   */
-  private emitChangeEvent() {
-    this.valueChange.emit(new KalRadioChange(this, this.value));
   }
 
   /**
@@ -335,6 +330,7 @@ export class KalRadioComponent implements OnInit, OnDestroy {
   get value() {
     return this.radioValue;
   }
+
   set value(value: any) {
     this.radioValue = value;
   }
@@ -370,6 +366,13 @@ export class KalRadioComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.removeUniqueSelectionListener();
+  }
+
+  /**
+   * Emit an event with the radio buttons component and its value
+   */
+  private emitChangeEvent() {
+    this.valueChange.emit(new KalRadioChange(this, this.value));
   }
 
 }
