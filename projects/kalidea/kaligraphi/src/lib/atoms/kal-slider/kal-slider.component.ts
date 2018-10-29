@@ -29,13 +29,23 @@ export class KalSliderComponent extends FormControlAccessComponent<number> imple
    */
   @Output() readonly valueChange: EventEmitter<number> = new EventEmitter<number>();
 
+  /**
+   * Control related to the `input`
+   */
   control = new FormControl(0);
+
   private sliderValue = 0;
+
   private limitSliderValue = 0;
+
   private isDisabled = false;
+
   private sliderStep = 1;
+
   private displayThumbLabel = false;
+
   private tickIntervalValue = 0;
+
   private valueChangeSubscription = Subscription.EMPTY;
 
   constructor(private cdr: ChangeDetectorRef) {
@@ -58,6 +68,10 @@ export class KalSliderComponent extends FormControlAccessComponent<number> imple
     }
   }
 
+  /**
+   * Slider value.
+   * If a limit value has been defined and is less than the given value, sets the value to the limit.
+   */
   @Input()
   get value(): number {
     return this.sliderValue;
@@ -107,7 +121,7 @@ export class KalSliderComponent extends FormControlAccessComponent<number> imple
    * Ex: Tick interval of 4 with a step of 3 will draw a tick every 4 steps (every 12 values).
    */
   @Input()
-  get tickInterval() {
+  get tickInterval(): number {
     return this.tickIntervalValue;
   }
   set tickInterval(value: number) {
