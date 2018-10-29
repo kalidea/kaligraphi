@@ -9,6 +9,7 @@ import { SelectComponent } from 'src/app/atoms/select/select.component';
 import { CheckboxComponent } from 'src/app/atoms/checkbox/checkbox.component';
 import { IconComponent } from 'src/app/atoms/icon/icon.component';
 import { RaterComponent } from 'src/app/atoms/rater/rater.component';
+import { SliderComponent } from 'src/app/atoms/slider/slider.component';
 
 @NgModule({
   imports: [
@@ -24,6 +25,7 @@ import { RaterComponent } from 'src/app/atoms/rater/rater.component';
     CheckboxComponent,
     IconComponent,
     RaterComponent,
+    SliderComponent,
   ]
 })
 export class AtomsModule { }
