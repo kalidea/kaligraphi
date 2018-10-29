@@ -10,12 +10,9 @@ import {
   QueryList,
   ViewEncapsulation
 } from '@angular/core';
+import { CdkPortalOutlet, TemplatePortal } from '@angular/cdk/portal';
 import { KalTabComponent } from '../kal-tab/kal-tab.component';
-
-export class KalTabChange {
-  constructor(public tab: KalTabComponent, public index: number) {
-  }
-}
+import { KalTabChange } from '../kal-tab-change';
 
 @Component({
   selector: 'kal-tab-group',
@@ -58,6 +55,16 @@ export class KalTabGroupComponent implements OnInit, AfterContentInit {
     if (!tab.disabled) {
       this.selectedTabIndex = tabIndex;
       this.selectedTab.emit(new KalTabChange(tab, tabIndex));
+    }
+  }
+
+  /**
+   * Attach a template portal
+   */
+  attachTemplatePortal(portalOutlet: CdkPortalOutlet, content: TemplatePortal, cdr: ChangeDetectorRef) {
+    if (content) {
+      portalOutlet.attachTemplatePortal(content);
+      cdr.detectChanges();
     }
   }
 

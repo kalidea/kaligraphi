@@ -1,8 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { PortalModule } from '@angular/cdk/portal';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { KalTabBodyComponent } from './kal-tab-body.component';
+import { KalTabGroupComponent } from '../kal-tab-group/kal-tab-group.component';
+import { KalTabHeaderComponent } from '../kal-tab-header/kal-tab-header.component';
 
 describe('KalTabBodyComponent', () => {
   let component: KalTabBodyComponent;
@@ -14,9 +15,11 @@ describe('KalTabBodyComponent', () => {
         PortalModule
       ],
       declarations: [
-        KalTabBodyComponent
+        KalTabBodyComponent,
+        KalTabGroupComponent,
+        KalTabHeaderComponent
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      // schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   }));

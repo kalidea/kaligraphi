@@ -1,10 +1,11 @@
 import {
   AfterViewInit,
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewChild,
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, Inject, Input, OnInit, Optional, ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { CdkPortalOutlet, TemplatePortal } from '@angular/cdk/portal';
+import { KalTabGroupComponent } from '../kal-tab-group/kal-tab-group.component';
 
 @Component({
   selector: 'kal-tab-header',
@@ -40,7 +41,8 @@ export class KalTabHeaderComponent implements OnInit, AfterViewInit {
    */
   @ViewChild(CdkPortalOutlet) portalOutlet: CdkPortalOutlet;
 
-  constructor(private cdr: ChangeDetectorRef) {
+  constructor(private cdr: ChangeDetectorRef,
+              @Optional() @Inject(forwardRef(() => KalTabGroupComponent)) public tabGroup: KalTabGroupComponent) {
   }
 
   /**
@@ -70,21 +72,11 @@ export class KalTabHeaderComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.cdr.markForCheck();
   }
 
   ngAfterViewInit() {
-    this.attachTemplatePortal();
-  }
-
-  /**
-   * Attach a template portal
-   */
-  private attachTemplatePortal() {
-    if (this.templateLabel) {
-      this.portalOutlet.attachTemplatePortal(this.templateLabel);
-      this.cdr.detectChanges();
+    if (this.tabGroup) {
+      this.tabGroup.attachTemplatePortal(this.portalOutlet, this.templateLabel, this.cdr);
     }
   }
-
 }

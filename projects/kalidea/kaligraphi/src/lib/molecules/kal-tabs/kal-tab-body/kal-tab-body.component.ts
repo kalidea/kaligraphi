@@ -3,12 +3,16 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  forwardRef,
+  Inject,
   Input,
   OnInit,
+  Optional,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 import { CdkPortalOutlet, TemplatePortal } from '@angular/cdk/portal';
+import { KalTabGroupComponent } from '../kal-tab-group/kal-tab-group.component';
 
 @Component({
   selector: 'kal-tab-body',
@@ -29,23 +33,16 @@ export class KalTabBodyComponent implements OnInit, AfterViewInit {
    */
   @ViewChild(CdkPortalOutlet) portalOutlet: CdkPortalOutlet;
 
-  constructor(private cdr: ChangeDetectorRef) {
+  constructor(private cdr: ChangeDetectorRef,
+              @Optional() @Inject(forwardRef(() => KalTabGroupComponent)) public tabGroup: KalTabGroupComponent) {
   }
 
   ngOnInit() {
   }
 
   ngAfterViewInit() {
-    this.attachTemplatePortal();
-  }
-
-  /**
-   * Attach a template portal
-   */
-  private attachTemplatePortal() {
-    if (this.content) {
-      this.portalOutlet.attachTemplatePortal(this.content);
-      this.cdr.markForCheck();
+    if (this.tabGroup) {
+      this.tabGroup.attachTemplatePortal(this.portalOutlet, this.content, this.cdr);
     }
   }
 }
