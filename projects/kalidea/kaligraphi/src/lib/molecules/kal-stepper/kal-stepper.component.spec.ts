@@ -7,12 +7,13 @@ import { KalStepperComponent } from './kal-stepper.component';
 import { KalStepComponent } from './kal-step/kal-step.component';
 import { KalStepLabelDirective } from './directives/kal-step-label.directive';
 import { KalStepHeaderComponent } from './kal-step-header/kal-step-header.component';
+import { KalStepperModule } from 'projects/kalidea/kaligraphi/src/lib/molecules/kal-stepper/kal-stepper.module';
 
 @Component({
   selector: 'kal-test',
   template: `
     <h1>Test Stepper</h1>
-    <kal-stepper #stepper>
+    <kal-stepper #stepper linear="true">
       <kal-step [stepControl]="form">
         <ng-template kalStepLabel>
           First step
@@ -59,13 +60,10 @@ describe('KalStepperComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
+        KalStepperModule
       ],
       declarations: [
         TestComponent,
-        KalStepperComponent,
-        KalStepComponent,
-        KalStepLabelDirective,
-        KalStepHeaderComponent
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -107,4 +105,23 @@ describe('KalStepperComponent', () => {
     expectVisibilityOf(1);
   });
 
+  it('should prevent click on step if stepControl contain error', () => {
+    expect(component.form.valid).toBeTruthy('form control should be valid');
+
+    // add validator to set form.email in error
+    component.setValidators();
+    component.form.get('email').setValue('');
+    fixture.detectChanges();
+    expect(component.form.valid).toBeFalsy('form control should be invalid');
+    clickOnHeader(1);
+    fixture.detectChanges();
+    expectVisibilityOf(0);
+
+    // set  value
+    component.form.get('email').patchValue('kalidea@kalidea.com');
+    clickOnHeader(1);
+    fixture.detectChanges();
+    expectVisibilityOf(1);
+
+  });
 });

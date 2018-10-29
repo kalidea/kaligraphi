@@ -6,19 +6,22 @@ import { KalSelectModule } from './kal-select/kal-select.module';
 import { KalRaterModule } from './kal-rater/kal-rater.module';
 import { KalStepperModule } from './kal-stepper/kal-stepper.module';
 import { KalTabModule } from './kal-tabs/kal-tab.module';
+import { KalButtonModule } from './kal-button/kal-button.module';
 
 export * from './kal-textarea/kal-textarea.module';
 export * from './kal-select/kal-select.module';
 export * from './kal-rater/kal-rater.module';
 export * from './kal-stepper/kal-stepper.module';
 export * from './kal-tabs/kal-tab.module';
+export * from './kal-button/kal-button.module';
 
 const exports = [
   KalTextareaModule,
   KalSelectModule,
   KalRaterModule,
   KalTabModule,
-  KalStepperModule
+  KalStepperModule,
+  KalButtonModule
 ];
 
 @NgModule({

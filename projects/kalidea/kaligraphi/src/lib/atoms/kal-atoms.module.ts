@@ -9,7 +9,7 @@ import { KalProgressBarModule } from './kal-progress-bar/kal-progress-bar.module
 export * from './kal-input/kal-input.module';
 export * from './kal-checkbox/kal-checkbox.module';
 export * from './kal-icon/kal-icon.module';
-export  * from './kal-progress-bar/kal-progress-bar.module';
+export * from './kal-progress-bar/kal-progress-bar.module';
 
 const exports = [
   KalCheckboxModule,

@@ -10,7 +10,6 @@ import { CheckboxComponent } from 'src/app/atoms/checkbox/checkbox.component';
 import { IconComponent } from 'src/app/atoms/icon/icon.component';
 import { RaterComponent } from 'src/app/atoms/rater/rater.component';
 import { ProgressBarComponent } from 'src/app/atoms/progress-bar/progress-bar.component';
-import { StepperComponent } from 'src/app/atoms/stepper/stepper.component';
 
 @NgModule({
   imports: [
@@ -26,8 +25,7 @@ import { StepperComponent } from 'src/app/atoms/stepper/stepper.component';
     CheckboxComponent,
     IconComponent,
     RaterComponent,
-    ProgressBarComponent,
-    StepperComponent,
+    ProgressBarComponent
   ]
 })
 export class AtomsModule { }

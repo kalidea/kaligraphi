@@ -9,7 +9,6 @@ import { KalStepperNextDirective, KalStepperPreviousDirective, KalStepLabelDirec
 export * from './kal-stepper.component';
 export * from './kal-step/kal-step.component';
 export * from './kal-step-header/kal-step-header.component';
-export * from './directives/kal-step-label.directive';
 export * from './directives/index';
 
 const exports = [
