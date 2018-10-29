@@ -7,6 +7,7 @@ import { RadioComponent } from 'src/app/atoms/radio/radio.component';
 import { IconComponent } from 'src/app/atoms/icon/icon.component';
 import { RaterComponent } from 'src/app/atoms/rater/rater.component';
 import { ProgressBarComponent } from 'src/app/atoms/progress-bar/progress-bar.component';
+import { SliderComponent } from 'src/app/atoms/slider/slider.component';
 
 const routes: Routes = [
   {path: 'input', component: InputComponent},
@@ -16,6 +17,7 @@ const routes: Routes = [
   {path: 'icon', component: IconComponent},
   {path: 'rater', component: RaterComponent},
   {path: 'progress-bar', component: ProgressBarComponent},
+  {path: 'slider', component: SliderComponent},
 ];
 
 @NgModule({
