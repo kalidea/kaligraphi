@@ -14,7 +14,7 @@ import { KalTabGroupComponent } from '../kal-tab-group/kal-tab-group.component';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalTabHeaderComponent implements OnInit, AfterViewInit {
+export class KalTabHeaderComponent implements AfterViewInit {
 
   /**
    * The label of the header
@@ -69,9 +69,6 @@ export class KalTabHeaderComponent implements OnInit, AfterViewInit {
   set selected(value: boolean) {
     this.isSelected = coerceBooleanProperty(value);
     this.cdr.markForCheck();
-  }
-
-  ngOnInit() {
   }
 
   ngAfterViewInit() {

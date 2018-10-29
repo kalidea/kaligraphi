@@ -21,7 +21,7 @@ import { KalTabGroupComponent } from '../kal-tab-group/kal-tab-group.component';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalTabBodyComponent implements OnInit, AfterViewInit {
+export class KalTabBodyComponent implements AfterViewInit {
 
   /**
    * Content to display in template
@@ -35,9 +35,6 @@ export class KalTabBodyComponent implements OnInit, AfterViewInit {
 
   constructor(private cdr: ChangeDetectorRef,
               @Optional() @Inject(forwardRef(() => KalTabGroupComponent)) public tabGroup: KalTabGroupComponent) {
-  }
-
-  ngOnInit() {
   }
 
   ngAfterViewInit() {

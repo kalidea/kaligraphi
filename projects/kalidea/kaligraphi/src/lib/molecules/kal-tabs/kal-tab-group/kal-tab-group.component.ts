@@ -21,7 +21,7 @@ import { KalTabChange } from '../kal-tab-change';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalTabGroupComponent implements OnInit, AfterContentInit {
+export class KalTabGroupComponent implements AfterContentInit {
 
   /**
    * This event is emitted when a tab is selected
@@ -66,9 +66,6 @@ export class KalTabGroupComponent implements OnInit, AfterContentInit {
       portalOutlet.attachTemplatePortal(content);
       cdr.detectChanges();
     }
-  }
-
-  ngOnInit() {
   }
 
   ngAfterContentInit() {

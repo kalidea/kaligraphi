@@ -10,7 +10,7 @@ import { KalTabLabelDirective } from '../kal-tab-label.directive';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalTabComponent implements OnInit {
+export class KalTabComponent {
 
   /**
    * Label of the header
@@ -69,8 +69,5 @@ export class KalTabComponent implements OnInit {
    */
   get content(): TemplatePortal<any> {
     return this.tabContent;
-  }
-
-  ngOnInit() {
   }
 }
