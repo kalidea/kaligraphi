@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { KalRadioChange } from '../../../../projects/kalidea/kaligraphi/src/lib/atoms/kal-radio/kal-radio-change';
+import { KalRadioChange } from '@kalidea/kaligraphi';
 
 @Component({
   selector: 'app-radio',

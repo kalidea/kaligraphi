@@ -1,22 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { KalRadioGroupComponent } from './kal-radio-group/kal-radio-group.component';
-import { KalRadioComponent } from './kal-radio/kal-radio.component';
+import { KalRadioComponent, KalRadioGroupComponent } from './kal-radio.component';
 
-export * from './kal-radio-group/kal-radio-group.component';
-export * from './kal-radio/kal-radio.component';
+export * from './kal-radio.component';
+export { KalRadioChange } from './kal-radio-change';
 
 const exports = [
-  KalRadioGroupComponent,
   KalRadioComponent,
+  KalRadioGroupComponent,
 ];
 
 @NgModule({
   imports: [
     CommonModule
   ],
-  exports: exports,
-  declarations: exports
+  declarations: exports,
+  exports: exports
 })
 export class KalRadioModule { }

@@ -1,4 +1,4 @@
-import { KalRadioComponent } from './kal-radio/kal-radio.component';
+import { KalRadioComponent } from './kal-radio.component';
 
 /**
  * The object that sent when a radio button is clicked
