@@ -2,12 +2,13 @@
 @import "../lib/atoms/kal-input/kal-input.component"
 @import "../lib/atoms/kal-checkbox/kal-checkbox.component"
 @import "../lib/atoms/kal-icon/kal-icon.component"
-@import "../lib/molecules/kal-rater/kal-rater.component"
+@import "../lib/atoms/kal-slider/kal-slider.component"
 
 // molecules
 @import "../lib/molecules/kal-button/kal-button.component"
 @import "../lib/molecules/kal-select/kal-select.component"
 @import "../lib/molecules/kal-textarea/kal-textarea.component"
+@import "../lib/molecules/kal-rater/kal-rater.component"
 
 // functions
 @import "functions/deep-map-get"
@@ -21,8 +22,9 @@
   +kal-select($parameters)
   +kal-checkbox($parameters)
   +kal-icon($parameters)
-  +kal-rater($parameters)
+  +kal-slider($parameters)
 
   // molecules
   +kal-button($parameters)
   +kal-textarea($parameters)
+  +kal-rater($parameters)
