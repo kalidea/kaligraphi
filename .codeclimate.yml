@@ -12,6 +12,12 @@ plugins:
   tslint:
     enabled: true
     config: tslint.json
+  duplication:
+    enabled: true
+    config:
+      languages:
+        typescript:
+          mass_threshold: 75
 
 exclude_patterns:
   - coverage
