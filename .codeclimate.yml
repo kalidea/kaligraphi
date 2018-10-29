@@ -14,3 +14,11 @@ exclude_patterns:
   - "**/*.spec.ts"
   - "**/*.js"
   - "**/test.ts"
+
+engines:
+  duplication:
+    enabled: true
+    config:
+      languages:
+        typescript:
+          mass_threshold: 75
