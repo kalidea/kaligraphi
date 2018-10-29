@@ -1,3 +1,15 @@
+
+// ---------------------------------------------------------
+//
+// Example of use:
+//  @include font-size(14px)
+//
+// $font-size-base: 17px;
+// return
+//  font-size:14px;
+//  font-size : .825rem
+// ---------------------------------------------------------
+
 @mixin font-size($size) {
   font-size: $size;
   font-size: calculateRem($size);

@@ -5,6 +5,8 @@
     text-rendering: optimizeLegibility
     height: 100vh
     color: $color-neutre0
+  *, :before, :after
+    box-sizing: border-box
   body
     font-family: $base-font-family
     font-size: $base-font-size
@@ -38,3 +40,7 @@
       font-family: nth($value, 1)
       font-size: nth($value, 2)
       line-height: nth($value, 3)
+  // form elements
+
+  input, textarea
+    outline: none

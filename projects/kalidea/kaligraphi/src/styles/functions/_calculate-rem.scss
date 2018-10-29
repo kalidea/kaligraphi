@@ -6,9 +6,9 @@
 // `$size` String
 //
 // Example of use:
-// str-explode('some-things-will-never-change', '-')
+// calculateRem(size in px))
 //
-// @return List
+// @return Valor in rem
 // ---------------------------------------------------------
 @function calculateRem($size) {
   $remSize: $size / $base-font-size;

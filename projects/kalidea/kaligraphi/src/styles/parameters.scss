@@ -1,7 +1,7 @@
 /* SETTINGS : Variables */
 // Colors
 $color-orange: #e89536 !default; // rgb(232,149,54)
-$color-danger: #d35e3a !default; // rgb(211,94,58)
+$color-danger: #D45F3C !default; // rgb(212,95,60)
 $color-warning: #E2C135 !default; // rgb(226,193,53)
 $color-info: #21C0D9 !default; // rgb(33,192,217)
 $color-success: #1FD29D !default; // rgb(31,210,157)
@@ -17,13 +17,14 @@ $color-neutre100: #FFFFFF !default; // rgb(255,255,255)
 $font-face-name-regular: 'AsapRegular' !default;
 $font-face-name-medium: 'AsapMedium' !default;
 $font-face-name-semibold: 'AsapSemiBold' !default;
-// Fonts
+// Fonts base
 $base-font-family: $font-face-name-regular !default;
 $base-font-style: normal !default;
 $base-font-size: 17px !default;
 $base-font-lineheight: 24px !default;
 $base-font-weight: 400 !default;
 $base-radius: 3px !default;
+$base-color: $color-neutre0;
 // Fontfaces Map
 $fontfaces: (
   Regular: ( $font-face-name-regular, Asap-Regular, normal, normal ),
@@ -39,35 +40,43 @@ $headings: (
   5: ( $font-face-name-semibold, $base-font-size + 5, 30px ),
   6: ( $font-face-name-medium, $base-font-size + 3, 28px )
 );
+// colors palette
+$palettes: (
+  primaire: (
+    up: $color-orange
+  ),
+  etat: (
+    danger: $color-danger,
+    warning: $color-warning,
+    info: $color-info,
+    success: $color-success
+  ),
+  neutre: (
+    quote(black): $color-neutre0,
+    darkest: $color-neutre5,
+    darker: $color-neutre10,
+    dark: $color-neutre30,
+    light: $color-neutre50,
+    lighter: $color-neutre70,
+    lightest: $color-neutre90,
+    quote(white): $color-neutre100
+  )
+
+);
 // Generic Map
 $parameters: (
-  palette: (
-    primary: (
-      $color-orange
-    ),
-    status: (
-      $color-danger,
-      $color-warning,
-      $color-info,
-      $color-success
-    ),
-    neutral: (
-      $color-neutre0,
-      $color-neutre5,
-      $color-neutre10,
-      $color-neutre30,
-      $color-neutre50,
-      $color-neutre70,
-      $color-neutre90,
-      $color-neutre100
-    )
-  ),
-  form: (
+  // Form elements
+  kalInput: (
     font: $base-font-family,
+    font-size: inherit,
+    color: $color-neutre5,
+    background-color: $color-neutre90,
+    padding: 12px,
+    width: 100%,
     border: (
       width: 1px,
-      style: "solid",
-      color: #000,
+      style: solid,
+      color: $color-neutre70,
       radius: $base-radius
     )
   )
