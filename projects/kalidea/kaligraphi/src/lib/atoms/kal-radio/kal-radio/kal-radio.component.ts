@@ -1,0 +1,195 @@
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component, EventEmitter,
+  forwardRef,
+  Inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  Optional, Output,
+  ViewEncapsulation
+} from '@angular/core';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { UniqueSelectionDispatcher } from '@angular/cdk/collections';
+import { KalRadioGroupComponent } from '../kal-radio-group/kal-radio-group.component';
+import { uniqid } from '../../../utils';
+import { KalRadioChange } from '../kal-radio-change';
+
+@Component({
+  selector: 'kal-radio',
+  templateUrl: './kal-radio.component.html',
+  styleUrls: ['./kal-radio.component.sass'],
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class KalRadioComponent implements OnInit, OnDestroy {
+
+  /**
+   * The unique id of the radio button
+   */
+  private readonly uniqueId = uniqid('kal-radio-button-id-');
+
+  /**
+   * The given radio group
+   */
+  radioGroup: KalRadioGroupComponent;
+
+  /**
+   * The HTML name attribute that given to the radio button
+   */
+  @Input() name: string;
+
+  /**
+   * The unique id
+   */
+  @Input() id = this.uniqueId;
+
+  /**
+   * Is the radio button checked
+   */
+  private isChecked: boolean;
+
+  /**
+   * The radio button value
+   */
+  private radioValue: string;
+
+  /**
+   * Is the radio disabled
+   */
+  private disabledRadio = false;
+
+  /**
+   * The position of the label after or before the radio button. Defaults to after
+   */
+  labelRadioPosition: 'before' | 'after';
+
+  /**
+   * Triggered when the radio button value has changed
+   */
+  @Output() valueChange = new EventEmitter<KalRadioChange>();
+
+  /**
+   * Unregister function for radioDispatcher
+   */
+  private removeUniqueSelectionListener: () => void = () => {};
+
+  constructor(@Optional() @Inject(forwardRef(() => KalRadioGroupComponent)) radioGroup: KalRadioGroupComponent,
+              private radioDispatcher: UniqueSelectionDispatcher,
+              private cdr: ChangeDetectorRef) {
+    this.radioGroup = radioGroup;
+
+    this.removeUniqueSelectionListener =
+      radioDispatcher.listen((id: string, name: string) => {
+        if (id !== this.id && name === this.name) {
+          this.checked = false;
+        }
+      });
+  }
+
+  /**
+   * Emit an event with the radio buttons component and its value
+   */
+  private emitChangeEvent() {
+    this.valueChange.emit(new KalRadioChange(this, this.value));
+  }
+
+  /**
+   * The position of the label after or before the radio button. Default to after
+   */
+  @Input()
+  get labelPosition(): 'before' | 'after' {
+    return this.labelRadioPosition || (this.radioGroup && this.radioGroup.labelPosition) || 'after';
+  }
+
+  set labelPosition(position: 'before' | 'after') {
+    this.labelRadioPosition = position === 'before' ? 'before' : 'after';
+    this.cdr.markForCheck();
+  }
+
+  /**
+   * Is the radio button disabled
+   */
+  @Input() get disabled() {
+    return this.disabledRadio || (this.radioGroup !== null && this.radioGroup.disabled);
+  }
+
+  set disabled(value: boolean) {
+    this.disabledRadio = coerceBooleanProperty(value);
+    this.cdr.markForCheck();
+  }
+
+  /**
+   * If the radio button is checked, call the notify method of the radio button group
+   */
+  @Input()
+  get checked() {
+    return this.isChecked;
+  }
+
+  set checked(value: boolean) {
+    const isChecked = coerceBooleanProperty(value);
+
+    if (this.isChecked !== isChecked) {
+
+      this.isChecked = isChecked;
+
+      if (this.isChecked && this.radioGroup && this.radioGroup.value !== this.value) {
+        this.radioGroup.selected = this;
+      } else if (!this.isChecked && this.radioGroup && this.radioGroup.value === this.value) {
+        this.radioGroup.selected = null;
+      }
+
+      if (isChecked) {
+        this.radioDispatcher.notify(this.id, this.name);
+      }
+    }
+    this.cdr.markForCheck();
+  }
+
+  /**
+   * The value of the radio button
+   */
+  @Input()
+  get value() {
+    return this.radioValue;
+  }
+  set value(value: any) {
+    this.radioValue = value;
+  }
+
+  /**
+   * Mark for check on the raio button
+   */
+  markForCheck() {
+    this.cdr.markForCheck();
+  }
+
+  /**
+   * Called when the radio button is clicked
+   */
+  changeSelectedRadio($event: Event) {
+    $event.stopPropagation();
+    this.checked = true;
+
+    this.emitChangeEvent();
+
+    if (this.radioGroup) {
+      this.radioGroup.notifyUpdate(this.value);
+      this.radioGroup.emitChangeEvent();
+    }
+  }
+
+  ngOnInit() {
+    if (this.radioGroup) {
+      this.name = this.radioGroup.name;
+      this.checked = this.radioGroup.value === this.value;
+    }
+  }
+
+  ngOnDestroy() {
+    this.removeUniqueSelectionListener();
+  }
+
+}
