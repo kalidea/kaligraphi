@@ -72,7 +72,6 @@ export class KalTabGroupComponent implements OnInit, AfterContentInit {
   }
 
   ngAfterContentInit() {
-
     this.tabs.forEach(
       (tab, index) => {
         if (tab.selected) {
@@ -81,9 +80,7 @@ export class KalTabGroupComponent implements OnInit, AfterContentInit {
         }
       }
     );
-
     this.cdr.markForCheck();
-
   }
 
 }

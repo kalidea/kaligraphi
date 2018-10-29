@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { KalTabHeaderComponent } from './kal-tab-header.component';
 
@@ -8,7 +9,10 @@ describe('KalTabHeaderComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ KalTabHeaderComponent ]
+      declarations: [
+        KalTabHeaderComponent
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   }));
