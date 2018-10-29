@@ -30,7 +30,7 @@ import { KalOptionComponent } from '../../atoms/kal-option/kal-option.component'
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class KalSelectComponent
-  extends FormElementComponent<KalOptionComponent | KalOptionComponent []>
+  extends FormElementComponent<any>
   implements OnInit, OnDestroy, AfterContentInit {
 
   /**
@@ -48,7 +48,7 @@ export class KalSelectComponent
   /**
    * The currently selected option
    */
-  private selection: KalOptionComponent | KalOptionComponent [];
+  private selection: KalOptionComponent [];
   /**
    * Overlay Reference
    */
@@ -95,20 +95,42 @@ export class KalSelectComponent
    * Get the value to display on the change selection
    */
   get triggerValue(): string {
-    if (!this.selection) {
+    if (!this.selection || this.selection.length === 0) {
       return null;
     }
 
     return (this.multiple) ?
-      (this.selection as KalOptionComponent[]).map(option => option.viewValue).join(', ') :
-      (this.selection as KalOptionComponent).viewValue;
+      this.selection.map(option => option.viewValue).join(', ') :
+      this.selection[0].viewValue;
   }
 
   /**
    * The currently selected option
    */
   get selected(): KalOptionComponent | KalOptionComponent[] {
-    return this.selection;
+    if (!this.selection || this.selection.length === 0) {
+      return null;
+    }
+
+    return (this.multiple) ? this.selection : this.selection[0];
+  }
+
+  /**
+   * The currently selected value
+   */
+  get selectedValue(): any {
+    if (!this.selection || this.selection.length === 0) {
+      return null;
+    }
+
+    if (this.multiple) {
+      const selectedValues = [];
+      this.selection.map(option => selectedValues.push(option.value));
+
+      return selectedValues;
+    } else {
+      return this.selection[0].value;
+    }
   }
 
   /**
@@ -151,6 +173,9 @@ export class KalSelectComponent
     this.isPanelOpen = false;
   }
 
+  /**
+   * Select an option by his value
+   */
   select(value: any): void {
     const optionSelect = this.options.find((item) => item.value === value);
     if (optionSelect) {
@@ -217,9 +242,9 @@ export class KalSelectComponent
   /**
    * @inheritDoc
    */
-  writeValue(options: KalOptionComponent | KalOptionComponent[]) {
-    this.selection = options;
-    super.writeValue(options);
+  writeValue(value: any) {
+    this.select(value);
+    super.writeValue(value);
   }
 
   /**
@@ -234,8 +259,8 @@ export class KalSelectComponent
       this.optionSelectedOnSimpleMode(option);
     }
 
-    super.notifyUpdate(this.selection);
-    this.valueChange.emit(this.selection);
+    super.notifyUpdate(this.selectedValue);
+    this.valueChange.emit(this.selectedValue);
     this.cdr.markForCheck();
   }
 
@@ -243,13 +268,13 @@ export class KalSelectComponent
    * Select an option in simple mode
    */
   private optionSelectedOnSimpleMode(option: KalOptionComponent): void {
-    const currentSelected = this.selection as KalOptionComponent;
+    const currentSelected = this.selection[0];
     if (currentSelected) {
       currentSelected.active = false;
     }
 
     option.active = true;
-    this.selection = option;
+    this.selection = [option];
     this.close();
   }
 
@@ -257,13 +282,12 @@ export class KalSelectComponent
    * Select an option in multiple mode
    */
   private optionSelectedOnMultipleMode(option: KalOptionComponent): void {
-    const currentSelected = this.selection as KalOptionComponent[];
     if (option.active) {
       option.active = false;
-      currentSelected.splice(currentSelected.indexOf(option), 1);
+      this.selection.splice(this.selection.indexOf(option), 1);
     } else {
       option.active = true;
-      currentSelected.push(option);
+      this.selection.push(option);
     }
   }
 
@@ -282,14 +306,8 @@ export class KalSelectComponent
    * Reset the active item on a active option if it don't
    */
   private checkResetActiveItem(): void {
-    if (this.multiple) {
-      if ((this.selection as KalOptionComponent[]).indexOf(this.keyManager.activeItem) < 0) {
-        this.keyManager.setActiveItem(this.selection[0]);
-      }
-    } else {
-      if ((this.selection as KalOptionComponent) !== this.keyManager.activeItem) {
-        this.keyManager.setActiveItem(this.selection as KalOptionComponent);
-      }
+    if (this.selection.indexOf(this.keyManager.activeItem) < 0) {
+      this.keyManager.setActiveItem(this.selection[0]);
     }
   }
 

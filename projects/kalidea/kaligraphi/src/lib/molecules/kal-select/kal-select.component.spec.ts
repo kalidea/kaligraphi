@@ -93,6 +93,18 @@ describe('TestSelectComponent', () => {
       expect(component.select.panelOpen).toBeFalsy();
     });
 
+    it('should reset active item on close', () => {
+      component.select.select('Option 2');
+      console.log(component.select.selected);
+      component.select.open();
+
+      expect((component.select.selected as KalOptionComponent).isHighlighted).toBeTruthy();
+      component.select.handleKeydown(createKeyboardEvent('keydown', DOWN_ARROW));
+      expect((component.select.selected as KalOptionComponent).isHighlighted).toBeFalsy();
+      component.select.close();
+      expect((component.select.selected as KalOptionComponent).isHighlighted).toBeTruthy();
+    });
+
     it('should select an option in option list', () => {
       const spy = spyOn(component.select.valueChange, 'emit');
       trigger.click();
@@ -103,7 +115,7 @@ describe('TestSelectComponent', () => {
 
       expect(component.select.selected).toEqual(component.options.first);
       expect(selectedOption.active).toBeTruthy();
-      expect(spy).toHaveBeenCalledWith(selectedOption);
+      expect(spy).toHaveBeenCalledWith(component.select.selectedValue);
     });
 
     it('should emit an event when selection change', () => {
@@ -121,6 +133,7 @@ describe('TestSelectComponent', () => {
       const selectedOption = component.select.selected as KalOptionComponent;
 
       expect(selectedOption).toEqual(component.select.options.find((item, index) => index === 2));
+      expect(selectedOption.isHighlighted).toBeTruthy();
       expect(selectedOption.active).toBeTruthy();
     });
 
@@ -137,7 +150,7 @@ describe('TestSelectComponent', () => {
       expect(selectedOptions.length).toEqual(component.options.length);
       expect(component.select.options.filter(o => o.active).length).toEqual(component.options.length);
       expect(component.select.panelOpen).toBeTruthy();
-      expect(spy).toHaveBeenCalledWith(selectedOptions);
+      expect(spy).toHaveBeenCalledWith(component.select.selectedValue);
     });
 
     it('should select options via the UP/DOWN arrow keys', () => {

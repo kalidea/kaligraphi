@@ -1,15 +1,13 @@
-<kal-select #kalselect tabindex="1" placeholder="Selectionner un élément">
+<kal-select #kalselect tabindex="1" placeholder="Select an item">
   <kal-option></kal-option>
   <kal-option *ngFor="let i of [0, 1, 2, 3, 10]">
     OPTION {{i}}
   </kal-option>
 </kal-select>
 
-<button (click)="kalselect.select('OPTION 3')">Cliquer pour selectionner l'option 3</button>
-
 <hr>
 
-<kal-select tabindex="2" multiple placeholder="Selectionner plusieurs élements">
+<kal-select tabindex="2" multiple placeholder="Select multiple items">
   <kal-option #option *ngFor="let i of [0, 1, 2, 3, 10]">
     <kal-checkbox [formControl]="option.formControl"></kal-checkbox>
     OPTION {{i}}

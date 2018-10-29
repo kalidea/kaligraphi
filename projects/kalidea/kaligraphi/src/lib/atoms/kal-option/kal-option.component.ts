@@ -21,7 +21,7 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalOptionComponent implements OnInit, AfterViewInit, Highlightable {
+export class KalOptionComponent implements AfterViewInit, Highlightable {
 
   /**
    * The value of the option
@@ -38,7 +38,7 @@ export class KalOptionComponent implements OnInit, AfterViewInit, Highlightable 
   /**
    *  Form Control on the active property
    */
-  formControl: FormControl;
+  formControl: FormControl = new FormControl(false);
   /**
    *  Whether or not the option is currently active / selected
    */
@@ -113,10 +113,6 @@ export class KalOptionComponent implements OnInit, AfterViewInit, Highlightable 
   setInactiveStyles(): void {
     this.isHighlighted = false;
     this.cdr.markForCheck();
-  }
-
-  ngOnInit(): void {
-    this.formControl = new FormControl(false);
   }
 
   ngAfterViewInit(): void {

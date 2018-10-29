@@ -10,14 +10,13 @@ import { FormControl } from '@angular/forms';
 })
 export class SelectComponent implements OnInit {
 
-
+  formControl: FormControl = new FormControl('Option 1');
+  
 
   constructor() {
   }
 
   ngOnInit() {
-    // TODO TEST RESET ACTIVE ITEM
-    // TODO CLASS SIMPLE OPTION
 
   }
 
