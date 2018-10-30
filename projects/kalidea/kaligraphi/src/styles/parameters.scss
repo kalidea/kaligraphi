@@ -30,7 +30,7 @@ $fontfaces: (
   Regular: ( $font-face-name-regular, Asap-Regular, normal, normal ),
   Medium: ($font-face-name-medium, Asap-Medium, 500, normal),
   SemiBold: ( $font-face-name-semibold, Asap-SemiBold, 600, normal )
-);
+) !default;
 // Headings Map
 $headings: (
   1: ( $font-face-name-medium, $base-font-size + 25, 54px ),
@@ -40,7 +40,7 @@ $headings: (
   5: ( $font-face-name-semibold, $base-font-size + 5, 30px ),
   6: ( $font-face-name-medium, $base-font-size + 3, 28px )
 );
-// colors palette
+// colors Map
 $palettes: (
   primaire: (
     up: $color-orange
@@ -61,23 +61,32 @@ $palettes: (
     lightest: $color-neutre90,
     quote(white): $color-neutre100
   )
-
 );
 // Generic Map
 $parameters: (
   // Form elements
-  kalInput: (
+  input: (
     font: $base-font-family,
     font-size: inherit,
-    color: $color-neutre5,
-    background-color: $color-neutre90,
     padding: 12px,
     width: 100%,
+    color: $color-neutre5,
+    background-color: $color-neutre90,
     border: (
       width: 1px,
       style: solid,
       color: $color-neutre70,
       radius: $base-radius
+    ),
+    reverse: (
+      color: $color-neutre0,
+      background-color: $color-neutre30,
+      border: (
+        width: 1px,
+        style: solid,
+        color: $color-neutre30,
+        radius: $base-radius
+      )
     )
   )
 );

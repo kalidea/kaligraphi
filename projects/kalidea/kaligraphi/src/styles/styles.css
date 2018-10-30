@@ -1,11 +1,11 @@
 /*
 Error: $string: #000000 is not a string for `quote'
         on line 55 of parameters.scss
-        from line 6 of styles.sass
+        from line 7 of styles.sass
 
 Backtrace:
 parameters.scss:55
-styles.sass:6
+styles.sass:7
 C:/Ruby23-x64/lib/ruby/gems/2.3.0/gems/sass-3.4.22/lib/sass/script/tree/funcall.rb:310:in `reformat_argument_error'
 C:/Ruby23-x64/lib/ruby/gems/2.3.0/gems/sass-3.4.22/lib/sass/script/tree/funcall.rb:149:in `rescue in _perform'
 C:/Ruby23-x64/lib/ruby/gems/2.3.0/gems/sass-3.4.22/lib/sass/script/tree/funcall.rb:123:in `_perform'
@@ -69,4 +69,4 @@ C:/Ruby23-x64/bin/sass:23:in `<main>'
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Error: $string: #000000 is not a string for `quote'\A         on line 55 of parameters.scss\A         from line 6 of styles.sass"; }
+  content: "Error: $string: #000000 is not a string for `quote'\A         on line 55 of parameters.scss\A         from line 7 of styles.sass"; }

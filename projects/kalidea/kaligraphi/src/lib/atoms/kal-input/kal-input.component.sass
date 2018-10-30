@@ -8,7 +8,7 @@
       align-items: center
 
     input
-      +kal-element-input($parameters)
+      +kal-element-input($parameters, default)
       // Status
       &:active, &:focus
         border-color: $color-neutre30
@@ -29,3 +29,28 @@
         right: 12px
         font-size: 80%
         cursor: pointer
+
+    &--reverse
+
+      div > input
+        +kal-element-input($parameters, reverse)
+        // Status
+        &:active, &:focus
+          border-color: $color-neutre30
+        &:disabled
+          color: $color-neutre70
+          + kal-icon
+            color: $color-neutre70
+            cursor: none
+        &.ng-invalid
+          border-color: $color-danger
+        &::placeholder
+          font-style: italic
+          color: $color-neutre10
+        // clearable icon
+        + kal-icon
+          position: absolute
+          color: $color-neutre10
+          right: 12px
+          font-size: 80%
+          cursor: pointer
