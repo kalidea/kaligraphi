@@ -37,30 +37,37 @@ export class KalSelectComponent
    * All of the defined select options
    */
   @ContentChildren(KalOptionComponent, {descendants: true}) options: QueryList<KalOptionComponent>;
+
   /**
    * Overlay Portal Options
    */
   @ViewChild('optionsPortal') optionsPortal: TemplatePortal<any>;
+
   /**
    * Whether the component is in multiple selection mode
    */
   private isMultiple: boolean;
+
   /**
    * The currently selected option
    */
   private selection: KalOptionComponent [];
+
   /**
    * Overlay Reference
    */
   private overlayRef: OverlayRef;
+
   /**
    * Manages keyboard events for options in the panel
    */
   private keyManager: ActiveDescendantKeyManager<KalOptionComponent>;
+
   /**
    * Whether or not the select is focus
    */
   private isFocused: boolean;
+
   /**
    * Whether or not the overlay panel is open
    */

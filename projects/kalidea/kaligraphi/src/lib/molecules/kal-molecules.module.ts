@@ -5,7 +5,6 @@ import { KalTextareaModule } from './kal-textarea/kal-textarea.module';
 import { KalSelectModule } from './kal-select/kal-select.module';
 import { KalRaterModule } from './kal-rater/kal-rater.module';
 import { KalTabModule } from './kal-tabs/kal-tab.module';
-import { KalAtomsModule } from '../atoms/kal-atoms.module';
 
 export * from './kal-textarea/kal-textarea.module';
 export * from './kal-select/kal-select.module';
@@ -17,7 +16,6 @@ const exports = [
   KalSelectModule,
   KalRaterModule,
   KalTabModule,
-  KalAtomsModule,
   KalRaterModule
 ];
 
