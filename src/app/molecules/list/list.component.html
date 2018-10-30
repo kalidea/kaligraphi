@@ -1,0 +1,8 @@
+<kal-list [datasource]="datasource"
+          [itemTemplate]="itemTemplate"
+          initials="name">
+</kal-list>
+
+<ng-template #itemTemplate let-item="item">
+  {{ item.name }}
+</ng-template>

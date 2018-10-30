@@ -5,6 +5,7 @@ import { KaligraphiModule } from '@kalidea/kaligraphi';
 
 import { TabPanelComponent } from 'src/app/molecules/tab-panel/tab-panel.component';
 import { MoleculesRoutingModule } from 'src/app/molecules/molecules-routing.module';
+import { ListComponent } from './list/list.component';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { MoleculesRoutingModule } from 'src/app/molecules/molecules-routing.modu
     KaligraphiModule
   ],
   declarations: [
-    TabPanelComponent
+    TabPanelComponent,
+    ListComponent
   ]
 })
 export class MoleculesModule { }
