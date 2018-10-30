@@ -7,6 +7,7 @@
     [attr.placeholder]="placeholder"
     [formControl]="control">
   <kal-icon name="clear" *ngIf="clearable" (click)="clearField()"></kal-icon>
+  <kal-icon [name]="icon" *ngIf="icon && !clearable" (click)="customIconClicked()"></kal-icon>
 </div>
 
 <ng-container *ngIf="limit">
