@@ -1,0 +1,45 @@
+<kal-slider [step]="step"
+            [thumbLabel]="thumbLabel"
+            [tickInterval]="tickInterval"
+            [limit]="limit"
+            [disabled]="isDisabled">
+</kal-slider>
+
+<p>
+  <label for="stepValue">Step :</label>
+  <input id="stepValue"
+         value="1"
+         type="number"
+         (keyup)="updateStep($event)">
+</p>
+
+<p>
+  <label for="tickInterval">Tick interval :</label>
+  <input id="tickInterval"
+         value="25"
+         type="number"
+         (keyup)="updateTickInterval($event)">
+</p>
+
+<p>
+  <label for="limit">Limit :</label>
+  <input id="limit"
+         value="30"
+         type="number"
+         (keyup)="updateLimit($event)">
+</p>
+
+<p>
+  <kal-checkbox
+    label="Disable"
+    (valueChange)="toggle($event)">
+  </kal-checkbox>
+</p>
+
+<p>
+  <kal-checkbox
+    label="Show thumb label"
+    [value]="true"
+    (valueChange)="toggleThumbLabel($event)">
+  </kal-checkbox>
+</p>
