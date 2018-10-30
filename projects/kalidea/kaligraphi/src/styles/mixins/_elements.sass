@@ -1,25 +1,18 @@
 =kal-elements($parameters)
   /* ELEMENTS :  Reboots */
   html
-    font-family: Sans-Serif
+    font-family: $base-font-family
     text-rendering: optimizeLegibility
     height: 100vh
-    color: $color-neutre0
-  *, :before, :after
-    box-sizing: border-box
+    color: #000
+  *, *:before, *:after
+    box-sizing: inherit
   body
     font-family: $base-font-family
     font-size: $base-font-size
-    color: $color-neutre0
+    color: $base-color
     background-color: $color-neutre100
-  p
-    font-family: $base-font-family
-    font-size: $base-font-size
-    line-height: $base-font-lineheight
   a
-    font-family: inherit
-    font-size: inherit
-    color: $color-orange
     text-decoration: none
     cursor: pointer
   strong
@@ -35,12 +28,32 @@
     white-space: -moz-pre-wrap //* Firefox 1.0-2.0 */
     white-space: pre-wrap //* current browsers */
   // headings
-  @each $key, $value in deep-map-get($headings)
-    h#{$key}
-      font-family: nth($value, 1)
-      font-size: nth($value, 2)
-      line-height: nth($value, 3)
+  //@each $key, $value in deep-map-get($headings)
+  //  h#{$key}
+  //    font-family: nth($value, 1)
+  //    font-size: nth($value, 2)
+  //    line-height: nth($value, 3)
   // form elements
+  h1, h2, h3, h4, h5, h6
+    font-weight: bold
+  h1
+    font-size: 42px
+    line-height: 54px
+  h2
+    font-size: 39px
+    line-height: 45px
+  h3
+    font-size: 31px
+    line-height: 39px
+  h4
+    font-size: 27px
+    line-height: 36px
+  h5
+    font-size: 22px
+    line-height: 30px
+  h6
+    font-size: 20px
+    line-height: 28px
 
   input, textarea
     outline: none

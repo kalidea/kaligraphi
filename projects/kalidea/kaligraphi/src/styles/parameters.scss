@@ -13,82 +13,76 @@ $color-neutre50: #B8B8B8 !default; // rgb(184,184,184)
 $color-neutre70: #D6D6D6 !default; // rgb(214,214,214)
 $color-neutre90: #F5F5F5 !default; // rgb(245,245,245)
 $color-neutre100: #FFFFFF !default; // rgb(255,255,255)
+
 // Fontfaces
-$font-face-name-regular: 'AsapRegular' !default;
-$font-face-name-medium: 'AsapMedium' !default;
-$font-face-name-semibold: 'AsapSemiBold' !default;
+//$font-face-name-regular: 'AsapRegular' !default;
+//$font-face-name-medium: 'AsapMedium' !default;
+//$font-face-name-semibold: 'AsapSemiBold' !default;
+
 // Fonts base
-$base-font-family: $font-face-name-regular !default;
+$base-font-family: 'Arial' !default;
 $base-font-style: normal !default;
 $base-font-size: 17px !default;
 $base-font-lineheight: 24px !default;
 $base-font-weight: 400 !default;
 $base-radius: 3px !default;
 $base-color: $color-neutre0;
+
+$body-font-family : $base-font-family;
+$body-font-style: $base-font-style;
+$body-font-size: $base-font-size;
+$body-font-lineheight: $base-font-lineheight;
+$body-font-weight: $base-font-weight;
+$body-color: $base-color;
 // Fontfaces Map
-$fontfaces: (
-  Regular: ( $font-face-name-regular, Asap-Regular, normal, normal ),
-  Medium: ($font-face-name-medium, Asap-Medium, 500, normal),
-  SemiBold: ( $font-face-name-semibold, Asap-SemiBold, 600, normal )
-) !default;
+//$fontfaces: (
+//  Regular: ( $font-face-name-regular, Asap-Regular, normal, normal ),
+//  Medium: ($font-face-name-medium, Asap-Medium, 500, normal),
+//  SemiBold: ( $font-face-name-semibold, Asap-SemiBold, 600, normal )
+//) !default;
+
 // Headings Map
-$headings: (
-  1: ( $font-face-name-medium, $base-font-size + 25, 54px ),
-  2: ( $font-face-name-semibold, $base-font-size + 19, 45px ),
-  3: ( $font-face-name-medium, $base-font-size + 14, 39px ),
-  4: ( $font-face-name-semibold, $base-font-size + 10, 36px ),
-  5: ( $font-face-name-semibold, $base-font-size + 5, 30px ),
-  6: ( $font-face-name-medium, $base-font-size + 3, 28px )
-);
-// colors Map
-$palettes: (
-  primaire: (
-    up: $color-orange
-  ),
-  etat: (
-    danger: $color-danger,
-    warning: $color-warning,
-    info: $color-info,
-    success: $color-success
-  ),
-  neutre: (
-    quote(black): $color-neutre0,
-    darkest: $color-neutre5,
-    darker: $color-neutre10,
-    dark: $color-neutre30,
-    light: $color-neutre50,
-    lighter: $color-neutre70,
-    lightest: $color-neutre90,
-    quote(white): $color-neutre100
-  )
-);
+//$headings: (
+//  1: ( $font-face-name-medium, $base-font-size + 25, 54px ),
+//  2: ( $font-face-name-semibold, $base-font-size + 19, 45px ),
+//  3: ( $font-face-name-medium, $base-font-size + 14, 39px ),
+//  4: ( $font-face-name-semibold, $base-font-size + 10, 36px ),
+//  5: ( $font-face-name-semibold, $base-font-size + 5, 30px ),
+//  6: ( $font-face-name-medium, $base-font-size + 3, 28px )
+//) !default;
+
+//Forms elements
+$input-padding: 12px 12px !default;
+
 // Generic Map
 $parameters: (
   // Form elements
-  input: (
-    font: $base-font-family,
-    font-size: inherit,
-    padding: 12px,
-    width: 100%,
-    color: $color-neutre5,
-    background-color: $color-neutre90,
-    border: (
-      width: 1px,
-      style: solid,
-      color: $color-neutre70,
-      radius: $base-radius
-    ),
-    reverse: (
-      color: $color-neutre0,
-      background-color: $color-neutre30,
+  form: (
+    input: (
+      font: $base-font-family,
+      font-size: $base-font-size,
+      padding: $input-padding,
+      width: 100%,
+      color: $color-neutre5,
+      background-color: $color-neutre90,
       border: (
         width: 1px,
         style: solid,
-        color: $color-neutre30,
+        color: $color-neutre70,
         radius: $base-radius
+      ),
+      reverse: (
+        color: $color-neutre0,
+        background-color: $color-neutre30,
+        border: (
+          width: 1px,
+          style: solid,
+          color: $color-neutre30,
+          radius: $base-radius
+        )
       )
     )
   )
-);
+) !default;
 
 
