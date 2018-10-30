@@ -14,6 +14,8 @@ import { KalIconComponent, KalIconModule } from '../kal-icon/kal-icon.module';
       [formControl]="inputControl"
       [type]="type"
       [limit]="limit"
+      [icon]="icon"
+      [clearable]="clearable"
       [placeholder]="placeholder"></kal-input>
   `
 })
@@ -25,6 +27,10 @@ class TestComponent {
   limit: number;
 
   type = 'text';
+
+  icon = 'calendar_today';
+
+  clearable = false;
 
   @ViewChild(KalInputComponent) inputComponent: KalInputComponent;
 
@@ -48,7 +54,7 @@ class TestComponent {
 describe('KalInputComponent', () => {
   let component: TestComponent;
   let fixture: ComponentFixture<TestComponent>;
-
+  let kalInputInstance;
 
   const getInput = (): HTMLInputElement => {
     return fixture.debugElement.query(By.css('input')).nativeElement;
@@ -68,6 +74,7 @@ describe('KalInputComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TestComponent);
     component = fixture.componentInstance;
+    kalInputInstance = fixture.debugElement.query(By.directive(KalInputComponent)).injector.get(KalInputComponent);
     fixture.detectChanges();
   });
 
@@ -165,5 +172,28 @@ describe('KalInputComponent', () => {
     expect(fixture.debugElement.query(By.css('.counter')).nativeElement.textContent.trim()).toEqual(`${text.length * 2} / ${max}`);
   });
 
+  it('should display a custom icon', () => {
+    const spy = spyOn(kalInputInstance, 'customIconClicked');
 
+    const icons = fixture.debugElement.queryAll(By.directive(KalIconComponent));
+    expect(icons.length).toEqual(1);
+
+    icons[0].nativeElement.click();
+
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('should not display a custom icon if the field is clearable', () => {
+    const spy = spyOn(kalInputInstance, 'clearField');
+
+    component.clearable = true;
+    fixture.detectChanges();
+
+    const icons = fixture.debugElement.queryAll(By.directive(KalIconComponent));
+    expect(icons.length).toEqual(1);
+
+    icons[0].nativeElement.click();
+
+    expect(spy).toHaveBeenCalled();
+  });
 });
