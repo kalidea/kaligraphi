@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { AccordionComponent } from 'src/app/molecules/accordion/accordion.component';
+import { Routes, RouterModule } from '@angular/router';
+import { TabPanelComponent } from './tab-panel/tab-panel.component';
+import { AccordionComponent } from './accordion/accordion.component';
 
 const routes: Routes = [
+  {path: 'tabPanel', component: TabPanelComponent},
   {path: 'accordion', component: AccordionComponent},
 ];
 
@@ -10,4 +12,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class MoleculesRoutingModule { }
+export class MoleculesRoutingModule {
+}

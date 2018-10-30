@@ -1,0 +1,17 @@
+<span [class.kal-tab-header-disabled]="disabled"
+      [class.kal-tab-header-selected]="selected">
+
+  <ng-container *ngIf="!templateLabel; else improvedLabel">
+
+    {{ label }}
+
+  </ng-container>
+
+  <ng-template #improvedLabel>
+
+    <ng-template cdkPortalOutlet>
+    </ng-template>
+
+  </ng-template>
+
+</span>

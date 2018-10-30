@@ -1,0 +1,49 @@
+<h1>Radio button by using control</h1>
+
+<kal-radio-group [formControl]="control"
+                 labelPosition="before"
+                 [name]="nameRadioButtonWithControl">
+
+  <kal-radio value="test">test</kal-radio><br />
+  <kal-radio value="test1">test 1</kal-radio><br />
+  <kal-radio value="test2">test 2</kal-radio><br />
+  <kal-radio value="test3">test 3</kal-radio><br />
+  <kal-radio value="test4">test 4</kal-radio><br />
+  <kal-radio value="test5">test 5</kal-radio><br />
+  <kal-radio value="test6">test 6</kal-radio><br />
+
+</kal-radio-group>
+
+<br />
+<input #inputElementWithControl type="text">
+<button (click)="changeRadioValueWithControl(inputElementWithControl.value)"> Change radio value</button>
+<button (click)="disableGroupByControl()">Disabled group</button>
+
+<br />
+<p>The value of the form control : {{ control.value }}</p>
+
+<h1>Radio button by using event</h1>
+
+<kal-radio-group [value]="value"
+                 [name]="nameRadioButtonWithEvent"
+                 [disabled]="disabled"
+                 (valueChange)="displayValue($event)">
+
+<kal-radio value="test">test</kal-radio><br />
+  <kal-radio value="test1">test 1</kal-radio><br />
+  <kal-radio value="test2">test 2</kal-radio><br />
+  <kal-radio value="test3">test 3</kal-radio><br />
+  <kal-radio value="test4">test 4</kal-radio><br />
+  <kal-radio value="test5">test 5</kal-radio><br />
+  <kal-radio value="test6">test 6</kal-radio><br />
+
+</kal-radio-group>
+
+<br />
+<input #inputElementWithEvent type="text">
+<button (click)="changeRadioValueWithEvent(inputElementWithEvent.value)"> Change radio value</button>
+<button (click)="disableGroupByInput()">Disabled group</button>
+
+<br />
+<p>Default value of the radio button: {{ value }}</p>
+<p>The id of the selected radio button : {{ id }}</p>

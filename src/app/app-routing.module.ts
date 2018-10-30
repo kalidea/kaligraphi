@@ -4,11 +4,11 @@ import { Routes, RouterModule } from '@angular/router';
 const routes: Routes = [
   {
     path: 'atoms',
-    loadChildren: './atoms/atoms.module#AtomsModule'
+    loadChildren: './atoms/atoms.module#AtomsModule',
   },
   {
     path: 'molecules',
-    loadChildren: './molecules/molecules.module#MoleculesModule'
+    loadChildren: './molecules/molecules.module#MoleculesModule',
   }
 ];
 

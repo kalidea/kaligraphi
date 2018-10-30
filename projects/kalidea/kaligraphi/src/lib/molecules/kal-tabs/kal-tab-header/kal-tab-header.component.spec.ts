@@ -1,16 +1,16 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
-import { SelectComponent } from './select.component';
+import { KalTabHeaderComponent } from './kal-tab-header.component';
 
-describe('SelectComponent', () => {
-  let component: SelectComponent;
-  let fixture: ComponentFixture<SelectComponent>;
+describe('KalTabHeaderComponent', () => {
+  let component: KalTabHeaderComponent;
+  let fixture: ComponentFixture<KalTabHeaderComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        SelectComponent
+        KalTabHeaderComponent
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -18,7 +18,7 @@ describe('SelectComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SelectComponent);
+    fixture = TestBed.createComponent(KalTabHeaderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -4,7 +4,6 @@ import { FormControl } from '@angular/forms';
 @Component({
   selector: 'app-rater',
   templateUrl: './rater.component.html',
-  styleUrls: ['./rater.component.sass'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })

@@ -1,0 +1,20 @@
+<div>
+
+  <kal-tab-header *ngFor="let tab of tabs; index as i"
+                  [label]="tab.label"
+                  [templateLabel]="tab.templateLabel"
+                  [selected]="i === selectedIndex"
+                  [disabled]="tab.disabled"
+                  (click)="selectTabHeader(tab, i)">
+  </kal-tab-header>
+
+</div>
+
+<div>
+
+  <kal-tab-body *ngFor="let tab of tabs; index as i"
+                [class.kal-tab-body-is-active]="i === selectedIndex"
+                [content]="tab.content">
+  </kal-tab-body>
+
+</div>
