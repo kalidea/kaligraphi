@@ -1,3 +1,16 @@
+.cdk-overlay-backdrop {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  opacity: 0; }
+
+.cdk-overlay-pane {
+  position: absolute;
+  z-index: 1000; }
+
 /**
  *
  * ITCSS ORGANISATION
@@ -26,13 +39,38 @@ time, mark, audio, video {
   font-size: 100%;
   font: inherit;
   vertical-align: baseline; }
+kal-input {
+  border-width: 1px;
+  border-style: "solid";
+  border-color: #000;
+  border-radius: 5px; }
+  kal-input.ng-invalid {
+    border-left: 2px solid green; }
 
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
   display: block; }
+kal-select {
+  border-width: 1px;
+  border-style: "solid";
+  border-color: #000;
+  border-radius: 5px; }
+  kal-select.ng-invalid {
+    border-left: 2px solid green; }
 
 body {
   line-height: 1; }
+kal-checkbox {
+  border-width: 1px;
+  border-style: "solid";
+  border-color: #000;
+  border-radius: 5px; }
+  kal-checkbox.ng-invalid {
+    border-left: 2px solid green; }
+
+kal-progress-bar div {
+  background-color: black;
+  height: 5px; }
 
 ol, ul {
   list-style: none; }
@@ -186,5 +224,13 @@ kal-input.-reverse div > input {
 /* Molecules */
 kal-button input {
   border: none; }
+
+kal-textarea {
+  border-width: 1px;
+  border-style: "solid";
+  border-color: #000;
+  border-radius: 5px; }
+  kal-textarea.ng-invalid {
+    border-left: 2px solid green; }
 
 /*# sourceMappingURL=styles.css.map */
