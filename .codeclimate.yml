@@ -4,6 +4,9 @@ checks:
   method-complexity:
     config:
       threshold: 7
+  method-count:
+    config:
+      threshold: 25
   file-lines:
     config:
       threshold: 500
@@ -12,6 +15,12 @@ plugins:
   tslint:
     enabled: true
     config: tslint.json
+  duplication:
+    enabled: true
+    config:
+      languages:
+        typescript:
+          mass_threshold: 75
 
 exclude_patterns:
   - coverage
