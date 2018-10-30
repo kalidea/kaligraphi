@@ -27,22 +27,27 @@ export class KalOptionComponent implements AfterViewInit, Highlightable {
    * The value of the option
    */
   @Input() value: any;
+
   /**
    * Event emitted when the option is selected or deselected
    */
   @Output() readonly selectionChange = new EventEmitter<KalOptionComponent>();
+
   /**
    *  Whether or not the option is currently highlighted
    */
   isHighlighted: boolean;
+
   /**
    *  Form Control on the active property
    */
   formControl: FormControl = new FormControl(false);
+
   /**
    *  Whether or not the option is currently active / selected
    */
   private isActive: boolean;
+
   /**
    *  Whether or not the option is disabled
    */
