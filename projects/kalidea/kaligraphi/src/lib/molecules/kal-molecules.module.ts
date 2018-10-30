@@ -16,6 +16,7 @@ const exports = [
   KalSelectModule,
   KalRaterModule,
   KalTabModule,
+  KalRaterModule
 ];
 
 @NgModule({
