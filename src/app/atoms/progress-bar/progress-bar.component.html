@@ -1,0 +1,16 @@
+<kal-progress-bar [value]="progressBarValue"
+                  [color]="progressBarColor">
+</kal-progress-bar>
+
+<label for="progressBarValue">Progress bar value :</label>
+<input id="progressBarValue"
+       type="number"
+       value="25"
+       min="0"
+       max="100"
+       (keyup)="setValue($event)">
+
+<label for="progressBarColor">Progress bar color :</label>
+<input id="progressBarColor"
+       type="color"
+       (change)="setColor($event)">
