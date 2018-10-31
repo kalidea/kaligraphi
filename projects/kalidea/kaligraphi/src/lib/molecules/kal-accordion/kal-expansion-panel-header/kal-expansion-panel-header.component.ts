@@ -142,7 +142,7 @@ export class KalExpansionPanelHeaderComponent implements OnDestroy, FocusableOpt
 
   /** Gets whether the expand indicator should be shown. */
   showToggle(): boolean {
-    return !this.panel.hideToggle && !this.panel.disabled;
+    return !this.panel.hideToggle && !this.isPanelDisabled;
   }
 
   /**
@@ -187,7 +187,6 @@ export class KalExpansionPanelHeaderComponent implements OnDestroy, FocusableOpt
         break;
       default:
         if (this.panel.accordion) {
-          console.log(this.panel);
           this.panel.accordion.handleHeaderKeydown(event);
         }
 

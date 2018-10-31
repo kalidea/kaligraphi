@@ -20,9 +20,26 @@ import { KalExpansionPanelHeaderComponent } from './kal-expansion-panel-header/k
 export class KalAccordionComponent extends CdkAccordion implements KalAccordionBase, AfterContentInit {
 
   /**
+   * Headers list used to manage focus.
+   */
+  @ContentChildren(KalExpansionPanelHeaderComponent, {descendants: true})
+
+  panelsHeaders: QueryList<KalExpansionPanelHeaderComponent>;
+
+  /**
    * Allow to have multiple panels opened at the same time.
    */
   private allowMultiple = false;
+
+  /**
+   * Allows us to manage navigation between headers.
+   */
+  private keyManager: FocusKeyManager<KalExpansionPanelHeaderComponent>;
+
+  /**
+   * Whether the expansion indicator should be hidden.
+   */
+  private shouldHideToggle = false;
 
   /**
    * Allow to have multiple panels opened at the same time.
@@ -34,22 +51,6 @@ export class KalAccordionComponent extends CdkAccordion implements KalAccordionB
   set multi(allowMultiple: boolean) {
     this.allowMultiple = coerceBooleanProperty(allowMultiple);
   }
-
-  /**
-   * Headers list used to manage focus.
-   */
-  @ContentChildren(KalExpansionPanelHeaderComponent, {descendants: true})
-  panelsHeaders: QueryList<KalExpansionPanelHeaderComponent>;
-
-  /**
-   * Allows us to manage navigation between headers.
-   */
-  private keyManager: FocusKeyManager<KalExpansionPanelHeaderComponent>;
-
-  /**
-   * Whether the expansion indicator should be hidden.
-   */
-  private shouldHideToggle = false;
 
   /**
    * Whether the expansion indicator should be hidden.
@@ -69,14 +70,18 @@ export class KalAccordionComponent extends CdkAccordion implements KalAccordionB
     const {keyCode} = event;
     const manager = this.keyManager;
 
-    if (keyCode === HOME) {
-      manager.setFirstItemActive();
-      event.preventDefault();
-    } else if (keyCode === END) {
-      manager.setLastItemActive();
-      event.preventDefault();
-    } else {
-      this.keyManager.onKeydown(event);
+    switch (keyCode) {
+      case HOME:
+        manager.setFirstItemActive();
+        event.preventDefault();
+        break;
+      case END :
+        manager.setLastItemActive();
+        event.preventDefault();
+        break;
+      default:
+        this.keyManager.onKeydown(event);
+        break;
     }
   }
 
