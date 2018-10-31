@@ -14,7 +14,7 @@
 //
 // @return Anything
 // ---------------------------------------------------------
-@function get ($key, $map: $dfr-config) {
+@function get ($key, $map: $parameters) {
   $keys: str-explode($key, '.');
 
   @if not deep-map-check($map, $keys...) {
