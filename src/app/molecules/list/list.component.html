@@ -1,6 +1,7 @@
 <kal-list [datasource]="datasource"
           [rowTemplate]="rowTemplate"
-          [initials]="initials">
+          [initials]="initials"
+          [disabledRow]="disabledRow">
 </kal-list>
 
 <ng-template #rowTemplate let-item="item">
@@ -8,3 +9,4 @@
 </ng-template>
 
 <button type="button" (click)="addInitials()">Add initials</button>
+<button type="button" (click)="disableRow()">Disabled row</button>

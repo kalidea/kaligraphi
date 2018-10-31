@@ -9,6 +9,7 @@
 
   <div class="kal-list-item"
        [class.kal-list-item-selected]="isSelected(item)"
+       [class.kal-list-item-disabled]="disabledRow(item)"
        (click)="selectItem(item)">
 
     <span class="kal-list-item-content">

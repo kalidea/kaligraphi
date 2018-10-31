@@ -21,6 +21,8 @@ export class ListComponent implements OnInit {
    */
   initials = null;
 
+  disabledRow = null;
+
   constructor() {
   }
 
@@ -29,6 +31,13 @@ export class ListComponent implements OnInit {
    */
   addInitials() {
     this.initials = !this.initials ? (item) => item['name'].charAt(0).toLocaleUpperCase() : null;
+  }
+
+  /**
+   * Disabled rows in template
+   */
+  disableRow() {
+    this.disabledRow = !this.disabledRow ? (item) => item['disabled'] : null;
   }
 
   ngOnInit() {
@@ -45,33 +54,41 @@ class TestDataSource implements DataSource<{code: string, name: string}> {
     {
       code: '1',
       name: 'aTest',
+      disabled: true
     },
     {
       code: '2',
       name: 'aTest2',
+      disabled: false
     },
     {
       code: '3',
       name: 'aTest3',
+      disabled: false
     },    {
       code: '4',
       name: 'bTest4',
+      disabled: false
     },
     {
       code: '5',
       name: 'cTest5',
+      disabled: false
     },
     {
       code: '6',
       name: 'eTest6',
+      disabled: false
     },
     {
       code: '7',
       name: 'rTest7',
+      disabled: false
     },
     {
       code: '8',
       name: 'rTest8',
+      disabled: false
     },
   ];
 

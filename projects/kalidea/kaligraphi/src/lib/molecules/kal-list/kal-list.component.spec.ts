@@ -12,7 +12,8 @@ import { KalIconModule } from '../../atoms/kal-icon/kal-icon.module';
   template: `
     <kal-list [rowTemplate]="rowTemplate"
               [datasource]="datasource"
-              [initials]="initials">
+              [initials]="initials"
+              [disabledRow]="disabledRow">
     </kal-list>
 
     <ng-template #rowTemplate let-item="item">
@@ -26,6 +27,8 @@ class TestListItemComponent {
 
   initials = null;
 
+  disabledRow = null;
+
 }
 
 class TestDataSource implements DataSource<{code: string, name: string}> {
@@ -34,14 +37,17 @@ class TestDataSource implements DataSource<{code: string, name: string}> {
     {
       code: '1',
       name: 'Item 1',
+      disabled: true,
     },
     {
       code: '2',
       name: 'Item 2',
+      disabled: false,
     },
     {
       code: '3',
       name: 'Item 3',
+      disabled: false,
     },
   ];
 
@@ -61,6 +67,7 @@ describe('TestListItemComponent', () => {
   let listItems: DebugElement[];
   let iconsDebugElements: DebugElement[];
   let initials: DebugElement[];
+  let disabled: DebugElement[];
   let listInstances: KalListComponent<any>;
 
 
@@ -93,11 +100,11 @@ describe('TestListItemComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should create 3 elements', () => {
+  it('should create 3 items', () => {
     expect(listItems.length).toEqual(3);
   });
 
-  it('should create 3 elements', () => {
+  it('should create 3 icons', () => {
     expect(iconsDebugElements.length).toEqual(3);
   });
 
@@ -146,5 +153,19 @@ describe('TestListItemComponent', () => {
     initials = fixture.debugElement.queryAll(By.css('.kal-list-item-initials'));
 
     expect(initials.length).toEqual(1);
+  });
+
+  it('should disable row', () => {
+    component.disabledRow = (item) => item['disabled'];
+
+    fixture.detectChanges();
+
+    listItems[0].nativeElement.click();
+
+    expect(listInstances.isSelected(component.datasource.listItem[0])).toBeFalsy();
+
+    disabled = fixture.debugElement.queryAll(By.css('.kal-list-item-disabled'));
+
+    expect(disabled.length).toEqual(1);
   });
 });

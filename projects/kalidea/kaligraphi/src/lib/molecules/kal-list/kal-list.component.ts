@@ -48,6 +48,11 @@ export class KalListComponent<T> implements OnInit {
    */
   private initialsConfig: (item: T) => string = null;
 
+  /**
+   * Is the row disabled
+   */
+  private isDisabled: (item: T) => boolean = (item: T) => false;
+
   constructor(private cdr: ChangeDetectorRef) {
   }
 
@@ -65,6 +70,19 @@ export class KalListComponent<T> implements OnInit {
   }
 
   /**
+   * Disable rows in template
+   */
+  @Input()
+  get disabledRow(): (item: T) => boolean {
+    return this.isDisabled ? this.isDisabled : (item: T) => false;
+  }
+
+  set disabledRow(value: (item: T) => boolean) {
+    this.isDisabled = value;
+    this.cdr.markForCheck();
+  }
+
+  /**
    * Return the number of elements in list
    */
   get countElements(): number {
@@ -74,9 +92,11 @@ export class KalListComponent<T> implements OnInit {
   /**
    * Select an item in list and emit an event with the selected item value
    */
-  selectItem(item) {
-    this.selectedItem = item;
-    this.selectionChange.emit(item);
+  selectItem(item: T) {
+    if (!this.disabledRow(item)) {
+      this.selectedItem = item;
+      this.selectionChange.emit(item);
+    }
   }
 
   /**
