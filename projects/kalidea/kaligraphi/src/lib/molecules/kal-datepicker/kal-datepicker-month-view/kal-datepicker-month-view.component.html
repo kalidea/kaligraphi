@@ -1,0 +1,8 @@
+<!-- week days -->
+<div *ngFor="let day of weekDays"> {{ day }}</div>
+
+<button type="button"
+        (click)="pickDate(date)"
+        *ngFor="let date of datesList">
+  {{ date.getDay() }}
+</button>

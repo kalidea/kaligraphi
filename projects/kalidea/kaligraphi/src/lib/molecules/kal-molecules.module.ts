@@ -5,18 +5,21 @@ import { KalTextareaModule } from './kal-textarea/kal-textarea.module';
 import { KalSelectModule } from './kal-select/kal-select.module';
 import { KalRaterModule } from './kal-rater/kal-rater.module';
 import { KalTabModule } from './kal-tabs/kal-tab.module';
+import { KalDatepickerModule } from './kal-datepicker/kal-datepicker.module';
 
 export * from './kal-textarea/kal-textarea.module';
 export * from './kal-select/kal-select.module';
 export * from './kal-rater/kal-rater.module';
 export * from './kal-tabs/kal-tab.module';
+export * from './kal-datepicker/kal-datepicker.module';
 
 const exports = [
   KalTextareaModule,
   KalSelectModule,
   KalRaterModule,
   KalTabModule,
-  KalRaterModule
+  KalRaterModule,
+  KalDatepickerModule,
 ];
 
 @NgModule({

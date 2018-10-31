@@ -1,0 +1,10 @@
+<div>
+  <kal-icon name="navigate_before"></kal-icon>
+
+  <div (click)="changeView()">{{ currentPeriodText }}</div>
+
+  <kal-icon *ngIf="isMonthView"
+            name="navigate_next">
+  </kal-icon>
+
+</div>
