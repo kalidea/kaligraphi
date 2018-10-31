@@ -10,7 +10,7 @@ import { KalIconModule } from '../../atoms/kal-icon/kal-icon.module';
 
 @Component({
   template: `
-    <kal-list [itemTemplate]="testTemplate"
+    <kal-list [rowtemplate]="testTemplate"
               [datasource]="datasource"
               [initials]="initials">
     </kal-list>
