@@ -10,12 +10,12 @@ import { KalIconModule } from '../../atoms/kal-icon/kal-icon.module';
 
 @Component({
   template: `
-    <kal-list [rowtemplate]="testTemplate"
+    <kal-list [rowTemplate]="rowTemplate"
               [datasource]="datasource"
               [initials]="initials">
     </kal-list>
 
-    <ng-template #testTemplate let-item="item">
+    <ng-template #rowTemplate let-item="item">
       {{ item.name }}
     </ng-template>
   `

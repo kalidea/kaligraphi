@@ -13,9 +13,14 @@ export class ListComponent implements OnInit {
 
   datasource = new TestDataSource();
 
-  initials = (item) => item['name'].charAt(0).toLocaleUpperCase();
+  initials = null;
 
-  constructor() { }
+  constructor() {
+  }
+
+  addInitials() {
+    this.initials = !this.initials ? (item) => item['name'].charAt(0).toLocaleUpperCase() : null;
+  }
 
   ngOnInit() {
   }

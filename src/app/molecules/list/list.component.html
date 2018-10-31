@@ -1,8 +1,10 @@
 <kal-list [datasource]="datasource"
-          [itemTemplate]="itemTemplate"
+          [rowTemplate]="rowTemplate"
           [initials]="initials">
 </kal-list>
 
-<ng-template #itemTemplate let-item="item">
+<ng-template #rowTemplate let-item="item">
   {{ item.name }}
 </ng-template>
+
+<button type="button" (click)="addInitials()">Add initials</button>
