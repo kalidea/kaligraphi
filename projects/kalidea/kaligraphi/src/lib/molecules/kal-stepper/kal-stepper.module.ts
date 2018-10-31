@@ -2,14 +2,13 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { KalStepHeaderDirective, KalStepperComponent } from './kal-stepper.component';
-import { KalStepComponent } from './kal-step/kal-step.component';
-import { KalStepHeaderComponent } from './kal-step-header/kal-step-header.component';
-import { KalStepperNextDirective, KalStepperPreviousDirective, KalStepLabelDirective } from './directives/index';
+import { KalStepComponent } from './kal-step.component';
+import { KalStepHeaderComponent } from './kal-step-header.component';
+import { KalStepLabelDirective } from './kal-step-label.directive';
 
 export * from './kal-stepper.component';
-export * from './kal-step/kal-step.component';
-export * from './kal-step-header/kal-step-header.component';
-export * from './directives/index';
+export * from './kal-step.component';
+export * from './kal-step-header.component';
 
 const exports = [
   KalStepperComponent,
@@ -17,8 +16,6 @@ const exports = [
   KalStepHeaderComponent,
   KalStepHeaderDirective,
   KalStepLabelDirective,
-  KalStepperNextDirective,
-  KalStepperPreviousDirective
 ];
 
 @NgModule({

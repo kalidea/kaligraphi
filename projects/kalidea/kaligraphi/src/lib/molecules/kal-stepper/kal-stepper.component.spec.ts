@@ -3,17 +3,17 @@ import { Component, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
-import { KalStepperComponent } from './kal-stepper.component';
-import { KalStepComponent } from './kal-step/kal-step.component';
-import { KalStepLabelDirective } from './directives/kal-step-label.directive';
-import { KalStepHeaderComponent } from './kal-step-header/kal-step-header.component';
-import { KalStepperModule } from 'projects/kalidea/kaligraphi/src/lib/molecules/kal-stepper/kal-stepper.module';
+import {
+  KalStepperModule,
+  KalStepperComponent,
+  KalStepHeaderComponent
+} from './kal-stepper.module';
 
 @Component({
   selector: 'kal-test',
   template: `
     <h1>Test Stepper</h1>
-    <kal-stepper #stepper linear="true">
+    <kal-stepper #stepper [linear]="true" [orientation]="orientation">
       <kal-step [stepControl]="form">
         <ng-template kalStepLabel>
           First step
@@ -44,6 +44,8 @@ class TestComponent {
   form = new FormGroup({
     email: new FormControl('')
   });
+
+  orientation = 'horizontal';
 
   setValidators() {
     this.form.get('email').setValidators(Validators.required);
@@ -123,5 +125,23 @@ describe('KalStepperComponent', () => {
     fixture.detectChanges();
     expectVisibilityOf(1);
 
+  });
+
+  it('should add aria-selected on selected step header', () => {
+    const firstHeader = fixture.debugElement.query(By.directive(KalStepHeaderComponent));
+    expect(firstHeader.nativeElement.getAttribute('aria-selected')).toEqual('true');
+    clickOnHeader(1);
+    fixture.detectChanges();
+    const headers = fixture.debugElement.queryAll(By.directive(KalStepHeaderComponent));
+    expect(headers[0].nativeElement.getAttribute('aria-selected')).toEqual('false');
+    expect(headers[1].nativeElement.getAttribute('aria-selected')).toEqual('true');
+    expect(headers[2].nativeElement.getAttribute('aria-selected')).toEqual('false');
+  });
+
+  it('should add aria-orientation on stepper', () => {
+    expect(fixture.debugElement.query(By.directive(KalStepperComponent)).attributes['aria-orientation']).toEqual('horizontal');
+    component.orientation = 'vertical';
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.directive(KalStepperComponent)).attributes['aria-orientation']).toEqual('vertical');
   });
 });

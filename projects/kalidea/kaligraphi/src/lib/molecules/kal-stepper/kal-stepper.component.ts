@@ -4,17 +4,18 @@ import {
   Component,
   ContentChildren,
   Directive,
-  ElementRef, forwardRef,
-  HostBinding, Input,
+  ElementRef,
+  forwardRef,
+  HostBinding,
+  Input,
   QueryList,
   ViewEncapsulation
 } from '@angular/core';
-import { CdkStepper } from '@angular/cdk/stepper';
+import { CdkStepper, StepperOrientation } from '@angular/cdk/stepper';
 import { FocusableOption } from '@angular/cdk/a11y';
 import { takeUntil } from 'rxjs/operators';
 
-import { KalStepComponent } from './kal-step/kal-step.component';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { KalStepComponent } from './kal-step.component';
 
 
 // bug in cdk, should provide this class ourselves
@@ -44,12 +45,23 @@ export class KalStepHeaderDirective implements FocusableOption {
 export class KalStepperComponent extends CdkStepper implements AfterContentInit {
 
   @HostBinding('attr.role') role = 'tablist';
-  @HostBinding('attr.aria-orientation') orientation = this._orientation;
 
   /** Steps that the stepper holds. */
-  @ContentChildren(forwardRef(() => KalStepComponent)) _steps: QueryList<KalStepComponent>;
+  @ContentChildren(forwardRef(() => KalStepComponent))
+  _steps: QueryList<KalStepComponent>;
 
-  @ContentChildren(KalStepHeaderDirective) _stepHeader: QueryList<KalStepHeaderDirective>;
+  @ContentChildren(KalStepHeaderDirective)
+  _stepHeader: QueryList<KalStepHeaderDirective>;
+
+  @Input()
+  @HostBinding('attr.aria-orientation')
+  get orientation() {
+    return this._orientation;
+  }
+
+  set orientation(orientation: StepperOrientation) {
+    this._orientation = orientation;
+  }
 
   ngAfterContentInit(): void {
     this._steps.changes.pipe(

@@ -1,11 +1,25 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { FocusMonitor } from '@angular/cdk/a11y';
-import { KalStepLabelDirective } from '../directives/kal-step-label.directive';
+import { KalStepLabelDirective } from './kal-step-label.directive';
 
 @Component({
   selector: 'kal-step-header',
-  templateUrl: './kal-step-header.component.html',
-  styleUrls: ['./kal-step-header.component.sass'],
+  template: `
+    <div class="kal-step-header-ripple" ></div>
+    <div [class.kal-step-icon]="state !== 'number' || selected"
+         [class.kal-step-icon-not-touched]="state == 'number' && !selected"
+         [ngSwitch]="state">
+
+    </div>
+    <div class="kal-step-label"
+         [class.kal-step-label-active]="active"
+         [class.kal-step-label-selected]="selected">
+      <!-- If there is a label template, use it. -->
+      <ng-container *ngIf="templateLabel()" [ngTemplateOutlet]="templateLabel()!.template">
+      </ng-container>
+
+    </div>
+  `,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -15,7 +29,6 @@ export class KalStepHeaderComponent implements OnDestroy {
 
   /** Label of the given step. */
   @Input() label: KalStepLabelDirective | string;
-
 
   /** Index of the given step. */
   @Input() index: number;
@@ -30,10 +43,10 @@ export class KalStepHeaderComponent implements OnDestroy {
   @Input() optional: boolean;
 
   constructor(
-    private _focusMonitor: FocusMonitor,
-    private _element: ElementRef<HTMLElement>,
+    private focusMonitor: FocusMonitor,
+    private element: ElementRef<HTMLElement>,
     changeDetectorRef: ChangeDetectorRef) {
-    _focusMonitor.monitor(_element.nativeElement, true);
+    focusMonitor.monitor(element.nativeElement, true);
   }
 
   /** Returns string label of given step if it is a text label. */
@@ -48,7 +61,7 @@ export class KalStepHeaderComponent implements OnDestroy {
 
   /** Returns the host HTML element. */
   getHostElement() {
-    return this._element.nativeElement;
+    return this.element.nativeElement;
   }
 
 
@@ -57,7 +70,7 @@ export class KalStepHeaderComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
-    this._focusMonitor.stopMonitoring(this._element.nativeElement);
+    this.focusMonitor.stopMonitoring(this.element.nativeElement);
   }
 
 }
