@@ -27,7 +27,7 @@ export class KalListComponent<T> implements OnInit {
   /**
    * Row templates
    */
-  @Input() itemTemplate: TemplateRef<any>;
+  @Input() rowTemplate: TemplateRef<any>;
 
   /**
    * Datasource to give items list to the component

@@ -12,7 +12,7 @@
        (click)="selectItem(item)">
 
     <span class="kal-list-item-content">
-      <ng-container *ngTemplateOutlet="itemTemplate; context: {item: item}"></ng-container>
+      <ng-container *ngTemplateOutlet="rowTemplate; context: {item: item}"></ng-container>
     </span>
 
     <span class="kal-list-item-icon">
