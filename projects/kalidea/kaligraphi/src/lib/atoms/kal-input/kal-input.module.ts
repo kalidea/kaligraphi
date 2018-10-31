@@ -13,8 +13,8 @@ const exports = [
 @NgModule({
   imports: [
     CommonModule,
+    KalIconModule,
     ReactiveFormsModule,
-    KalIconModule
   ],
   exports: exports,
   declarations: exports
