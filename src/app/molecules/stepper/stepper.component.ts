@@ -18,7 +18,6 @@ export class StepperComponent implements OnInit {
   }
 
   selectionUpdated($event) {
-    console.log($event);
   }
 
   ngOnInit() {
