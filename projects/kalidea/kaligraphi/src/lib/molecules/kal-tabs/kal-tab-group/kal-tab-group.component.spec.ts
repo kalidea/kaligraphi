@@ -2,12 +2,14 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { PortalModule } from '@angular/cdk/portal';
+import { RIGHT_ARROW, LEFT_ARROW } from '@angular/cdk/keycodes';
 
 import { KalTabGroupComponent } from './kal-tab-group.component';
 import { KalTabComponent } from '../kal-tab/kal-tab.component';
 import { KalTabHeaderComponent } from '../kal-tab-header/kal-tab-header.component';
 import { KalTabBodyComponent } from '../kal-tab-body/kal-tab-body.component';
 import { KalTabLabelDirective } from '../kal-tab-label.directive';
+import { createKeyboardEvent } from '../../../utils/tests/event-keyboard';
 
 @Component({
   template: `
@@ -56,7 +58,7 @@ class TestGroupWithTemplateLabelComponent {
   disabled = false;
 }
 
-describe('KalTabGroupComponent', () => {
+fdescribe('KalTabGroupComponent', () => {
   let component: TestTabGroupWithLabelComponent;
   let fixture: ComponentFixture<TestTabGroupWithLabelComponent>;
   let groupDebugElement: DebugElement;
@@ -191,6 +193,15 @@ describe('KalTabGroupComponent', () => {
 
     expect(groupInstance.selectedTab.emit).toHaveBeenCalled();
   });
+
+  it('should select tab via the LEFT/RIGHT arrow keys', () => {
+    groupInstance.focus();
+    groupInstance.handleKeydown(createKeyboardEvent('keydown', RIGHT_ARROW));
+    const tabHeaderHighlighted = groupInstance.headers.find((item, index) => index === groupInstance.selectedIndex);
+
+    expect(tabHeaderHighlighted.highlighted).toBeTruthy();
+  });
+
 });
 
 describe('KalTabGroupComponent', () => {
