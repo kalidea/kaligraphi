@@ -11,13 +11,22 @@ import { Observable, of } from 'rxjs';
 })
 export class ListComponent implements OnInit {
 
+  /**
+   * Datasource
+   */
   datasource = new TestDataSource();
 
+  /**
+   * Initials
+   */
   initials = null;
 
   constructor() {
   }
 
+  /**
+   * Add initials
+   */
   addInitials() {
     this.initials = !this.initials ? (item) => item['name'].charAt(0).toLocaleUpperCase() : null;
   }
@@ -29,6 +38,9 @@ export class ListComponent implements OnInit {
 
 class TestDataSource implements DataSource<{code: string, name: string}> {
 
+  /**
+   * The list of items
+   */
   listItem = [
     {
       code: '1',
@@ -63,6 +75,9 @@ class TestDataSource implements DataSource<{code: string, name: string}> {
     },
   ];
 
+  /**
+   * Return an observable that contains the items list
+   */
   connect(): Observable<any> {
     return of(this.listItem);
   }
