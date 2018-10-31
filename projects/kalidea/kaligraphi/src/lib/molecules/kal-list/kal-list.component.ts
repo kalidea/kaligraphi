@@ -1,5 +1,14 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewEncapsulation } from '@angular/core';
-import { DataSource } from '@angular/cdk/collections';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  TemplateRef,
+  ViewEncapsulation
+} from '@angular/core';
 
 @Component({
   selector: 'kal-list',
@@ -10,41 +19,94 @@ import { DataSource } from '@angular/cdk/collections';
 })
 export class KalListComponent<T> implements OnInit {
 
+  /**
+   * Results list
+   */
   results: T[];
+
+  /**
+   * Row templates
+   */
   @Input() itemTemplate: TemplateRef<any>;
-  @Input() datasource: DataSource<T>;
+
+  /**
+   * Datasource to give items list to the component
+   */
+  @Input() datasource: any;
+
+  /**
+   * Triggered when selection has changed
+   */
   @Output() selectionChange = new EventEmitter<T>();
-  @Input() initials = null;
+  /**
+   * The selected item
+   */
   private selectedItem = null;
 
-  constructor() {
+  /**
+   * Initials config
+   */
+  private initialsConfig: (item: T) => string = null;
+
+  constructor(private cdr: ChangeDetectorRef) {
   }
 
+  /**
+   * Display initials in listing
+   */
+  @Input()
+  get initials(): (item: T) => string {
+    return this.initialsConfig;
+  }
+
+  set initials(value: (item: T) => string) {
+    this.initialsConfig = value;
+    this.cdr.markForCheck();
+  }
+
+  /**
+   * Return the number of elements in list
+   */
   get countElements(): number {
     return this.results.length;
   }
 
+  /**
+   * Select an item in list and emit an event with the selected item value
+   */
   selectItem(item) {
     this.selectedItem = item;
     this.selectionChange.emit(item);
   }
 
+  /**
+   * Is the item selected
+   */
   isSelected(item): boolean {
     return this.selectedItem === item;
   }
 
-  displayInitials(row: T, index: number) {
-    return this.initials
-      && row[this.initials]
-      && (!this.results[index - 1]
-      || this.results[index - 1][this.initials].charAt(0) !== row[this.initials].charAt(0));
+  /**
+   * Reset the selected item
+   */
+  reset() {
+    this.selectedItem = null;
+    this.cdr.markForCheck();
   }
 
-  getInitial(row: T) {
-    return row[this.initials].charAt(0).toLocaleUpperCase();
+  /**
+   * display initials in listing
+   */
+  containsInitials(item: T, index: number): boolean {
+    const previousItem = this.results[index - 1];
+
+    return this.initials
+      && (!previousItem || this.initials(previousItem) !== this.initials(item));
   }
 
   ngOnInit() {
+    this.results = [];
+
     if (this.datasource) {
       this.datasource.connect().subscribe(
         element => {

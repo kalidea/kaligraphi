@@ -11,7 +11,8 @@ import { KalIconModule } from '../../atoms/kal-icon/kal-icon.module';
 @Component({
   template: `
     <kal-list [itemTemplate]="testTemplate"
-              [datasource]="datasource">
+              [datasource]="datasource"
+              [initials]="initials">
     </kal-list>
 
     <ng-template #testTemplate let-item="item">
@@ -20,7 +21,11 @@ import { KalIconModule } from '../../atoms/kal-icon/kal-icon.module';
   `
 })
 class TestListItemComponent {
+
   datasource = new TestDataSource();
+
+  initials = null;
+
 }
 
 class TestDataSource implements DataSource<{code: string, name: string}> {
@@ -55,6 +60,7 @@ describe('TestListItemComponent', () => {
   let list: DebugElement;
   let listItems: DebugElement[];
   let iconsDebugElements: DebugElement[];
+  let initials: DebugElement[];
   let listInstances: KalListComponent<any>;
 
 
@@ -118,5 +124,27 @@ describe('TestListItemComponent', () => {
 
     expect(listInstances.isSelected(component.datasource.listItem[2])).toBeTruthy();
     expect(listInstances.selectionChange.emit).toHaveBeenCalledWith(component.datasource.listItem[2]);
+  });
+
+  it('should reset selected item', () => {
+    const item = component.datasource.listItem[0];
+
+    listInstances.selectItem(item);
+
+    expect(listInstances.isSelected(item)).toBeTruthy();
+
+    listInstances.reset();
+
+    expect(listInstances.isSelected(item)).toBeFalsy();
+  });
+
+  it('should display initials', () => {
+    component.initials = (item) => item['name'].charAt(0).toLocaleUpperCase();
+
+    fixture.detectChanges();
+
+    initials = fixture.debugElement.queryAll(By.css('.kal-list-item-initials'));
+
+    expect(initials.length).toEqual(1);
   });
 });

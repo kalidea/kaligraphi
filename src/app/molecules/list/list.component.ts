@@ -13,6 +13,8 @@ export class ListComponent implements OnInit {
 
   datasource = new TestDataSource();
 
+  initials = (item) => item['name'].charAt(0).toLocaleUpperCase();
+
   constructor() { }
 
   ngOnInit() {
