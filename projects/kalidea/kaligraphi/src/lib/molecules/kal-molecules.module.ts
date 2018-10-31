@@ -7,6 +7,7 @@ import { KalTabModule } from './kal-tabs/kal-tab.module';
 import { KalStepperModule } from './kal-stepper/kal-stepper.module';
 import { KalButtonModule } from './kal-button/kal-button.module';
 import { KalRaterModule } from './kal-rater/kal-rater.module';
+import { KalAccordionModule } from './kal-accordion/kal-accordion.module';
 
 export * from './kal-textarea/kal-textarea.module';
 export * from './kal-select/kal-select.module';
@@ -14,6 +15,7 @@ export * from './kal-tabs/kal-tab.module';
 export * from './kal-stepper/kal-stepper.module';
 export * from './kal-button/kal-button.module';
 export * from './kal-rater/kal-rater.module';
+export * from './kal-accordion/kal-accordion.module';
 
 const exports = [
   KalTextareaModule,
@@ -21,7 +23,8 @@ const exports = [
   KalTabModule,
   KalStepperModule,
   KalButtonModule,
-  KalRaterModule
+  KalRaterModule,
+  KalAccordionModule,
 ];
 
 @NgModule({

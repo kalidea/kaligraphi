@@ -1,0 +1,12 @@
+<ng-content select="kal-expansion-panel-header"></ng-content>
+
+<div role="region"
+     [@bodyExpansion]="getExpandedState()"
+     [attr.aria-labelledby]="headerId"
+     [id]="id"
+     #body>
+
+  <ng-content select="kal-expansion-panel-content"></ng-content>
+
+  <ng-content select="kal-action-row"></ng-content>
+</div>
