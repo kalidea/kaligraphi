@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { TabPanelComponent } from './tab-panel/tab-panel.component';
-import { AccordionComponent } from './accordion/accordion.component';
+import { TabPanelComponent } from 'src/app/molecules/tab-panel/tab-panel.component';
+import { StepperComponent } from 'src/app/molecules/stepper/stepper.component';
+import { AccordionComponent } from 'src/app/molecules/accordion/accordion.component';
 
 const routes: Routes = [
-  {path: 'tabPanel', component: TabPanelComponent},
+  {path: 'tab-panel', component: TabPanelComponent},
+  {path: 'stepper', component: StepperComponent},
   {path: 'accordion', component: AccordionComponent},
 ];
 

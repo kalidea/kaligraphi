@@ -1,0 +1,44 @@
+<kal-stepper [linear]="true" orientation="horizontal" (selectionChange)="selectionUpdated($event)" #stepper>
+
+  <kal-step [stepControl]="firstFormGroup">
+
+    <ng-template kalStepLabel> First step</ng-template>
+
+    <form [formGroup]="firstFormGroup">
+
+      <kal-input formControlName="email"></kal-input>
+      <div>
+        <button (click)="stepper.next()" [disabled]="firstFormGroup.invalid">Next 1</button>
+      </div>
+    </form>
+
+  </kal-step>
+
+  <kal-step [stepControl]="secondFormGroup">
+
+    <ng-template kalStepLabel>Second Step</ng-template>
+
+    <form [formGroup]="secondFormGroup">
+      <kal-input formControlName="firstname"></kal-input>
+      <div>
+        <button (click)="stepper.previous()">Previous 2</button>
+        <button (click)="stepper.next()">Next 2</button>
+      </div>
+    </form>
+
+  </kal-step>
+
+  <kal-step>
+
+    <ng-template kalStepLabel>Third Step</ng-template>
+
+    <p>
+      Thanks for your subscription
+    </p>
+
+    <div>
+      <button (click)="stepper.previous()">Previous 3</button>
+    </div>
+
+  </kal-step>
+</kal-stepper>

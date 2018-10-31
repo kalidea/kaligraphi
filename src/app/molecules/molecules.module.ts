@@ -5,6 +5,7 @@ import { KaligraphiModule } from '@kalidea/kaligraphi';
 import { MoleculesRoutingModule } from 'src/app/molecules/molecules-routing.module';
 
 import { TabPanelComponent } from 'src/app/molecules/tab-panel/tab-panel.component';
+import { StepperComponent } from 'src/app/molecules/stepper/stepper.component';
 import { AccordionComponent } from 'src/app/molecules/accordion/accordion.component';
 
 @NgModule({
@@ -16,7 +17,8 @@ import { AccordionComponent } from 'src/app/molecules/accordion/accordion.compon
   ],
   declarations: [
     TabPanelComponent,
-    AccordionComponent
+    StepperComponent,
+    AccordionComponent,
   ]
 })
 export class MoleculesModule { }
