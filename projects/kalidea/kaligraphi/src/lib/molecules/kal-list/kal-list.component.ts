@@ -2,13 +2,14 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ContentChild,
   EventEmitter,
   Input,
   OnInit,
   Output,
-  TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { KalListItemDirective } from './kal-list-item.directive';
 
 @Component({
   selector: 'kal-list',
@@ -25,11 +26,6 @@ export class KalListComponent<T> implements OnInit {
   results: T[];
 
   /**
-   * Row templates
-   */
-  @Input() rowTemplate: TemplateRef<any>;
-
-  /**
    * Datasource to give items list to the component
    */
   @Input() datasource: any;
@@ -38,15 +34,21 @@ export class KalListComponent<T> implements OnInit {
    * Triggered when selection has changed
    */
   @Output() selectionChange = new EventEmitter<T>();
+
+  /**
+   * Row template
+   */
+  @ContentChild(KalListItemDirective) row: KalListItemDirective;
+
   /**
    * The selected item
    */
   private selectedItem = null;
 
   /**
-   * Initials config
+   * The config is use to group all items
    */
-  private initialsConfig: (item: T) => string = null;
+  private groupByConfig: (item: T) => string = null;
 
   /**
    * Is the row disabled
@@ -57,27 +59,27 @@ export class KalListComponent<T> implements OnInit {
   }
 
   /**
-   * Display initials in listing
+   * Function that group items in listing
    */
   @Input()
-  get initials(): (item: T) => string {
-    return this.initialsConfig;
+  get groupByFunction(): (item: T) => string {
+    return this.groupByConfig;
   }
 
-  set initials(value: (item: T) => string) {
-    this.initialsConfig = value;
+  set groupByFunction(value: (item: T) => string) {
+    this.groupByConfig = value;
     this.cdr.markForCheck();
   }
 
   /**
-   * Disable rows in template
+   * Function that disable rows in template
    */
   @Input()
-  get disabledRow(): (item: T) => boolean {
+  get disableRowsFunction(): (item: T) => boolean {
     return this.isDisabled ? this.isDisabled : (item: T) => false;
   }
 
-  set disabledRow(value: (item: T) => boolean) {
+  set disableRowsFunction(value: (item: T) => boolean) {
     this.isDisabled = value;
     this.cdr.markForCheck();
   }
@@ -93,7 +95,7 @@ export class KalListComponent<T> implements OnInit {
    * Select an item in list and emit an event with the selected item value
    */
   selectItem(item: T) {
-    if (!this.disabledRow(item)) {
+    if (!this.disableRowsFunction(item)) {
       this.selectedItem = item;
       this.selectionChange.emit(item);
     }
@@ -115,13 +117,13 @@ export class KalListComponent<T> implements OnInit {
   }
 
   /**
-   * display initials in listing
+   * Check if items need to be grouped
    */
   containsInitials(item: T, index: number): boolean {
     const previousItem = this.results[index - 1];
 
-    return this.initials
-      && (!previousItem || this.initials(previousItem) !== this.initials(item));
+    return this.groupByFunction
+      && (!previousItem || this.groupByFunction(previousItem) !== this.groupByFunction(item));
   }
 
   ngOnInit() {

@@ -17,27 +17,30 @@ export class ListComponent implements OnInit {
   datasource = new TestDataSource();
 
   /**
-   * Initials
+   * groupBy function
    */
-  initials = null;
+  groupByFunction = null;
 
-  disabledRow = null;
+  /**
+   * Disable rows function
+   */
+  disableRowsFunction = null;
 
   constructor() {
   }
 
   /**
-   * Add initials
+   * Add a function that group all items
    */
-  addInitials() {
-    this.initials = !this.initials ? (item) => item['name'].charAt(0).toLocaleUpperCase() : null;
+  addGroupByFunction() {
+    this.groupByFunction = !this.groupByFunction ? (item) => item['name'].charAt(0).toLocaleUpperCase() : null;
   }
 
   /**
-   * Disabled rows in template
+   * Add a function that disable rows
    */
   disableRow() {
-    this.disabledRow = !this.disabledRow ? (item) => item['disabled'] : null;
+    this.disableRowsFunction = !this.disableRowsFunction ? (item) => item['disabled'] : null;
   }
 
   ngOnInit() {

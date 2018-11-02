@@ -10,24 +10,24 @@ import { KalIconModule } from '../../atoms/kal-icon/kal-icon.module';
 
 @Component({
   template: `
-    <kal-list [rowTemplate]="rowTemplate"
-              [datasource]="datasource"
-              [initials]="initials"
-              [disabledRow]="disabledRow">
-    </kal-list>
+    <kal-list [datasource]="datasource"
+              [groupByFunction]="groupByFunction"
+              [disableRowsFunction]="disableRowsFunction">
 
-    <ng-template #rowTemplate let-item="item">
+    <ng-template kalListItem let-item="item">
       {{ item.name }}
     </ng-template>
+
+    </kal-list>
   `
 })
 class TestListItemComponent {
 
   datasource = new TestDataSource();
 
-  initials = null;
+  groupByFunction = null;
 
-  disabledRow = null;
+  disableRowsFunction = null;
 
 }
 
@@ -66,7 +66,7 @@ describe('TestListItemComponent', () => {
   let list: DebugElement;
   let listItems: DebugElement[];
   let iconsDebugElements: DebugElement[];
-  let initials: DebugElement[];
+  let groupElement: DebugElement[];
   let disabled: DebugElement[];
   let listInstances: KalListComponent<any>;
 
@@ -145,18 +145,18 @@ describe('TestListItemComponent', () => {
     expect(listInstances.isSelected(item)).toBeFalsy();
   });
 
-  it('should display initials', () => {
-    component.initials = (item) => item['name'].charAt(0).toLocaleUpperCase();
+  it('should group items', () => {
+    component.groupByFunction = (item) => item['name'].charAt(0).toLocaleUpperCase();
 
     fixture.detectChanges();
 
-    initials = fixture.debugElement.queryAll(By.css('.kal-list-item-initials'));
+    groupElement = fixture.debugElement.queryAll(By.css('.kal-list-item-group'));
 
-    expect(initials.length).toEqual(1);
+    expect(groupElement.length).toEqual(1);
   });
 
   it('should disable row', () => {
-    component.disabledRow = (item) => item['disabled'];
+    component.disableRowsFunction = (item) => item['disabled'];
 
     fixture.detectChanges();
 

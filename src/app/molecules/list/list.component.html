@@ -1,12 +1,12 @@
 <kal-list [datasource]="datasource"
-          [rowTemplate]="rowTemplate"
-          [initials]="initials"
-          [disabledRow]="disabledRow">
+          [groupByFunction]="groupByFunction"
+          [disableRowsFunction]="disableRowsFunction">
+
+  <ng-template kalListItem let-item="item">
+    {{ item.name }}
+  </ng-template>
+
 </kal-list>
 
-<ng-template #rowTemplate let-item="item">
-  {{ item.name }}
-</ng-template>
-
-<button type="button" (click)="addInitials()">Add initials</button>
-<button type="button" (click)="disableRow()">Disabled row</button>
+<button type="button" (click)="addGroupByFunction()">Group items</button>
+<button type="button" (click)="disableRow()">Disable rows</button>
