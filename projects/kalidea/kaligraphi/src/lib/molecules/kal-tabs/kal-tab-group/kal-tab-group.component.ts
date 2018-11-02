@@ -122,10 +122,9 @@ export class KalTabGroupComponent implements AfterContentInit, AfterViewInit {
 
     if (isOpenKey && this.keyManager.activeItem) {
       event.preventDefault();
-      const tabToSelect = this.tabs.find((item, i) => i == this.keyManager.activeItemIndex);
+      const tabToSelect = this.tabs.find((item, i) => i === this.keyManager.activeItemIndex);
       this.selectTabHeader(tabToSelect, this.keyManager.activeItemIndex);
-    }
-    else {
+    } else {
       this.keyManager.onKeydown(event);
     }
   }
