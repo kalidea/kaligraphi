@@ -74,6 +74,7 @@ export class KalTabGroupComponent implements AfterContentInit, AfterViewInit {
   selectTabHeader(tab: KalTabComponent, tabIndex: number) {
     if (!tab.disabled) {
       this.selectedTabIndex = tabIndex;
+      this.keyManager.setActiveItem(this.selectedIndex);
       this.selectedTab.emit(new KalTabChange(tab, tabIndex));
     }
   }
@@ -94,6 +95,7 @@ export class KalTabGroupComponent implements AfterContentInit, AfterViewInit {
   @HostListener('focus')
   focus(): void {
     this.isFocused = true;
+    this.keyManager.setActiveItem(this.selectedIndex);
   }
 
   /**
@@ -102,6 +104,7 @@ export class KalTabGroupComponent implements AfterContentInit, AfterViewInit {
   @HostListener('blur')
   blur() {
     this.isFocused = false;
+    this.keyManager.setActiveItem(this.selectedIndex);
   }
 
   /**
@@ -142,9 +145,6 @@ export class KalTabGroupComponent implements AfterContentInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.keyManager = new ActiveDescendantKeyManager<KalTabHeaderComponent>(this.headers).withHorizontalOrientation('ltr');
-    setTimeout(() => {
-      this.keyManager.setActiveItem(this.selectedIndex);
-    }, 0);
   }
 
 }

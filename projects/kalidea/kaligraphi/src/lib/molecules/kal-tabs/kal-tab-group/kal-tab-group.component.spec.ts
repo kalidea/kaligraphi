@@ -195,16 +195,22 @@ describe('KalTabGroupComponent', () => {
   });
 
   it('should select tab via the LEFT/RIGHT arrow keys', async (() => {
-    // TODO
     groupInstance.focus();
+
+    expect(tabHeaderInstances[0].highlighted).toBeTruthy();
+
     groupInstance.handleKeydown(createKeyboardEvent('keydown', RIGHT_ARROW));
+
+    expect(groupInstance.selectedIndex).toEqual(0);
+    expect(tabHeaderInstances[0].highlighted).toBeFalsy();
+    expect(tabHeaderInstances[1].highlighted).toBeTruthy();
+
     groupInstance.handleKeydown(createKeyboardEvent('keydown', ENTER));
-    const tabHeaderHighlighted = groupInstance.headers.find((item, index) => index === groupInstance.selectedIndex);
 
-    expect(tabHeaderInstances[0].selected).toBeTruthy();
-
+    expect(groupInstance.selectedIndex).toEqual(1);
+    expect(tabHeaderInstances[0].highlighted).toBeFalsy();
+    expect(tabHeaderInstances[1].highlighted).toBeTruthy();
   }));
-
 });
 
 describe('KalTabGroupComponent', () => {
