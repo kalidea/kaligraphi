@@ -8,7 +8,6 @@ import { filter } from 'rxjs/operators';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { Subscription } from 'rxjs';
 import { KalMonthCalendarComponent } from './kal-datepicker-month-view/kal-month-calendar.component';
-import { DateTime } from 'luxon';
 
 /**
  * Possible views for the calendar.
