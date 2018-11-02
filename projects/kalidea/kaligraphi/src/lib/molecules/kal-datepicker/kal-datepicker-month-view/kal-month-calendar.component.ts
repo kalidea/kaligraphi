@@ -3,8 +3,6 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
-  forwardRef,
-  Inject,
   Input,
   OnInit,
   Output,
@@ -12,26 +10,26 @@ import {
 } from '@angular/core';
 import { Info } from 'luxon';
 import { coerceKalDateProperty, KalDate } from '../kal-date';
-import { KalDatepickerHeaderComponent } from '../kal-datepicker-header/kal-datepicker-header.component';
 
 @Component({
-  selector: 'kal-datepicker-month-view',
-  templateUrl: './kal-datepicker-month-view.component.html',
-  styleUrls: ['./kal-datepicker-month-view.component.sass'],
+  selector: 'kal-month-calendar',
+  templateUrl: './kal-month-calendar.component.html',
+  styleUrls: ['./kal-month-calendar.component.sass'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalDatepickerMonthViewComponent implements OnInit {
+export class KalMonthCalendarComponent implements OnInit {
 
   /**
    * Emits when a new date is selected.
    */
   @Output() readonly datePicked = new EventEmitter<KalDate>();
+
   private readonly narrowWeekDays = Info.weekdays('narrow');
+
   private selectedKalDate: KalDate;
 
-  constructor(@Inject(forwardRef(() => KalDatepickerHeaderComponent)) public datePickerHeaderComponent: KalDatepickerHeaderComponent,
-              private cdr: ChangeDetectorRef) {
+  constructor(private cdr: ChangeDetectorRef) {
   }
 
   get weekDays(): string[] {
@@ -64,16 +62,21 @@ export class KalDatepickerMonthViewComponent implements OnInit {
       return [];
     }
 
-    const startMonth = displayedDate.startOf('month').startOf('week').plus({months: -2});
-    console.log(startMonth.monthLong);
+    const startMonth = displayedDate.startOf('month').startOf('week');
     const datesList: KalDate[] = [];
 
     // create an array with all days in selected date month
     for (let i = 0; i < startMonth.daysInMonth; i++) {
+      console.log(i);
       datesList.push(new KalDate(startMonth.plus({days: i})));
     }
 
     return datesList;
+  }
+
+  updateMonth(amount: number) {
+    this.selectedDate = this.selectedDate.add({months: amount});
+    this.cdr.markForCheck();
   }
 
   /**

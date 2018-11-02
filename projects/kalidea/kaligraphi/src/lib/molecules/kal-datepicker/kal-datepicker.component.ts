@@ -7,6 +7,8 @@ import { FormControl } from '@angular/forms';
 import { filter } from 'rxjs/operators';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { Subscription } from 'rxjs';
+import { KalMonthCalendarComponent } from './kal-datepicker-month-view/kal-month-calendar.component';
+import { DateTime } from 'luxon';
 
 /**
  * Possible views for the calendar.
@@ -27,20 +29,27 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
    * reference to calendar
    */
   @ViewChild('datepickerCalendar') datepickerCalendar: TemplatePortal<any>;
+
   /**
    * reference to container
    */
   @ViewChild('datepickerContainer') datepickerContainer: ElementRef;
+
+  /**
+   * The reference to the kal date picker month view component
+   */
+  @ViewChild(KalMonthCalendarComponent) monthCalendar: KalMonthCalendarComponent;
+
   /**
    * Whether the calendar is in month view
    */
   currentView: KalCalendarView = 'month';
   control = new FormControl();
+  currentDate = new KalDate();
   private minDate: KalDate;
   private maxDate: KalDate;
   private backdropClickSubscription = Subscription.EMPTY;
   private escapeKeySubscription = Subscription.EMPTY;
-   currentDate = new KalDate();
   /**
    * Overlay Reference
    */
@@ -68,6 +77,15 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     this.minDate = coerceKalDateProperty(date);
   }
 
+  get currentMonth(): string {
+    const date = this.monthCalendar ? this.monthCalendar.selectedDate : this.currentDate;
+    return date.getMonth() + ' ' + date.getYear();
+  }
+
+  setCurrentView() {
+    this.currentView = this.currentView === 'month' ? 'multi' : 'month';
+  }
+
   open() {
     this.overlayRef.attach(this.datepickerCalendar);
   }
@@ -77,7 +95,8 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   }
 
   setInputValue(date: KalDate): void {
-    this.setDateControlValueAsString(date);
+      const dateToString = (date && date.valid) ? date.toString() : '';
+      this.control.setValue(dateToString, {emitEvent: false, onlySelf: true});
   }
 
   /**
@@ -90,7 +109,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
 
     value = coerceKalDateProperty(value);
     super.writeValue(value);
-    this.setDateControlValueAsString(value);
+    this.setInputValue(value);
   }
 
   ngOnInit() {
@@ -114,13 +133,4 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     this.backdropClickSubscription.unsubscribe();
     this.escapeKeySubscription.unsubscribe();
   }
-
-  /**
-   * set date control value as string without emitting event
-   */
-  private setDateControlValueAsString(date: KalDate) {
-    const dateToString = (date && date.valid) ? date.toString() : '';
-    this.control.setValue(dateToString, {emitEvent: false, onlySelf: true});
-  }
-
 }

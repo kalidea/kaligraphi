@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, forwardRef, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, forwardRef, Inject, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { KalDatepickerComponent } from '../kal-datepicker.component';
 
 @Component({
@@ -10,20 +10,17 @@ import { KalDatepickerComponent } from '../kal-datepicker.component';
 })
 export class KalDatepickerHeaderComponent implements OnInit {
 
-  constructor(@Inject(forwardRef(() => KalDatepickerComponent)) public datepicker: KalDatepickerComponent) {
-  }
+  @Output() updatedMonth = new EventEmitter<number>();
 
-  get currentPeriodText(): string {
-    return '';
-    // return this.datepicker.
+  constructor(@Inject(forwardRef(() => KalDatepickerComponent)) public datepicker: KalDatepickerComponent) {
   }
 
   get isMonthView(): boolean {
     return this.datepicker.currentView === 'month';
   }
 
-  changeView(): void {
-    this.datepicker.currentView = this.datepicker.currentView === 'month' ? 'multi' : 'month';
+  updateMonth(amount: number) {
+    this.updatedMonth.emit(amount);
   }
 
   ngOnInit() {

@@ -1,6 +1,6 @@
 import { isString } from 'util';
 import { isEmpty, values } from 'lodash';
-import { DateTime, Duration, DurationObject } from 'luxon';
+import { DateTime, Duration, DurationObject, Interval } from 'luxon';
 
 export type KalDateType = string | DateTime | Date | KalDate;
 
@@ -68,7 +68,7 @@ export class KalDate {
    * return JS Date format
    */
   toDate() {
-    // return this.valid ? this.getDate().toDate() : null;
+    return this.valid ? this.getDate().toJSDate() : null;
   }
 
   /**
@@ -82,7 +82,7 @@ export class KalDate {
    * add {amount} {unit} to this date
    */
   add(duration: Duration | number | DurationObject) {
-    this.value.plus(duration);
+    this.value = this.value.plus(duration);
     return this;
   }
 
@@ -114,46 +114,42 @@ export class KalDate {
   /**
    * return true if current date is same as provided dates
    */
-  isSame(rawDate: KalDateType, ...args) {
+  isSame(rawDate: KalDateType) {
     const date = KalDate.getDate(rawDate);
-    // return this.value.isSame(date, ...args);
+    return this.value.hasSame(date, 'days');
   }
 
   /**
    * return true if current date is before provided date
    */
   isBefore(rawDate: KalDateType) {
-    // const date: mom.Moment = KalDate.getDate(rawDate);
-    // return this.value.isBefore(date);
+    const date: DateTime = KalDate.getDate(rawDate);
+    return this.value < date;
   }
 
   /**
    * return true if current date is after provided date
    */
   isAfter(rawDate: KalDateType) {
-    // const date: mom.Moment = KalDate.getDate(rawDate);
-    // return this.value.isAfter(date);
+    const date: DateTime = KalDate.getDate(rawDate);
+    return this.value > date;
   }
 
   /**
    * return true if current date is today
    */
   isToday() {
-    // return this.value.isSame(mom(), 'd');
+    return this.value.hasSame(DateTime.local(), 'days');
   }
 
   /**
    * @see Moment.isBetween
    */
-  isBetween(
-    //   start: KalDateType,
-    //   end: KalDateType,
-    //   granularity: unitOfTime.StartOf = 'month',
-    //   inclusivity: '()' | '[)' | '(]' | '[]' = '[]'
-  ) {
-    //   start = coerceKalDateProperty(start).getDate();
-    //   end = coerceKalDateProperty(end).getDate();
-    //   return this.value.isBetween(start, end, granularity, inclusivity);
+  isBetween(start: KalDateType,
+            end: KalDateType,) {
+    start = coerceKalDateProperty(start).getDate();
+    end = coerceKalDateProperty(end).getDate();
+    return Interval.fromDateTimes(start, end).contains(this.value);
   }
 
   /**
@@ -167,7 +163,7 @@ export class KalDate {
   /**
    */
   setYear(year: number): KalDate {
-    // this.value.('year', year);
+    this.value.set({year: year});
     return this;
   }
 
@@ -175,7 +171,7 @@ export class KalDate {
    * set current month
    */
   setMonth(month: number): KalDate {
-    // this.value.set('month', month);
+    this.value.set({month: month});
     return this;
   }
 
