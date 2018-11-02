@@ -67,7 +67,6 @@ export class KalMonthCalendarComponent implements OnInit {
 
     // create an array with all days in selected date month
     for (let i = 0; i < startMonth.daysInMonth; i++) {
-      console.log(i);
       datesList.push(new KalDate(startMonth.plus({days: i})));
     }
 

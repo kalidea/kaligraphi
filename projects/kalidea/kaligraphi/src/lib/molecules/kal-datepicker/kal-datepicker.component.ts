@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { coerceKalDateProperty, KalDate, KalDateType } from './kal-date';
-import { buildProviders, FormElementComponent } from '../../utils';
+import { ESCAPE } from '@angular/cdk/keycodes';
 import { FormControl } from '@angular/forms';
 import { filter } from 'rxjs/operators';
-import { ESCAPE } from '@angular/cdk/keycodes';
 import { Subscription } from 'rxjs';
+import { coerceKalDateProperty, KalDate, KalDateType } from './kal-date';
+import { buildProviders, FormElementComponent } from '../../utils';
 import { KalMonthCalendarComponent } from './kal-datepicker-month-view/kal-month-calendar.component';
 
 /**
