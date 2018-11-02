@@ -24,20 +24,19 @@ jobs:
       script:
         - npm run build
         - npm run build:playground -- --base-href https://kalidea.github.io/kaligraphi/
-
-      before_deploy:
-        - cd dist/kalidea/kaligraphi
       deploy:
         - provider: pages
           skip-cleanup: true
           github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
           keep-history: true
           verbose: true
-          local-dir: ../../playground/
+          local-dir: dist/playground/
           on:
             tags: true
 
         - provider: npm
+          script:
+          - cd dist/kalidea/kaligraphi
           email: $NPM_EMAIL
           api_key: $NPM_TOKEN
           skip_cleanup: true
