@@ -1,26 +1,30 @@
 <ng-container *ngFor="let item of results; index as i">
 
-  <div *ngIf="containsInitials(item, i)"
-       class="kal-list-item kal-list-item-group">
+  <div kalListItemSelection>
 
-    {{ groupByFunction(item) }}
+    <div *ngIf="containsGroupByFunction(item, i)"
+         class="kal-list-item kal-list-item-group">
 
-  </div>
+      {{ groupByFunction(item) }}
 
-  <div class="kal-list-item"
-       [class.kal-list-item-selected]="isSelected(item)"
-       [class.kal-list-item-disabled]="disableRowsFunction(item)"
-       (click)="selectItem(item)">
+    </div>
+
+    <div class="kal-list-item"
+         [class.kal-list-item-selected]="isSelected(item)"
+         [class.kal-list-item-disabled]="disableRowsFunction(item)"
+         (click)="selectItem(item, i)">
 
     <span class="kal-list-item-content">
       <ng-container *ngTemplateOutlet="row.view; context: {item: item}"></ng-container>
     </span>
 
-    <span class="kal-list-item-icon">
+      <span class="kal-list-item-icon">
 
       <kal-icon name="keyboard_arrow_right"></kal-icon>
 
     </span>
+
+    </div>
 
   </div>
 

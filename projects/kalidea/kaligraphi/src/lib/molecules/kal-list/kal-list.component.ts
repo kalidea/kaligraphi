@@ -1,15 +1,45 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChild,
+  Directive, ElementRef,
   EventEmitter,
   Input,
   OnInit,
-  Output,
+  Output, QueryList, Renderer2,
+  TemplateRef,
+  ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
 import { KalListItemDirective } from './kal-list-item.directive';
+import { ActiveDescendantKeyManager, Highlightable } from '@angular/cdk/a11y';
+
+@Directive({
+  selector: '[kalListItemSelection]'
+})
+export class KalListItemSelectionDirective implements Highlightable {
+
+  /**
+   * Is a tab highlighted
+   */
+  highlighted: boolean;
+
+  setActiveStyles(): void {
+    this.highlighted = true;
+    this.renderer.addClass(this.el.nativeElement, 'kal-list-item-highlighted');
+  }
+  setInactiveStyles(): void {
+    this.highlighted = false;
+    this.renderer.removeClass(this.el.nativeElement, 'kal-list-item-highlighted');
+  }
+
+  constructor(public el: ElementRef,
+              private renderer: Renderer2) {
+  }
+
+}
 
 @Component({
   selector: 'kal-list',
@@ -18,7 +48,7 @@ import { KalListItemDirective } from './kal-list-item.directive';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalListComponent<T> implements OnInit {
+export class KalListComponent<T> implements OnInit, AfterViewInit {
 
   /**
    * Results list
@@ -41,6 +71,11 @@ export class KalListComponent<T> implements OnInit {
   @ContentChild(KalListItemDirective) row: KalListItemDirective;
 
   /**
+   * The reference to the element thats contains the kal list item directive
+   */
+  @ViewChildren(KalListItemSelectionDirective) items: QueryList<KalListItemSelectionDirective>;
+
+  /**
    * The selected item
    */
   private selectedItem = null;
@@ -49,6 +84,16 @@ export class KalListComponent<T> implements OnInit {
    * The config is use to group all items
    */
   private groupByConfig: (item: T) => string = null;
+
+  /**
+   * Manages keyboard events for options in the panel
+   */
+  private keyManager: ActiveDescendantKeyManager<KalListItemSelectionDirective>;
+
+  /**
+   * Whether or not the select is focus
+   */
+  private isFocused: boolean;
 
   /**
    * Is the row disabled
@@ -94,8 +139,9 @@ export class KalListComponent<T> implements OnInit {
   /**
    * Select an item in list and emit an event with the selected item value
    */
-  selectItem(item: T) {
+  selectItem(item: T, index: number) {
     if (!this.disableRowsFunction(item)) {
+      this.keyManager.setActiveItem(index);
       this.selectedItem = item;
       this.selectionChange.emit(item);
     }
@@ -119,7 +165,7 @@ export class KalListComponent<T> implements OnInit {
   /**
    * Check if items need to be grouped
    */
-  containsInitials(item: T, index: number): boolean {
+  containsGroupByFunction(item: T, index: number): boolean {
     const previousItem = this.results[index - 1];
 
     return this.groupByFunction
@@ -136,5 +182,9 @@ export class KalListComponent<T> implements OnInit {
         }
       );
     }
+  }
+
+  ngAfterViewInit() {
+    this.keyManager = new ActiveDescendantKeyManager<KalListItemSelectionDirective>(this.items).withHorizontalOrientation('ltr');
   }
 }
