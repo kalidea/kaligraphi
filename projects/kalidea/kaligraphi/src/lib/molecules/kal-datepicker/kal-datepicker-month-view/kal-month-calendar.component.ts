@@ -62,7 +62,8 @@ export class KalMonthCalendarComponent implements OnInit {
       return [];
     }
 
-    const startMonth = displayedDate.startOf('month').startOf('week');
+    const startMonth = displayedDate.startOf('month');
+
     const datesList: KalDate[] = [];
 
     // create an array with all days in selected date month

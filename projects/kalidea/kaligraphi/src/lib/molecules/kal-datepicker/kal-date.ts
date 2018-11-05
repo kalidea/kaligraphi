@@ -146,7 +146,7 @@ export class KalDate {
    * @see Moment.isBetween
    */
   isBetween(start: KalDateType,
-            end: KalDateType,) {
+            end: KalDateType) {
     start = coerceKalDateProperty(start).getDate();
     end = coerceKalDateProperty(end).getDate();
     return Interval.fromDateTimes(start, end).contains(this.value);
