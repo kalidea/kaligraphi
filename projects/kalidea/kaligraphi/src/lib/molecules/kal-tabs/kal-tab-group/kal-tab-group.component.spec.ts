@@ -2,12 +2,14 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { PortalModule } from '@angular/cdk/portal';
+import { RIGHT_ARROW, LEFT_ARROW, ENTER } from '@angular/cdk/keycodes';
 
 import { KalTabGroupComponent } from './kal-tab-group.component';
 import { KalTabComponent } from '../kal-tab/kal-tab.component';
 import { KalTabHeaderComponent } from '../kal-tab-header/kal-tab-header.component';
 import { KalTabBodyComponent } from '../kal-tab-body/kal-tab-body.component';
 import { KalTabLabelDirective } from '../kal-tab-label.directive';
+import { createKeyboardEvent } from '../../../utils/tests/event-keyboard';
 
 @Component({
   template: `
@@ -191,6 +193,24 @@ describe('KalTabGroupComponent', () => {
 
     expect(groupInstance.selectedTab.emit).toHaveBeenCalled();
   });
+
+  it('should select tab via the LEFT/RIGHT arrow keys', async (() => {
+    groupInstance.focus();
+
+    expect(tabHeaderInstances[0].highlighted).toBeTruthy();
+
+    groupInstance.handleKeydown(createKeyboardEvent('keydown', RIGHT_ARROW));
+
+    expect(groupInstance.selectedIndex).toEqual(0);
+    expect(tabHeaderInstances[0].highlighted).toBeFalsy();
+    expect(tabHeaderInstances[1].highlighted).toBeTruthy();
+
+    groupInstance.handleKeydown(createKeyboardEvent('keydown', ENTER));
+
+    expect(groupInstance.selectedIndex).toEqual(1);
+    expect(tabHeaderInstances[0].highlighted).toBeFalsy();
+    expect(tabHeaderInstances[1].highlighted).toBeTruthy();
+  }));
 });
 
 describe('KalTabGroupComponent', () => {
