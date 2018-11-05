@@ -4,17 +4,21 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChild,
-  Directive, ElementRef,
+  Directive,
+  ElementRef,
   EventEmitter,
+  HostListener,
   Input,
   OnInit,
-  Output, QueryList, Renderer2,
-  TemplateRef,
+  Output,
+  QueryList,
+  Renderer2,
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
-import { KalListItemDirective } from './kal-list-item.directive';
 import { ActiveDescendantKeyManager, Highlightable } from '@angular/cdk/a11y';
+import { ENTER, SPACE } from '@angular/cdk/keycodes';
+import { KalListItemDirective } from './kal-list-item.directive';
 
 @Directive({
   selector: '[kalListItemSelection]'
@@ -30,6 +34,7 @@ export class KalListItemSelectionDirective implements Highlightable {
     this.highlighted = true;
     this.renderer.addClass(this.el.nativeElement, 'kal-list-item-highlighted');
   }
+
   setInactiveStyles(): void {
     this.highlighted = false;
     this.renderer.removeClass(this.el.nativeElement, 'kal-list-item-highlighted');
@@ -96,6 +101,11 @@ export class KalListComponent<T> implements OnInit, AfterViewInit {
   private isFocused: boolean;
 
   /**
+   * The selected item index
+   */
+  private selectedItemIndex: number;
+
+  /**
    * Is the row disabled
    */
   private isDisabled: (item: T) => boolean = (item: T) => false;
@@ -114,6 +124,46 @@ export class KalListComponent<T> implements OnInit, AfterViewInit {
   set groupByFunction(value: (item: T) => string) {
     this.groupByConfig = value;
     this.cdr.markForCheck();
+  }
+
+  /**
+   * Focus the tab element
+   */
+  @HostListener('focus')
+  focus(): void {
+    this.isFocused = true;
+    this.keyManager.setActiveItem(this.selectedItemIndex);
+  }
+
+  /**
+   * Blur the tab element
+   */
+  @HostListener('blur')
+  blur() {
+    this.isFocused = false;
+    this.keyManager.setActiveItem(this.selectedItemIndex);
+  }
+
+  /**
+   * Handles all keydown events on the tab
+   */
+  @HostListener('keydown', ['$event'])
+  handleKeydown(event: KeyboardEvent): void {
+    const {keyCode} = event;
+
+    const isOpenKey = keyCode === ENTER || keyCode === SPACE;
+
+    if (!this.isFocused) {
+      return;
+    }
+
+    if (isOpenKey && this.keyManager.activeItem) {
+      event.preventDefault();
+      const itemToSelect = this.results.find((item, i) => i === this.keyManager.activeItemIndex);
+      this.selectItem(itemToSelect, this.keyManager.activeItemIndex);
+    } else {
+      this.keyManager.onKeydown(event);
+    }
   }
 
   /**
@@ -141,8 +191,9 @@ export class KalListComponent<T> implements OnInit, AfterViewInit {
    */
   selectItem(item: T, index: number) {
     if (!this.disableRowsFunction(item)) {
-      this.keyManager.setActiveItem(index);
+      this.selectedItemIndex = index;
       this.selectedItem = item;
+      this.keyManager.setActiveItem(this.selectedItemIndex);
       this.selectionChange.emit(item);
     }
   }
@@ -185,6 +236,6 @@ export class KalListComponent<T> implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.keyManager = new ActiveDescendantKeyManager<KalListItemSelectionDirective>(this.items).withHorizontalOrientation('ltr');
+    this.keyManager = new ActiveDescendantKeyManager<KalListItemSelectionDirective>(this.items).withVerticalOrientation();
   }
 }
