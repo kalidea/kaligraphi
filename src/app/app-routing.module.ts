@@ -9,6 +9,10 @@ const routes: Routes = [
   {
     path: 'molecules',
     loadChildren: './molecules/molecules.module#MoleculesModule',
+  },
+  {
+    path: 'typography',
+    loadChildren: './typography/typography.module#TypographyModule',
   }
 ];
 

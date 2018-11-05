@@ -4,9 +4,10 @@
 
   // global
   body
-    font-family: get("text.font-family", $parameters)
-    font-size: get("text.font-size", $parameters)
-    color: get("text.color", $parameters)
+    padding: get('padding', $parameters)
+    font-family: get('text.font-family', $parameters)
+    font-size: get('text.font-size', $parameters)
+    color: get('text.color', $parameters)
 
   // text
   p
@@ -25,7 +26,7 @@
     font-style: italic
 
   // headings
-  @each $level, $properties in get("headings", $parameters)
+  @each $level, $properties in get('headings', $parameters)
     h#{$level}
       @each $key, $value in $properties
         #{$key}: $value
