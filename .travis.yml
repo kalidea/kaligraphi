@@ -42,6 +42,7 @@ jobs:
         - echo "Deploying to npm ..."
         - npm run build
       before_deploy:
+        - cp README.md dist/kalidea/kaligraphi/
         - cd dist/kalidea/kaligraphi
       deploy:
         provider: npm
