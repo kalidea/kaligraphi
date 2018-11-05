@@ -1,0 +1,32 @@
+
+
+=kal-typography($parameters)
+
+  // global
+  body
+    font-family: get("text.font-family", $parameters)
+    font-size: get("text.font-size", $parameters)
+    color: get("text.color", $parameters)
+
+  // text
+  p
+    font-size: 1em
+
+  a
+    font-family: inherit
+    font-size: inherit
+    color: inherit
+
+
+  strong
+    font-weight: bold
+
+  em
+    font-style: italic
+
+  // headings
+  @each $level, $properties in get("headings", $parameters)
+    h#{$level}
+      @each $key, $value in $properties
+        #{$key}: $value
+

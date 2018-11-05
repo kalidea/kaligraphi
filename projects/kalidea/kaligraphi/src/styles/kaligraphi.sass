@@ -1,3 +1,12 @@
+
+// functions
+@import "functions/index"
+
+// typography
+@import "global/reset"
+@import "global/typography"
+@import "global/form"
+
 // atoms
 @import "../lib/atoms/kal-input/kal-input.component"
 @import "../lib/atoms/kal-checkbox/kal-checkbox.component"
@@ -12,13 +21,11 @@
 @import "../lib/molecules/kal-stepper/kal-stepper.component"
 @import "../lib/molecules/kal-rater/kal-rater.component"
 
-// functions
-@import "functions/deep-map-get"
-
-// utils
-@import "utils/form"
-
 =kaligraphi($parameters)
+
+  // typography
+  +kal-typography($parameters)
+
   // atoms
   +kal-input($parameters)
   +kal-select($parameters)

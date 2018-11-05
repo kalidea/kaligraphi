@@ -1,11 +1,40 @@
 
-$colors: (#000);
+@import "palettes";
 
-$parameters: (
+$kal-colors: (default: #1F1F1F, reverse: #FFF) !default;
+
+// default value for font
+$kal-base-font-color: map-get($kal-colors, default) !default;
+$kal-base-font-family: Asap, sans-serif !default;
+$kal-base-font-size: 16px !default;
+
+// text
+$kal-text: (
+  font-family: $kal-base-font-family,
+  font-size: $kal-base-font-size,
+  color: $kal-base-font-color
+);
+
+// headings
+$kal-headings: (
+  1: ("font-family": $kal-base-font-family, "font-size": $kal-base-font-size + 2, "line-height": 10px),
+  2: ("font-family": $kal-base-font-family, "font-size": $kal-base-font-size + 4, "line-height": 12px),
+  3: ("font-family": $kal-base-font-family, "font-size": $kal-base-font-size + 6, "line-height": 14px),
+  4: ("font-family": $kal-base-font-family, "font-size": $kal-base-font-size + 8, "line-height": 18px),
+  5: ("font-family": $kal-base-font-family, "font-size": $kal-base-font-size + 10, "line-height": 20px),
+  6: ("font-family": $kal-base-font-family, "font-size": $kal-base-font-size + 12, "line-height": 22px),
+);
+
+// global parameters
+$kal-parameters: (
+  text: $kal-text,
+  colors: $kal-colors,
+  palettes: $kal-palettes,
+  headings: $kal-headings,
   form: (
     border: (
       width: 1px,
-      style: "solid",
+      style: solid,
       color: #000,
       radius: 5px
     )
