@@ -33,19 +33,3 @@ jobs:
           local-dir: dist/playground/
           on:
             tags: true
-
-
-
-    #DEPLOY TO NPM
-    - stage: deploy_npm
-      name: "Publish library to npm registry"
-      if: tag IS present
-      script:
-        - echo "Deploying to npm ..."
-        - npm run build
-      before_deploy:
-        - cd dist/kalidea/kaligraphi
-      provider: npm
-          email: $NPM_EMAIL
-          api_key: $NPM_TOKEN
-          skip_cleanup: true
