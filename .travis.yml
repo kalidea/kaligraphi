@@ -38,12 +38,12 @@ jobs:
 
     #DEPLOY TO NPM
     - stage: deploy_npm
+      name: "Publish library to npm registry"
       if: tag IS present
       script:
         - echo "Deploying to npm ..."
         - npm run build
       before_deploy:
-        - cp README.md projects/kalidea/kaligraphi
         - cd dist/kalidea/kaligraphi
       provider: npm
           email: $NPM_EMAIL
