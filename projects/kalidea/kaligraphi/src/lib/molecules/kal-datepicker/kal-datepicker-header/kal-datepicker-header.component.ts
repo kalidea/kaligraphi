@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, forwardRef, Inject, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  forwardRef,
+  Inject,
+  OnInit,
+  Output,
+  ViewEncapsulation
+} from '@angular/core';
 import { KalDatepickerComponent } from '../kal-datepicker.component';
 
 @Component({
@@ -8,22 +18,34 @@ import { KalDatepickerComponent } from '../kal-datepicker.component';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalDatepickerHeaderComponent implements OnInit {
+export class KalDatepickerHeaderComponent {
 
   @Output() updatedMonth = new EventEmitter<number>();
 
-  constructor(@Inject(forwardRef(() => KalDatepickerComponent)) public datepicker: KalDatepickerComponent) {
+  constructor(@Inject(forwardRef(() => KalDatepickerComponent)) public datepicker: KalDatepickerComponent,
+              private cdr: ChangeDetectorRef) {
   }
 
-  get isMonthView(): boolean {
-    return this.datepicker.currentView === 'month';
+  /**
+   * Whether the current view is the `month` view.
+   */
+  get isMultiView(): boolean {
+    return this.datepicker.isMultiView;
   }
 
+  /**
+   * Emit event with the new month that should be displayed.
+   * @param amount The amount is `1` or `-1`
+   */
   updateMonth(amount: number) {
-    this.updatedMonth.emit(amount);
+    this.updatedMonth.emit(this.isMultiView ? null : amount);
   }
 
-  ngOnInit() {
+  /**
+   * Update component view
+   */
+  markForCheck() {
+    this.cdr.markForCheck();
   }
 
 }

@@ -1,6 +1,6 @@
 import { isString } from 'util';
 import { isEmpty, values } from 'lodash';
-import { DateTime, Duration, DurationObject, Interval } from 'luxon';
+import { DateObjectUnits, DateTime, Duration, DurationObject, Interval } from 'luxon';
 
 export type KalDateType = string | DateTime | Date | KalDate;
 
@@ -86,13 +86,6 @@ export class KalDate {
     return this;
   }
 
-  /**
-   * get month ( zero based index )
-   */
-  getMonth(): number {
-    return this.value.month;
-  }
-
   getMonthAsString(): string {
     return this.value.monthLong;
   }
@@ -155,23 +148,8 @@ export class KalDate {
   /**
    * set current date for this object
    */
-  setDate(date: KalDateType): KalDate {
-    this.value = KalDate.getDate(date);
-    return this;
-  }
-
-  /**
-   */
-  setYear(year: number): KalDate {
-    this.value.set({year: year});
-    return this;
-  }
-
-  /**
-   * set current month
-   */
-  setMonth(month: number): KalDate {
-    this.value.set({month: month});
+  set(dateUnit: DateObjectUnits): KalDate {
+    this.value = this.value.set(dateUnit);
     return this;
   }
 

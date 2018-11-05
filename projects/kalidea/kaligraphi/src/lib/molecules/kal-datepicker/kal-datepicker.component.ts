@@ -6,8 +6,9 @@ import { FormControl } from '@angular/forms';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { coerceKalDateProperty, KalDate, KalDateType } from './kal-date';
+import { KalMonthCalendarComponent } from './kal-month-calendar/kal-month-calendar.component';
+import { KalDatepickerHeaderComponent } from './kal-datepicker-header/kal-datepicker-header.component';
 import { buildProviders, FormElementComponent } from '../../utils';
-import { KalMonthCalendarComponent } from './kal-datepicker-month-view/kal-month-calendar.component';
 
 /**
  * Possible views for the calendar.
@@ -35,9 +36,14 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   @ViewChild('datepickerContainer') datepickerContainer: ElementRef;
 
   /**
-   * The reference to the kal date picker month view component
+   * Reference to `KalMonthCalendarComponent`
    */
   @ViewChild(KalMonthCalendarComponent) monthCalendar: KalMonthCalendarComponent;
+
+  /**
+   * Reference to `KalDatepickerHeaderComponent`
+   */
+  @ViewChild(KalDatepickerHeaderComponent) datePickerHeader: KalDatepickerHeaderComponent;
 
   /**
    * Whether the calendar is in month view
@@ -49,6 +55,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   private maxDate: KalDate;
   private backdropClickSubscription = Subscription.EMPTY;
   private escapeKeySubscription = Subscription.EMPTY;
+
   /**
    * Overlay Reference
    */
@@ -62,7 +69,6 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   get max(): KalDate {
     return this.maxDate;
   }
-
   set max(date: KalDate) {
     this.maxDate = coerceKalDateProperty(date);
   }
@@ -71,18 +77,35 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   get min(): KalDate {
     return this.minDate;
   }
-
   set min(date: KalDate) {
     this.minDate = coerceKalDateProperty(date);
   }
 
-  get currentMonth(): string {
-    const date = this.monthCalendar ? this.monthCalendar.selectedDate : this.currentDate;
-    return date.getMonth() + ' ' + date.getYear();
+  /**
+   * Display the current period : month as string + year.
+   */
+  get currentPeriod(): string {
+    const date = this.monthCalendar ? this.monthCalendar.displayedDate : this.currentDate;
+    const month = date.getMonthAsString();
+    return month.charAt(0).toLocaleUpperCase() + month.slice(1) + ' ' + date.getYear();
   }
 
-  setCurrentView() {
-    this.currentView = this.currentView === 'month' ? 'multi' : 'month';
+  /**
+   * Wether the current view is the `multi` view.
+   */
+  get isMultiView(): boolean {
+    return this.currentView === 'multi';
+  }
+
+  /**
+   * Switch between views to display.
+   */
+  changeCurrentView() {
+    this.currentView = this.isMultiView ? 'month' : 'multi';
+
+    // We should manually trigger change detection because header arrows depends on `KalDatepickerComponent`
+    // and header doesn't know when it should refresh itself.
+    this.datePickerHeader.markForCheck();
   }
 
   open() {
@@ -91,11 +114,28 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
 
   close() {
     this.overlayRef.detach();
+
+    // Set the current view to `month` because if the datepicker is
+    // closed then opened it will keep it's last view.
+    this.currentView = 'month';
   }
 
   setInputValue(date: KalDate): void {
-      const dateToString = (date && date.valid) ? date.toString() : '';
-      this.control.setValue(dateToString, {emitEvent: false, onlySelf: true});
+    const dateToString = (date && date.valid) ? date.toString() : '';
+    this.control.setValue(dateToString, {emitEvent: false, onlySelf: true});
+  }
+
+  /**
+   * Update the view according to `$event` parameter.
+   * If we receive a `null` value it means that we're currently displaying the `multi` view and
+   * we want to display the `month` view.
+   */
+  updateView($event: number | null): void {
+    if ($event === null) {
+      this.changeCurrentView();
+    } else {
+      this.monthCalendar.updateMonth($event);
+    }
   }
 
   /**

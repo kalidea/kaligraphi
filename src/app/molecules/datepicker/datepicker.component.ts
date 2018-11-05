@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { DateTime } from 'luxon';
 import { FormControl } from '@angular/forms';
-import { coerceKalDateProperty, KalDate } from '../../../../projects/kalidea/kaligraphi/src/lib/molecules/kal-datepicker/kal-date';
+import { DateTime } from 'luxon';
+import { KalDate } from '../../../../projects/kalidea/kaligraphi/src/lib/molecules/kal-datepicker/kal-date';
 
 @Component({
   selector: 'app-datepicker',

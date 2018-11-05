@@ -12,13 +12,17 @@ export { KalDatepickerComponent } from './kal-datepicker.component';
 import { KalDatepickerHeaderComponent } from './kal-datepicker-header/kal-datepicker-header.component';
 export { KalDatepickerHeaderComponent } from './kal-datepicker-header/kal-datepicker-header.component';
 
-import { KalMonthCalendarComponent } from './kal-datepicker-month-view/kal-month-calendar.component';
-export { KalMonthCalendarComponent } from './kal-datepicker-month-view/kal-month-calendar.component';
+import { KalMonthCalendarComponent } from './kal-month-calendar/kal-month-calendar.component';
+export { KalMonthCalendarComponent } from './kal-month-calendar/kal-month-calendar.component';
+
+import { KalDatepickerMultiViewComponent } from './kal-datepicker-multi-view/kal-datepicker-multi-view.component';
+export { KalDatepickerMultiViewComponent } from './kal-datepicker-multi-view/kal-datepicker-multi-view.component';
 
 const exports = [
   KalDatepickerComponent,
   KalDatepickerHeaderComponent,
   KalMonthCalendarComponent,
+  KalDatepickerMultiViewComponent
 ];
 
 @NgModule({

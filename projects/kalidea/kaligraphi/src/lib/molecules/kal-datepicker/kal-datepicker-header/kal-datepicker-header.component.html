@@ -5,7 +5,7 @@
 
   <ng-content></ng-content>
 
-  <kal-icon *ngIf="isMonthView"
+  <kal-icon *ngIf="!isMultiView"
             name="navigate_next"
             (click)="updateMonth(1)">
   </kal-icon>

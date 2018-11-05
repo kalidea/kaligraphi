@@ -3,9 +3,7 @@
   <kal-input icon="calendar_today"
              [placeholder]="placeholder"
              [formControl]="control"
-             (click)="open()"
-  >
-
+             (click)="open()">
   </kal-input>
 
   <!--<div-->
@@ -36,37 +34,25 @@
 
 <ng-template cdkPortal #datepickerCalendar="cdkPortal">
 
-  <kal-datepicker-header (updatedMonth)="monthCalendar.updateMonth($event)">
+  <kal-datepicker-header (updatedMonth)="updateView($event)">
 
-    <p (click)="setCurrentView()">
-      {{ currentMonth }}
+    <p (click)="changeCurrentView()">
+      {{ currentPeriod }}
     </p>
 
   </kal-datepicker-header>
 
-  <!--<ng-container [ngSwitch]="currentView">-->
+  <kal-month-calendar
+    #monthCalendar
+    [hidden]="isMultiView"
+    [displayedDate]="currentDate"
+    (datePicked)="setInputValue($event)">
+  </kal-month-calendar>
 
-  <!--<ng-template *ngSwitchCase="'month'">-->
-
-    <kal-month-calendar
-      #monthCalendar
-      [selectedDate]="currentDate"
-      (datePicked)="setInputValue($event)">
-    </kal-month-calendar>
-
-  <!--</ng-template>-->
-
-    <!--<ng-template *ngSwitchCase="'multi'">-->
-
-      <!--afifche le bordel de ouf-->
-
-    <!--</ng-template>-->
-
-  <!--</ng-container>-->
-
-  <div *ngIf="currentView === 'multi'" class="kal-datepicker-month-select">
-
-  </div>
+  <kal-datepicker-multi-view
+    *ngIf="isMultiView"
+    (selectedDate)="monthCalendar.updateDate($event)">
+  </kal-datepicker-multi-view>
 
   <!--<app-month-calendar-->
   <!--[currentDate]="currentDate"-->
