@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Output, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
 import { DateObjectUnits, DateTime, Info } from 'luxon';
+import { coerceKalDateProperty, KalDate } from '../kal-date';
 
 @Component({
   selector: 'kal-datepicker-multi-view',
@@ -11,10 +12,26 @@ import { DateObjectUnits, DateTime, Info } from 'luxon';
 export class KalDatepickerMultiViewComponent {
 
   readonly shortMonths = Info.months('short');
-
   @Output() selectedDate = new EventEmitter<DateObjectUnits>();
+  private displayedKalDate: KalDate;
 
-  constructor() {
+  constructor(private cdr: ChangeDetectorRef) {
+  }
+
+  @Input()
+  get displayedDate(): KalDate {
+    return this.displayedKalDate;
+  }
+
+  set displayedDate(date: KalDate) {
+    if (!date) {
+      date = new KalDate();
+    } else {
+      date = coerceKalDateProperty(date);
+    }
+
+    this.displayedKalDate = date;
+    this.cdr.markForCheck();
   }
 
   /**
@@ -35,6 +52,14 @@ export class KalDatepickerMultiViewComponent {
    */
   selectDate(unit: DateObjectUnits): void {
     this.selectedDate.emit(unit);
+  }
+
+  isMonthSelected(month: number): boolean {
+    return this.displayedDate.getMonth() === month;
+  }
+
+  isYearSelected(year: number): boolean {
+    return this.displayedDate.getYear() === year;
   }
 
 }

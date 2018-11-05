@@ -51,6 +51,7 @@
 
   <kal-datepicker-multi-view
     *ngIf="isMultiView"
+    [displayedDate]="monthCalendar.displayedDate"
     (selectedDate)="monthCalendar.updateDate($event)">
   </kal-datepicker-multi-view>
 

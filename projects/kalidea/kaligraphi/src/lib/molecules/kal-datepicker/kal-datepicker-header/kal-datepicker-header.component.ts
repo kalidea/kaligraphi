@@ -2,11 +2,8 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  EventEmitter,
   forwardRef,
   Inject,
-  OnInit,
-  Output,
   ViewEncapsulation
 } from '@angular/core';
 import { KalDatepickerComponent } from '../kal-datepicker.component';
@@ -19,8 +16,6 @@ import { KalDatepickerComponent } from '../kal-datepicker.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class KalDatepickerHeaderComponent {
-
-  @Output() updatedMonth = new EventEmitter<number>();
 
   constructor(@Inject(forwardRef(() => KalDatepickerComponent)) public datepicker: KalDatepickerComponent,
               private cdr: ChangeDetectorRef) {
@@ -38,7 +33,7 @@ export class KalDatepickerHeaderComponent {
    * @param amount The amount is `1` or `-1`
    */
   updateMonth(amount: number) {
-    this.updatedMonth.emit(this.isMultiView ? null : amount);
+    this.datepicker.updateView(this.isMultiView ? null : amount);
   }
 
   /**

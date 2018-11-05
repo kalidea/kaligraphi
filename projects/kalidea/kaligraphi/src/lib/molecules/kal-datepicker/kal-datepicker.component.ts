@@ -50,7 +50,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
    */
   currentView: KalCalendarView = 'month';
   control = new FormControl();
-  currentDate = new KalDate();
+  currentDate: KalDate;
   private minDate: KalDate;
   private maxDate: KalDate;
   private backdropClickSubscription = Subscription.EMPTY;
@@ -142,13 +142,10 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
    * @inheritDoc
    */
   writeValue(value: KalDateType) {
-
-    // TODO : CORRGIER COERCE. LA VALUE N'EST PAS UNE INSTANCE DE KALDATE ALORS JE ME RETROUVE
-    // AVEC UN KALDATE QUI CONTIENT UN KALDATE ??????
-
     value = coerceKalDateProperty(value);
     super.writeValue(value);
     this.setInputValue(value);
+    this.currentDate = value;
   }
 
   ngOnInit() {

@@ -78,6 +78,17 @@ export class KalDate {
     return this.value.day;
   }
 
+  getMonth(): number {
+    return this.value.month;
+  }
+
+  /**
+   * get year of the current date
+   */
+  getYear(): number {
+    return this.value.year;
+  }
+
   /**
    * add {amount} {unit} to this date
    */
@@ -90,12 +101,7 @@ export class KalDate {
     return this.value.monthLong;
   }
 
-  /**
-   * get year of the current date
-   */
-  getYear(): number {
-    return this.value.year;
-  }
+
 
   /**
    * return moment representation of this object
