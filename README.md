@@ -4,6 +4,7 @@ Agnostic Graphic Library based on angular CDK.
 
 Online Demo with last build available here : https://kalidea.github.io/kaligraphi/
 
+[![npm version](https://badge.fury.io/js/%40kalidea%2Fkaligraphi.svg)](https://badge.fury.io/js/%40kalidea%2Fkaligraphi)
 [![Build Status](https://travis-ci.org/kalidea/kaligraphi.svg?branch=master)](https://travis-ci.org/kalidea/kaligraphi)
 [![Maintainability](https://api.codeclimate.com/v1/badges/2fcfe36810c6e928c806/maintainability)](https://codeclimate.com/github/kalidea/kaligraphi/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/2fcfe36810c6e928c806/test_coverage)](https://codeclimate.com/github/kalidea/kaligraphi/test_coverage)

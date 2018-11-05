@@ -34,14 +34,7 @@ jobs:
           on:
             tags: true
 
-        - provider: npm
-          before_deploy:
-          - cd dist/kalidea/kaligraphi
-          email: $NPM_EMAIL
-          api_key: $NPM_TOKEN
-          skip_cleanup: true
-          on:
-            tags: true
+
 
     #DEPLOY TO NPM
     - stage: deploy_npm
@@ -49,3 +42,10 @@ jobs:
       script:
         - echo "Deploying to npm ..."
         - npm run build
+      before_deploy:
+        - cp README.md projects/kalidea/kaligraphi
+        - cd dist/kalidea/kaligraphi
+      provider: npm
+          email: $NPM_EMAIL
+          api_key: $NPM_TOKEN
+          skip_cleanup: true
