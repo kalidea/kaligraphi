@@ -56,8 +56,8 @@ export class KalDate {
       }
 
       return DateTime.fromFormat(rawDate as string, format);
-    } else if (rawDate instanceof KalDate) {
-      return rawDate.getDate();
+    } else if (rawDate.constructor.name === 'KalDate') {
+      return (rawDate as KalDate).getDate();
     }
 
     // else this is a luxon date
