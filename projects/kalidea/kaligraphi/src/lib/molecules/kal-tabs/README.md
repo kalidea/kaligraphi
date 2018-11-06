@@ -1,10 +1,10 @@
-# TAB PANEL
+#TAB PANEL
 
 ##PURPOSE
 
 ####With label
 
-````html
+```html
 <kal-tab-group>
 
   <kal-tab label="Header 1" selected>
@@ -20,11 +20,11 @@
   <kal-tab>
 
 </kal-tab-group>
-````
+```
 
 ####With template label
 
-````html
+```html
 <kal-tab-group>
 
   <kal-tab selected>
@@ -56,7 +56,7 @@
 
 </kal-tab-group>
 
-````
+```
 
 ##SPECIFICATIONS
 

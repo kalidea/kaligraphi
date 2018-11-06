@@ -1,0 +1,31 @@
+<ng-container *ngFor="let item of results; index as i">
+
+  <div kalListItemSelection>
+
+    <div *ngIf="containsGroupByFunction(item, i)"
+         class="kal-list-item kal-list-item-group">
+
+      {{ groupByFunction(item) }}
+
+    </div>
+
+    <div class="kal-list-item"
+         [class.kal-list-item-selected]="isSelected(item)"
+         [class.kal-list-item-disabled]="disableRowsFunction(item)"
+         (click)="selectItem(item)">
+
+    <span class="kal-list-item-content">
+      <ng-container *ngTemplateOutlet="row.view; context: {item: item}"></ng-container>
+    </span>
+
+      <span class="kal-list-item-icon">
+
+      <kal-icon name="keyboard_arrow_right"></kal-icon>
+
+    </span>
+
+    </div>
+
+  </div>
+
+</ng-container>
