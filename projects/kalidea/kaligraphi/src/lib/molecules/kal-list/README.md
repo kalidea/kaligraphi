@@ -6,13 +6,11 @@
 <kal-list [datasource]="datasource"
           [groupByFunction]="groupByFunction"
           (selectionChange)="selectRow($event)">
-
-<ng-template kalListItem let-item="item">
-  {{ item.name }}
-</ng-template>
+          <ng-template kalListItem let-item="item">
+            {{ item.name }}
+          </ng-template>
 
 </kal-list>
-
 ```
 
 ```typescript
@@ -20,12 +18,14 @@ class Test {
 
   datasource = new DataSource();
   
-  groupByFunction = (item) => item['name'].charAt(0).toLocaleUpperCase();
+  groupByFunction: (item: {name: string}) => string;
   
   selectRow($event) {
   }
   
   constructor() {
+    
+    this.groupByFunction = (item: {name: string}) => item.name.charAt(0).toLocaleUpperCase();
   }
 
 }
