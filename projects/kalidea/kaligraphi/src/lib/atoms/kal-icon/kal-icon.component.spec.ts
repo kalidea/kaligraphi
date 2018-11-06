@@ -1,35 +1,21 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { Component } from '@angular/core';
-import { KalIconModule } from './kal-icon.module';
-
-@Component({
-  template: `
-    <kal-icon>face</kal-icon>
-  `
-})
-class TestKalIconComponent {
-}
+import { KalIconComponent } from './kal-icon.component';
 
 describe('KalIconComponent', () => {
-  let component: TestKalIconComponent;
-  let fixture: ComponentFixture<TestKalIconComponent>;
+  let component: KalIconComponent;
+  let fixture: ComponentFixture<KalIconComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        KalIconModule
-      ],
-      declarations: [
-        TestKalIconComponent
-      ]
+      declarations: [KalIconComponent]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TestKalIconComponent);
+    fixture = TestBed.createComponent(KalIconComponent);
     component = fixture.componentInstance;
   });
 
@@ -39,6 +25,8 @@ describe('KalIconComponent', () => {
 
   it('should display a material icon according to the given icon name', () => {
     const iconElement = fixture.debugElement.query(By.css('i'));
+
+    component.name = 'face';
 
     // update component view
     fixture.detectChanges();

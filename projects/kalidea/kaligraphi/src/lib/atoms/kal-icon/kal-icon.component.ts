@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'kal-icon',
@@ -7,5 +7,17 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalIconComponent {
+export class KalIconComponent implements OnInit {
+
+  /**
+   * Name of an icon within a font set
+   */
+  @Input() name: string;
+
+  constructor() {
+  }
+
+  ngOnInit() {
+  }
+
 }
