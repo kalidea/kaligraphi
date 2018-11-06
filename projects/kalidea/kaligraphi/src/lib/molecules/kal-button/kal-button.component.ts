@@ -14,11 +14,6 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 export class KalButtonComponent implements OnInit {
 
   /**
-   * button label
-   */
-  @Input() label: string;
-
-  /**
    * tabindex value
    */
   @Input() tabIndex: number;
@@ -40,7 +35,7 @@ export class KalButtonComponent implements OnInit {
   }
 
   /**
-   * add icon to label button
+   * add icon to the button
    */
   @Input() name: string;
 
