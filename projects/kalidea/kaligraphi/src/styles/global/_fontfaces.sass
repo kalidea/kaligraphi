@@ -1,8 +1,0 @@
-=kal-fontfaces($parameters)
-  /* GENERICS : Font faces */
-  @each $key, $value in get('fontfaces', $parameters)
-    @font-face
-      font-family: nth($value, 1)
-      src: url('assets/fonts/' + nth($value, 2) + '.woff2') format('woff2')
-      font-weight: nth($value, 3)
-      font-style: nth($value, 4)
