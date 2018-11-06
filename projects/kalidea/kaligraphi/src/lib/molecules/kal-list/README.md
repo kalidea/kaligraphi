@@ -4,14 +4,15 @@
 
 ```html
 <kal-list [datasource]="datasource"
-          [rowTemplate]="rowTemplate"
-          [initials]="initials"
+          [groupByFunction]="groupByFunction"
           (selectionChange)="selectRow($event)">
-</kal-list>
 
-<ng-template #rowTemplate let-item="item">
+<ng-template kalListItem let-item="item">
   {{ item.name }}
 </ng-template>
+
+</kal-list>
+
 ```
 
 ```typescript
@@ -19,7 +20,7 @@ class Test {
 
   datasource = new DataSource();
   
-  initials = (item) => item['name'].charAt(0).toLocaleUpperCase();
+  groupByFunction = (item) => item['name'].charAt(0).toLocaleUpperCase();
   
   selectRow($event) {
   }
@@ -31,6 +32,13 @@ class Test {
 
 class DataSource {
   constructor() {
+  }
+  
+  connect(): {item: {name: string}}[] {
+    return [{item: {name: 'test'}}];
+  }
+  
+  disconnect() {
   }
 }
 ```
