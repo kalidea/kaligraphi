@@ -29,7 +29,7 @@ const exports = [
   KalButtonModule,
   KalRaterModule,
   KalAccordionModule,
-  KalMenuModule
+  KalMenuModule,
   KalListModule
 ];
 
