@@ -8,24 +8,33 @@
       align-items: center
 
       input
-        +kal-element-input($parameters, default)
+        font-family: $kal-fontface-text
+        font-size: $kal-base-font-size
+        padding: 12px
+        width: 100%
+        color: $kal-base-font-color
+        background-color: map-get($parameters, "palettes.grey.wf100")
+        border-width: 1px
+        border-style: solid
+        border-color: map-get($parameters, "palettes.grey.wf100")
+        border-radius: $base-border-radius
         // Status
         &:active, &:focus
-          border-color: $color-neutre30
+          border-color: map-get($parameters, "palettes.grey.wf500")
         &:disabled
-          color: $color-neutre70
+          color: map-get($parameters, "palettes.grey.wf200")
           + kal-icon
-            color: $color-neutre70
+            color: map-get($parameters, "palettes.grey.wf500")
             cursor: none
         &.ng-invalid
-          border-color: $color-danger
+          border-color: map-get($parameters, "palettes.red.normal")
         &::placeholder
           font-style: italic
-          color: $color-neutre10
+          color: map-get($parameters, "palettes.grey.wf600")
         // clearable icon
         + kal-icon
           position: absolute
-          color: $color-neutre10
+          color: map-get($parameters, "palettes.grey.wf700")
           right: 12px
           font-size: 80%
           cursor: pointer
@@ -33,15 +42,20 @@
     &.-reverse
 
       div > input
-        +kal-element-input($parameters, reverse)
+        color: map-get($parameters, "palettes.grey.wf800")
+        background-color: map-get($parameters, "palettes.grey.wf400")
+        border-width: 1px
+        border-style: solid
+        border-color: map-get($parameters, "palettes.grey.wf400")
+        border-radius: $base-border-radius
         // Status
         &:disabled
-          color: $color-neutre5
+          color: map-get($parameters, "palettes.grey.wf700")
           + kal-icon
-            color: $color-neutre70
+            color: map-get($parameters, "palettes.grey.wf700")
             cursor: none
         &::placeholder
-          color: $color-neutre70
+          color: map-get($parameters, "palettes.grey.wf200")
         // clearable icon
         + kal-icon
-          color: $color-neutre70
+          color: map-get($parameters, "palettes.grey.wf200")
