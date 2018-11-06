@@ -1,0 +1,13 @@
+<kal-list tabIndex="1"
+          [datasource]="datasource"
+          [groupByFunction]="groupByFunction"
+          [disableRowsFunction]="disableRowsFunction">
+
+  <ng-template kalListItem let-item="item">
+    {{ item.name }}
+  </ng-template>
+
+</kal-list>
+
+<button type="button" (click)="addGroupByFunction()">Group items</button>
+<button type="button" (click)="disableRow()">Disable rows</button>

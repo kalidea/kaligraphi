@@ -1,0 +1,37 @@
+
+=kal-typography($parameters)
+
+  // global
+  *, *:before, *:after
+    box-sizing: border-box
+  html
+    font-family:  get('text.font-family', $parameters)
+    text-rendering: optimizeLegibility
+    height: 100vh
+    color: get('text.color', $parameters)
+  body
+    font-family: get('text.font-family', $parameters)
+    font-size: get('text.font-size', $parameters)
+    color: get('text.color', $parameters)
+  // text
+  a
+    text-decoration: none
+    cursor: pointer
+  strong
+    font-weight: bold
+  em
+    font-style: italic
+  small
+    font-size: 80%
+  mark
+    padding: .1em
+  pre
+    word-wrap: break-word //* IE 5.5-7 */
+    white-space: -moz-pre-wrap //* Firefox 1.0-2.0 */
+    white-space: pre-wrap //* current browsers */
+
+  // headings
+  @each $level, $properties in get('headings', $parameters)
+    h#{$level}
+      @each $key, $value in $properties
+        #{$key}: $value
