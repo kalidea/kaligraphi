@@ -19,7 +19,7 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
 import { DOWN_ARROW, ENTER, ESCAPE, SPACE, UP_ARROW } from '@angular/cdk/keycodes';
 import { filter } from 'rxjs/operators';
-import { FormElementComponent } from '../../utils';
+import { buildProviders, FormElementComponent } from '../../utils';
 import { KalOptionComponent } from '../../atoms/kal-option/kal-option.component';
 
 @Component({
@@ -27,7 +27,8 @@ import { KalOptionComponent } from '../../atoms/kal-option/kal-option.component'
   templateUrl: './kal-select.component.html',
   styleUrls: ['./kal-select.component.sass'],
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: buildProviders(KalSelectComponent)
 })
 export class KalSelectComponent
   extends FormElementComponent<any>
@@ -250,8 +251,10 @@ export class KalSelectComponent
    * @inheritDoc
    */
   writeValue(value: any) {
-    this.select(value);
-    super.writeValue(value);
+    Promise.resolve().then(() => {
+      this.select(value);
+      super.writeValue(value);
+    });
   }
 
   /**

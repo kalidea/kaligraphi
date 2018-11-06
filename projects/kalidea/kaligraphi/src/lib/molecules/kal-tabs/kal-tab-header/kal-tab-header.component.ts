@@ -5,6 +5,7 @@ import {
 } from '@angular/core';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { CdkPortalOutlet, TemplatePortal } from '@angular/cdk/portal';
+import { Highlightable } from '@angular/cdk/a11y';
 import { KalTabGroupComponent } from '../kal-tab-group/kal-tab-group.component';
 
 @Component({
@@ -14,7 +15,7 @@ import { KalTabGroupComponent } from '../kal-tab-group/kal-tab-group.component';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalTabHeaderComponent implements AfterViewInit {
+export class KalTabHeaderComponent implements AfterViewInit, Highlightable {
 
   /**
    * The label of the header
@@ -35,6 +36,11 @@ export class KalTabHeaderComponent implements AfterViewInit {
    * Is the header disabled
    */
   private isDisabled = false;
+
+  /**
+   * Is a tab highlighted
+   */
+  highlighted: boolean;
 
   /**
    * The reference to the cdk portal outlet
@@ -68,6 +74,16 @@ export class KalTabHeaderComponent implements AfterViewInit {
 
   set selected(value: boolean) {
     this.isSelected = coerceBooleanProperty(value);
+    this.cdr.markForCheck();
+  }
+
+  setActiveStyles(): void {
+    this.highlighted = true;
+    this.cdr.markForCheck();
+  }
+
+  setInactiveStyles(): void {
+    this.highlighted = false;
     this.cdr.markForCheck();
   }
 
