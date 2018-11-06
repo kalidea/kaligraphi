@@ -1,6 +1,17 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  forwardRef,
+  Inject,
+  Input, OnInit,
+  Output,
+  ViewEncapsulation
+} from '@angular/core';
 import { DateObjectUnits, Info } from 'luxon';
 import { coerceKalDateProperty, KalDate } from '../kal-date';
+import { KalDatepickerComponent } from '../kal-datepicker.component';
 
 @Component({
   selector: 'kal-month-calendar',
@@ -9,7 +20,7 @@ import { coerceKalDateProperty, KalDate } from '../kal-date';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalMonthCalendarComponent {
+export class KalMonthCalendarComponent implements OnInit {
 
   /**
    * Emits when a new date is selected.
@@ -20,13 +31,15 @@ export class KalMonthCalendarComponent {
 
   private displayedKalDate: KalDate;
 
-  constructor(private cdr: ChangeDetectorRef) {
+  constructor(@Inject(forwardRef(() => KalDatepickerComponent)) public datepicker: KalDatepickerComponent,
+              private cdr: ChangeDetectorRef) {
   }
 
   @Input()
   get displayedDate(): KalDate {
     return this.displayedKalDate;
   }
+
   set displayedDate(date: KalDate) {
     if (!date) {
       date = new KalDate();
@@ -80,6 +93,10 @@ export class KalMonthCalendarComponent {
    */
   pickDate(date: KalDate): void {
     this.datePicked.emit(date);
+  }
+
+  ngOnInit(): void {
+    console.log(this.datepicker);
   }
 
 }

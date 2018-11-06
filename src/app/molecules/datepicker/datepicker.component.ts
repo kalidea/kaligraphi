@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { DateTime } from 'luxon';
 import { KalDate } from '../../../../projects/kalidea/kaligraphi/src/lib/molecules/kal-datepicker/kal-date';
 
@@ -14,9 +14,10 @@ export class DatepickerComponent implements OnInit {
 
   date = DateTime.local();
 
-  control = new FormControl(new KalDate('29/05/1289', 'dd/MM/yyyy'));
+  control = new FormControl(new KalDate('29/05/1289', 'dd/MM/yyyy'), Validators.required);
 
   constructor() {
+    this.control.valueChanges.subscribe(value => console.log(value));
   }
 
   ngOnInit() {

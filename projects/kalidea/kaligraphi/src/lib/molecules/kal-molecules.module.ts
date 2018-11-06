@@ -1,11 +1,11 @@
-import { NgModule } from '@angular/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { KalTextareaModule } from './kal-textarea/kal-textarea.module';
 import { KalSelectModule } from './kal-select/kal-select.module';
 import { KalRaterModule } from './kal-rater/kal-rater.module';
 import { KalTabModule } from './kal-tabs/kal-tab.module';
-import { KalDatepickerModule } from './kal-datepicker/kal-datepicker.module';
+import { KalDatepickerModule, KalDatepickerModuleConfig } from './kal-datepicker/kal-datepicker.module';
 
 export * from './kal-textarea/kal-textarea.module';
 export * from './kal-select/kal-select.module';
@@ -13,13 +13,17 @@ export * from './kal-rater/kal-rater.module';
 export * from './kal-tabs/kal-tab.module';
 export * from './kal-datepicker/kal-datepicker.module';
 
+export interface KalMoleculesModuleConfiguration {
+  date: KalDatepickerModuleConfig;
+}
+
 const exports = [
   KalTextareaModule,
   KalSelectModule,
   KalRaterModule,
   KalTabModule,
   KalRaterModule,
-  KalDatepickerModule,
+  KalDatepickerModule
 ];
 
 @NgModule({
@@ -30,4 +34,17 @@ const exports = [
   exports: exports,
   declarations: []
 })
-export class KalMoleculesModule { }
+export class KalMoleculesModule {
+  public static forRoot(moleculesModuleConfiguration?: KalMoleculesModuleConfiguration): ModuleWithProviders {
+
+    KalDatepickerModule.forRoot({
+      displayFormat: moleculesModuleConfiguration && moleculesModuleConfiguration.date ? moleculesModuleConfiguration.date.displayFormat : null,
+      parseFormat: moleculesModuleConfiguration && moleculesModuleConfiguration.date ? moleculesModuleConfiguration.date.parseFormat : null
+    });
+
+    return {
+      ngModule: KalMoleculesModule,
+      providers: [{provide: 'moleculesModuleConfiguration', useValue: moleculesModuleConfiguration}]
+    };
+  }
+}

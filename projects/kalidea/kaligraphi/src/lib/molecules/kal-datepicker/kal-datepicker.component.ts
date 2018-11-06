@@ -1,14 +1,26 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef, forwardRef,
+  Inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  Optional,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { FormControl } from '@angular/forms';
-import { filter } from 'rxjs/operators';
+import { filter, map, tap } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { coerceKalDateProperty, KalDate, KalDateType } from './kal-date';
 import { KalMonthCalendarComponent } from './kal-month-calendar/kal-month-calendar.component';
 import { KalDatepickerHeaderComponent } from './kal-datepicker-header/kal-datepicker-header.component';
 import { buildProviders, FormElementComponent } from '../../utils';
+import { KalDatepickerModuleConfig } from '../../kaligraphi.module';
 
 /**
  * Possible views for the calendar.
@@ -61,14 +73,17 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
    */
   private overlayRef: OverlayRef;
 
-  constructor(private overlay: Overlay) {
+  constructor(private overlay: Overlay,
+              @Optional() @Inject('testConfig') private config: KalDatepickerModuleConfig) {
     super();
+    console.log('datepicker config test', config);
   }
 
   @Input()
   get max(): KalDate {
     return this.maxDate;
   }
+
   set max(date: KalDate) {
     this.maxDate = coerceKalDateProperty(date);
   }
@@ -77,6 +92,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   get min(): KalDate {
     return this.minDate;
   }
+
   set min(date: KalDate) {
     this.minDate = coerceKalDateProperty(date);
   }
@@ -121,8 +137,9 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   }
 
   setInputValue(date: KalDate): void {
-    const dateToString = (date && date.valid) ? date.toString() : '';
-    this.control.setValue(dateToString, {emitEvent: false, onlySelf: true});
+    const isDateValid = (date && date.valid) ? date : '';
+    this.control.setValue(isDateValid ? date.toString() : '', {emitEvent: false, onlySelf: true});
+    super.notifyUpdate(isDateValid ? date : null);
   }
 
   /**
@@ -163,6 +180,25 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
         filter(event => event.keyCode === ESCAPE)
       )
       .subscribe(() => this.close());
+
+
+    this.control.valueChanges
+      .pipe(
+        map(value => coerceKalDateProperty(value)), // transform as date
+//         map(date => date.valid ? date : null), // remove invalid date
+        tap((date: KalDate) => {
+          console.log(date);
+//           this.setInputValue(date); // update user input
+// console.log(date);
+//           // notify parent for validation
+//           super.notifyUpdate(date);
+//
+//           // emit value
+//           this.valueChange.emit(date);
+//
+        })
+      )
+      .subscribe();
   }
 
   ngOnDestroy(): void {
