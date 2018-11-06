@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { KalMenuComponent } from './kal-menu.component';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('KalMenuComponent', () => {
   let component: KalMenuComponent;
