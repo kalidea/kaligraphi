@@ -12,7 +12,7 @@
     <div class="kal-list-item"
          [class.kal-list-item-selected]="isSelected(item)"
          [class.kal-list-item-disabled]="disableRowsFunction(item)"
-         (click)="selectItem(item, i)">
+         (click)="selectItem(item)">
 
     <span class="kal-list-item-content">
       <ng-container *ngTemplateOutlet="row.view; context: {item: item}"></ng-container>

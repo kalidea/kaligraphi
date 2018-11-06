@@ -4,47 +4,19 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChild,
-  Directive,
-  ElementRef,
   EventEmitter,
   HostListener,
   Input,
   OnInit,
   Output,
   QueryList,
-  Renderer2,
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
-import { ActiveDescendantKeyManager, Highlightable } from '@angular/cdk/a11y';
+import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
 import { ENTER, SPACE } from '@angular/cdk/keycodes';
 import { KalListItemDirective } from './kal-list-item.directive';
-
-@Directive({
-  selector: '[kalListItemSelection]'
-})
-export class KalListItemSelectionDirective implements Highlightable {
-
-  /**
-   * Is a tab highlighted
-   */
-  highlighted: boolean;
-
-  setActiveStyles(): void {
-    this.highlighted = true;
-    this.renderer.addClass(this.el.nativeElement, 'kal-list-item-highlighted');
-  }
-
-  setInactiveStyles(): void {
-    this.highlighted = false;
-    this.renderer.removeClass(this.el.nativeElement, 'kal-list-item-highlighted');
-  }
-
-  constructor(public el: ElementRef,
-              private renderer: Renderer2) {
-  }
-
-}
+import { KalListItemSelectionDirective } from './kal-list-item-selection.directive';
 
 @Component({
   selector: 'kal-list',
@@ -127,6 +99,26 @@ export class KalListComponent<T> implements OnInit, AfterViewInit {
   }
 
   /**
+   * Function that disable rows in template
+   */
+  @Input()
+  get disableRowsFunction(): (item: T) => boolean {
+    return this.isDisabled ? this.isDisabled : (item: T) => false;
+  }
+
+  set disableRowsFunction(value: (item: T) => boolean) {
+    this.isDisabled = value;
+    this.cdr.markForCheck();
+  }
+
+  /**
+   * Return the number of elements in list
+   */
+  get countElements(): number {
+    return this.results.length;
+  }
+
+  /**
    * Focus the tab element
    */
   @HostListener('focus')
@@ -160,38 +152,18 @@ export class KalListComponent<T> implements OnInit, AfterViewInit {
     if (isOpenKey && this.keyManager.activeItem) {
       event.preventDefault();
       const itemToSelect = this.results.find((item, i) => i === this.keyManager.activeItemIndex);
-      this.selectItem(itemToSelect, this.keyManager.activeItemIndex);
+      this.selectItem(itemToSelect);
     } else {
       this.keyManager.onKeydown(event);
     }
   }
 
   /**
-   * Function that disable rows in template
-   */
-  @Input()
-  get disableRowsFunction(): (item: T) => boolean {
-    return this.isDisabled ? this.isDisabled : (item: T) => false;
-  }
-
-  set disableRowsFunction(value: (item: T) => boolean) {
-    this.isDisabled = value;
-    this.cdr.markForCheck();
-  }
-
-  /**
-   * Return the number of elements in list
-   */
-  get countElements(): number {
-    return this.results.length;
-  }
-
-  /**
    * Select an item in list and emit an event with the selected item value
    */
-  selectItem(item: T, index: number) {
+  selectItem(item: T) {
     if (!this.disableRowsFunction(item)) {
-      this.selectedItemIndex = index;
+      this.selectedItemIndex = this.results.findIndex(row => row === item);
       this.selectedItem = item;
       this.keyManager.setActiveItem(this.selectedItemIndex);
       this.selectionChange.emit(item);
