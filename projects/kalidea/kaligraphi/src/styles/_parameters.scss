@@ -28,12 +28,31 @@ $kal-headings: (
   6: ( "font-family": $kal-fontface-title,  "font-size": $kal-base-font-size + 3, "line-height": 28px, "font-weight": 600)
 ) !default;
 
+
+// kal-input
+$kal-input: (
+  default: (
+    font: $kal-fontface-text,
+    font-size: $kal-base-font-size,
+    padding: 12px,
+    width: 100%,
+    color: $kal-base-font-color,
+    background-color: ,
+    border: ( width: 1px, style: solid,  color: $color-neutre70, radius: $base-radius)
+  ),
+  reverse: (
+    color: $color-neutre0,
+    background-color: $color-neutre30,
+    border: ( width: 1px, style: solid, color: $color-neutre30, radius: $base-radius)
+  )
+) !default;
+
 // global parameters
 $kal-parameters: (
   palettes: $kal-palettes,
   headings: $kal-headings,
-  padding: 10px,
   text: $kal-text,
+  input: $kal-input,
   form: (
     border: (
       width: 1px,
