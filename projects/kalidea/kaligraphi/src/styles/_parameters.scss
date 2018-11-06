@@ -1,12 +1,22 @@
-
+// Colors
 @import "palettes";
-
 $kal-colors: (default: #1F1F1F, reverse: #FFF) !default;
 
+// Fontfaces
+$kal-fontface-text: 'AsapRegular' !default;
+$kal-fontface-title: 'AsapMedium' !default;
+$kal-fontface-titlebold: 'AsapSemiBold' !default;
+
+$kal-fontfaces: (
+  text: ($kal-fontface-text, Asap-Regular, normal, normal ),
+  title: ($kal-fontface-title, Asap-Medium, 500, normal),
+  titlebold: ($kal-fontface-titlebold, Asap-SemiBold, 600, normal )
+) !default;
+
 // default value for font
+$kal-base-font-family: $kal-fontface-text, sans-serif !default;
 $kal-base-font-color: map-get($kal-colors, default) !default;
-$kal-base-font-family: Asap, sans-serif !default;
-$kal-base-font-size: 16px !default;
+$kal-base-font-size: 17px !default;
 
 // text
 $kal-text: (
@@ -17,20 +27,21 @@ $kal-text: (
 
 // headings
 $kal-headings: (
-  1: ("font-family": $kal-base-font-family, "font-size": $kal-base-font-size + 2, "line-height": 10px),
-  2: ("font-family": $kal-base-font-family, "font-size": $kal-base-font-size + 4, "line-height": 12px),
-  3: ("font-family": $kal-base-font-family, "font-size": $kal-base-font-size + 6, "line-height": 14px),
-  4: ("font-family": $kal-base-font-family, "font-size": $kal-base-font-size + 8, "line-height": 18px),
-  5: ("font-family": $kal-base-font-family, "font-size": $kal-base-font-size + 10, "line-height": 20px),
-  6: ("font-family": $kal-base-font-family, "font-size": $kal-base-font-size + 12, "line-height": 22px),
-);
+  1: ( "font-family": $kal-fontface-title,  "font-size": $kal-base-font-size + 25, "line-height": 54px),
+  2: ( "font-family": $kal-fontface-titlebold,  "font-size": $kal-base-font-size + 19, "line-height": 45px),
+  3: ( "font-family": $kal-fontface-title,  "font-size": $kal-base-font-size + 14, "line-height": 39px),
+  4: ( "font-family": $kal-fontface-titlebold,  "font-size": $kal-base-font-size + 10, "line-height": 36px),
+  5: ( "font-family": $kal-fontface-titlebold,  "font-size": $kal-base-font-size + 5, "line-height": 30px),
+  6: ( "font-family": $kal-fontface-title,  "font-size": $kal-base-font-size + 3, "line-height": 28px)
+) !default;
 
 // global parameters
 $kal-parameters: (
+  palettes: $kal-palettes,
+  fontfaces: $kal-fontfaces,
+  headings: $kal-headings,
   padding: 10px,
   text: $kal-text,
-  palettes: $kal-palettes,
-  headings: $kal-headings,
   form: (
     border: (
       width: 1px,
