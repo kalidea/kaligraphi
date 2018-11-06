@@ -29,6 +29,9 @@ $kal-headings: (
 ) !default;
 
 $base-border-radius: 3px !default;
+$base-border-width: 1px !default;
+$base-border-style: solid !default;
+$base-border-color: $kal-base-font-color !default;
 
 
 // global parameters
@@ -38,10 +41,10 @@ $kal-parameters: (
   text: $kal-text,
   form: (
     border: (
-      width: 1px,
-      style: solid,
+      width: $base-border-width,
+      style: $base-border-style,
       color: $kal-base-font-color,
-      radius: 3px
+      radius: $base-border-radius
     )
   )
 );
