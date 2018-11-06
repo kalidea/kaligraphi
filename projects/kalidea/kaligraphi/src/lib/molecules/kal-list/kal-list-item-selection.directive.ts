@@ -7,19 +7,19 @@ import { Highlightable } from '@angular/cdk/a11y';
 export class KalListItemSelectionDirective implements Highlightable {
 
   /**
-   * Is the list item disabled
+   * Is the current item disabled
    */
   @Input() disabled: boolean;
 
   /**
-   * Add the kal-list-item-highlighted class to the list item when this item is highlighted
+   * Add the kal-list-item-highlighted class to the current item when it is focus
    */
   setActiveStyles(): void {
     this.renderer.addClass(this.el.nativeElement, 'kal-list-item-highlighted');
   }
 
   /**
-   * Remove the kal-list-item-highlighted class to the list item when the item is highlighted
+   * Remove the kal-list-item-highlighted class to the current item when it is unfocus
    */
   setInactiveStyles(): void {
     this.renderer.removeClass(this.el.nativeElement, 'kal-list-item-highlighted');
