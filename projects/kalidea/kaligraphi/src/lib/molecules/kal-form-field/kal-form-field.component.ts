@@ -12,7 +12,7 @@ export class KalFormFieldComponent {
   /**
    * Does the field has an error
    */
-  hasError = false;
+  @Input() hasError = false;
 
   /**
    * Label of the field
