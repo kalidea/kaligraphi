@@ -1,16 +1,3 @@
-// ---------------------------------------------------------
-// str-explode
-// Split a string by delimiter
-//
-// Required arguments:
-// `$string` String
-// `$delimiter` String *predefined*
-//
-// Example of use:
-// str-explode('some-things-will-never-change', '-')
-//
-// @return List
-// ---------------------------------------------------------
 @function str-explode ($string, $delimiter: '') {
   @if type-of($string) != 'string' {
     @error 'The argument $string: `#{$string}` is of incorrect type: `#{type-of($string)}`. Type of `String` is required!';
@@ -35,7 +22,7 @@
 
     @if $index != null {
       $item: str-slice($string, 1, ($index - 1));
-      $result: append($result, $item);
+      $result: append($result, unquote($item));
       $string: str-slice($string, ($index + str-length($delimiter)));
     }
     @else {
@@ -43,5 +30,5 @@
     }
   }
 
-  @return append($result, $string);
+  @return append($result, unquote($string));
 }
