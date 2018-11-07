@@ -1,23 +1,9 @@
-<header>
-
-  <h1>Atoms</h1>
+<div id="container">
   <nav>
-    <a routerLink="/">Home</a>
-    <a routerLink="/atoms/input">Input</a>
-    <a routerLink="/atoms/checkbox">Checkbox</a>
-    <a routerLink="/atoms/radio">Radio</a>
-    <a routerLink="/atoms/select">Select</a>
-    <a routerLink="/atoms/icon">Icon</a>
-    <a routerLink="/atoms/rater">Rater</a>
-    <a routerLink="/atoms/progress-bar">Progress Bar</a>
-    <a routerLink="/atoms/slider">Slider</a>
+    <kal-menu [items]="items" logo="https://via.placeholder.com/100/E89536/000000?text=Kaligraphi"></kal-menu>
   </nav>
 
-  <h1>Molecules</h1>
-  <nav>
-    <a routerLink="/molecules/tab-panel">Tab panel</a>
-    <a routerLink="/molecules/stepper">Stepper</a>
-    <a routerLink="/molecules/accordion">Accordion</a>
-  </nav>
-</header>
-<router-outlet></router-outlet>
+  <main>
+    <router-outlet></router-outlet>
+  </main>
+</div>

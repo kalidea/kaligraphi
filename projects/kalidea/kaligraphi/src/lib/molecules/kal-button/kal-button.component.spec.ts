@@ -3,7 +3,44 @@ import { By } from '@angular/platform-browser';
 
 import { KalButtonComponent } from './kal-button.component';
 import { KalIconComponent } from '../../atoms/kal-icon/kal-icon.component';
+import { Component } from '@angular/core';
+import { KalButtonModule } from './kal-button.module';
 
+@Component({
+  template: `
+    <kal-button>Test</kal-button>
+  `
+})
+class TestKalButtonComponent {
+}
+
+describe('TestKalButtonComponent', () => {
+  let component: TestKalButtonComponent;
+  let fixture: ComponentFixture<TestKalButtonComponent>;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        KalButtonModule
+      ],
+      declarations: [
+        TestKalButtonComponent
+      ]
+    })
+      .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(TestKalButtonComponent);
+    component = fixture.componentInstance;
+  });
+
+  it('should display the content of the button', () => {
+    fixture.detectChanges(); // recalcul la vue
+    const button = fixture.debugElement.query(By.css('button')).nativeElement;
+    expect(button.innerText).toEqual('Test');
+  });
+});
 
 describe('KalButtonComponent', () => {
   let component: KalButtonComponent;
@@ -26,20 +63,9 @@ describe('KalButtonComponent', () => {
   });
 
   it('should emit event on click', () => {
-
     const spy = spyOn(component.clicked, 'emit');
     fixture.debugElement.query(By.css('button')).nativeElement.click();
     expect(spy).toHaveBeenCalled();
-
-  });
-
-  it('should display provided label', () => {
-    const label = 'click me';
-    component.label = label;
-    fixture.detectChanges(); // recalcul la vue
-    const button = fixture.debugElement.query(By.css('button')).nativeElement;
-    expect(button.innerText).toEqual(label);
-
   });
 
   it('should not emit event if disabled', () => {
@@ -48,7 +74,6 @@ describe('KalButtonComponent', () => {
     const spy = spyOn(component.clicked, 'emit');
     fixture.debugElement.query(By.css('button')).nativeElement.click();
     expect(spy).not.toHaveBeenCalled();
-
   });
 
   it('should emit event if not disabled', () => {
@@ -57,7 +82,6 @@ describe('KalButtonComponent', () => {
     const spy = spyOn(component.clicked, 'emit');
     fixture.debugElement.query(By.css('button')).nativeElement.click();
     expect(spy).toHaveBeenCalled();
-
   });
 
   it('should create tabIndex', () => {
@@ -66,7 +90,6 @@ describe('KalButtonComponent', () => {
     fixture.detectChanges(); // recalcul la vue
     const button = fixture.debugElement.query(By.css('button')).nativeElement;
     expect(button.tabIndex).toEqual(index);
-
   });
 
   it('should not create tabIndex if disabled', () => {
@@ -76,7 +99,6 @@ describe('KalButtonComponent', () => {
     fixture.detectChanges(); // recalcul la vue
     const button = fixture.debugElement.query(By.css('button')).nativeElement;
     expect(button.tabindex).toBeUndefined();
-
   });
 
   it('should display icon', () => {
@@ -86,7 +108,6 @@ describe('KalButtonComponent', () => {
     component.name = iconname;
     fixture.detectChanges(); // recalcul la vue
     expect(kalicon).toBeDefined();
-
   });
 
 });

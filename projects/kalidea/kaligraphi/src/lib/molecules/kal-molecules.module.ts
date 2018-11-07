@@ -8,6 +8,8 @@ import { KalStepperModule } from './kal-stepper/kal-stepper.module';
 import { KalButtonModule } from './kal-button/kal-button.module';
 import { KalRaterModule } from './kal-rater/kal-rater.module';
 import { KalAccordionModule } from './kal-accordion/kal-accordion.module';
+import { KalMenuModule } from './kal-menu/kal-menu.module';
+import { KalListModule } from './kal-list/kal-list.module';
 
 export * from './kal-textarea/kal-textarea.module';
 export * from './kal-select/kal-select.module';
@@ -16,6 +18,8 @@ export * from './kal-stepper/kal-stepper.module';
 export * from './kal-button/kal-button.module';
 export * from './kal-rater/kal-rater.module';
 export * from './kal-accordion/kal-accordion.module';
+export * from './kal-menu/kal-menu.module';
+export * from './kal-list/kal-list.module';
 
 const exports = [
   KalTextareaModule,
@@ -25,6 +29,8 @@ const exports = [
   KalButtonModule,
   KalRaterModule,
   KalAccordionModule,
+  KalMenuModule,
+  KalListModule
 ];
 
 @NgModule({
@@ -35,4 +41,5 @@ const exports = [
   exports: exports,
   declarations: []
 })
-export class KalMoleculesModule { }
+export class KalMoleculesModule {
+}

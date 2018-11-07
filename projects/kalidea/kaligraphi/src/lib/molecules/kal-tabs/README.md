@@ -1,10 +1,10 @@
-# TAB PANEL
+#TAB PANEL
 
 ##PURPOSE
 
 ####With label
 
-````html
+```html
 <kal-tab-group>
 
   <kal-tab label="Header 1" selected>
@@ -20,16 +20,17 @@
   <kal-tab>
 
 </kal-tab-group>
-````
+```
 
 ####With template label
 
-````html
+```html
 <kal-tab-group>
 
   <kal-tab selected>
     <ng-template kalTabLabel>
-      <kal-icon name="done">
+      <kal-icon>
+        done
       </kal-icon>
       Header 1
     </ng-template>
@@ -38,7 +39,8 @@
 
   <kal-tab>
     <ng-template kalTabLabel>
-      <kal-icon name="done">
+      <kal-icon>
+        done
       </kal-icon>
       Header 2
     </ng-template>
@@ -47,7 +49,8 @@
 
   <kal-tab>
     <ng-template kalTabLabel>
-      <kal-icon name="done">
+      <kal-icon>
+        done
       </kal-icon>
       Header 3
     </ng-template>
@@ -56,7 +59,7 @@
 
 </kal-tab-group>
 
-````
+```
 
 ##SPECIFICATIONS
 

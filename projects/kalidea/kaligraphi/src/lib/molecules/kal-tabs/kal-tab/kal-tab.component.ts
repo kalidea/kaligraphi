@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ContentChild, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ContentChild, Input, ViewChild, ViewEncapsulation } from '@angular/core';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { KalTabLabelDirective } from '../kal-tab-label.directive';

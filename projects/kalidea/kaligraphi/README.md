@@ -1,6 +1,5 @@
 
 ## Install
-* configure hooks: `git config core.hooksPath hooks`
 * replace the basic terminal by git bash : `File --> Settings --> Terminal --> Shell path : "C:\Program Files\Git\bin\sh.exe" -login -i`
 
 
