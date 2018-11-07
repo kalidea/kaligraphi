@@ -21,6 +21,8 @@ export class AppComponent {
     {label: 'Tab panel', route: '/molecules/tab-panel'},
     {label: 'Stepper', route: '/molecules/stepper'},
     {label: 'Accordion', route: '/molecules/accordion'},
+    {label: 'List', route: '/molecules/list'},
     {label: 'Menu', route: '/molecules/menu'},
+    {label: 'Form Field', route: '/molecules/form-field'},
   ];
 }
