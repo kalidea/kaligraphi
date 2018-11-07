@@ -1,6 +1,6 @@
-<ng-container *ngFor="let item of results; index as i">
+<ng-container *ngIf="row">
 
-  <div kalListItemSelection>
+  <div *ngFor="let item of results; index as i">
 
     <div *ngIf="containsGroupByFunction(item, i)"
          class="kal-list-item kal-list-item-group">
@@ -9,7 +9,9 @@
 
     </div>
 
-    <div class="kal-list-item"
+    <div kalListItemSelection
+         class="kal-list-item"
+         [disabled]="disableRowsFunction(item)"
          [class.kal-list-item-selected]="isSelected(item)"
          [class.kal-list-item-disabled]="disableRowsFunction(item)"
          (click)="selectItem(item)">

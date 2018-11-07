@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, Input, Renderer2 } from '@angular/core';
 import { Highlightable } from '@angular/cdk/a11y';
 
 @Directive({
@@ -7,17 +7,21 @@ import { Highlightable } from '@angular/cdk/a11y';
 export class KalListItemSelectionDirective implements Highlightable {
 
   /**
-   * Is a tab highlighted
+   * Is the current item disabled
    */
-  highlighted: boolean;
+  @Input() disabled: boolean;
 
+  /**
+   * Add the kal-list-item-highlighted class to the current item when it is focus
+   */
   setActiveStyles(): void {
-    this.highlighted = true;
     this.renderer.addClass(this.el.nativeElement, 'kal-list-item-highlighted');
   }
 
+  /**
+   * Remove the kal-list-item-highlighted class to the current item when it is unfocus
+   */
   setInactiveStyles(): void {
-    this.highlighted = false;
     this.renderer.removeClass(this.el.nativeElement, 'kal-list-item-highlighted');
   }
 
