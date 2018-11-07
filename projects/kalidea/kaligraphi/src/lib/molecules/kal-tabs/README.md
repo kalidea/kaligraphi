@@ -29,7 +29,8 @@
 
   <kal-tab selected>
     <ng-template kalTabLabel>
-      <kal-icon name="done">
+      <kal-icon>
+        done
       </kal-icon>
       Header 1
     </ng-template>
@@ -38,7 +39,8 @@
 
   <kal-tab>
     <ng-template kalTabLabel>
-      <kal-icon name="done">
+      <kal-icon>
+        done
       </kal-icon>
       Header 2
     </ng-template>
@@ -47,7 +49,8 @@
 
   <kal-tab>
     <ng-template kalTabLabel>
-      <kal-icon name="done">
+      <kal-icon>
+        done
       </kal-icon>
       Header 3
     </ng-template>

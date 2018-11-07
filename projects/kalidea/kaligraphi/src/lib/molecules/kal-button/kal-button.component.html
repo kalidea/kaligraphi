@@ -3,6 +3,11 @@
   [disabled]="disabled"
   [tabindex]="tabIndex"
   [name]="name">
-  <kal-icon *ngIf="name" [name]="name"></kal-icon>
+
+  <kal-icon *ngIf="name">
+    {{ name }}
+  </kal-icon>
+
   <ng-content></ng-content>
+
 </button>
