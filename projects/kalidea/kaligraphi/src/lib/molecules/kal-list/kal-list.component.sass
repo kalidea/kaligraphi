@@ -1,14 +1,36 @@
 =kal-list($parameters)
   kal-list
-    display: flex
-    flex-flow: column nowrap
-    justify-content: flex-start
-    align-items: flex-start
-    .kal-list__item
-      flex: 1
     .kal-list__group
-      background-color: #ff0000
-    .kal-list__content
-      background-color: #CCCCCC
-    .kal-list__icon
-      color: cyan
+      background-color: get("palettes.grey.wf100", $kal-parameters)
+      border-radius: $base-border-radius
+      padding: 8px 18px
+      margin: 12px 0
+    .kal-list__item
+      display: flex
+      flex-flow: row wrap
+      justify-content: space-between
+      align-items: center
+      background-color: get("palettes.white", $kal-parameters)
+      border-radius: $base-border-radius
+      padding: 0 18px
+      min-height: 48px
+      cursor: pointer
+      transition: background-color .1s ease
+      .kal-list__content
+        flex: 1
+      .kal-list__icon
+        color: get("palettes.grey.wf300", $kal-parameters)
+        transition: font-size .1s ease
+      &:hover
+        background-color: get("palettes.orange.lighter", $kal-parameters)
+        transform:
+        .kal-list__icon
+          color: get("palettes.orange.normal", $kal-parameters)
+          font-size: 24px
+        //+ .kal-list__separate
+        //  visibility: hidden
+    .kal-list__separate
+      background-color: get("palettes.grey.wf200", $kal-parameters)
+      width: 100%
+      height: 1px
+      margin: 5px 0

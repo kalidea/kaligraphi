@@ -3,10 +3,8 @@
   <div *ngFor="let item of results; index as i">
 
     <div *ngIf="containsGroupByFunction(item, i)"
-         class="kal-list__item kal-list__group">
-
+         class="kal-list__group">
       <h2>{{ groupByFunction(item) }}</h2>
-
     </div>
 
     <div kalListItemSelection
@@ -15,18 +13,15 @@
          [class.kal-list__item--selected]="isSelected(item)"
          [class.kal-list__item--disabled]="disableRowsFunction(item)"
          (click)="selectItem(item)">
-
-    <span class="kal-list__content">
-      <ng-container *ngTemplateOutlet="row.view; context: {item: item}"></ng-container>
-    </span>
-
+      <span class="kal-list__content">
+        <ng-container *ngTemplateOutlet="row.view; context: {item: item}"></ng-container>
+      </span>
       <span class="kal-list__icon">
-
-      <kal-icon>keyboard_arrow_right</kal-icon>
-
-    </span>
-
+        <kal-icon>keyboard_arrow_right</kal-icon>
+      </span>
     </div>
+
+    <div class="kal-list__separate"></div>
 
   </div>
 
