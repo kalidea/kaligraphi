@@ -3,24 +3,24 @@
   <div *ngFor="let item of results; index as i">
 
     <div *ngIf="containsGroupByFunction(item, i)"
-         class="kal-list-item kal-list-item-group">
+         class="kal-list__item kal-list__group">
 
-      {{ groupByFunction(item) }}
+      <h2>{{ groupByFunction(item) }}</h2>
 
     </div>
 
     <div kalListItemSelection
-         class="kal-list-item"
+         class="kal-list__item"
          [disabled]="disableRowsFunction(item)"
-         [class.kal-list-item-selected]="isSelected(item)"
-         [class.kal-list-item-disabled]="disableRowsFunction(item)"
+         [class.kal-list__item--selected]="isSelected(item)"
+         [class.kal-list__item--disabled]="disableRowsFunction(item)"
          (click)="selectItem(item)">
 
-    <span class="kal-list-item-content">
+    <span class="kal-list__content">
       <ng-container *ngTemplateOutlet="row.view; context: {item: item}"></ng-container>
     </span>
 
-      <span class="kal-list-item-icon">
+      <span class="kal-list__icon">
 
       <kal-icon>keyboard_arrow_right</kal-icon>
 
