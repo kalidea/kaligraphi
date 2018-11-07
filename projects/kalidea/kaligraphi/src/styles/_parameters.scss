@@ -1,12 +1,12 @@
-// Colors
+// colors
 @import "palettes";
 $kal-colors: (default: #1F1F1F, reverse: #FFF) !default;
 
-// Fontfaces
+// fontfaces
 $kal-fontface-text: 'Arial' !default;
 $kal-fontface-title: 'Arial' !default;
 
-// default value for font
+// default values for font
 $kal-base-font-family: $kal-fontface-text, sans-serif !default;
 $kal-base-font-color: map-get($kal-colors, default) !default;
 $kal-base-font-size: 17px !default;
@@ -28,18 +28,23 @@ $kal-headings: (
   6: ( "font-family": $kal-fontface-title,  "font-size": $kal-base-font-size + 3, "line-height": 28px, "font-weight": 600)
 ) !default;
 
+$base-border-radius: 3px !default;
+$base-border-width: 1px !default;
+$base-border-style: solid !default;
+$base-border-color: $kal-base-font-color !default;
+
+
 // global parameters
 $kal-parameters: (
   palettes: $kal-palettes,
   headings: $kal-headings,
-  padding: 10px,
   text: $kal-text,
   form: (
     border: (
-      width: 1px,
-      style: solid,
-      color: #000,
-      radius: 5px
+      width: $base-border-width,
+      style: $base-border-style,
+      color: $kal-base-font-color,
+      radius: $base-border-radius
     )
   )
 );
