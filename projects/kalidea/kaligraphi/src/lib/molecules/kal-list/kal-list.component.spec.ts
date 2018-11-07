@@ -91,7 +91,7 @@ describe('TestListItemComponent', () => {
 
     listDebugElements = fixture.debugElement.query(By.directive(KalListComponent));
     list = fixture.debugElement.query(By.css('kal-list'));
-    listItems = fixture.debugElement.queryAll(By.css('.kal-list-item-content'));
+    listItems = fixture.debugElement.queryAll(By.css('.kal-list__content'));
     iconsDebugElements = fixture.debugElement.queryAll(By.directive(KalIconComponent));
     listInstances = listDebugElements.injector.get(KalListComponent);
   });
@@ -150,7 +150,7 @@ describe('TestListItemComponent', () => {
 
     fixture.detectChanges();
 
-    groupElement = fixture.debugElement.queryAll(By.css('.kal-list-item-group'));
+    groupElement = fixture.debugElement.queryAll(By.css('.kal-list__group'));
 
     expect(groupElement.length).toEqual(1);
   });
@@ -164,7 +164,7 @@ describe('TestListItemComponent', () => {
 
     expect(listInstances.isSelected(component.datasource.listItem[0])).toBeFalsy();
 
-    disabled = fixture.debugElement.queryAll(By.css('.kal-list-item-disabled'));
+    disabled = fixture.debugElement.queryAll(By.css('.kal-list__item--disabled'));
 
     expect(disabled.length).toEqual(1);
   });
