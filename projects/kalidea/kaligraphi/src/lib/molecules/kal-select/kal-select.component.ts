@@ -184,11 +184,11 @@ export class KalSelectComponent
   /**
    * Select an option by his value
    */
-  select(value: any, notify = false): void {
+  select(value: any, withNotify = false): void {
     const optionSelect = this.options.find((item) => item.value === value);
     if (optionSelect) {
       this.keyManager.setActiveItem(optionSelect);
-      this.optionSelected(this.keyManager.activeItem, notify);
+      this.optionSelected(this.keyManager.activeItem, withNotify);
     }
   }
 
@@ -263,7 +263,7 @@ export class KalSelectComponent
    * @param option KalOptionComponent
    * @param withNotify boolean
    */
-  private optionSelected(option: KalOptionComponent, withNotify: boolean = true) {
+  private optionSelected(option: KalOptionComponent, withNotify = true) {
     if (this.multiple) {
       this.optionSelectedOnMultipleMode(option);
     } else {
