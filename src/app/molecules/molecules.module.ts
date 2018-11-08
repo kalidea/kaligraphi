@@ -9,7 +9,7 @@ import { StepperComponent } from 'src/app/molecules/stepper/stepper.component';
 import { AccordionComponent } from 'src/app/molecules/accordion/accordion.component';
 import { ListComponent } from 'src/app/molecules/list/list.component';
 import { MenuComponent } from 'src/app/molecules/menu/menu.component';
-import { FormFieldComponent } from './form-field/form-field.component';
+import { FormFieldComponent } from 'src/app/molecules/form-field/form-field.component';
 
 @NgModule({
   imports: [

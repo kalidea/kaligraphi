@@ -14,11 +14,12 @@ import {
   QueryList,
   ViewEncapsulation
 } from '@angular/core';
+import { NgControl } from '@angular/forms';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { UniqueSelectionDispatcher } from '@angular/cdk/collections';
+
 import { buildProviders, FormElementComponent, uniqid } from '../../utils/index';
 import { KalRadioChange } from './kal-radio-change';
-import { NgControl } from '@angular/forms';
 
 @Component({
   selector: 'kal-radio-group',
