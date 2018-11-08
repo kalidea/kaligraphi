@@ -26,6 +26,11 @@ export class ListComponent implements OnInit {
    */
   disableRowsFunction = null;
 
+  /**
+   * selected value
+   */
+  selectedValue;
+
   constructor() {
   }
 

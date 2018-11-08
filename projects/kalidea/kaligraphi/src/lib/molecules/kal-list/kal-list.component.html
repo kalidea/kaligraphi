@@ -1,32 +1,30 @@
 <ng-container *ngIf="row">
 
-  <div *ngFor="let item of results; index as i">
+  <div *ngFor="let item of results; index as i" class="kal-list__row">
 
-    <div *ngIf="containsGroupByFunction(item, i)"
-         class="kal-list-item kal-list-item-group">
-
-      {{ groupByFunction(item) }}
-
+    <div *ngIf="containsGroupByFunction(item, i); else separator"
+         class="kal-list__group">
+      <h2>{{ groupByFunction(item) }}</h2>
     </div>
+
+    <ng-template #separator>
+      <div class="kal-list__separate"></div>
+    </ng-template>
 
     <div kalListItemSelection
-         class="kal-list-item"
+         class="kal-list__item"
          [disabled]="disableRowsFunction(item)"
-         [class.kal-list-item-selected]="isSelected(item)"
-         [class.kal-list-item-disabled]="disableRowsFunction(item)"
+         [class.kal-list__item--selected]="isSelected(item)"
+         [class.kal-list__item--disabled]="disableRowsFunction(item)"
          (click)="selectItem(item)">
-
-    <span class="kal-list-item-content">
-      <ng-container *ngTemplateOutlet="row.view; context: {item: item}"></ng-container>
-    </span>
-
-      <span class="kal-list-item-icon">
-
-      <kal-icon>keyboard_arrow_right</kal-icon>
-
-    </span>
-
+      <span class="kal-list__content">
+        <ng-container *ngTemplateOutlet="row.view; context: {item: item}"></ng-container>
+      </span>
+      <span class="kal-list__icon">
+        <kal-icon>keyboard_arrow_right</kal-icon>
+      </span>
     </div>
+
 
   </div>
 
