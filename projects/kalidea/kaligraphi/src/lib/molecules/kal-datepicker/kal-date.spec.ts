@@ -17,7 +17,7 @@ describe('KalDate class', () => {
     const stringDate = '24/09/2018';
 
     // string format
-    expect(new KalDate(stringDate, 'dd/MM/yyyy').toString())
+    expect(new KalDate(stringDate).toString())
       .toEqual(stringDate, 'should be able to parse string format');
 
     // luxon format
@@ -26,7 +26,7 @@ describe('KalDate class', () => {
       .toEqual(stringDate, 'should be able to parse luxon format');
 
     // KalDate format
-    const kalDate = new KalDate(stringDate, 'dd/MM/yyyy');
+    const kalDate = new KalDate(stringDate);
     expect(new KalDate(kalDate).toString())
       .toEqual(stringDate, 'should be able to parse KalDate format');
   });

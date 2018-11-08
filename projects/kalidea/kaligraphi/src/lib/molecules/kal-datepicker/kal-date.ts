@@ -167,7 +167,7 @@ export class KalDate {
     const date = this.getDate();
 
     if (date && date.isValid) {
-      return date.toLocaleString(DateTime.DATE_SHORT);
+      return date.toFormat('dd/MM/yyyy');
     } else {
       return '';
     }
