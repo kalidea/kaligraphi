@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Injector, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, forwardRef, Injector, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { ESCAPE } from '@angular/cdk/keycodes';
@@ -38,7 +38,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   /**
    * Reference to `KalDatepickerHeaderComponent`.
    */
-  @ViewChild(KalDatepickerHeaderComponent) datePickerHeader: KalDatepickerHeaderComponent;
+  @ViewChild(forwardRef(() => KalDatepickerHeaderComponent)) datePickerHeader: KalDatepickerHeaderComponent;
 
   /**
    * Whether the calendar is in month view.

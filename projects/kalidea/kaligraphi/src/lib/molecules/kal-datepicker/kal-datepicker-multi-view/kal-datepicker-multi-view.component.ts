@@ -68,14 +68,14 @@ export class KalDatepickerMultiViewComponent {
    * Whether the month is the displayed month.
    */
   isMonthSelected(month: number): boolean {
-    return this.displayedDate.getMonth() === month;
+    return this.displayedDate && this.displayedDate.getMonth() === month;
   }
 
   /**
    * Whether the year is the displayed year.
    */
   isYearSelected(year: number): boolean {
-    return this.displayedDate.getYear() === year;
+    return this.displayedDate && this.displayedDate.getYear() === year;
   }
 
 }
