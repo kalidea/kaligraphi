@@ -19,7 +19,7 @@ import { buildProviders, FormElementComponent } from '../../utils/index';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: buildProviders(KalInputComponent)
 })
-export class KalInputComponent extends FormElementComponent<string> implements OnInit {
+export class KalInputComponent extends FormElementComponent<string> implements OnInit, OnDestroy {
 
   /**
    * list of formaters
@@ -42,7 +42,16 @@ export class KalInputComponent extends FormElementComponent<string> implements O
    */
   @Input() limit: number;
 
+  /**
+   * Custom icon to use for the input
+   */
+  @Input() icon: string;
+
   control: FormControl;
+
+  @Output() readonly iconClicked = new EventEmitter();
+
+  private controlChangedSubscription = Subscription.EMPTY;
 
   /**
    * event to trigger change
@@ -64,11 +73,10 @@ export class KalInputComponent extends FormElementComponent<string> implements O
   }
 
   @Input()
-  get clearable() {
+  get clearable(): boolean {
     return this.isClearable;
   }
-
-  set clearable(clearable) {
+  set clearable(clearable: boolean) {
     this.isClearable = coerceBooleanProperty(clearable);
     this.cdr.markForCheck();
   }
@@ -90,6 +98,10 @@ export class KalInputComponent extends FormElementComponent<string> implements O
 
   clearField() {
     this.control.setValue('');
+  }
+
+  customIconClicked() {
+    this.iconClicked.emit();
   }
 
   /**
@@ -122,14 +134,17 @@ export class KalInputComponent extends FormElementComponent<string> implements O
   }
 
   ngOnInit() {
-
     this.ngControl = this.injector.get(NgControl, null);
     this.control = new FormControl(this.value, {updateOn: this.updateOnEvent});
 
-    const subscription = this.control.valueChanges.subscribe(value => {
+    this.controlChangedSubscription = this.control.valueChanges.subscribe(value => {
       // notify parent for validation
       this.notifyUpdate(value);
     });
+  }
+
+  ngOnDestroy(): void {
+    this.controlChangedSubscription.unsubscribe();
   }
 
 }
