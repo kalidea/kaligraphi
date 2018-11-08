@@ -184,11 +184,11 @@ export class KalSelectComponent
   /**
    * Select an option by his value
    */
-  select(value: any): void {
+  select(value: any, withNotify = false): void {
     const optionSelect = this.options.find((item) => item.value === value);
     if (optionSelect) {
       this.keyManager.setActiveItem(optionSelect);
-      this.optionSelected(this.keyManager.activeItem);
+      this.optionSelected(this.keyManager.activeItem, withNotify);
     }
   }
 
@@ -261,16 +261,20 @@ export class KalSelectComponent
    * Event emitted when an option is selected
    * Set the option as active
    * @param option KalOptionComponent
+   * @param withNotify boolean
    */
-  private optionSelected(option: KalOptionComponent) {
+  private optionSelected(option: KalOptionComponent, withNotify = true) {
     if (this.multiple) {
       this.optionSelectedOnMultipleMode(option);
     } else {
       this.optionSelectedOnSimpleMode(option);
     }
 
-    super.notifyUpdate(this.selectedValue);
-    this.valueChange.emit(this.selectedValue);
+    if (withNotify) {
+      super.notifyUpdate(this.selectedValue);
+      this.valueChange.emit(this.selectedValue);
+    }
+
     this.cdr.markForCheck();
   }
 
