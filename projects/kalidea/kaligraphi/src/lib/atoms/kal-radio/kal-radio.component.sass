@@ -16,7 +16,19 @@
       flex-flow: row wrap
       align-items: center
       font-size: 18px
-
+      cursor: pointer
+    label.kal-radio__label--before
+      padding-right: 37px
+      padding-left: 0
+      + div
+          right: 0
+          left: auto
+    label.kal-radio__label--before:before
+      right: 0
+      left: auto
+    label.kal-radio__label--before:after
+      right: 5px
+      left: auto
     // cas du label vide
     label:empty
       display: inline-flex
