@@ -1,16 +1,16 @@
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component,
+  Component, EventEmitter,
   Injector,
   Input,
   OnDestroy,
-  OnInit,
+  OnInit, Output,
   ViewEncapsulation
 } from '@angular/core';
 import { AbstractControl, FormControl, NgControl } from '@angular/forms';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { of } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 
 import { InputFormater } from './format/input-formater';
 import { NumberFormat } from './format/number.format';
