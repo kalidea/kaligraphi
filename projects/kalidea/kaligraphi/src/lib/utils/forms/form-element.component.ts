@@ -27,9 +27,6 @@ export function buildProviders(type) {
   ];
 }
 
-@Component({
-  template: ``
-})
 export class FormElementComponent<T = string> extends FormControlAccessComponent<T> {
 
   /**
