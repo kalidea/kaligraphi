@@ -11,7 +11,7 @@ export class KalListItemSelectionDirective implements Highlightable {
    */
   @Input() disabled: boolean;
 
-  @HostBinding('class.kal-list__item--highlighted') hightlight;
+  @HostBinding('class.kal-list__item--highlighted') hightlighted;
 
   constructor() {}
 
@@ -19,14 +19,14 @@ export class KalListItemSelectionDirective implements Highlightable {
    * Add the kal-list-item-highlighted class to the current item when it is focus
    */
   setActiveStyles(): void {
-    this.hightlight = true;
+    this.hightlighted = true;
   }
 
   /**
    * Remove the kal-list-item-highlighted class to the current item when it is unfocus
    */
   setInactiveStyles(): void {
-    this.hightlight = false;
+    this.hightlighted = false;
   }
 
 }
