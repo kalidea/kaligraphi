@@ -5,11 +5,13 @@ import {
   Component,
   ContentChild,
   Input,
+  OnDestroy,
   ViewEncapsulation
 } from '@angular/core';
-import { AbstractControl, FormControl, NgControl } from '@angular/forms';
+import { AbstractControl } from '@angular/forms';
 
 import { FormElementComponent } from '../../utils';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'kal-form-field',
@@ -18,7 +20,7 @@ import { FormElementComponent } from '../../utils';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalFormFieldComponent implements AfterContentInit {
+export class KalFormFieldComponent implements AfterContentInit, OnDestroy {
 
   /**
    * Does the field has an error
@@ -44,22 +46,30 @@ export class KalFormFieldComponent implements AfterContentInit {
 
   @ContentChild(FormElementComponent) formElement: FormElementComponent;
 
+  private subscription: Subscription;
+
   constructor(private cdr: ChangeDetectorRef) {
   }
 
   ngAfterContentInit(): void {
-    this.hasError = false;
-    this.label = this.formElement.label;
-    this.required = this.formElement.required;
-    this.for = this.formElement.id;
-    this.hasError = this.formElement.hasError;
-
-
-    this.formElement.statusChange.subscribe(data => {
-      console.log(data);
+    if (this.formElement) {
+      this.label = this.formElement.label;
+      this.required = this.formElement.required;
+      this.for = this.formElement.id;
       this.hasError = this.formElement.hasError;
-      this.cdr.markForCheck();
-    });
+
+      this.subscription = this.formElement.statusChange.subscribe(data => {
+        this.hasError = this.formElement.hasError;
+        this.cdr.markForCheck();
+      });
+    }
+
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
 }
