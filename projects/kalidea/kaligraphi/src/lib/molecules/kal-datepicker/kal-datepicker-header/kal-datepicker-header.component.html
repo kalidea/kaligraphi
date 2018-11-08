@@ -1,13 +1,13 @@
 <div>
-  <kal-icon name="navigate_before"
-            (click)="updateMonth(-1)">
+  <kal-icon (click)="updateMonth(-1)">
+    navigate_before
   </kal-icon>
 
   <ng-content></ng-content>
 
   <kal-icon *ngIf="!isMultiView"
-            name="navigate_next"
             (click)="updateMonth(1)">
+    navigate_next
   </kal-icon>
 
 </div>
