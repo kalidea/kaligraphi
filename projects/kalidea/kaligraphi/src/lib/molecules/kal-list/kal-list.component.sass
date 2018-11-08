@@ -1,5 +1,7 @@
 =kal-list($kal-parameters)
   kal-list
+    &:focus
+      outline: none
     .kal-list__group
       background-color: get("palettes.grey.wf100", $kal-parameters)
       border-radius: get("form.border.radius", $kal-parameters)
@@ -20,14 +22,17 @@
       .kal-list__icon
         color: get("palettes.grey.wf300", $kal-parameters)
         transition: font-size .1s ease
-      &:hover, &.kal-list-item-highlighted
+      &:hover, &.kal-list__item--highlighted
         background-color: get("palettes.orange.lighter", $kal-parameters)
-        transform:
+        transition: font-size .1s ease
         .kal-list__icon
           color: get("palettes.orange.normal", $kal-parameters)
           font-size: 24px
-        //+ .kal-list__separate
-        //  visibility: hidden
+      &.kal-list__item--selected, &:focus
+        border: 1px solid get("palettes.orange.normal", $kal-parameters)
+        .kal-list__icon
+          color: get("palettes.orange.normal", $kal-parameters)
+          font-size: 24px
     .kal-list__separate
       background-color: get("palettes.grey.wf200", $kal-parameters)
       width: 100%

@@ -1,6 +1,6 @@
 <ng-container *ngIf="row">
 
-  <div *ngFor="let item of results; index as i">
+  <div *ngFor="let item of results; index as i" class="kal-list__row">
 
     <div *ngIf="containsGroupByFunction(item, i); else separator"
          class="kal-list__group">
