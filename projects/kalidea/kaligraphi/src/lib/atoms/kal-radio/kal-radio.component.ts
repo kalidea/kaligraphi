@@ -5,7 +5,7 @@ import {
   ContentChildren,
   EventEmitter,
   forwardRef,
-  Inject,
+  Inject, Injector,
   Input,
   OnDestroy,
   OnInit,
@@ -14,8 +14,10 @@ import {
   QueryList,
   ViewEncapsulation
 } from '@angular/core';
+import { NgControl } from '@angular/forms';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { UniqueSelectionDispatcher } from '@angular/cdk/collections';
+
 import { buildProviders, FormElementComponent, uniqid } from '../../utils/index';
 import { KalRadioChange } from './kal-radio-change';
 
@@ -25,7 +27,7 @@ import { KalRadioChange } from './kal-radio-change';
     <ng-content></ng-content>`,
   providers: buildProviders(KalRadioGroupComponent),
 })
-export class KalRadioGroupComponent extends FormElementComponent<any> {
+export class KalRadioGroupComponent extends FormElementComponent<any> implements OnInit {
 
   /**
    * The list of all radio buttons component
@@ -57,7 +59,7 @@ export class KalRadioGroupComponent extends FormElementComponent<any> {
    */
   private labelRadioPosition: 'before' | 'after' = 'after';
 
-  constructor(private cdr: ChangeDetectorRef) {
+  constructor(private cdr: ChangeDetectorRef, private injector: Injector) {
     super();
   }
 
@@ -193,6 +195,10 @@ export class KalRadioGroupComponent extends FormElementComponent<any> {
     super.writeValue(value);
     this.value = value;
     this.cdr.markForCheck();
+  }
+
+  ngOnInit(): void {
+    this.ngControl = this.injector.get(NgControl, null);
   }
 
 }

@@ -1,46 +1,58 @@
-=kal-list($kal-parameters)
-  kal-list
-    &:focus
-      outline: none
-    .kal-list__group
-      background-color: get("palettes.grey.wf100", $kal-parameters)
-      border-radius: get("form.border.radius", $kal-parameters)
-      padding: 8px 18px
-      margin: 12px 0
-    .kal-list__item
+=kal-input($kal-parameters)
+  kal-input
+    > div
+      position: relative
       display: flex
       flex-flow: row wrap
-      justify-content: space-between
+      justify-content: flex-start
       align-items: center
-      background-color: get("palettes.white", $kal-parameters)
-      padding: 0 18px
-      min-height: 48px
-      cursor: pointer
-      transition: background-color .1s ease
-      border: 1px solid transparent
-      &:disabled, &.kal-list__item--disabled
+      input
+        font-family: $kal-fontface-text
+        font-size: $kal-base-font-size
+        padding: 12px
+        width: 100%
+        color: get("palettes.grey.wf700", $kal-parameters)
         background-color: get("palettes.grey.wf100", $kal-parameters)
-        .kal-list__content
+        border-width: 1px
+        border-style: solid
+        border-color: get("palettes.grey.wf200", $kal-parameters)
+        border-radius: $base-border-radius
+        // Status
+        &:active, &:focus
+          border-color: get("palettes.grey.wf500", $kal-parameters)
+        &:disabled
           color: get("palettes.grey.wf500", $kal-parameters)
-      .kal-list__content
-        flex: 1
-      .kal-list__icon
-        color: get("palettes.grey.wf300", $kal-parameters)
-        transition: font-size .1s ease
-      &:not(.kal-list__item--disabled)
-        &:hover, &.kal-list__item--highlighted
-          background-color: get("palettes.orange.lighter", $kal-parameters)
-          transition: font-size .1s ease
-          .kal-list__icon
-            color: get("palettes.orange.normal", $kal-parameters)
-            font-size: 24px
-        &.kal-list__item--selected, &:focus
-          border: 1px solid get("palettes.orange.normal", $kal-parameters)
-          .kal-list__icon
-            color: get("palettes.orange.normal", $kal-parameters)
-            font-size: 24px
-    .kal-list__separate
-      background-color: get("palettes.grey.wf200", $kal-parameters)
-      width: 100%
-      height: 1px
-      margin: 0
+          cursor: not-allowed
+          + kal-icon
+            color: get("palettes.grey.wf500", $kal-parameters)
+            cursor: not-allowed
+        &.ng-invalid
+          border-color: get("palettes.red.normal", $kal-parameters)
+        &::placeholder
+          font-style: italic
+          color: get("palettes.grey.wf600", $kal-parameters)
+        // clearable icon
+        + kal-icon
+          position: absolute
+          color: get("palettes.grey.wf700", $kal-parameters)
+          right: 12px
+          font-size: 80%
+          cursor: pointer
+    &.kal-reverse
+      div > input
+        color: get("palettes.grey.wf800", $kal-parameters)
+        background-color: get("palettes.grey.wf500", $kal-parameters)
+        border-color: get("palettes.grey.wf500", $kal-parameters)
+        // Status
+        &:active, &:focus
+          border-color: get("palettes.grey.wf200", $kal-parameters)
+        &:disabled
+          color: get("palettes.grey.wf700", $kal-parameters)
+          + kal-icon
+            color: get("palettes.grey.wf700", $kal-parameters)
+            cursor: none
+        &::placeholder
+          color: get("palettes.grey.wf200", $kal-parameters)
+        // clearable icon
+        + kal-icon
+          color: get("palettes.grey.wf200", $kal-parameters)
