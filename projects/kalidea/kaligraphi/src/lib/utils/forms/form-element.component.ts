@@ -1,11 +1,11 @@
-import { EventEmitter, forwardRef, Input, Output } from '@angular/core';
+import { Component, EventEmitter, forwardRef, Input, Output } from '@angular/core';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { NG_ASYNC_VALIDATORS, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 import { FormControlAccessComponent } from './form-control-access.component';
 import { uniqid } from '../helpers/uniq';
-import { distinct, distinctUntilChanged } from 'rxjs/operators';
 
 
 export function buildProviders(type) {
@@ -27,6 +27,9 @@ export function buildProviders(type) {
   ];
 }
 
+@Component({
+  template: ``
+})
 export class FormElementComponent<T = string> extends FormControlAccessComponent<T> {
 
   /**

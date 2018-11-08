@@ -7,6 +7,7 @@
     "test": "ng test @kalidea/kaligraphi",
     "ng": "ng",
     "build": "ng build",
+    "build:lib": "npm run build",
     "copy:styles": "cpx './projects/kalidea/kaligraphi/src/**/*.{sass,scss,css}' ./dist/kalidea/kaligraphi",
     "compile:styles": "node-sass ./projects/kalidea/kaligraphi/src/styles/styles.sass ./dist/kalidea/kaligraphi/styles/styles.css",
     "postbuild": "npm run copy:styles && npm run compile:styles",
@@ -14,7 +15,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "serve:playground": "npm run serve",
-    "build:playground": "ng build playground --prod"
+    "build:playground": "ng build playground --prod",
+    "build:all": "npm run build:lib && npm run build:playground"
   },
   "private": true,
   "dependencies": {
@@ -28,7 +30,6 @@
     "@angular/platform-browser": "^6.1.0",
     "@angular/platform-browser-dynamic": "^6.1.0",
     "@angular/router": "^6.1.0",
-    "@kalidea/kaligraphi": "^0.0.12",
     "core-js": "^2.5.4",
     "rxjs": "~6.2.0",
     "zone.js": "~0.8.26"

@@ -12,7 +12,7 @@ import {
 import { coerceBooleanProperty, coerceNumberProperty } from '@angular/cdk/coercion';
 import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { buildProviders, FormControlAccessComponent } from '../../utils';
+import { buildProviders, FormControlAccessComponent } from '../../utils/index';
 
 @Component({
   selector: 'kal-slider',

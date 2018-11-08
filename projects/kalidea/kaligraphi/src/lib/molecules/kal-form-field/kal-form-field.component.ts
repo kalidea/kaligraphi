@@ -3,15 +3,15 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ContentChild,
+  ContentChild, forwardRef,
   Input,
   OnDestroy,
   ViewEncapsulation
 } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
-
-import { FormElementComponent } from '../../utils';
 import { Subscription } from 'rxjs';
+
+import { AutoUnsubscribe, FormElementComponent } from '../../utils/index';
 
 @Component({
   selector: 'kal-form-field',
@@ -44,9 +44,11 @@ export class KalFormFieldComponent implements AfterContentInit, OnDestroy {
 
   @Input() control: AbstractControl;
 
-  @ContentChild(FormElementComponent) formElement: FormElementComponent;
+  @ContentChild(forwardRef( () => FormElementComponent))
+  formElement: FormElementComponent;
 
-  private subscription: Subscription;
+  @AutoUnsubscribe()
+  private statusChange: Subscription;
 
   constructor(private cdr: ChangeDetectorRef) {
   }
@@ -58,18 +60,14 @@ export class KalFormFieldComponent implements AfterContentInit, OnDestroy {
       this.for = this.formElement.id;
       this.hasError = this.formElement.hasError;
 
-      this.subscription = this.formElement.statusChange.subscribe(data => {
+      this.statusChange = this.formElement.statusChange.subscribe(data => {
         this.hasError = this.formElement.hasError;
         this.cdr.markForCheck();
       });
     }
-
   }
 
   ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
   }
 
 }

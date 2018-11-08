@@ -18,10 +18,10 @@ import { TemplatePortal } from '@angular/cdk/portal';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
 import { DOWN_ARROW, ENTER, ESCAPE, SPACE, UP_ARROW } from '@angular/cdk/keycodes';
-import { filter } from 'rxjs/operators';
-import { buildProviders, FormElementComponent } from '../../utils';
-import { KalOptionComponent } from '../../atoms/kal-option/kal-option.component';
 import { NgControl } from '@angular/forms';
+import { filter } from 'rxjs/operators';
+import { buildProviders, FormElementComponent } from '../../utils/index';
+import { KalOptionComponent } from '../../atoms/kal-option/kal-option.component';
 
 @Component({
   selector: 'kal-select',

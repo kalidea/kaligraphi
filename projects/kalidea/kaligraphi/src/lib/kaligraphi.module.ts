@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { KalAtomsModule } from './atoms/kal-atoms.module';
 import { KalMoleculesModule } from './molecules/kal-molecules.module';
+import { FormElementComponent } from './utils/index';
 
 export * from './atoms/kal-atoms.module';
 export * from './molecules/kal-molecules.module';
@@ -19,7 +20,7 @@ const exports = [
     CommonModule,
     ...exports
   ],
-  exports: exports,
-  declarations: []
+  exports: [...exports, FormElementComponent],
+  declarations: [FormElementComponent]
 })
 export class KaligraphiModule { }

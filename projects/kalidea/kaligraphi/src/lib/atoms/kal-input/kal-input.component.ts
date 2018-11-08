@@ -1,24 +1,15 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component, Inject,
-  Injector,
-  Input,
-  OnInit,
-  Optional,
-  Self,
-  ViewEncapsulation
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, FormControl, NgControl } from '@angular/forms';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { of } from 'rxjs';
 
-import { buildProviders, FormElementComponent } from '../../utils';
 import { InputFormater } from './format/input-formater';
 import { NumberFormat } from './format/number.format';
 import { CurrencyFormat } from './format/currency.format';
 import { PhoneFormat } from './format/phone.format';
 import { StringFormat } from './format/string.format';
+
+import { buildProviders, FormElementComponent } from '../../utils/index';
 
 @Component({
   selector: 'kal-input',
