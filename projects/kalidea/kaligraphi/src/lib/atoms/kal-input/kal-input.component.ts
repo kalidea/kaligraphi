@@ -1,16 +1,7 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  ViewEncapsulation
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, FormControl } from '@angular/forms';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { of, Subscription } from 'rxjs';
+import { of } from 'rxjs';
 
 import { buildProviders, FormElementComponent } from '../../utils/index';
 import { InputFormater } from './format/input-formater';
@@ -27,7 +18,7 @@ import { StringFormat } from './format/string.format';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: buildProviders(KalInputComponent)
 })
-export class KalInputComponent extends FormElementComponent<string> implements OnInit, OnDestroy {
+export class KalInputComponent extends FormElementComponent<string> implements OnInit {
 
   /**
    * list of formaters
@@ -50,16 +41,7 @@ export class KalInputComponent extends FormElementComponent<string> implements O
    */
   @Input() limit: number;
 
-  /**
-   * Custom icon to use for the input
-   */
-  @Input() icon: string;
-
   control: FormControl;
-
-  private controlChangedSubscription = Subscription.EMPTY;
-
-  private iconClicked = new EventEmitter();
 
   /**
    * event to trigger change
@@ -81,10 +63,11 @@ export class KalInputComponent extends FormElementComponent<string> implements O
   }
 
   @Input()
-  get clearable(): boolean {
+  get clearable() {
     return this.isClearable;
   }
-  set clearable(clearable: boolean) {
+
+  set clearable(clearable) {
     this.isClearable = coerceBooleanProperty(clearable);
     this.cdr.markForCheck();
   }
@@ -106,10 +89,6 @@ export class KalInputComponent extends FormElementComponent<string> implements O
 
   clearField() {
     this.control.setValue('');
-  }
-
-  customIconClicked() {
-    this.iconClicked.emit();
   }
 
   /**
@@ -142,16 +121,13 @@ export class KalInputComponent extends FormElementComponent<string> implements O
   }
 
   ngOnInit() {
+
     this.control = new FormControl(this.value, {updateOn: this.updateOnEvent});
 
-    this.controlChangedSubscription = this.control.valueChanges.subscribe(value => {
+    const subscription = this.control.valueChanges.subscribe(value => {
       // notify parent for validation
       this.notifyUpdate(value);
     });
-  }
-
-  ngOnDestroy(): void {
-    this.controlChangedSubscription.unsubscribe();
   }
 
 }
