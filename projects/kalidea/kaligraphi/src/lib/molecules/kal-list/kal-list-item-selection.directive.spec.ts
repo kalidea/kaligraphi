@@ -2,7 +2,7 @@ import { KalListItemSelectionDirective } from './kal-list-item-selection.directi
 
 describe('KalListItemSelectionDirective', () => {
   it('should create an instance', () => {
-    const directive = new KalListItemSelectionDirective(null, null);
+    const directive = new KalListItemSelectionDirective();
     expect(directive).toBeTruthy();
   });
 });
