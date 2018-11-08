@@ -16,7 +16,7 @@ import { DatepickerComponent } from 'src/app/molecules/datepicker/datepicker.com
     CommonModule,
     ReactiveFormsModule,
     MoleculesRoutingModule,
-    KaligraphiModule.forRoot()
+    KaligraphiModule
   ],
   declarations: [
     TabPanelComponent,

@@ -11,8 +11,18 @@ import { coerceKalDateProperty, KalDate } from '../kal-date';
 })
 export class KalDatepickerMultiViewComponent {
 
+  /**
+   * Returns an array of standalone short month names.
+   * @example ['Jan', 'Feb', ...]
+   */
   readonly shortMonths = Info.months('short');
+
+  /**
+   * Emits event with which type of date was selected.
+   * Its type is `DateObjectUnits` but we're only using `month` and `year` in this type.
+   */
   @Output() selectedDate = new EventEmitter<DateObjectUnits>();
+
   private displayedKalDate: KalDate;
 
   constructor(private cdr: ChangeDetectorRef) {
@@ -54,10 +64,16 @@ export class KalDatepickerMultiViewComponent {
     this.selectedDate.emit(unit);
   }
 
+  /**
+   * Whether the month is the displayed month.
+   */
   isMonthSelected(month: number): boolean {
     return this.displayedDate.getMonth() === month;
   }
 
+  /**
+   * Whether the year is the displayed year.
+   */
   isYearSelected(year: number): boolean {
     return this.displayedDate.getYear() === year;
   }

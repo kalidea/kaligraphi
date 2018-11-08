@@ -5,13 +5,13 @@ import {
   EventEmitter,
   forwardRef,
   Inject,
-  Input, OnInit,
+  Input,
   Output,
   ViewEncapsulation
 } from '@angular/core';
 import { DateObjectUnits, Info } from 'luxon';
-import { coerceKalDateProperty, KalDate } from '../kal-date';
 import { KalDatepickerComponent } from '../kal-datepicker.component';
+import { coerceKalDateProperty, KalDate } from '../kal-date';
 
 @Component({
   selector: 'kal-month-calendar',
@@ -20,14 +20,18 @@ import { KalDatepickerComponent } from '../kal-datepicker.component';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalMonthCalendarComponent implements OnInit {
+export class KalMonthCalendarComponent {
+
+  /**
+   * Returns an array of standalone narrowed weekdays.
+   * @example ['L', 'M', ...]
+   */
+  readonly narrowWeekDays = Info.weekdays('narrow');
 
   /**
    * Emits when a new date is selected.
    */
   @Output() readonly datePicked = new EventEmitter<KalDate>();
-
-  readonly narrowWeekDays = Info.weekdays('narrow');
 
   private displayedKalDate: KalDate;
 
@@ -52,7 +56,7 @@ export class KalMonthCalendarComponent implements OnInit {
   }
 
   /**
-   * getter for displayed dates of current month
+   * Getter to display dates of displayed month.
    */
   get datesList(): KalDate[] {
     const displayedDate = this.displayedDate ? this.displayedDate.getDate() : null;
@@ -95,8 +99,19 @@ export class KalMonthCalendarComponent implements OnInit {
     this.datePicked.emit(date);
   }
 
-  ngOnInit(): void {
-    console.log(this.datepicker);
+  /**
+   * Whether the given date is valid according to validator.
+   * It allows us to enable and disable the buttons.
+   */
+  shouldDisable(date: KalDate) {
+    return this.datepicker.parentControlValidator({value: date}) !== null;
+  }
+
+  /**
+   * Whether the day in the given date is the displayed day.
+   */
+  isDaySelected(date: KalDate): boolean {
+    return this.displayedDate.getDay() === date.getDay();
   }
 
 }

@@ -18,7 +18,7 @@ export class KalDate {
    */
   private value: DateTime;
 
-  constructor(date?: KalDateType, format?: string) {
+  constructor(date?: KalDateType, format = 'dd/MM/yyyy') {
     if (arguments.length === 0) {
       this.value = DateTime.local();
     } else {
@@ -44,7 +44,7 @@ export class KalDate {
    * Returns a luxon `DateTime` object
    * @param format Date format to provide if date is a `string`
    */
-  private static getDate(rawDate: KalDateType, format?: string): DateTime {
+  private static getDate(rawDate: KalDateType, format = 'dd/MM/yyyy'): DateTime {
 
     if (rawDate instanceof Date) {
       return DateTime.fromJSDate(rawDate);
@@ -100,8 +100,6 @@ export class KalDate {
   getMonthAsString(): string {
     return this.value.monthLong;
   }
-
-
 
   /**
    * return moment representation of this object

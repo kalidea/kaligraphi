@@ -2,6 +2,8 @@
 <div *ngFor="let day of narrowWeekDays"> {{ day }}</div>
 
 <button type="button"
+        [class.selected]="isDaySelected(date)"
+        [disabled]="shouldDisable(date)"
         (click)="pickDate(date)"
         *ngFor="let date of datesList">
   {{ date.getDay() }}

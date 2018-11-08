@@ -1,34 +1,10 @@
-<div class="kal-c-DatePicker" #datepickerContainer>
+<div>
 
   <kal-input icon="calendar_today"
              [placeholder]="placeholder"
              [formControl]="control"
              (click)="open()">
   </kal-input>
-
-  <!--<div-->
-  <!--class="kal-o-InputGroupe"-->
-  <!--[class.kal-o-InputGroupe&#45;&#45;is-active]="active"-->
-  <!--(click)="activate()">-->
-  <!--<input-->
-  <!--type="text"-->
-  <!--size="10"-->
-  <!--class="kal-o-Formulaire__input"-->
-  <!--autocomplete="off"-->
-  <!--(keydown.enter)="datePickerInput.blur()"-->
-  <!--[placeholder]="placeholder"-->
-  <!--[tabindex]="tabIndex"-->
-  <!--[id]="id"-->
-  <!--[formControl]="dateControl"-->
-  <!--#datePickerInput/>-->
-  <!--<span-->
-  <!--class="kal-o-InputGroupe__addin">-->
-  <!--<i aria-hidden="true"-->
-  <!--#datePickerIcon-->
-  <!--class="fa fa-calendar"></i>-->
-  <!--</span>-->
-
-  <!--</div>-->
 
 </div>
 
@@ -55,12 +31,4 @@
     (selectedDate)="monthCalendar.updateDate($event)">
   </kal-datepicker-multi-view>
 
-  <!--<app-month-calendar-->
-  <!--[currentDate]="currentDate"-->
-  <!--(close)="deactivate()"-->
-  <!--(datePicked)="setDateControlValue($event)"-->
-  <!--[min]="min"-->
-  <!--[max]="max"-->
-  <!--&gt;-->
-  <!--</app-month-calendar>-->
 </ng-template>

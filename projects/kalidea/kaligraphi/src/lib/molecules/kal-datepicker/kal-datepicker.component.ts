@@ -1,26 +1,14 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  ElementRef, forwardRef,
-  Inject,
-  Input,
-  OnDestroy,
-  OnInit,
-  Optional,
-  ViewChild,
-  ViewEncapsulation
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { ESCAPE } from '@angular/cdk/keycodes';
-import { FormControl } from '@angular/forms';
+import { FormControl, NgControl } from '@angular/forms';
 import { filter, map, tap } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { coerceKalDateProperty, KalDate, KalDateType } from './kal-date';
 import { KalMonthCalendarComponent } from './kal-month-calendar/kal-month-calendar.component';
 import { KalDatepickerHeaderComponent } from './kal-datepicker-header/kal-datepicker-header.component';
 import { buildProviders, FormElementComponent } from '../../utils';
-import { KalDatepickerModuleConfig } from '../../kaligraphi.module';
 
 /**
  * Possible views for the calendar.
@@ -38,63 +26,50 @@ export type KalCalendarView = 'month' | 'multi';
 export class KalDatepickerComponent extends FormElementComponent<KalDate> implements OnInit, OnDestroy {
 
   /**
-   * reference to calendar
+   * Reference to calendar template.
    */
   @ViewChild('datepickerCalendar') datepickerCalendar: TemplatePortal<any>;
 
   /**
-   * reference to container
-   */
-  @ViewChild('datepickerContainer') datepickerContainer: ElementRef;
-
-  /**
-   * Reference to `KalMonthCalendarComponent`
+   * Reference to `KalMonthCalendarComponent`.
    */
   @ViewChild(KalMonthCalendarComponent) monthCalendar: KalMonthCalendarComponent;
 
   /**
-   * Reference to `KalDatepickerHeaderComponent`
+   * Reference to `KalDatepickerHeaderComponent`.
    */
   @ViewChild(KalDatepickerHeaderComponent) datePickerHeader: KalDatepickerHeaderComponent;
 
   /**
-   * Whether the calendar is in month view
+   * Whether the calendar is in month view.
    */
   currentView: KalCalendarView = 'month';
+
   control = new FormControl();
+
+  /**
+   * Current displayed date.
+   */
   currentDate: KalDate;
-  private minDate: KalDate;
-  private maxDate: KalDate;
+
+  /**
+   * Subscription to `overlayRef.backdropClick()`.
+   */
   private backdropClickSubscription = Subscription.EMPTY;
+
+  /**
+   * Subscription to `overlayRef.keydownEvents()` with `ESC` key.
+   */
   private escapeKeySubscription = Subscription.EMPTY;
 
   /**
-   * Overlay Reference
+   * Overlay reference.
    */
   private overlayRef: OverlayRef;
 
   constructor(private overlay: Overlay,
-              @Optional() @Inject('testConfig') private config: KalDatepickerModuleConfig) {
+              private injector: Injector) {
     super();
-    console.log('datepicker config test', config);
-  }
-
-  @Input()
-  get max(): KalDate {
-    return this.maxDate;
-  }
-
-  set max(date: KalDate) {
-    this.maxDate = coerceKalDateProperty(date);
-  }
-
-  @Input()
-  get min(): KalDate {
-    return this.minDate;
-  }
-
-  set min(date: KalDate) {
-    this.minDate = coerceKalDateProperty(date);
   }
 
   /**
@@ -113,6 +88,11 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     return this.currentView === 'multi';
   }
 
+  get parentControlValidator() {
+    const parentControl = this.injector.get(NgControl, null);
+    return parentControl.control.validator;
+  }
+
   /**
    * Switch between views to display.
    */
@@ -125,7 +105,9 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   }
 
   open() {
-    this.overlayRef.attach(this.datepickerCalendar);
+    if (!this.overlayRef.hasAttached()) {
+      this.overlayRef.attach(this.datepickerCalendar);
+    }
   }
 
   close() {
@@ -136,16 +118,18 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     this.currentView = 'month';
   }
 
+  /**
+   * Update the input value with the given date.
+   */
   setInputValue(date: KalDate): void {
     const isDateValid = (date && date.valid) ? date : '';
-    this.control.setValue(isDateValid ? date.toString() : '', {emitEvent: false, onlySelf: true});
-    super.notifyUpdate(isDateValid ? date : null);
+    this.control.setValue(isDateValid ? date.toString() : '', {emitEvent: false});
   }
 
   /**
    * Update the view according to `$event` parameter.
    * If we receive a `null` value it means that we're currently displaying the `multi` view and
-   * we want to display the `month` view.
+   * we wants to display the `month` view.
    */
   updateView($event: number | null): void {
     if ($event === null) {
@@ -159,17 +143,21 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
    * @inheritDoc
    */
   writeValue(value: KalDateType) {
+
+    // transform given value as date
     value = coerceKalDateProperty(value);
+
     super.writeValue(value);
+
+    // display the given date in our input
     this.setInputValue(value);
+
+    // store the date
     this.currentDate = value;
   }
 
   ngOnInit() {
-    this.overlayRef = this.overlay.create({
-      hasBackdrop: true,
-      backdropClass: 'cdk-overlay-backdrop'
-    });
+    this.overlayRef = this.overlay.create();
 
     this.backdropClickSubscription = this.overlayRef.backdropClick().subscribe(() => {
       this.close();
@@ -181,24 +169,19 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
       )
       .subscribe(() => this.close());
 
+    this.control.valueChanges.pipe(
+      map(value => coerceKalDateProperty(value)), // transform as date
+      map(date => date.valid ? date : null), // remove invalid date
+      tap((date: KalDate) => {
+        // notify parent for validation
+        super.notifyUpdate(date);
 
-    this.control.valueChanges
-      .pipe(
-        map(value => coerceKalDateProperty(value)), // transform as date
-//         map(date => date.valid ? date : null), // remove invalid date
-        tap((date: KalDate) => {
-          console.log(date);
-//           this.setInputValue(date); // update user input
-// console.log(date);
-//           // notify parent for validation
-//           super.notifyUpdate(date);
-//
-//           // emit value
-//           this.valueChange.emit(date);
-//
-        })
-      )
-      .subscribe();
+        // emit value
+        this.valueChange.emit(date);
+
+        this.currentDate = date;
+      })
+    ).subscribe();
   }
 
   ngOnDestroy(): void {
