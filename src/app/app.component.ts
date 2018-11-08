@@ -22,5 +22,6 @@ export class AppComponent {
     {label: 'Stepper', route: '/molecules/stepper'},
     {label: 'Accordion', route: '/molecules/accordion'},
     {label: 'Menu', route: '/molecules/menu'},
+    {label: 'Datepicker', route: '/molecules/datepicker'},
   ];
 }
