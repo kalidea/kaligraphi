@@ -101,7 +101,8 @@
   kal-checkbox [type="checkbox"]:checked:active ~ div,
   kal-checkbox [type="checkbox"]:not(:checked):active ~ div
     background-color: get("palettes.grey.wf200", $kal-parameters)
-  kal-checkbox.-large
+  // Variante taille
+  kal-checkbox.kal-checkbox--large
     label
       font-size: 24px
       padding-left: 51px
@@ -122,7 +123,8 @@
       height: 10px
       top: 7px
       left: 7px
-  kal-checkbox.-reverse
+  // Variante couleur
+  kal-checkbox.kal-checkbox--reverse
     label
       color: get("palettes.white", $kal-parameters)
     [type="checkbox"]:checked + label:before,
@@ -134,8 +136,8 @@
   kal-checkbox.-reverse.ng-invalid
     [type="checkbox"]:checked + label:before,
     [type="checkbox"]:not(:checked) + label:before
-      border-color: get("palettes.grey.wf400", $kal-parameters)
+      border-color: get("palettes.grey.wf500", $kal-parameters)
       background-color: get("palettes.grey.wf700", $kal-parameters)
     [type="checkbox"]:not(:checked) + label:after,
     [type="checkbox"]:checked + label:after
-      background-color: get("palettes.grey.wf400", $kal-parameters)
+      background-color: get("palettes.grey.wf500", $kal-parameters)
