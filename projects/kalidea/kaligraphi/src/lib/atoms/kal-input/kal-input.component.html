@@ -1,18 +1,28 @@
-
 <div>
+
   <input
     [title]="label"
     [type]="htmlInputType"
     [name]="name"
     [attr.placeholder]="placeholder"
     [formControl]="control">
-  <kal-icon name="clear" *ngIf="clearable" (click)="clearField()"></kal-icon>
-  <kal-icon [name]="icon" *ngIf="icon && !clearable" (click)="customIconClicked()"></kal-icon>
+
+  <kal-icon *ngIf="clearable"
+            (click)="clearField()">
+    clear
+  </kal-icon>
+
+  <kal-icon *ngIf="icon && !clearable"
+            (click)="customIconClicked()">
+    {{ icon }}
+  </kal-icon>
+
 </div>
 
 <ng-container *ngIf="limit">
+
   <div class="counter">
     {{ value?.length || 0}} / {{ limit }}
   </div>
-</ng-container>
 
+</ng-container>

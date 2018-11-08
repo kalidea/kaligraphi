@@ -148,7 +148,6 @@ describe('KalInputComponent', () => {
     component.value = userInput;
   }));
 
-
   it('should add an icon to clear field', () => {
     const text = 'abcdefgh';
     component.inputComponent.clearable = true;

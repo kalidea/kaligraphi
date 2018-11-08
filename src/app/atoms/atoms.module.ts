@@ -29,7 +29,7 @@ import { SliderComponent } from 'src/app/atoms/slider/slider.component';
     IconComponent,
     RaterComponent,
     ProgressBarComponent,
-    SliderComponent,
+    SliderComponent
   ]
 })
 export class AtomsModule { }

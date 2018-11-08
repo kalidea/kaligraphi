@@ -95,7 +95,6 @@ describe('TestSelectComponent', () => {
 
     it('should reset active item on close', () => {
       component.select.select('Option 2');
-      console.log(component.select.selected);
       component.select.open();
 
       expect((component.select.selected as KalOptionComponent).isHighlighted).toBeTruthy();

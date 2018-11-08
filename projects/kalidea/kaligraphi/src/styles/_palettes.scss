@@ -1,0 +1,67 @@
+// gray
+$kal-palette-grey: (
+  wf800: #1F1F1F,
+  wf700: #3D3D3D,
+  wf600: #5C5C5C,
+  wf500: #7A7A7A,
+  wf300: #B8B8B8,
+  wf200: #D6D6D6,
+  wf100: #F5F5F5,
+);
+
+// yellow
+$kal-palette-yellow: (
+  darker: darken(#E2C135, 50%),
+  dark: darken(#E2C135, 25%),
+  normal: #E2C135,
+  light: lighten(#E2C135, 25%),
+  lighter: lighten(#E2C135, 50%)
+);
+
+// orange
+$kal-palette-orange: (
+  darker: darken(#E89536, 45%),
+  dark: darken(#E89536, 25%),
+  normal: #E89536,
+  light: lighten(#E89536, 25%),
+  lighter: #lighten(#E89536, 45%)
+);
+
+// red
+$kal-palette-red: (
+  darker: darken(#D45F3C, 45%),
+  dark: darken(#D45F3C, 25%),
+  normal: #D45F3C,
+  light: lighten(#D45F3C, 25%),
+  lighter: lighten(#D45F3C, 45%)
+);
+
+// blue
+$kal-palette-blue: (
+  darker: darken(#21C0D9, 45%),
+  dark: darken(#21C0D9, 25%),
+  normal: #21C0D9,
+  light: lighten(#21C0D9, 25%),
+  lighter: lighten(#21C0D9, 45%)
+);
+
+// green
+$kal-palette-green: (
+  darker: darken(#1FD29D, 45%),
+  dark: darken(#1FD29D, 25%),
+  normal: #1FD29D,
+  light: lighten(#1FD29D, 25%),
+  lighter: lighten(#1FD29D, 45%)
+);
+
+// global palettes
+$kal-palettes: (
+  'black': #000000,
+  'white': #ffffff,
+  'grey': $kal-palette-grey,
+  'yellow': $kal-palette-yellow,
+  'orange': $kal-palette-orange,
+  'red': $kal-palette-red,
+  'blue': $kal-palette-blue,
+  'green': $kal-palette-green
+);

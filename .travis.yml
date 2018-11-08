@@ -25,27 +25,29 @@ jobs:
         - npm run build
         - npm run build:playground -- --base-href https://kalidea.github.io/kaligraphi/
       deploy:
-        - provider: pages
-          skip-cleanup: true
-          github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
-          keep-history: true
-          verbose: true
-          local-dir: dist/playground/
-          on:
-            tags: true
-
-        - provider: npm
-          before_deploy:
-          - cd dist/kalidea/kaligraphi
-          email: $NPM_EMAIL
-          api_key: $NPM_TOKEN
-          skip_cleanup: true
-          on:
-            tags: true
+        provider: pages
+        skip-cleanup: true
+        github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+        keep-history: true
+        verbose: true
+        local-dir: dist/playground/
+        on:
+          tags: true
 
     #DEPLOY TO NPM
-    - stage: deploy_npm
+    - stage: "Deploy"
+      name: "Publish library to npm registry"
       if: tag IS present
       script:
         - echo "Deploying to npm ..."
         - npm run build
+      before_deploy:
+        - cp README.md dist/kalidea/kaligraphi/
+        - cd dist/kalidea/kaligraphi
+      deploy:
+        provider: npm
+        email: $NPM_EMAIL
+        api_key: $NPM_TOKEN
+        skip_cleanup: true
+        on:
+          tags: true
