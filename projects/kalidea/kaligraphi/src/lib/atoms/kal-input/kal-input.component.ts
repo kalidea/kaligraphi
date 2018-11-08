@@ -132,7 +132,7 @@ export class KalInputComponent extends FormElementComponent<string> implements O
 
   ngOnInit() {
 
-    this.ngControl = this.injector.get(NgControl);
+    this.ngControl = this.injector.get(NgControl, null);
     this.control = new FormControl(this.value, {updateOn: this.updateOnEvent});
 
     const subscription = this.control.valueChanges.subscribe(value => {

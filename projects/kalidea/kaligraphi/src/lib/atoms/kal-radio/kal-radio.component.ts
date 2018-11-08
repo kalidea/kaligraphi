@@ -197,7 +197,7 @@ export class KalRadioGroupComponent extends FormElementComponent<any> implements
   }
 
   ngOnInit(): void {
-    this.ngControl = this.injector.get(NgControl);
+    this.ngControl = this.injector.get(NgControl, null);
   }
 
 }
