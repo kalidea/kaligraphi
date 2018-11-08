@@ -1,33 +1,29 @@
 
-=kal-checkbox($parameters)
-  kal-checkbox
+=kal-radio($parameters)
+  kal-radio
     position: relative
     display: block
     padding: 7px
     // on  cache input
-    [type="radio"]:not(:checked),
-    [type="radio"]:checked
+    [type="radio"]
       position: absolute
       left: -9999px
     // on revoit le label
-    [type="radio"]:not(:checked) + label,
-    [type="radio"]:checked + label
+    [type="radio"] + label
       position: relative  // permet de positionner les pseudo-éléments
       padding-left: 37px  // fait un peu d'espace pour notre case à venir
-      cursor: pointer     // affiche un curseur adapté
       display: flex
       flex-flow: row wrap
       align-items: center
     // cas du label vide
-    [type="radio"]:not(:checked) + label:empty,
-    [type="radio"]:checked + label:empty
+    [type="radio"] + label:empty
       display: inline-flex
       width: 18px
       height: 18px
       padding-left: 0
+
     // le before represente la case
-    // Aspect before si "non coché"
-    [type="radio"]:not(:checked) + label:before
+    [type="radio"] + label:before
       content: ''
       position: absolute
       top: 0
@@ -35,22 +31,14 @@
       width: 18px
       height: 18px /* dim. de la case */
       border: 1px solid get("palettes.grey.wf300", $kal-parameters)
-      border-radius: 3px
+      border-radius: 50%
       background-color: get("palettes.grey.wf100", $kal-parameters)
     // Aspect before si"coché"
     [type="radio"]:checked + label:before
-      content: ''
-      position: absolute
-      left: 0
-      top: 0
-      width: 18px
-      height: 18px /* dim. de la case */
-      border: 1px solid get("palettes.grey.wf300", $kal-parameters)
-      border-radius: 3px
       background-color: get("palettes.white", $kal-parameters)
+
     // le after represente la coche
-    [type="radio"]:not(:checked) + label:after,
-    [type="radio"]:checked + label:after
+    [type="radio"] + label:after
       content: ''
       position: absolute
       top: 5px
@@ -62,29 +50,28 @@
       width: 8px
       height: 8px
       background-color: get("palettes.black", $kal-parameters)
-      border-radius: 3px
+      border-radius: 50%
       transition: all .2s // on prévoit une animation
-    // Aspect after si "non cochée"
-    [type="radio"]:not(:checked) + label:after
       opacity: 0 /* coche invisible */
       transform: scale(0) // mise à l'échelle à 0
-    /// Aspect after si "cochée"
+
+    // Aspect after si "cochée"
     [type="radio"]:checked + label:after
       opacity: 1 // coche opaque
       transform: scale(1) //mise à l'échelle 1:1
-  kal-checkbox:disabled,
-  kal-checkbox.ng-invalid
+
     // Aspect after si "disabled"
-    [type="radio"]:checked + label:after,
-    [type="radio"]:not(:checked) + label:after
+    [type="radio"]:disabled + label:after
       background-color: get("palettes.grey.wf500", $kal-parameters)
     // Aspect label si "disabled"
-    [type="radio"] + label
+    [type="radio"]:disabled + label
       color: get("palettes.grey.wf500", $kal-parameters)
       cursor: not-allowed
-  kal-checkbox label
+  kal-radio label
     font-size: 18px
-  kal-checkbox div
+
+  //Surbrillance du radio au survol
+  kal-radio div
     display: inline-block
     position: absolute
     z-index: -1
@@ -94,50 +81,43 @@
     width: 32px
     border-radius: 50%
     background-color: transparent
-  kal-checkbox:hover div
+  kal-radio:hover div
     background-color: get("palettes.grey.wf100", $kal-parameters)
-  kal-checkbox [type="radio"]:checked:focus ~ div,
-  kal-checkbox [type="radio"]:not(:checked):focus ~ div,
-  kal-checkbox [type="radio"]:checked:active ~ div,
-  kal-checkbox [type="radio"]:not(:checked):active ~ div
+  kal-radio [type="radio"]:focus ~ div,
+  kal-radio [type="radio"]:active ~ div
     background-color: get("palettes.grey.wf200", $kal-parameters)
+
   // Variante taille
-  kal-checkbox.kal-checkbox--large
+  kal-radio.kal-radio--large
     label
       font-size: 24px
       padding-left: 51px
     div
       height: 38px
       width: 38px
-    [type="radio"]:not(:checked) + label:empty,
-    [type="radio"]:checked + label:empty
+    [type="radio"] + label:empty
       width: 24px
       height: 24px
-    [type="radio"]:checked + label:before,
-    [type="radio"]:not(:checked) + label:before
+    [type="radio"] + label:before
       width: 24px
       height: 24px
-    [type="radio"]:checked + label:after,
-    [type="radio"]:not(:checked) + label:after
+    [type="radio"] + label:after
       width: 10px
       height: 10px
       top: 7px
       left: 7px
+
   // Variante couleur
-  kal-checkbox.kal-checkbox--reverse
+  kal-radio.kal-radio--reverse
     label
       color: get("palettes.white", $kal-parameters)
-    [type="radio"]:checked + label:before,
-    [type="radio"]:not(:checked) + label:before
+    [type="radio"] + label:before
       background-color: get("palettes.grey.wf800", $kal-parameters)
-    [type="radio"]:not(:checked) + label:after,
-    [type="radio"]:checked + label:after
+    [type="radio"] + label:after
       background-color: get("palettes.white", $kal-parameters)
-  kal-checkbox.-reverse.ng-invalid
-    [type="radio"]:checked + label:before,
-    [type="radio"]:not(:checked) + label:before
+
+    [type="radio"]:disabled + label:before
       border-color: get("palettes.grey.wf500", $kal-parameters)
       background-color: get("palettes.grey.wf700", $kal-parameters)
-    [type="radio"]:not(:checked) + label:after,
-    [type="radio"]:checked + label:after
+    [type="radio"]:disabled + label:after
       background-color: get("palettes.grey.wf500", $kal-parameters)
