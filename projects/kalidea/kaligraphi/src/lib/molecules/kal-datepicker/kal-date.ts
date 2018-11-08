@@ -45,23 +45,26 @@ export class KalDate {
    * @param format Date format to provide if date is a `string`
    */
   private static getDate(rawDate: KalDateType, format = 'dd/MM/yyyy'): DateTime {
+    let date: DateTime;
 
     if (rawDate instanceof Date) {
-      return DateTime.fromJSDate(rawDate);
+      date = DateTime.fromJSDate(rawDate);
     } else if (isEmpty(rawDate)) {
-      return DateTime.invalid('empty date');
+      date = DateTime.invalid('empty date');
     } else if (isString(rawDate)) {
       if (!format) {
         throw new Error('You should provide a date format');
       }
 
-      return DateTime.fromFormat(rawDate as string, format);
+      date = DateTime.fromFormat(rawDate as string, format);
     } else if (rawDate.constructor.name === 'KalDate') {
-      return (rawDate as KalDate).getDate();
+      date = (rawDate as KalDate).getDate();
+    } else {
+      // else this is a luxon date
+      date = rawDate as DateTime;
     }
 
-    // else this is a luxon date
-    return rawDate as DateTime;
+    return date;
   }
 
   /**

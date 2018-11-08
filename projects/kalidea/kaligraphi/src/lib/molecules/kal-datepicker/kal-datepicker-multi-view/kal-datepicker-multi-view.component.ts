@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
 import { DateObjectUnits, DateTime, Info } from 'luxon';
-import { coerceKalDateProperty, KalDate } from '../kal-date';
+import { KalDate } from '../kal-date';
 
 @Component({
   selector: 'kal-datepicker-multi-view',
@@ -23,26 +23,7 @@ export class KalDatepickerMultiViewComponent {
    */
   @Output() selectedDate = new EventEmitter<DateObjectUnits>();
 
-  private displayedKalDate: KalDate;
-
-  constructor(private cdr: ChangeDetectorRef) {
-  }
-
-  @Input()
-  get displayedDate(): KalDate {
-    return this.displayedKalDate;
-  }
-
-  set displayedDate(date: KalDate) {
-    if (!date) {
-      date = new KalDate();
-    } else {
-      date = coerceKalDateProperty(date);
-    }
-
-    this.displayedKalDate = date;
-    this.cdr.markForCheck();
-  }
+  @Input() displayedDate: KalDate;
 
   /**
    * Years to display.

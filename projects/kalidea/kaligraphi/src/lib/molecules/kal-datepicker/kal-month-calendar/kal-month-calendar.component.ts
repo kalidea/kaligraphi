@@ -4,14 +4,13 @@ import {
   Component,
   EventEmitter,
   forwardRef,
-  Inject,
-  Input,
+  Inject, OnInit,
   Output,
   ViewEncapsulation
 } from '@angular/core';
 import { DateObjectUnits, Info } from 'luxon';
 import { KalDatepickerComponent } from '../kal-datepicker.component';
-import { coerceKalDateProperty, KalDate } from '../kal-date';
+import { KalDate } from '../kal-date';
 
 @Component({
   selector: 'kal-month-calendar',
@@ -20,7 +19,7 @@ import { coerceKalDateProperty, KalDate } from '../kal-date';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalMonthCalendarComponent {
+export class KalMonthCalendarComponent implements OnInit {
 
   /**
    * Returns an array of standalone narrowed weekdays.
@@ -33,40 +32,17 @@ export class KalMonthCalendarComponent {
    */
   @Output() readonly datePicked = new EventEmitter<KalDate>();
 
-  private displayedKalDate: KalDate;
+  displayedDate: KalDate;
 
   constructor(@Inject(forwardRef(() => KalDatepickerComponent)) public datepicker: KalDatepickerComponent,
               private cdr: ChangeDetectorRef) {
-  }
-
-  @Input()
-  get displayedDate(): KalDate {
-    return this.displayedKalDate;
-  }
-
-  set displayedDate(date: KalDate) {
-    if (!date) {
-      date = new KalDate();
-    } else {
-      date = coerceKalDateProperty(date);
-    }
-
-    this.displayedKalDate = date;
-    this.cdr.markForCheck();
   }
 
   /**
    * Getter to display dates of displayed month.
    */
   get datesList(): KalDate[] {
-    const displayedDate = this.displayedDate ? this.displayedDate.getDate() : null;
-
-    if (!displayedDate) {
-      return [];
-    }
-
-    const startMonth = displayedDate.startOf('month');
-
+    const startMonth = this.displayedDate.getDate().startOf('month');
     const datesList: KalDate[] = [];
 
     // create an array with all days in selected date month
@@ -82,6 +58,7 @@ export class KalMonthCalendarComponent {
    */
   updateMonth(amount: number) {
     this.displayedDate = this.displayedDate.add({months: amount});
+    this.cdr.markForCheck();
   }
 
   /**
@@ -111,7 +88,13 @@ export class KalMonthCalendarComponent {
    * Whether the day in the given date is the displayed day.
    */
   isDaySelected(date: KalDate): boolean {
-    return this.displayedDate.getDay() === date.getDay();
+    return this.datepicker.currentDate.getDay() === date.getDay() &&
+      this.datepicker.currentDate.getMonth() === date.getMonth() &&
+      this.datepicker.currentDate.getYear() === date.getYear();
   }
 
+  ngOnInit(): void {
+    // avoid reference
+    this.displayedDate = new KalDate(this.datepicker.currentDate);
+  }
 }
