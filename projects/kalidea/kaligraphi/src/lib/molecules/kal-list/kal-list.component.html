@@ -2,10 +2,14 @@
 
   <div *ngFor="let item of results; index as i">
 
-    <div *ngIf="containsGroupByFunction(item, i)"
+    <div *ngIf="containsGroupByFunction(item, i); else separator"
          class="kal-list__group">
       <h2>{{ groupByFunction(item) }}</h2>
     </div>
+
+    <ng-template #separator>
+      <div class="kal-list__separate"></div>
+    </ng-template>
 
     <div kalListItemSelection
          class="kal-list__item"
@@ -21,7 +25,6 @@
       </span>
     </div>
 
-    <div class="kal-list__separate"></div>
 
   </div>
 
