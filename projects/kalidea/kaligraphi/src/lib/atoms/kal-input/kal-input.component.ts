@@ -6,6 +6,7 @@ import {
   Input,
   OnDestroy,
   OnInit,
+  Output,
   ViewEncapsulation
 } from '@angular/core';
 import { AbstractControl, FormControl } from '@angular/forms';
@@ -57,9 +58,9 @@ export class KalInputComponent extends FormElementComponent<string> implements O
 
   control: FormControl;
 
-  private controlChangedSubscription = Subscription.EMPTY;
+  @Output() readonly iconClicked = new EventEmitter();
 
-  private iconClicked = new EventEmitter();
+  private controlChangedSubscription = Subscription.EMPTY;
 
   /**
    * event to trigger change

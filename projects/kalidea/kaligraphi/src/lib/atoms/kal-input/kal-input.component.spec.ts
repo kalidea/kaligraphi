@@ -173,7 +173,7 @@ describe('KalInputComponent', () => {
   });
 
   it('should display a custom icon', () => {
-    const spy = spyOn(kalInputInstance, 'customIconClicked');
+    const spy = spyOn(kalInputInstance.iconClicked, 'emit');
 
     const icons = fixture.debugElement.queryAll(By.directive(KalIconComponent));
     expect(icons.length).toEqual(1);
@@ -195,5 +195,16 @@ describe('KalInputComponent', () => {
     icons[0].nativeElement.click();
 
     expect(spy).toHaveBeenCalled();
+  });
+
+  it('should not display a custom icon if no icon is provided', () => {
+    let icons = fixture.debugElement.queryAll(By.directive(KalIconComponent));
+    expect(icons.length).toEqual(1);
+
+    component.icon = null;
+    fixture.detectChanges();
+
+    icons = fixture.debugElement.queryAll(By.directive(KalIconComponent));
+    expect(icons.length).toEqual(0);
   });
 });
