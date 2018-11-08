@@ -2,20 +2,6 @@ import { forwardRef } from '@angular/core';
 import { AbstractControl, AsyncValidator, ControlValueAccessor, NG_ASYNC_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { of } from 'rxjs';
 
-export function buildProviders(type) {
-  return [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => type),
-      multi: true
-    },
-    {
-      provide: NG_ASYNC_VALIDATORS,
-      useExisting: forwardRef(() => type),
-      multi: true
-    }
-  ];
-}
 
 /**
  * How To use:

@@ -10,6 +10,7 @@ import { KalRaterModule } from './kal-rater/kal-rater.module';
 import { KalAccordionModule } from './kal-accordion/kal-accordion.module';
 import { KalMenuModule } from './kal-menu/kal-menu.module';
 import { KalListModule } from './kal-list/kal-list.module';
+import { KalFormFieldModule } from './kal-form-field/kal-form-field.module';
 
 export * from './kal-textarea/kal-textarea.module';
 export * from './kal-select/kal-select.module';
@@ -20,6 +21,7 @@ export * from './kal-rater/kal-rater.module';
 export * from './kal-accordion/kal-accordion.module';
 export * from './kal-menu/kal-menu.module';
 export * from './kal-list/kal-list.module';
+export * from './kal-form-field/kal-form-field.module';
 
 const exports = [
   KalTextareaModule,
@@ -30,7 +32,8 @@ const exports = [
   KalRaterModule,
   KalAccordionModule,
   KalMenuModule,
-  KalListModule
+  KalListModule,
+  KalFormFieldModule
 ];
 
 @NgModule({

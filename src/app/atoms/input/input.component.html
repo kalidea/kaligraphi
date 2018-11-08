@@ -8,22 +8,21 @@
   [placeholder]="placeholder"></kal-input>
 <hr />
 
-<label>
-  Type
-  <select [(ngModel)]="type">
-    <option value="text">text</option>
-    <option value="password">password</option>
-    <option value="number">number</option>
-    <option value="currency">currency</option>
-    <option value="phone">phone</option>
-    <option value="text">text</option>
-  </select>
-</label>
 
-<label>
-  Placeholder
-  <input [(ngModel)]="placeholder">
-</label>
+<kal-form-field>
+  <kal-select [(ngModel)]="type" label="Type">
+    <kal-option value="text">text</kal-option>
+    <kal-option value="password">password</kal-option>
+    <kal-option value="number">number</kal-option>
+    <kal-option value="currency">currency</kal-option>
+    <kal-option value="phone">phone</kal-option>
+    <kal-option value="text">text</kal-option>
+  </kal-select>
+</kal-form-field>
+
+<kal-form-field>
+  <kal-input [(ngModel)]="placeholder" label="Placeholder"></kal-input>
+</kal-form-field>
 
 <label>
   Clearable

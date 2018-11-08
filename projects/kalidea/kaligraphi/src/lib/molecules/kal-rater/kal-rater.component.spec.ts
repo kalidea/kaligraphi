@@ -2,8 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { KalRaterComponent } from './kal-rater.component';
-import { KalIconComponent, KalIconModule } from 'projects/kalidea/kaligraphi/src/lib/atoms/kal-icon/kal-icon.module';
-import { FormControlAccessComponent } from 'projects/kalidea/kaligraphi/src/lib/utils';
+import { KalIconComponent, KalIconModule } from '../../atoms/kal-icon/kal-icon.module';
+import { FormControlAccessComponent } from '../../utils/index';
 
 describe('KalRaterComponent', () => {
   let component: KalRaterComponent;

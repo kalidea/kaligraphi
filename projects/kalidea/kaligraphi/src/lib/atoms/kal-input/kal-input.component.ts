@@ -1,24 +1,24 @@
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component,
-  EventEmitter,
+  Component, EventEmitter,
+  Injector,
   Input,
   OnDestroy,
-  OnInit,
-  Output,
+  OnInit, Output,
   ViewEncapsulation
 } from '@angular/core';
-import { AbstractControl, FormControl } from '@angular/forms';
+import { AbstractControl, FormControl, NgControl } from '@angular/forms';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { of, Subscription } from 'rxjs';
 
-import { buildProviders, FormElementComponent } from '../../utils/index';
 import { InputFormater } from './format/input-formater';
 import { NumberFormat } from './format/number.format';
 import { CurrencyFormat } from './format/currency.format';
 import { PhoneFormat } from './format/phone.format';
 import { StringFormat } from './format/string.format';
+
+import { buildProviders, FormElementComponent } from '../../utils/index';
 
 @Component({
   selector: 'kal-input',
@@ -69,7 +69,7 @@ export class KalInputComponent extends FormElementComponent<string> implements O
 
   private isClearable = false;
 
-  constructor(private cdr: ChangeDetectorRef) {
+  constructor(private cdr: ChangeDetectorRef, private injector: Injector) {
     super();
   }
 
@@ -143,6 +143,7 @@ export class KalInputComponent extends FormElementComponent<string> implements O
   }
 
   ngOnInit() {
+    this.ngControl = this.injector.get(NgControl, null);
     this.control = new FormControl(this.value, {updateOn: this.updateOnEvent});
 
     this.controlChangedSubscription = this.control.valueChanges.subscribe(value => {
