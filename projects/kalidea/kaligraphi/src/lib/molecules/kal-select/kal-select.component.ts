@@ -5,7 +5,7 @@ import {
   Component,
   ContentChildren,
   ElementRef,
-  HostListener,
+  HostListener, Injector,
   Input,
   OnDestroy,
   OnInit,
@@ -21,6 +21,7 @@ import { DOWN_ARROW, ENTER, ESCAPE, SPACE, UP_ARROW } from '@angular/cdk/keycode
 import { filter } from 'rxjs/operators';
 import { buildProviders, FormElementComponent } from '../../utils';
 import { KalOptionComponent } from '../../atoms/kal-option/kal-option.component';
+import { NgControl } from '@angular/forms';
 
 @Component({
   selector: 'kal-select',
@@ -76,7 +77,8 @@ export class KalSelectComponent
 
   constructor(private overlay: Overlay,
               private elementRef: ElementRef<HTMLElement>,
-              private cdr: ChangeDetectorRef) {
+              private cdr: ChangeDetectorRef,
+              private injector: Injector) {
     super();
   }
 
@@ -322,6 +324,9 @@ export class KalSelectComponent
   }
 
   ngOnInit() {
+
+    this.ngControl = this.injector.get(NgControl, null);
+
     this.selection = [];
 
     this.overlayRef = this.overlay.create({

@@ -1,4 +1,15 @@
-import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core';
+import {
+  AfterContentInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ContentChild,
+  Input,
+  ViewEncapsulation
+} from '@angular/core';
+import { AbstractControl, FormControl, NgControl } from '@angular/forms';
+
+import { FormElementComponent } from '../../utils';
 
 @Component({
   selector: 'kal-form-field',
@@ -7,26 +18,48 @@ import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@a
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalFormFieldComponent {
+export class KalFormFieldComponent implements AfterContentInit {
 
   /**
    * Does the field has an error
    */
-  @Input() hasError = false;
+  hasError = false;
 
   /**
    * Label of the field
    */
-  @Input() label: string;
+  label: string;
 
   /**
    * Is the field required
    */
-  @Input() required = false;
+  required = false;
 
   /**
    * For attribute
    */
-  @Input() for: string;
+  for: string;
+
+  @Input() control: AbstractControl;
+
+  @ContentChild(FormElementComponent) formElement: FormElementComponent;
+
+  constructor(private cdr: ChangeDetectorRef) {
+  }
+
+  ngAfterContentInit(): void {
+    this.hasError = false;
+    this.label = this.formElement.label;
+    this.required = this.formElement.required;
+    this.for = this.formElement.id;
+    this.hasError = this.formElement.hasError;
+
+
+    this.formElement.statusChange.subscribe(data => {
+      console.log(data);
+      this.hasError = this.formElement.hasError;
+      this.cdr.markForCheck();
+    });
+  }
 
 }
