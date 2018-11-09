@@ -4,6 +4,7 @@
     position: relative
     display: inline-block
     padding: 7px
+    z-index: 2
     // on  cache input
     [type="radio"]
       position: absolute
@@ -17,53 +18,53 @@
       padding-left: 37px
       font-size: 18px
       cursor: pointer
-    // cas du label à gauche
-    &.kal-radio__label--before
-      padding-right: 37px
-      padding-left: 0
-      + div
+      // cas du label à gauche
+      &.kal-radio__label--before
+        padding-right: 37px
+        padding-left: 0
+        + div
           right: 0
           left: auto
-    &.kal-radio__label--before::before
-      right: 0
-      left: auto
-    &.kal-radio__label--before::after
-      right: 5px
-      left: auto
-    // cas du label vide
-    &:empty
-      display: inline-flex
-      width: 18px
-      height: 18px
-      padding-left: 0
-    // le before represente la case
-    &::before
-      content: ''
-      position: absolute
-      top: 0
-      left: 0
-      width: 18px
-      height: 18px /* dim. de la case */
-      border: 1px solid get("palettes.grey.wf300", $kal-parameters)
-      border-radius: 50%
-      background-color: get("palettes.grey.wf100", $kal-parameters)
-    // le after represente la coche
-    &::after
-      content: ''
-      position: absolute
-      top: 5px
-      left: 5px
-      display: flex
-      flex-flow: row wrap
-      justify-content: center
-      align-items: center
-      width: 8px
-      height: 8px
-      background-color: get("palettes.black", $kal-parameters)
-      border-radius: 50%
-      transition: all .2s
-      opacity: 0
-      transform: scale(0)
+      &.kal-radio__label--before::before
+        right: 0
+        left: auto
+      &.kal-radio__label--before::after
+        right: 5px
+        left: auto
+      // cas du label vide
+      &:empty
+        display: inline-flex
+        width: 18px
+        height: 18px
+        padding-left: 0
+      // le before represente la case
+      &::before
+        content: ''
+        position: absolute
+        top: 0
+        left: 0
+        width: 18px
+        height: 18px /* dim. de la case */
+        border: 1px solid get("palettes.grey.wf300", $kal-parameters)
+        border-radius: 50%
+        background-color: get("palettes.grey.wf100", $kal-parameters)
+      // le after represente la coche
+      &::after
+        content: ''
+        position: absolute
+        top: 5px
+        left: 5px
+        display: flex
+        flex-flow: row wrap
+        justify-content: center
+        align-items: center
+        width: 8px
+        height: 8px
+        background-color: get("palettes.black", $kal-parameters)
+        border-radius: 50%
+        transition: all .2s
+        opacity: 0
+        transform: scale(0)
     // Aspect after before si"coché"
     [type="radio"]:checked + label
       &::before
@@ -117,15 +118,26 @@
     &.kal-radio--reverse
       label
         color: get("palettes.white", $kal-parameters)
-      [type="radio"] + label
+      [type="radio"]:checked + label
         &::before
-          background-color: get("palettes.grey.wf800", $kal-parameters)
-        &::after
           background-color: get("palettes.white", $kal-parameters)
-      // Cas disabled
-      [type="radio"]:disabled + label
-        &::before
-          border-color: get("palettes.grey.wf500", $kal-parameters)
-          background-color: get("palettes.grey.wf700", $kal-parameters)
+          border-color: get("palettes.white", $kal-parameters)
         &::after
+          background-color: get("palettes.grey.wf800", $kal-parameters)
+      [type="radio"]:not(:checked) + label
+        &::before
           background-color: get("palettes.grey.wf500", $kal-parameters)
+          border-color: get("palettes.grey.wf500", $kal-parameters)
+
+      // Cas disabled
+      [type="radio"]:checked:disabled + label
+        &::before
+          border-color: get("palettes.grey.wf300", $kal-parameters)
+          background-color: get("palettes.grey.wf300", $kal-parameters)
+        &::after
+          background-color: get("palettes.grey.wf600", $kal-parameters)
+      &:hover div
+        background-color: get("palettes.grey.wf700", $kal-parameters)
+      [type="radio"]:focus ~ div,
+      [type="radio"]:active ~ div
+        background-color: get("palettes.grey.wf600", $kal-parameters)
