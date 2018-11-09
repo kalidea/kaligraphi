@@ -6,14 +6,20 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { KalInputModule } from '../../atoms/kal-input/kal-input.module';
 import { KalIconModule } from '../../atoms/kal-icon/kal-icon.module';
 
+// datepicker
 import { KalDatepickerComponent } from './kal-datepicker.component';
-import { KalDatepickerHeaderComponent } from './kal-datepicker-header/kal-datepicker-header.component';
-import { KalMonthCalendarComponent } from './kal-month-calendar/kal-month-calendar.component';
-import { KalDatepickerMultiViewComponent } from './kal-datepicker-multi-view/kal-datepicker-multi-view.component';
-
 export { KalDatepickerComponent } from './kal-datepicker.component';
+
+// datepicker header
+import { KalDatepickerHeaderComponent } from './kal-datepicker-header/kal-datepicker-header.component';
 export { KalDatepickerHeaderComponent } from './kal-datepicker-header/kal-datepicker-header.component';
+
+// datepicker : month calendar
+import { KalMonthCalendarComponent } from './kal-month-calendar/kal-month-calendar.component';
 export { KalMonthCalendarComponent } from './kal-month-calendar/kal-month-calendar.component';
+
+// datepicker : multi view
+import { KalDatepickerMultiViewComponent } from './kal-datepicker-multi-view/kal-datepicker-multi-view.component';
 export { KalDatepickerMultiViewComponent } from './kal-datepicker-multi-view/kal-datepicker-multi-view.component';
 
 const exports = [

@@ -114,7 +114,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     this.overlayRef.detach();
 
     // Set the current view to `month` because if the datepicker is
-    // closed then opened it will keep it's last view.
+    // closed then opened it will keep its last view.
     this.currentView = 'month';
   }
 
