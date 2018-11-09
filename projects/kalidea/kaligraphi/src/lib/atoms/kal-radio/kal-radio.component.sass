@@ -10,34 +10,34 @@
       left: -9999px
     // on revoit le label
     label
-      position: relative  // permet de positionner les pseudo-éléments
-      padding-left: 37px  // fait un peu d'espace pour notre case à venir
+      position: relative
       display: flex
       flex-flow: row wrap
       align-items: center
+      padding-left: 37px
       font-size: 18px
       cursor: pointer
-    label.kal-radio__label--before
+    // cas du label à gauche
+    &.kal-radio__label--before
       padding-right: 37px
       padding-left: 0
       + div
           right: 0
           left: auto
-    label.kal-radio__label--before:before
+    &.kal-radio__label--before::before
       right: 0
       left: auto
-    label.kal-radio__label--before:after
+    &.kal-radio__label--before::after
       right: 5px
       left: auto
     // cas du label vide
-    label:empty
+    &:empty
       display: inline-flex
       width: 18px
       height: 18px
       padding-left: 0
-
     // le before represente la case
-    label:before
+    &::before
       content: ''
       position: absolute
       top: 0
@@ -47,12 +47,8 @@
       border: 1px solid get("palettes.grey.wf300", $kal-parameters)
       border-radius: 50%
       background-color: get("palettes.grey.wf100", $kal-parameters)
-    // Aspect before si"coché"
-    [type="radio"]:checked + label:before
-      background-color: get("palettes.white", $kal-parameters)
-
     // le after represente la coche
-    label:after
+    &::after
       content: ''
       position: absolute
       top: 5px
@@ -65,23 +61,22 @@
       height: 8px
       background-color: get("palettes.black", $kal-parameters)
       border-radius: 50%
-      transition: all .2s // on prévoit une animation
-      opacity: 0 /* coche invisible */
-      transform: scale(0) // mise à l'échelle à 0
-
-    // Aspect after si "cochée"
-    [type="radio"]:checked + label:after
-      opacity: 1 // coche opaque
-      transform: scale(1) //mise à l'échelle 1:1
-
+      transition: all .2s
+      opacity: 0
+      transform: scale(0)
+    // Aspect after before si"coché"
+    [type="radio"]:checked + label
+      &::before
+        background-color: get("palettes.white", $kal-parameters)
+      &::after
+        opacity: 1
+        transform: scale(1)
     // Aspect after si "disabled"
-    [type="radio"]:disabled + label:after
-      background-color: get("palettes.grey.wf500", $kal-parameters)
-    // Aspect label si "disabled"
     [type="radio"]:disabled + label
       color: get("palettes.grey.wf500", $kal-parameters)
       cursor: not-allowed
-
+      &::after
+        background-color: get("palettes.grey.wf500", $kal-parameters)
     //Surbrillance du radio au survol
     div
       display: inline-block
@@ -98,7 +93,6 @@
     [type="radio"]:focus ~ div,
     [type="radio"]:active ~ div
       background-color: get("palettes.grey.wf200", $kal-parameters)
-
     // Variante taille
     &.kal-radio--large
       label
@@ -107,28 +101,31 @@
       div
         height: 38px
         width: 38px
-      [type="radio"] + label:empty
-        width: 24px
-        height: 24px
-      [type="radio"] + label:before
-        width: 24px
-        height: 24px
-      [type="radio"] + label:after
-        width: 10px
-        height: 10px
-        top: 7px
-        left: 7px
+      [type="radio"] + label
+        &:empty
+          width: 24px
+          height: 24px
+        &::before
+          width: 24px
+          height: 24px
+        &::after
+          width: 10px
+          height: 10px
+          top: 7px
+          left: 7px
     // Variante couleur
     &.kal-radio--reverse
       label
         color: get("palettes.white", $kal-parameters)
-      [type="radio"] + label:before
-        background-color: get("palettes.grey.wf800", $kal-parameters)
-      [type="radio"] + label:after
-        background-color: get("palettes.white", $kal-parameters)
+      [type="radio"] + label
+        &::before
+          background-color: get("palettes.grey.wf800", $kal-parameters)
+        &::after
+          background-color: get("palettes.white", $kal-parameters)
       // Cas disabled
-      [type="radio"]:disabled + label:before
-        border-color: get("palettes.grey.wf500", $kal-parameters)
-        background-color: get("palettes.grey.wf700", $kal-parameters)
-      [type="radio"]:disabled + label:after
-        background-color: get("palettes.grey.wf500", $kal-parameters)
+      [type="radio"]:disabled + label
+        &::before
+          border-color: get("palettes.grey.wf500", $kal-parameters)
+          background-color: get("palettes.grey.wf700", $kal-parameters)
+        &::after
+          background-color: get("palettes.grey.wf500", $kal-parameters)
