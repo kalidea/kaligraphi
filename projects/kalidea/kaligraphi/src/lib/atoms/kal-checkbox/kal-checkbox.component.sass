@@ -1,5 +1,5 @@
 
-=kal-checkbox($parameters)
+=kal-checkbox($kal-parameters)
   kal-checkbox
     position: relative
     z-index: 2
@@ -31,7 +31,7 @@
         left: 0
         width: 18px
         height: 18px
-        border-radius: 3px
+        border-radius: get("form.border.radius", $kal-parameters)
         border: 1px solid get("palettes.grey.wf300", $kal-parameters)
       &::after
         content: ''
@@ -45,7 +45,7 @@
         width: 8px
         height: 8px
         background-color: get("palettes.black", $kal-parameters)
-        border-radius: 3px
+        border-radius: get("form.border.radius", $kal-parameters)
         transition: all .2s
     // Aspect before si "non coché"
     [type="checkbox"]:not(:checked) + label::before
