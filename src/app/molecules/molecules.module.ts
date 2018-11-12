@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { KaligraphiModule } from '@kalidea/kaligraphi';
 import { MoleculesRoutingModule } from 'src/app/molecules/molecules-routing.module';
 
@@ -10,13 +10,15 @@ import { AccordionComponent } from 'src/app/molecules/accordion/accordion.compon
 import { ListComponent } from 'src/app/molecules/list/list.component';
 import { MenuComponent } from 'src/app/molecules/menu/menu.component';
 import { FormFieldComponent } from 'src/app/molecules/form-field/form-field.component';
+import { DialogComponent } from 'src/app/molecules/dialog/dialog.component';
 
 @NgModule({
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    FormsModule,
     MoleculesRoutingModule,
-    KaligraphiModule
+    KaligraphiModule,
   ],
   declarations: [
     TabPanelComponent,
@@ -24,7 +26,9 @@ import { FormFieldComponent } from 'src/app/molecules/form-field/form-field.comp
     AccordionComponent,
     ListComponent,
     MenuComponent,
-    FormFieldComponent
-  ]
+    FormFieldComponent,
+    DialogComponent,
+
+  ],
 })
 export class MoleculesModule { }
