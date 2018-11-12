@@ -55,22 +55,7 @@ $kal-theme-button: (
     )
   ),
   'primary': (
-    'margin': 0 5px,
-    'padding': 6px 10px,
     'color': get("black", $kal-palettes),
-    'font-size': 15px,
-    'font-family': 'Asap',
-    'font-weight': bold,
-    'border': 1px solid get("white", $kal-palettes),
-    'border-radius': $base-border-radius,
-    'background-color': get("blue.normal", $kal-palettes),
-    'disabled': (
-      'color': get("grey.wf500", $kal-palettes),
-      'background-color': get("grey.wf200", $kal-palettes),
-    ),
-    'active': (
-      'background-color': get("orange.dark", $kal-palettes),
-    )
   )
 );
 
