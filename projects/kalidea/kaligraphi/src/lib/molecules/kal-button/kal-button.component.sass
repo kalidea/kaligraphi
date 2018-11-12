@@ -1,28 +1,33 @@
 
-=kal-button($kal-parameters)
-  kal-button
-    display: inline-block
+
+
+=kal-themed-button($theme-parameters)
     button
-      margin: 0 5px
-      padding: 6px 10px
-      cursor: pointer
+      margin: get('margin', $theme-parameters)
+      padding: get('padding', $theme-parameters)
 
-      font-family: get("text.font-family", $kal-parameters)
-      font-size: 14px
-      font-weight: bold
-      border: 1px solid get("palettes.grey.wf200", $kal-parameters)
-      border-radius: get("form.border.radius", $kal-parameters)
+      font-family: get('font-family', $theme-parameters)
+      font-size: get('font-size', $theme-parameters)
+      font-weight: get('font-weight', $theme-parameters)
+      border: get('border', $theme-parameters)
+      border-radius: get("border-radius", $theme-parameters)
 
-      color: get("palettes.white", $kal-parameters)
-      background-color: get("palettes.orange.normal", $kal-parameters)
-
+      color: get('color', $theme-parameters)
+      background-color: get('background-color', $theme-parameters)
 
       &[disabled]
-        color:  get("palettes.grey.wf500", $kal-parameters)
-        background-color: get("palettes.grey.wf200", $kal-parameters)
+        color: get('disabled.color', $theme-parameters)
+        background-color: get('disabled.background-color', $theme-parameters)
 
       &:not([disabled])
         &:hover, &:active
-          background-color: get("palettes.orange.dark", $kal-parameters)
+          background-color: get('active.background-color', $theme-parameters)
 
+=kal-button($kal-parameters)
+  kal-button
+    display: inline-block
 
+    +kal-themed-button(get('form.elements.button.default', $kal-parameters))
+
+    &.kal-theme-primary
+      +kal-themed-button(get('form.elements.button.primary', $kal-parameters))

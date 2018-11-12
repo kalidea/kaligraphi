@@ -1,5 +1,7 @@
 // colors
 @import "palettes";
+@import "functions/index";
+
 $kal-colors: (default: #1F1F1F, reverse: #FFF) !default;
 
 // fontfaces
@@ -33,6 +35,45 @@ $base-border-width: 1px !default;
 $base-border-style: solid !default;
 $base-border-color: $kal-base-font-color !default;
 
+$kal-theme-button: (
+  'default': (
+    'margin': 0 5px,
+    'padding': 6px 10px,
+    'color': get("white", $kal-palettes),
+    'font-size': 15px,
+    'font-family': 'Asap',
+    'font-weight': bold,
+    'border': 1px solid get("white", $kal-palettes),
+    'border-radius': $base-border-radius,
+    'background-color': get("orange.normal", $kal-palettes),
+    'disabled': (
+      'color': get("grey.wf500", $kal-palettes),
+      'background-color': get("grey.wf200", $kal-palettes),
+    ),
+    'active': (
+      'background-color': get("orange.dark", $kal-palettes),
+    )
+  ),
+  'primary': (
+    'margin': 0 5px,
+    'padding': 6px 10px,
+    'color': get("black", $kal-palettes),
+    'font-size': 15px,
+    'font-family': 'Asap',
+    'font-weight': bold,
+    'border': 1px solid get("white", $kal-palettes),
+    'border-radius': $base-border-radius,
+    'background-color': get("blue.normal", $kal-palettes),
+    'disabled': (
+      'color': get("grey.wf500", $kal-palettes),
+      'background-color': get("grey.wf200", $kal-palettes),
+    ),
+    'active': (
+      'background-color': get("orange.dark", $kal-palettes),
+    )
+  )
+);
+
 
 // global parameters
 $kal-parameters: (
@@ -40,6 +81,9 @@ $kal-parameters: (
   headings: $kal-headings,
   text: $kal-text,
   form: (
+    elements: (
+      'button': $kal-theme-button
+    ),
     padding: 12px,
     border: (
       width: $base-border-width,
