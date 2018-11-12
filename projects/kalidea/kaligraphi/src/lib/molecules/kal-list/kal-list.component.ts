@@ -20,6 +20,7 @@ import { Observable, Subscription } from 'rxjs';
 import { KalListItemDirective } from './kal-list-item.directive';
 import { KalListItemSelectionDirective } from './kal-list-item-selection.directive';
 import { CollectionViewer, DataSource, ListRange } from '@angular/cdk/collections';
+import { AutoUnsubscribe } from '../../utils';
 
 @Component({
   selector: 'kal-list',
@@ -85,7 +86,8 @@ export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewI
   /**
    * The subscription
    */
-  private subscription: Subscription;
+  @AutoUnsubscribe()
+  private subscription: Subscription = Subscription.EMPTY;
 
   /**
    * Is the row disabled
@@ -230,8 +232,8 @@ export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewI
   }
 
   ngOnDestroy() {
-    if (this.dataSource instanceof DataSource) {
-      this.dataSource.disconnect(this);
+    if ((this.dataSource as DataSource<T>).connect instanceof Function) {
+      (this.dataSource as DataSource<T>).disconnect(this);
     }
   }
 }
