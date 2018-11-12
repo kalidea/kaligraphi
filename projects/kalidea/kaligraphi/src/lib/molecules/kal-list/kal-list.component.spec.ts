@@ -10,7 +10,7 @@ import { KalIconModule } from '../../atoms/kal-icon/kal-icon.module';
 
 @Component({
   template: `
-    <kal-list [datasource]="datasource"
+    <kal-list [dataSource]="dataSource"
               [groupByFunction]="groupByFunction"
               [disableRowsFunction]="disableRowsFunction"
               (selectionChange)="selectRow($event)">
@@ -24,7 +24,7 @@ import { KalIconModule } from '../../atoms/kal-icon/kal-icon.module';
 })
 class TestListItemComponent {
 
-  datasource = new TestDataSource();
+  dataSource = new TestDataSource();
 
   groupByFunction = null;
 
@@ -65,7 +65,7 @@ class TestDataSource implements DataSource<{ code: string, name: string }> {
 
 @Component({
   template: `
-    <kal-list [listObservable]="listObservable"
+    <kal-list [dataSource]="dataSource"
               (selectionChange)="selectRow($event)">
 
       <ng-template kalListItem let-item="item">
@@ -77,7 +77,7 @@ class TestDataSource implements DataSource<{ code: string, name: string }> {
 })
 class TestListItemWithObservableComponent {
 
-  listObservable = of([
+  dataSource = of([
     {
       code: '1',
       name: 'Item 1',
@@ -160,22 +160,22 @@ describe('TestListItemComponent', () => {
 
     listItems[0].nativeElement.click();
 
-    expect(listInstances.isSelected(component.datasource.listItem[0])).toBeTruthy();
-    expect(listInstances.selectionChange.emit).toHaveBeenCalledWith(component.datasource.listItem[0]);
+    expect(listInstances.isSelected(component.dataSource.listItem[0])).toBeTruthy();
+    expect(listInstances.selectionChange.emit).toHaveBeenCalledWith(component.dataSource.listItem[0]);
 
     listItems[1].nativeElement.click();
 
-    expect(listInstances.isSelected(component.datasource.listItem[1])).toBeTruthy();
-    expect(listInstances.selectionChange.emit).toHaveBeenCalledWith(component.datasource.listItem[1]);
+    expect(listInstances.isSelected(component.dataSource.listItem[1])).toBeTruthy();
+    expect(listInstances.selectionChange.emit).toHaveBeenCalledWith(component.dataSource.listItem[1]);
 
     listItems[2].nativeElement.click();
 
-    expect(listInstances.isSelected(component.datasource.listItem[2])).toBeTruthy();
-    expect(listInstances.selectionChange.emit).toHaveBeenCalledWith(component.datasource.listItem[2]);
+    expect(listInstances.isSelected(component.dataSource.listItem[2])).toBeTruthy();
+    expect(listInstances.selectionChange.emit).toHaveBeenCalledWith(component.dataSource.listItem[2]);
   });
 
   it('should reset selected item', () => {
-    const item = component.datasource.listItem[0];
+    const item = component.dataSource.listItem[0];
 
     listInstances.selectItem(item);
 
@@ -203,7 +203,7 @@ describe('TestListItemComponent', () => {
 
     listItems[0].nativeElement.click();
 
-    expect(listInstances.isSelected(component.datasource.listItem[0])).toBeFalsy();
+    expect(listInstances.isSelected(component.dataSource.listItem[0])).toBeFalsy();
 
     disabled = fixture.debugElement.queryAll(By.css('.kal-list__item--disabled'));
 

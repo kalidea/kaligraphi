@@ -50,7 +50,7 @@ class DataSource {
 #### list with observable
 
 ```html
-<kal-list [listObservable]="listObservable"
+<kal-list [datasource]="datasource"
           (selectionChange)="selectRow($event)">
 
           <ng-template kalListItem let-item="item">
@@ -63,7 +63,7 @@ class DataSource {
 ```typescript
 class Test {
 
-  listObservable = of([{item: {name: 'test'}}]);
+  datasource = of([{item: {name: 'test'}}]);
   
   constructor() {
   }
