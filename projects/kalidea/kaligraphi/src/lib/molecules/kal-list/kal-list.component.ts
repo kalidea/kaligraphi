@@ -56,6 +56,9 @@ export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewI
    */
   @ViewChildren(KalListItemSelectionDirective) children: QueryList<KalListItemSelectionDirective>;
 
+  /**
+   * @inheritDoc
+   */
   viewChange: Observable<ListRange>;
 
   /**
