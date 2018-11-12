@@ -2,10 +2,13 @@
 
 ##PURPOSE
 
+#### LIST WITH DATASOURCE
+
 ```html
 <kal-list [datasource]="datasource"
           [groupByFunction]="groupByFunction"
           (selectionChange)="selectRow($event)">
+
           <ng-template kalListItem let-item="item">
             {{ item.name }}
           </ng-template>
@@ -24,21 +27,48 @@ class Test {
   }
   
   constructor() {
-    
     this.groupByFunction = (item: {name: string}) => item.name.charAt(0).toLocaleUpperCase();
   }
 
 }
 
 class DataSource {
+
   constructor() {
   }
   
   connect(): {item: {name: string}}[] {
-    return [{item: {name: 'test'}}];
+    return of([{item: {name: 'test'}}]);
   }
   
   disconnect() {
+  }
+
+}
+```
+
+#### list with observable
+
+```html
+<kal-list [datasource]="datasource"
+          (selectionChange)="selectRow($event)">
+
+          <ng-template kalListItem let-item="item">
+            {{ item.name }}
+          </ng-template>
+
+</kal-list>
+```
+
+```typescript
+class Test {
+
+  datasource = of([{item: {name: 'test'}}]);
+  
+  constructor() {
+  }
+  
+  selectRow($event) {
   }
 }
 ```
