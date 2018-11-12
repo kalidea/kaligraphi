@@ -10,28 +10,32 @@ import { KalIconModule } from '../../atoms/kal-icon/kal-icon.module';
 
 @Component({
   template: `
-    <kal-list [datasource]="datasource"
+    <kal-list [dataSource]="dataSource"
               [groupByFunction]="groupByFunction"
-              [disableRowsFunction]="disableRowsFunction">
+              [disableRowsFunction]="disableRowsFunction"
+              (selectionChange)="selectRow($event)">
 
-    <ng-template kalListItem let-item="item">
-      {{ item.name }}
-    </ng-template>
+      <ng-template kalListItem let-item="item">
+        {{ item.name }}
+      </ng-template>
 
     </kal-list>
   `
 })
 class TestListItemComponent {
 
-  datasource = new TestDataSource();
+  dataSource = new TestDataSource();
 
   groupByFunction = null;
 
   disableRowsFunction = null;
 
+  selectRow($event) {
+  }
+
 }
 
-class TestDataSource implements DataSource<{code: string, name: string}> {
+class TestDataSource implements DataSource<{ code: string, name: string }> {
 
   listItem = [
     {
@@ -57,6 +61,43 @@ class TestDataSource implements DataSource<{code: string, name: string}> {
 
   disconnect() {
   }
+}
+
+@Component({
+  template: `
+    <kal-list [dataSource]="dataSource"
+              (selectionChange)="selectRow($event)">
+
+      <ng-template kalListItem let-item="item">
+        {{ item.name }}
+      </ng-template>
+
+    </kal-list>
+  `
+})
+class TestListItemWithObservableComponent {
+
+  dataSource = of([
+    {
+      code: '1',
+      name: 'Item 1',
+      disabled: true,
+    },
+    {
+      code: '2',
+      name: 'Item 2',
+      disabled: false,
+    },
+    {
+      code: '3',
+      name: 'Item 3',
+      disabled: false,
+    },
+  ]);
+
+  selectRow($event) {
+  }
+
 }
 
 describe('TestListItemComponent', () => {
@@ -91,7 +132,7 @@ describe('TestListItemComponent', () => {
 
     listDebugElements = fixture.debugElement.query(By.directive(KalListComponent));
     list = fixture.debugElement.query(By.css('kal-list'));
-    listItems = fixture.debugElement.queryAll(By.css('.kal-list-item-content'));
+    listItems = fixture.debugElement.queryAll(By.css('.kal-list__content'));
     iconsDebugElements = fixture.debugElement.queryAll(By.directive(KalIconComponent));
     listInstances = listDebugElements.injector.get(KalListComponent);
   });
@@ -119,22 +160,22 @@ describe('TestListItemComponent', () => {
 
     listItems[0].nativeElement.click();
 
-    expect(listInstances.isSelected(component.datasource.listItem[0])).toBeTruthy();
-    expect(listInstances.selectionChange.emit).toHaveBeenCalledWith(component.datasource.listItem[0]);
+    expect(listInstances.isSelected(component.dataSource.listItem[0])).toBeTruthy();
+    expect(listInstances.selectionChange.emit).toHaveBeenCalledWith(component.dataSource.listItem[0]);
 
     listItems[1].nativeElement.click();
 
-    expect(listInstances.isSelected(component.datasource.listItem[1])).toBeTruthy();
-    expect(listInstances.selectionChange.emit).toHaveBeenCalledWith(component.datasource.listItem[1]);
+    expect(listInstances.isSelected(component.dataSource.listItem[1])).toBeTruthy();
+    expect(listInstances.selectionChange.emit).toHaveBeenCalledWith(component.dataSource.listItem[1]);
 
     listItems[2].nativeElement.click();
 
-    expect(listInstances.isSelected(component.datasource.listItem[2])).toBeTruthy();
-    expect(listInstances.selectionChange.emit).toHaveBeenCalledWith(component.datasource.listItem[2]);
+    expect(listInstances.isSelected(component.dataSource.listItem[2])).toBeTruthy();
+    expect(listInstances.selectionChange.emit).toHaveBeenCalledWith(component.dataSource.listItem[2]);
   });
 
   it('should reset selected item', () => {
-    const item = component.datasource.listItem[0];
+    const item = component.dataSource.listItem[0];
 
     listInstances.selectItem(item);
 
@@ -150,7 +191,7 @@ describe('TestListItemComponent', () => {
 
     fixture.detectChanges();
 
-    groupElement = fixture.debugElement.queryAll(By.css('.kal-list-item-group'));
+    groupElement = fixture.debugElement.queryAll(By.css('.kal-list__group'));
 
     expect(groupElement.length).toEqual(1);
   });
@@ -162,10 +203,57 @@ describe('TestListItemComponent', () => {
 
     listItems[0].nativeElement.click();
 
-    expect(listInstances.isSelected(component.datasource.listItem[0])).toBeFalsy();
+    expect(listInstances.isSelected(component.dataSource.listItem[0])).toBeFalsy();
 
-    disabled = fixture.debugElement.queryAll(By.css('.kal-list-item-disabled'));
+    disabled = fixture.debugElement.queryAll(By.css('.kal-list__item--disabled'));
 
     expect(disabled.length).toEqual(1);
+  });
+});
+
+describe('TestListItemWithObservableComponent', () => {
+  let component: TestListItemWithObservableComponent;
+  let fixture: ComponentFixture<TestListItemWithObservableComponent>;
+  let listItems: DebugElement[];
+  let iconsDebugElements: DebugElement[];
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        KalListModule,
+        KalIconModule,
+      ],
+      declarations: [
+        TestListItemWithObservableComponent,
+      ]
+    })
+      .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(TestListItemWithObservableComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+
+    listItems = fixture.debugElement.queryAll(By.css('.kal-list__content'));
+    iconsDebugElements = fixture.debugElement.queryAll(By.directive(KalIconComponent));
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should create 3 items', () => {
+    expect(listItems.length).toEqual(3);
+  });
+
+  it('should create 3 icons', () => {
+    expect(iconsDebugElements.length).toEqual(3);
+  });
+
+  it('should display items in list component', () => {
+    expect(listItems[0].nativeElement.innerText.trim()).toEqual('Item 1');
+    expect(listItems[1].nativeElement.innerText.trim()).toEqual('Item 2');
+    expect(listItems[2].nativeElement.innerText.trim()).toEqual('Item 3');
   });
 });

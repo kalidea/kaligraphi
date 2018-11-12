@@ -1,0 +1,12 @@
+<div class="kal-form-field"
+     [class.kal-form-field-error]="hasError">
+
+  <label class="kal-form-field-label"
+         [attr.for]="for"
+         [class.kal-form-field-required]="required">
+    {{ label }}
+  </label>
+
+  <ng-content></ng-content>
+
+</div>

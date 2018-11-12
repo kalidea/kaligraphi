@@ -12,9 +12,9 @@ import { Observable, of } from 'rxjs';
 export class ListComponent implements OnInit {
 
   /**
-   * Datasource
+   * dataSource
    */
-  datasource = new TestDataSource();
+  dataSource = new TestDataSource();
 
   /**
    * groupBy function
@@ -25,6 +25,11 @@ export class ListComponent implements OnInit {
    * Disable rows function
    */
   disableRowsFunction = null;
+
+  /**
+   * selected value
+   */
+  selectedValue;
 
   constructor() {
   }

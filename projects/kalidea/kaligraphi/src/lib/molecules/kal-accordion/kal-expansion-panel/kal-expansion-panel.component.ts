@@ -21,7 +21,7 @@ import { DOCUMENT } from '@angular/common';
 import { Subject } from 'rxjs';
 import { KAL_ACCORDION, KalAccordionBase } from '../kal-accordion-base';
 import { kalExpansionAnimations } from '../expansion-animations';
-import { uniqid } from '../../../utils';
+import { uniqid } from '../../../utils/index';
 
 /** KalExpansionPanel's states. */
 export type KalExpansionPanelState = 'expanded' | 'collapsed';

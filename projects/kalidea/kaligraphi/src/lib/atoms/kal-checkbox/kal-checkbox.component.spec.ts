@@ -4,7 +4,7 @@ import { By } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { KalCheckboxComponent } from './kal-checkbox.component';
-import { FormElementComponent } from '../../utils';
+import { FormElementComponent } from '../../utils/index';
 
 describe('KalCheckboxComponent', () => {
   let component: KalCheckboxComponent;
