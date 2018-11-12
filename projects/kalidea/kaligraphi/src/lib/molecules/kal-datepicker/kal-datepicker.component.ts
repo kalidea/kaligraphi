@@ -157,10 +157,10 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   }
 
   ngOnInit() {
-    // TODO : remove backdrop when we know how to dectect click outside overlay
     this.overlayRef = this.overlay.create({
-        hasBackdrop: true
-      });
+      hasBackdrop: true,
+      backdropClass: 'cdk-overlay-transparent-backdrop'
+    });
 
     this.backdropClickSubscription = this.overlayRef.backdropClick().subscribe(() => {
       this.close();

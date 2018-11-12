@@ -6,6 +6,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { KalInputModule } from '../../atoms/kal-input/kal-input.module';
 import { KalIconModule } from '../../atoms/kal-icon/kal-icon.module';
 
+import { AutofocusDirective } from './autofocus.directive';
+
 // datepicker
 import { KalDatepickerComponent } from './kal-datepicker.component';
 export { KalDatepickerComponent } from './kal-datepicker.component';
@@ -36,10 +38,16 @@ const exports = [
     OverlayModule,
     ReactiveFormsModule,
     KalInputModule,
-    KalIconModule
+    KalIconModule,
   ],
-  exports: exports,
-  declarations: exports
+  exports: [
+    ...exports,
+    AutofocusDirective
+  ],
+  declarations: [
+    ...exports,
+    AutofocusDirective
+  ]
 })
 export class KalDatepickerModule {
 }
