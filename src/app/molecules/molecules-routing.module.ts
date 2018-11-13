@@ -6,7 +6,7 @@ import { AccordionComponent } from 'src/app/molecules/accordion/accordion.compon
 import { ListComponent } from 'src/app/molecules/list/list.component';
 import { MenuComponent } from 'src/app/molecules/menu/menu.component';
 import { FormFieldComponent } from 'src/app/molecules/form-field/form-field.component';
-import { DatepickerComponent } from './datepicker/datepicker.component';
+import { DatepickerComponent } from 'src/app/molecules/datepicker/datepicker.component';
 
 const routes: Routes = [
   {path: 'tab-panel', component: TabPanelComponent},
