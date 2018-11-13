@@ -10,7 +10,7 @@ import { KalDatepickerComponent } from './kal-datepicker.component';
 import { KalDatepickerHeaderComponent } from './kal-datepicker-header/kal-datepicker-header.component';
 import { KalMonthCalendarComponent } from './kal-month-calendar/kal-month-calendar.component';
 import { KalDatepickerMultiViewComponent } from './kal-datepicker-multi-view/kal-datepicker-multi-view.component';
-import { AutofocusDirective } from './autofocus.directive';
+import { KalUtilityModule } from '../../utility/kal-utility.module';
 
 describe('KalDatepickerComponent', () => {
   let component: KalDatepickerComponent;
@@ -21,6 +21,7 @@ describe('KalDatepickerComponent', () => {
       imports: [
         KalIconModule,
         KalInputModule,
+        KalUtilityModule,
         ReactiveFormsModule,
         PortalModule,
       ],
@@ -29,7 +30,6 @@ describe('KalDatepickerComponent', () => {
         KalDatepickerHeaderComponent,
         KalMonthCalendarComponent,
         KalDatepickerMultiViewComponent,
-        AutofocusDirective
       ],
       providers: [
         Overlay

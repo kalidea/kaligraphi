@@ -3,7 +3,7 @@ import { Overlay } from '@angular/cdk/overlay';
 
 import { KalMonthCalendarComponent } from './kal-month-calendar.component';
 import { KalDatepickerComponent } from '../kal-datepicker.component';
-import { AutofocusDirective } from '../autofocus.directive';
+import { KalUtilityModule } from '../../../utility/kal-utility.module';
 
 describe('KalMonthCalendarComponent', () => {
   let component: KalMonthCalendarComponent;
@@ -11,9 +11,11 @@ describe('KalMonthCalendarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [
+        KalUtilityModule
+      ],
       declarations: [
         KalMonthCalendarComponent,
-        AutofocusDirective
       ],
       providers: [
         Overlay,
