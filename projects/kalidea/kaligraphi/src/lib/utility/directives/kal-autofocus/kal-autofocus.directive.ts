@@ -3,7 +3,7 @@ import { Directive, ElementRef, Input, OnInit } from '@angular/core';
 @Directive({
   selector: '[kalAutofocus]'
 })
-export class AutofocusDirective implements OnInit {
+export class KalAutofocusDirective implements OnInit {
 
   @Input() kalAutofocus: boolean;
 

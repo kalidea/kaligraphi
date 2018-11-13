@@ -1,12 +1,7 @@
 import { Directive, ElementRef, EventEmitter, HostListener, Output } from '@angular/core';
 
-/**
- * clickoutside directive, emit event when user has click outside host element
- * Usage:
- * ```<div (clickOutside)="closeFloatingPanel()"></div>```
- */
 @Directive({selector: '[kalClickOutside]'})
-export class ClickOutsideDirective  {
+export class KalClickOutsideDirective  {
 
   /**
    * event emitted when clicking outside
