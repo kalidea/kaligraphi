@@ -37,7 +37,7 @@ $base-border-color: $kal-base-font-color !default;
 
 $kal-theme-button: (
   'default': (
-    'font-family': 'Asap',
+    'font-family': $kal-fontface-text,
     'font-size': 15px,
     'font-weight': bold,
     'color': get("grey.wf800", $kal-palettes),
