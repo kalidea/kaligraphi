@@ -2,13 +2,19 @@
   $self: &
   display: flex
   flex-flow: row wrap
-  justify-content: space-between
+  justify-content: flex-start
   align-items: center
   padding: 20px
   &#{$self}--reverse
     background-color: #1F1F1F
     color: #FFFFFF
+  &#{$self}--action
+    background-color: #ccc
+    color: #000000
   .lib-flexbox__item
     flex: 1
     padding: 20px
     text-align: center
+    .lib-flexbox__item-label
+      padding: 10px 0
+      text-align: center
