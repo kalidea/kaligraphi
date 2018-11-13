@@ -4,6 +4,7 @@ $kal-palette-grey: (
   wf700: #3D3D3D,
   wf600: #5C5C5C,
   wf500: #7A7A7A,
+  wf400: #7A7A7A,
   wf300: #B8B8B8,
   wf200: #D6D6D6,
   wf100: #F5F5F5,
@@ -20,8 +21,8 @@ $kal-palette-yellow: (
 
 // orange
 $kal-palette-orange: (
-  darker: darken(#E89536, 40%),
-  dark: darken(#E89536, 20%),
+  darker: #BE7A2D,
+  dark: #D38832,
   normal: #E89536,
   light: lighten(#E89536, 20%),
   lighter: lighten(#E89536, 40%)
