@@ -10,6 +10,7 @@
       border-radius: get("border-radius", $theme-parameters)
       margin: get('margin', $theme-parameters)
       padding: get('padding', $theme-parameters)
+      cursor: pointer
       &[disabled]
         color: get('disabled.color', $theme-parameters)
         background-color: get('disabled.background-color', $theme-parameters)
@@ -37,5 +38,14 @@
       +kal-themed-button(get('form.elements.button.secondary', $kal-parameters))
     &.#{$self}--tertiary
       +kal-themed-button(get('form.elements.button.tertiary', $kal-parameters))
+    &.#{$self}--reverse
+      +kal-themed-button(get('form.elements.button.reverse', $kal-parameters))
+    &.#{$self}--primary-reverse
+      +kal-themed-button(get('form.elements.button.primary-reverse', $kal-parameters))
+    &.#{$self}--secondary-reverse
+      +kal-themed-button(get('form.elements.button.secondary-reverse', $kal-parameters))
+    &.#{$self}--tertiary-reverse
+      +kal-themed-button(get('form.elements.button.tertiary-reverse', $kal-parameters))
+
     &.#{$self}--large
       +kal-themed-button(get('form.elements.button.large', $kal-parameters))

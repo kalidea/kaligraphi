@@ -11,7 +11,7 @@ export class ButtonComponent implements OnInit {
 
   disabled = false;
 
-  content = 'level 1';
+  content = 'libellé';
 
   constructor() { }
 
