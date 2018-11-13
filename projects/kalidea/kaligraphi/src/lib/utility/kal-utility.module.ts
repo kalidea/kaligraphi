@@ -1,20 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { KalClickOutsideModule } from './directives/kal-click-outside/kal-click-outside.module';
-import { KalAutofocusModule } from './directives/kal-autofocus/kal-autofocus.module';
 
-const exports = [
-  KalClickOutsideModule,
-  KalAutofocusModule
+// directives
+import { KalClickOutsideDirective } from './directives/kal-click-outside/kal-click-outside.directive';
+import { KalAutofocusDirective } from './directives/kal-autofocus/kal-autofocus.directive';
+
+const directivesExports = [
+  KalClickOutsideDirective,
+  KalAutofocusDirective
 ];
 
 @NgModule({
   imports: [
-    CommonModule,
-    ...exports
+    CommonModule
   ],
-  exports: exports,
-  declarations: []
+  exports: directivesExports,
+  declarations: directivesExports
 })
 export class KalUtilityModule {
 }

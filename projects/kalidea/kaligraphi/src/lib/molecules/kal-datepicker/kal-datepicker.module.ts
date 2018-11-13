@@ -22,8 +22,8 @@ export { KalMonthCalendarComponent } from './kal-month-calendar/kal-month-calend
 import { KalDatepickerMultiViewComponent } from './kal-datepicker-multi-view/kal-datepicker-multi-view.component';
 export { KalDatepickerMultiViewComponent } from './kal-datepicker-multi-view/kal-datepicker-multi-view.component';
 
-// autofocus directive
-import { KalAutofocusModule } from '../../utility/directives/kal-autofocus/kal-autofocus.module';
+// KalUtilityModule is used for ``KalAutoFocusDirective`
+import { KalUtilityModule } from '../../utility/kal-utility.module';
 
 const exports = [
   KalDatepickerComponent,
@@ -40,7 +40,7 @@ const exports = [
     ReactiveFormsModule,
     KalInputModule,
     KalIconModule,
-    KalAutofocusModule
+    KalUtilityModule
   ],
   exports: exports,
   declarations: exports
