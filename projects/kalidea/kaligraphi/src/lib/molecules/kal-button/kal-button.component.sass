@@ -23,6 +23,22 @@
         &:active, &:focus
           background-color: get('active.background-color', $theme-parameters)
           border: get('active.border', $theme-parameters)
+    &.kal-button--reverse
+      button
+        color: get('reverse.color', $theme-parameters)
+        background-color: get('reverse.background-color', $theme-parameters)
+        border: get('reverse.border', $theme-parameters)
+        &[disabled]
+          color: get('reverse.disabled.color', $theme-parameters)
+          background-color: get('reverse.disabled.background-color', $theme-parameters)
+          border: get('reverse.disabled.border', $theme-parameters)
+        &:not([disabled])
+          &:hover
+            background-color: get('reverse.hover.background-color', $theme-parameters)
+            border: get('reverse.hover.border', $theme-parameters)
+          &:active, &:focus
+            background-color: get('reverse.active.background-color', $theme-parameters)
+            border: get('reverse.active.border', $theme-parameters)
 
 =kal-button($kal-parameters)
   kal-button
@@ -30,22 +46,7 @@
     display: inline-block
     &:focus
       outline: none
-
     +kal-themed-button(get('form.elements.button.default', $kal-parameters))
-    &.#{$self}--primary
-      +kal-themed-button(get('form.elements.button.primary', $kal-parameters))
-    &.#{$self}--secondary
-      +kal-themed-button(get('form.elements.button.secondary', $kal-parameters))
-    &.#{$self}--tertiary
-      +kal-themed-button(get('form.elements.button.tertiary', $kal-parameters))
-    &.#{$self}--reverse
-      +kal-themed-button(get('form.elements.button.reverse', $kal-parameters))
-    &.#{$self}--primary-reverse
-      +kal-themed-button(get('form.elements.button.primary-reverse', $kal-parameters))
-    &.#{$self}--secondary-reverse
-      +kal-themed-button(get('form.elements.button.secondary-reverse', $kal-parameters))
-    &.#{$self}--tertiary-reverse
-      +kal-themed-button(get('form.elements.button.tertiary-reverse', $kal-parameters))
-
-    &.#{$self}--large
-      +kal-themed-button(get('form.elements.button.large', $kal-parameters))
+    @each $key, $params in get('form.elements.button.alternates', $kal-parameters)
+      &.#{$self}--#{$key}
+        +kal-themed-button($params)
