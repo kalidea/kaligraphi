@@ -2,11 +2,6 @@
 <div class="lib-flexbox"
 [ngClass]="{'lib-flexbox--reverse' : reversed}">
     <div class="lib-flexbox__item">
-      <div class="lib-flexbox__item-label">
-        <p>{{reversed}}</p>
-        <p>{{large}}</p>
-        <p>{{nivo}}</p>
-      </div>
       <kal-button
         [disabled]="disabled"
         [ngClass]="{
@@ -16,7 +11,7 @@
           'kal-button--secondary' : nivo == 'secondaire',
           'kal-button--tertiary' : nivo == 'tertiaire',
           '' : nivo == 'default'
-        }">{{ content }}</kal-button>
+        }">{{ nivo }}</kal-button>
     </div>
   </div>
 
