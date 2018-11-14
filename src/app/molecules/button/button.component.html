@@ -1,134 +1,53 @@
 <h1>kal-button</h1>
-<div class="lib-flexbox">
+<div class="lib-flexbox"
+[ngClass]="{'lib-flexbox--reverse' : reversed}">
     <div class="lib-flexbox__item">
-      <div class="lib-flexbox__item-label">(default)</div>
+      <div class="lib-flexbox__item-label">
+        <p>{{reversed}}</p>
+        <p>{{large}}</p>
+        <p>{{nivo}}</p>
+      </div>
       <kal-button
         [disabled]="disabled"
-        class=""
-      >{{ content }}</kal-button>
-    </div>
-    <div class="lib-flexbox__item">
-      <div class="lib-flexbox__item-label">--primary</div>
-      <kal-button
-        [disabled]="disabled"
-        class="kal-button--primary"
-      >{{ content }}</kal-button>
-    </div>
-    <div class="lib-flexbox__item">
-      <div class="lib-flexbox__item-label">--secondary</div>
-      <kal-button
-        [disabled]="disabled"
-        class="kal-button--secondary"
-      >{{ content }}</kal-button>
-    </div>
-    <div class="lib-flexbox__item">
-      <div class="lib-flexbox__item-label">--tertiary</div>
-      <kal-button
-        [disabled]="disabled"
-        class="kal-button--tertiary"
-      >{{ content }}</kal-button>
-    </div>
-  </div>
-
-  <div class="lib-flexbox">
-    <div class="lib-flexbox__item">
-      <div class="lib-flexbox__item-label">(default)<br>--large</div>
-      <kal-button
-        [disabled]="disabled"
-        class="kal-button--large"
-      >{{ content }}</kal-button>
-    </div>
-    <div class="lib-flexbox__item">
-      <div class="lib-flexbox__item-label">--primary<br>--large</div>
-      <kal-button
-        [disabled]="disabled"
-        class="kal-button--primary kal-button--large"
-      >{{ content }}</kal-button>
-    </div>
-    <div class="lib-flexbox__item">
-      <div class="lib-flexbox__item-label">--secondary<br>--large</div>
-      <kal-button
-        [disabled]="disabled"
-        class="kal-button--secondary kal-button--large"
-      >{{ content }}</kal-button>
-    </div>
-    <div class="lib-flexbox__item">
-      <div class="lib-flexbox__item-label">--tertiary<br>--large</div>
-      <kal-button
-        [disabled]="disabled"
-        class="kal-button--tertiary kal-button--large"
-      >{{ content }}</kal-button>
-    </div>
-  </div>
-
-  <div class="lib-flexbox lib-flexbox--reverse">
-    <div class="lib-flexbox__item">
-      <div class="lib-flexbox__item-label">--reverse</div>
-      <kal-button
-        [disabled]="disabled"
-        class="kal-button--reverse"
-      >{{ content }}</kal-button>
-    </div>
-    <div class="lib-flexbox__item">
-      <div class="lib-flexbox__item-label">--primary-reverse</div>
-      <kal-button
-        [disabled]="disabled"
-        class="kal-button--primary kal-button--reverse"
-      >{{ content }}</kal-button>
-    </div>
-    <div class="lib-flexbox__item">
-      <div class="lib-flexbox__item-label">--secondary-reverse</div>
-      <kal-button
-        [disabled]="disabled"
-        class="kal-button--secondary kal-button--reverse"
-      >{{ content }}</kal-button>
-    </div>
-    <div class="lib-flexbox__item">
-      <div class="lib-flexbox__item-label">--tiertiary--reverse</div>
-      <kal-button
-        [disabled]="disabled"
-        class="kal-button--tertiary kal-button--reverse"
-      >{{ content }}</kal-button>
-    </div>
-  </div>
-
-  <div class="lib-flexbox  lib-flexbox--reverse">
-    <div class="lib-flexbox__item">
-      <div class="lib-flexbox__item-label">--reverse<br>--large</div>
-      <kal-button
-        [disabled]="disabled"
-        class="kal-button--reverse kal-button--large"
-      >{{ content }}</kal-button>
-    </div>
-    <div class="lib-flexbox__item">
-      <div class="lib-flexbox__item-label">--primary-reverse<br>--large</div>
-      <kal-button
-        [disabled]="disabled"
-        class="kal-button--primary kal-button--reverse kal-button--large"
-      >{{ content }}</kal-button>
-    </div>
-    <div class="lib-flexbox__item">
-      <div class="lib-flexbox__item-label">--secondary-reverse<br>--large</div>
-      <kal-button
-        [disabled]="disabled"
-        class="kal-button--secondary kal-button--reverse kal-button--large"
-      >{{ content }}</kal-button>
-    </div>
-    <div class="lib-flexbox__item">
-      <div class="lib-flexbox__item-label">--tiertiary--reverse<br>--large</div>
-      <kal-button
-        [disabled]="disabled"
-        class="kal-button--tertiary kal-button--reverse kal-button--large"
-      >{{ content }}</kal-button>
+        [ngClass]="{
+          'kal-button--reverse' : reversed,
+          'kal-button--large' : large,
+          'kal-button--primary' : nivo == 'primaire',
+          'kal-button--secondary' : nivo == 'secondaire',
+          'kal-button--tertiary' : nivo == 'tertiaire',
+          '' : nivo == 'default'
+        }">{{ content }}</kal-button>
     </div>
   </div>
 
   <div class="lib-flexbox  lib-flexbox--action">
     <div class="lib-flexbox__item">
-      <strong>ACTION(S) : </strong>
       <kal-checkbox
         [(ngModel)]="disabled"
         label="disabled"
       ></kal-checkbox>
+    </div>
+    <div class="lib-flexbox__item">
+      <kal-checkbox
+        [(ngModel)]="reversed"
+        label="reversed"
+      ></kal-checkbox>
+    </div>
+    <div class="lib-flexbox__item">
+      <kal-checkbox
+        [(ngModel)]="large"
+        label="large"
+      ></kal-checkbox>
+    </div>
+    <div class="lib-flexbox__item">
+      <kal-radio-group [value]="nivo"
+                       [name]="nameButtonLevel"
+                       [disabled]="disabled"
+                       (valueChange)="displayValue($event)">
+        <kal-radio value="default">default</kal-radio>
+        <kal-radio value="primaire">Level 1</kal-radio>
+        <kal-radio value="secondaire">Level 2</kal-radio>
+        <kal-radio value="tertiaire">Level 3</kal-radio>
+      </kal-radio-group>
     </div>
   </div>
