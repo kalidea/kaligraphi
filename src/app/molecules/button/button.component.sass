@@ -1,0 +1,17 @@
+.lib-flexbox
+  $self: &
+  display: flex
+  flex-flow: row wrap
+  justify-content: flex-start
+  align-items: center
+  padding: 20px
+  &#{$self}--reverse
+    background-color: #1F1F1F
+    color: #FFFFFF
+  .lib-flexbox__item
+    flex: 1
+    padding: 10px
+    text-align: center
+  &#{$self}--action
+    background-color: #ccc
+    color: #000000

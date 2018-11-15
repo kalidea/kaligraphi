@@ -1,5 +1,54 @@
 
-=kal-button($parameters)
+
+
+=kal-themed-button($theme-parameters)
+    button
+      font-family: get('font-family', $theme-parameters)
+      font-size: get('font-size', $theme-parameters)
+      font-weight: get('font-weight', $theme-parameters)
+      color: get('color', $theme-parameters)
+      background-color: get('background-color', $theme-parameters)
+      border: get('border', $theme-parameters)
+      border-radius: get("border-radius", $theme-parameters)
+      margin: get('margin', $theme-parameters)
+      padding: get('padding', $theme-parameters)
+      cursor: pointer
+      &[disabled]
+        color: get('disabled.color', $theme-parameters)
+        background-color: get('disabled.background-color', $theme-parameters)
+        border: get('disabled.border', $theme-parameters)
+        cursor: not-allowed
+      &:not([disabled])
+        &:hover
+          background-color: get('hover.background-color', $theme-parameters)
+          border: get('hover.border', $theme-parameters)
+        &:active, &:focus
+          background-color: get('active.background-color', $theme-parameters)
+          border: get('active.border', $theme-parameters)
+    &.kal-button--reverse
+      button
+        color: get('reverse.color', $theme-parameters)
+        background-color: get('reverse.background-color', $theme-parameters)
+        border: get('reverse.border', $theme-parameters)
+        &[disabled]
+          color: get('reverse.disabled.color', $theme-parameters)
+          background-color: get('reverse.disabled.background-color', $theme-parameters)
+          border: get('reverse.disabled.border', $theme-parameters)
+        &:not([disabled])
+          &:hover
+            background-color: get('reverse.hover.background-color', $theme-parameters)
+            border: get('reverse.hover.border', $theme-parameters)
+          &:active, &:focus
+            background-color: get('reverse.active.background-color', $theme-parameters)
+            border: get('reverse.active.border', $theme-parameters)
+
+=kal-button($kal-parameters)
   kal-button
-    input
-      border: none
+    $self: &
+    display: inline-block
+    &:focus
+      outline: none
+    +kal-themed-button(get('form.elements.button.default', $kal-parameters))
+    @each $key, $params in get('form.elements.button.alternates', $kal-parameters)
+      &.#{$self}--#{$key}
+        +kal-themed-button($params)

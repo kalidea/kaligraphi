@@ -1,5 +1,8 @@
 // colors
 @import "palettes";
+@import "functions/index";
+
+
 $kal-colors: (default: #1F1F1F, reverse: #FFF) !default;
 
 // fontfaces
@@ -33,6 +36,8 @@ $base-border-width: 1px !default;
 $base-border-style: solid !default;
 $base-border-color: $kal-base-font-color !default;
 
+// Components configurations imports
+@import 'components/kal-button.styles';
 
 // global parameters
 $kal-parameters: (
@@ -40,6 +45,10 @@ $kal-parameters: (
   headings: $kal-headings,
   text: $kal-text,
   form: (
+    elements: (
+      'button': $kal-styles-button
+    ),
+    padding: 12px,
     border: (
       width: $base-border-width,
       style: $base-border-style,

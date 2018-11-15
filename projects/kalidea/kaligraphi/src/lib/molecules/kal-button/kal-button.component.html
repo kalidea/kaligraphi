@@ -1,12 +1,7 @@
 <button
   (click)="handleClick($event)"
   [disabled]="disabled"
-  [tabindex]="tabIndex"
-  [name]="name">
-
-  <kal-icon *ngIf="name">
-    {{ name }}
-  </kal-icon>
+  [tabindex]="tabIndex">
 
   <ng-content></ng-content>
 

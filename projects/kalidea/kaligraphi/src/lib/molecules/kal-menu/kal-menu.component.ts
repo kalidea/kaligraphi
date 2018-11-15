@@ -12,6 +12,7 @@ export interface KalMenuItem {
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
+
 export class KalMenuComponent implements OnInit {
 
   /**

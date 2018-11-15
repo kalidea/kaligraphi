@@ -11,6 +11,7 @@ export class AppComponent {
   items: KalMenuItem[] = [
     {label: 'Home', route: '/'},
     {label: 'Text', route: '/typography/text'},
+    {label: ' --- ', route: ''},
     {label: 'Input', route: '/atoms/input'},
     {label: 'Checkbox', route: '/atoms/checkbox'},
     {label: 'Radio', route: '/atoms/radio'},
@@ -19,6 +20,8 @@ export class AppComponent {
     {label: 'Rater', route: '/atoms/rater'},
     {label: 'Progress Bar', route: '/atoms/progress-bar'},
     {label: 'Slider', route: '/atoms/slider'},
+    {label: '---', route: ''},
+    {label: 'Button', route: '/molecules/button'},
     {label: 'List', route: '/molecules/list'},
     {label: 'Tab panel', route: '/molecules/tab-panel'},
     {label: 'Stepper', route: '/molecules/stepper'},
