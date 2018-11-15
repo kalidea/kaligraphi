@@ -1,0 +1,48 @@
+<h1>kal-button</h1>
+<div class="lib-flexbox"
+[ngClass]="{'lib-flexbox--reverse' : reversed}">
+    <div class="lib-flexbox__item">
+      <kal-button
+        [disabled]="disabled"
+        [ngClass]="{
+          'kal-button--reverse' : reversed,
+          'kal-button--large' : large,
+          'kal-button--primary' : nivo == 'primaire',
+          'kal-button--secondary' : nivo == 'secondaire',
+          'kal-button--tertiary' : nivo == 'tertiaire',
+          '' : nivo == 'default'
+        }">{{ nivo }}</kal-button>
+    </div>
+  </div>
+
+  <div class="lib-flexbox  lib-flexbox--action">
+    <div class="lib-flexbox__item">
+      <kal-checkbox
+        [(ngModel)]="disabled"
+        label="disabled"
+      ></kal-checkbox>
+    </div>
+    <div class="lib-flexbox__item">
+      <kal-checkbox
+        [(ngModel)]="reversed"
+        label="reversed"
+      ></kal-checkbox>
+    </div>
+    <div class="lib-flexbox__item">
+      <kal-checkbox
+        [(ngModel)]="large"
+        label="large"
+      ></kal-checkbox>
+    </div>
+    <div class="lib-flexbox__item">
+      <kal-radio-group [value]="nivo"
+                       [name]="nameButtonLevel"
+                       [disabled]="disabled"
+                       (valueChange)="displayValue($event)">
+        <kal-radio value="default">default</kal-radio>
+        <kal-radio value="primaire">Level 1</kal-radio>
+        <kal-radio value="secondaire">Level 2</kal-radio>
+        <kal-radio value="tertiaire">Level 3</kal-radio>
+      </kal-radio-group>
+    </div>
+  </div>

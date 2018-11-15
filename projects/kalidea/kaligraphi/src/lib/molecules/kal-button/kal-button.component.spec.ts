@@ -1,9 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { Component } from '@angular/core';
 
 import { KalButtonComponent } from './kal-button.component';
 import { KalIconComponent } from '../../atoms/kal-icon/kal-icon.component';
-import { Component } from '@angular/core';
 import { KalButtonModule } from './kal-button.module';
 
 @Component({
@@ -63,7 +63,7 @@ describe('KalButtonComponent', () => {
   });
 
   it('should emit event on click', () => {
-    const spy = spyOn(component.clicked, 'emit');
+    const spy = spyOn(component.click, 'emit');
     fixture.debugElement.query(By.css('button')).nativeElement.click();
     expect(spy).toHaveBeenCalled();
   });
@@ -71,7 +71,7 @@ describe('KalButtonComponent', () => {
   it('should not emit event if disabled', () => {
     component.disabled = true;
     fixture.detectChanges(); // recalcul la vue
-    const spy = spyOn(component.clicked, 'emit');
+    const spy = spyOn(component.click, 'emit');
     fixture.debugElement.query(By.css('button')).nativeElement.click();
     expect(spy).not.toHaveBeenCalled();
   });
@@ -79,7 +79,7 @@ describe('KalButtonComponent', () => {
   it('should emit event if not disabled', () => {
     component.disabled = false;
     fixture.detectChanges(); // recalcul la vue
-    const spy = spyOn(component.clicked, 'emit');
+    const spy = spyOn(component.click, 'emit');
     fixture.debugElement.query(By.css('button')).nativeElement.click();
     expect(spy).toHaveBeenCalled();
   });
@@ -99,15 +99,6 @@ describe('KalButtonComponent', () => {
     fixture.detectChanges(); // recalcul la vue
     const button = fixture.debugElement.query(By.css('button')).nativeElement;
     expect(button.tabindex).toBeUndefined();
-  });
-
-  it('should display icon', () => {
-    const kalicon = fixture.debugElement.query(By.css('kal-icon'));
-    expect(kalicon).toBeFalsy();
-    const iconname = 'back';
-    component.name = iconname;
-    fixture.detectChanges(); // recalcul la vue
-    expect(kalicon).toBeDefined();
   });
 
 });

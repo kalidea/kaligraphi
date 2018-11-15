@@ -7,16 +7,14 @@
       justify-content: flex-start
       align-items: center
       input
-        font-family: $base-fontface
-        font-size: $base-fontsize
-        padding: 12px
+        font-family: get("text.font-family", $kal-parameters)
+        font-size: get("text.font-size", $kal-parameters)
+        padding: get("form.padding", $kal-parameters)
         width: 100%
         color: get("palettes.grey.wf700", $kal-parameters)
         background-color: get("palettes.grey.wf100", $kal-parameters)
-        border-width: 1px
-        border-style: solid
-        border-color: get("palettes.grey.wf200", $kal-parameters)
-        border-radius: $base-border-radius
+        border: 1px solid get("palettes.grey.wf200", $kal-parameters)
+        border-radius: get("form.border.radius", $kal-parameters)
         // Status
         &:active, &:focus
           border-color: get("palettes.grey.wf500", $kal-parameters)

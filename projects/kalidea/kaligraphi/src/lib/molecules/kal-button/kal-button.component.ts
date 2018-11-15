@@ -4,6 +4,7 @@ import {
 } from '@angular/core';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
+
 @Component({
   selector: 'kal-button',
   templateUrl: './kal-button.component.html',
@@ -18,11 +19,24 @@ export class KalButtonComponent implements OnInit {
    */
   @Input() tabIndex: number;
 
+  @Input() size: 'normal' | 'large' = 'normal';
+
+  /**
+   * Output for a event clic
+   */
+  @Output() click: EventEmitter<any> = new EventEmitter<any>();
+
   /**
    * Is the button disabled ?
    */
-
   private isDisabled = false;
+
+  constructor() {
+  }
+
+  get disabled() {
+    return this.isDisabled;
+  }
 
   @Input()
   set disabled(value: boolean) {
@@ -30,26 +44,8 @@ export class KalButtonComponent implements OnInit {
     this.tabIndex = this.disabled ? this.tabIndex : null;
   }
 
-  get disabled() {
-    return this.isDisabled;
-  }
-
-  /**
-   * add icon to the button
-   */
-  @Input() name: string;
-
-  /**
-   * Output for a event clic
-   */
-  @Output() clicked: EventEmitter<any> = new EventEmitter<any>();
-
-
   handleClick(event: any) {
-    this.clicked.emit(event);
-  }
-
-  constructor() {
+    this.click.emit(event);
   }
 
   ngOnInit() {
