@@ -1,9 +1,10 @@
-<img
+<div  class="kal-menu__logo">
+  <img
   *ngIf="logo"
   [src]="logo"
-/>
-
-<nav>
+  />
+</div>
+<nav class="kal-menu__nav">
   <a
     *ngFor="let link of items"
     [routerLink]="link.route">

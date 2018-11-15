@@ -1,0 +1,35 @@
+// kal-button parameters and alternates
+$kal-styles-menu: (
+  'default': (
+    'display': block,
+    'width': 100%,
+    'height': 100vh,
+    'background-color': get("grey.wf800", $kal-palettes),
+    'color': get("white", $kal-palettes),
+    'padding': 60px 0 0 72px,
+    'logo': (
+      'background-color': get("white", $kal-palettes),
+      'padding': 10px,
+      'max-height': 124px,
+      'max-width': 124px,
+      'margin-bottom': 80px,
+      'overflow': hidden,
+      'img': (
+        'width': 100%,
+        'height': auto
+      )
+    ),
+    'nav': (
+      'display': flex,
+      'direction': column
+    ),
+    'link': (
+      'color': get("white", $kal-palettes),
+      'font-weight': 500,
+      'margin': 0 0 8px 0,
+      'hover': (
+        'color': get("orange.normal", $kal-palettes)
+      )
+    )
+  )
+);

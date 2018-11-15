@@ -38,12 +38,14 @@ $base-border-color: $kal-base-font-color !default;
 
 // Components configurations imports
 @import 'components/kal-button.styles';
+@import 'components/kal-menu.styles';
 
 // global parameters
 $kal-parameters: (
   palettes: $kal-palettes,
   headings: $kal-headings,
   text: $kal-text,
+  menu: $kal-styles-menu,
   form: (
     elements: (
       'button': $kal-styles-button
