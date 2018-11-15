@@ -5,6 +5,7 @@ import { CdkPortal } from '@angular/cdk/portal';
 import { DOWN_ARROW, ENTER } from '@angular/cdk/keycodes';
 import { Platform } from '@angular/cdk/platform';
 import { Overlay, OverlayContainer } from '@angular/cdk/overlay';
+
 import { KalSelectComponent } from './kal-select.component';
 import { KalOptionComponent, KalOptionModule } from '../../atoms/kal-option/kal-option.module';
 import { createKeyboardEvent } from '../../utils/tests/event-keyboard';

@@ -29,7 +29,10 @@
     "label-position": true,
     "max-line-length": [
       true,
-      140
+      {
+        "limit": 140,
+        "ignore-pattern": "^import |^export {(.*?)}|class [a-zA-Z] implements |//"
+      }
     ],
     "member-access": false,
     "member-ordering": [
@@ -73,7 +76,7 @@
     "no-trailing-whitespace": true,
     "no-unnecessary-initializer": true,
     "no-unused-expression": true,
-    "no-use-before-declare": true,
+    "no-use-before-declare": false,
     "no-var-keyword": true,
     "object-literal-sort-keys": false,
     "one-line": [

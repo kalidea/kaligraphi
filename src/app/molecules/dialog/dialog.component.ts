@@ -13,6 +13,67 @@ export interface ExampleDialogData {
   closed?: number;
 }
 
+
+export class OverviewExampleDialogComponent {
+
+  /**
+   * id of dialog
+   */
+  id = counter++;
+
+  /**
+   * result of the closed dialog
+   */
+  result: number;
+
+  constructor(
+    private dialogRef: KalDialogRef<OverviewExampleDialogComponent>,
+    private dialogService: KalDialogService,
+    @Inject(KAL_DIALOG_DATA) public data: ExampleDialogData) {
+  }
+
+  /**
+   * close dialog
+   */
+  submitDialog() {
+    this.data.closed = this.id;
+    this.dialogRef.close(this.data);
+  }
+
+  /**
+   * Open Dialog
+   */
+  openDialog() {
+
+    const config = new KalDialogConfig<ExampleDialogData>({
+      id: 'test',
+      hasBackdrop: true,
+      data: {
+        user: {
+          firstname: 'john',
+          lastname: 'doe'
+        }
+      }
+    });
+
+    const dialogRef = this.dialogService.open(OverviewExampleDialogComponent, config);
+
+    dialogRef.afterClosed.subscribe(result => {
+      if (result) {
+        this.result = result.closed;
+      }
+    });
+  }
+
+  /**
+   * trigger for no click
+   */
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+}
+
 @Component({
   selector: 'app-dialog',
   templateUrl: './dialog.component.html',
@@ -115,62 +176,3 @@ export let counter = 0;
     </div>
   `,
 })
-export class OverviewExampleDialogComponent {
-
-  /**
-   * id of dialog
-   */
-  id = counter++;
-
-  /**
-   * result of the closed dialog
-   */
-  result: number;
-
-  constructor(
-    private dialogRef: KalDialogRef<OverviewExampleDialogComponent>,
-    private dialogService: KalDialogService,
-    @Inject(KAL_DIALOG_DATA) public data: ExampleDialogData) {
-  }
-
-  /**
-   * close dialog
-   */
-  submitDialog() {
-    this.data.closed = this.id;
-    this.dialogRef.close(this.data);
-  }
-
-  /**
-   * Open Dialog
-   */
-  openDialog() {
-
-    const config = new KalDialogConfig<ExampleDialogData>({
-      id: 'test',
-      hasBackdrop: true,
-      data: {
-        user: {
-          firstname: 'john',
-          lastname: 'doe'
-        }
-      }
-    });
-
-    const dialogRef = this.dialogService.open(OverviewExampleDialogComponent, config);
-
-    dialogRef.afterClosed.subscribe(result => {
-      if (result) {
-        this.result = result.closed;
-      }
-    });
-  }
-
-  /**
-   * trigger for no click
-   */
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
-}

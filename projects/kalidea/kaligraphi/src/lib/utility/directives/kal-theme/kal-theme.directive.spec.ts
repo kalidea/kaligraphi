@@ -65,6 +65,7 @@ describe('KalThemeDirective', () => {
     fixture.detectChanges();
     component.themes = ['secondary'];
     fixture.detectChanges();
-    expect(contains('primary', 'reverse')).toBeFalsy(` class list ${component.div.nativeElement.classList} should not contain primary/reverse`);
+    const message = ` class list ${component.div.nativeElement.classList} should not contain primary/reverse`;
+    expect(contains('primary', 'reverse')).toBeFalsy(message);
   });
 });

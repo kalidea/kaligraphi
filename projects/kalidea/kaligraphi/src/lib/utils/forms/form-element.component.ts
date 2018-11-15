@@ -7,26 +7,6 @@ import { distinctUntilChanged } from 'rxjs/operators';
 import { FormControlAccessComponent } from './form-control-access.component';
 import { uniqid } from '../helpers/uniq';
 
-
-export function buildProviders(type) {
-  return [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => type),
-      multi: true
-    },
-    {
-      provide: NG_ASYNC_VALIDATORS,
-      useExisting: forwardRef(() => type),
-      multi: true
-    },
-    {
-      provide: FormElementComponent,
-      useExisting: forwardRef(() => type),
-    }
-  ];
-}
-
 export class FormElementComponent<T = string> extends FormControlAccessComponent<T> {
 
   /**
@@ -178,4 +158,25 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
     }
   }
 
+}
+
+
+
+export function buildProviders(type) {
+  return [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => type),
+      multi: true
+    },
+    {
+      provide: NG_ASYNC_VALIDATORS,
+      useExisting: forwardRef(() => type),
+      multi: true
+    },
+    {
+      provide: FormElementComponent,
+      useExisting: forwardRef(() => type),
+    }
+  ];
 }
