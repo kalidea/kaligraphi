@@ -2,6 +2,7 @@
 @import "palettes";
 @import "functions/index";
 
+
 $kal-colors: (default: #1F1F1F, reverse: #FFF) !default;
 
 // fontfaces
@@ -35,165 +36,8 @@ $base-border-width: 1px !default;
 $base-border-style: solid !default;
 $base-border-color: $kal-base-font-color !default;
 
-// kal-button parameters and alternates
-$kal-theme-button: (
-  'default': (
-    'font-family': $kal-fontface-text,
-    'font-size': 15px,
-    'font-weight': bold,
-    'color': get("grey.wf800", $kal-palettes),
-    'background-color': get("white", $kal-palettes),
-    'border': 1px solid get("white", $kal-palettes),
-    'border-radius': $base-border-radius,
-    'margin': 0,
-    'padding': 8px 12px,
-    'disabled': (
-      'color': get("grey.wf500", $kal-palettes),
-      'background-color': get("grey.wf200", $kal-palettes),
-      'border': 1px solid get("grey.wf200", $kal-palettes)
-    ),
-    'hover': (
-      'background-color': get("grey.wf100", $kal-palettes),
-      'border': 1px solid get("grey.wf100", $kal-palettes)
-    ),
-    'active': (
-      'background-color': get("grey.wf300", $kal-palettes),
-      'border': 1px solid get("grey.wf300", $kal-palettes)
-    ),
-    'reverse': (
-      'color': get("grey.wf800", $kal-palettes),
-      'background-color': get("white", $kal-palettes),
-      'border': 1px solid get("grey.wf300", $kal-palettes),
-      'disabled': (
-        'color': get("grey.wf300", $kal-palettes),
-        'background-color': get("grey.wf700", $kal-palettes),
-        'border': 1px solid get("grey.wf700", $kal-palettes),
-      ),
-      'hover': (
-        'background-color': get("grey.wf100", $kal-palettes),
-        'border': 1px solid get("grey.wf300", $kal-palettes)
-      ),
-      'active': (
-        'background-color': get("grey.wf200", $kal-palettes),
-        'border': 1px solid get("grey.wf300", $kal-palettes)
-      )
-    ),
-  ),
-  'alternates' : (
-    'primary': (
-      'color': get("white", $kal-palettes),
-      'background-color': get("orange.normal", $kal-palettes),
-      'border': 1px solid get("orange.normal", $kal-palettes),
-      'disabled': (
-        'color': get("grey.wf500", $kal-palettes),
-        'background-color': get("grey.wf200", $kal-palettes),
-        'border': 1px solid get("grey.wf200", $kal-palettes)
-      ),
-      'hover': (
-        'background-color': get("orange.dark", $kal-palettes),
-        'border': 1px solid get("orange.dark", $kal-palettes)
-      ),
-      'active': (
-        'background-color': get("orange.darker", $kal-palettes),
-        'border': 1px solid get("orange.darker", $kal-palettes)
-      ),
-      'reverse': (
-        'color': get("white", $kal-palettes),
-        'background-color': get("orange.normal", $kal-palettes),
-        'border': 1px solid get("orange.normal", $kal-palettes),
-        'disabled': (
-          'color': get("grey.wf300", $kal-palettes),
-          'background-color': get("grey.wf700", $kal-palettes),
-          'border': 1px solid get("grey.wf700", $kal-palettes),
-        ),
-        'hover': (
-          'background-color': get("orange.dark", $kal-palettes),
-          'border': 1px solid get("orange.dark", $kal-palettes)
-        ),
-        'active': (
-          'background-color': get("orange.darker", $kal-palettes),
-          'border': 1px solid get("orange.darker", $kal-palettes)
-        )
-      ),
-    ),
-    'secondary': (
-      'color': get("white", $kal-palettes),
-      'background-color': get("grey.wf800", $kal-palettes),
-      'border': 1px solid get("grey.wf800", $kal-palettes),
-      'disabled': (
-        'color': get("grey.wf500", $kal-palettes),
-        'background-color': get("grey.wf200", $kal-palettes),
-        'border': 1px solid get("grey.wf200", $kal-palettes)
-      ),
-      'hover': (
-        'background-color': get("grey.wf700", $kal-palettes),
-        'border': 1px solid get("grey.wf700", $kal-palettes)
-      ),
-      'active': (
-        'background-color': get("grey.wf600", $kal-palettes),
-        'border': 1px solid get("grey.wf600", $kal-palettes)
-      ),
-      'reverse': (
-        'color': get("white", $kal-palettes),
-        'background-color': get("grey.wf800", $kal-palettes),
-        'border': 1px solid get("grey.wf300", $kal-palettes),
-        'disabled': (
-          'color': get("grey.wf300", $kal-palettes),
-          'background-color': get("grey.wf700", $kal-palettes),
-          'border': 1px solid get("grey.wf700", $kal-palettes)
-        ),
-        'hover': (
-          'background-color': get("grey.wf700", $kal-palettes),
-          'border': 1px solid get("grey.wf300", $kal-palettes)
-        ),
-        'active': (
-          'background-color': get("grey.wf600", $kal-palettes),
-          'border': 1px solid get("grey.wf300", $kal-palettes)
-        )
-      ),
-    ),
-    'tertiary': (
-      'color': get("grey.wf800", $kal-palettes),
-      'background-color': get("white", $kal-palettes),
-      'border': 1px solid get("grey.wf300", $kal-palettes),
-      'disabled': (
-        'color': get("grey.wf500", $kal-palettes),
-        'background-color': get("grey.wf200", $kal-palettes),
-        'border': 1px solid get("grey.wf200", $kal-palettes)
-      ),
-      'hover': (
-        'background-color': get("grey.wf100", $kal-palettes),
-        'border': 1px solid get("grey.wf300", $kal-palettes)
-      ),
-      'active': (
-        'background-color': get("grey.wf200", $kal-palettes),
-        'border': 1px solid get("grey.wf300", $kal-palettes)
-      ),
-      'reverse': (
-        'color': get("white", $kal-palettes),
-        'background-color': get("grey.wf700", $kal-palettes),
-        'border': 1px solid get("grey.wf500", $kal-palettes),
-        'disabled': (
-          'color': get("grey.wf300", $kal-palettes),
-          'background-color': get("grey.wf700", $kal-palettes),
-          'border': 1px solid get("grey.wf700", $kal-palettes)
-        ),
-        'hover': (
-          'background-color': get("grey.wf800", $kal-palettes),
-          'border': 1px solid get("grey.wf500", $kal-palettes)
-        ),
-        'active': (
-          'background-color': get("grey.wf800", $kal-palettes),
-          'border': 1px solid get("white", $kal-palettes)
-        )
-      ),
-    ),
-    'large': (
-      'font-size': 17px,
-      'padding': 12px 18px
-    )
-  )
-);
+// Components configurations imports
+@import 'components/kal-button.styles';
 
 // global parameters
 $kal-parameters: (
@@ -202,7 +46,7 @@ $kal-parameters: (
   text: $kal-text,
   form: (
     elements: (
-      'button': $kal-theme-button
+      'button': $kal-styles-button
     ),
     padding: 12px,
     border: (
