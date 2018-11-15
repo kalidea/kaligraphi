@@ -6,32 +6,32 @@
 $kal-colors: (default: #1F1F1F, reverse: #FFF) !default;
 
 // fontfaces
-$base-fontface: 'Arial' !default;
+$kal-base-fontsize: 'Arial' !default;
 
 // default values for font
-$base-fontfamily: $base-fontface, sans-serif !default;
-$base-fontcolor: map-get($kal-colors, default) !default;
-$base-fontsize: 17px !default;
+$kal-base-fontfamily: $kal-base-fontsize, sans-serif !default;
+$kal-base-fontcolor: map-get($kal-colors, default) !default;
+$kal-base-fontsize: 17px !default;
 
-$base-border-radius: 3px !default;
-$base-border-width: 1px !default;
-$base-border-style: solid !default;
-$base-border-color: $base-fontcolor !default;
+$kal-base-borderradius: 3px !default;
+$kal-base-borderwidth: 1px !default;
+$kal-base-borderstyle: solid !default;
+$kal-base-bordercolor: $kal-base-fontcolor !default;
 
 // kal-text
 $kal-text: (
-  font-family: $base-fontfamily,
-  font-size: $base-fontsize,
-  color: $base-fontcolor
+  font-family: $kal-base-fontfamily,
+  font-size: $kal-base-fontsize,
+  color: $kal-base-fontcolor
 );
 // headings
 $kal-headings: (
-  1: ( "font-family": $base-fontface,  "font-size": $base-fontsize + 25, "line-height": 54px, "font-weight": 500),
-  2: ( "font-family": $base-fontface,  "font-size": $base-fontsize + 19, "line-height": 45px, "font-weight": 600),
-  3: ( "font-family": $base-fontface,  "font-size": $base-fontsize + 14, "line-height": 39px, "font-weight": 500),
-  4: ( "font-family": $base-fontface,  "font-size": $base-fontsize + 10, "line-height": 36px, "font-weight": 600),
-  5: ( "font-family": $base-fontface,  "font-size": $base-fontsize + 5, "line-height": 30px, "font-weight": 600),
-  6: ( "font-family": $base-fontface,  "font-size": $base-fontsize + 3, "line-height": 28px, "font-weight": 600)
+  1: ( "font-family": $kal-base-fontsize,  "font-size": $kal-base-fontsize + 25, "line-height": 54px, "font-weight": 500),
+  2: ( "font-family": $kal-base-fontsize,  "font-size": $kal-base-fontsize + 19, "line-height": 45px, "font-weight": 600),
+  3: ( "font-family": $kal-base-fontsize,  "font-size": $kal-base-fontsize + 14, "line-height": 39px, "font-weight": 500),
+  4: ( "font-family": $kal-base-fontsize,  "font-size": $kal-base-fontsize + 10, "line-height": 36px, "font-weight": 600),
+  5: ( "font-family": $kal-base-fontsize,  "font-size": $kal-base-fontsize + 5, "line-height": 30px, "font-weight": 600),
+  6: ( "font-family": $kal-base-fontsize,  "font-size": $kal-base-fontsize + 3, "line-height": 28px, "font-weight": 600)
 ) !default;
 
 // Components configurations imports
@@ -48,10 +48,10 @@ $kal-parameters: (
     ),
     padding: 12px,
     border: (
-      width: $base-border-width,
-      style: $base-border-style,
-      color: $base-fontcolor,
-      radius: $base-border-radius
+      width: $kal-base-borderwidth,
+      style: $kal-base-borderstyle,
+      color: $kal-base-fontcolor,
+      radius: $kal-base-borderradius
     )
   )
 );

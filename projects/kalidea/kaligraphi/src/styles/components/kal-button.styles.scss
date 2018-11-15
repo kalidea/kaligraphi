@@ -1,13 +1,13 @@
 // kal-button parameters and alternates
 $kal-styles-button: (
   'default': (
-    'font-family': $base-fontface,
+    'font-family': $kal-base-fontsize,
     'font-size': 15px,
     'font-weight': bold,
     'color': get("grey.wf800", $kal-palettes),
     'background-color': get("white", $kal-palettes),
     'border': 1px solid get("white", $kal-palettes),
-    'border-radius': $base-border-radius,
+    'border-radius': $kal-base-borderradius,
     'margin': 0,
     'padding': 8px 12px,
     'disabled': (

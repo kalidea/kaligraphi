@@ -6,9 +6,3 @@
     font-style: $style;
   }
 }
-@include font-face(Asap, Asap-Regular, 400, normal);
-@include font-face(Asap, Asap-Medium, 500, normal);
-@include font-face(Asap, Asap-SemiBold, 600, normal);
-
-$base-fontface: 'Asap';
-$base-fontsize: 16px;
