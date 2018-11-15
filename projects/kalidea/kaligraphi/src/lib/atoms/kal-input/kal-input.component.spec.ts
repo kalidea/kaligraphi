@@ -11,32 +11,32 @@ import { KalIconComponent, KalIconModule } from '../kal-icon/kal-icon.module';
   selector: 'kal-test',
   template: `
     <kal-input
+      #inputChange
       [formControl]="inputControl"
       [type]="type"
       [limit]="limit"
       [icon]="icon"
       [clearable]="clearable"
       [placeholder]="placeholder"></kal-input>
+
+    <kal-input
+      #inputBlur
+      [formControl]="inputControlBlur"></kal-input>
   `
 })
 class TestComponent {
-  placeholder = 'plop';
 
   inputControl: FormControl = new FormControl();
+  inputControlBlur: FormControl = new FormControl('', {updateOn: 'blur'});
 
   limit: number;
-
+  placeholder = 'plop';
   type = 'text';
-
   icon = 'calendar_today';
-
   clearable = false;
 
-  @ViewChild(KalInputComponent) inputComponent: KalInputComponent;
-
-
-  constructor() {
-  }
+  @ViewChild('inputChange') inputComponent: KalInputComponent;
+  @ViewChild('inputBlur') inputComponentBlur: KalInputComponent;
 
   get valueChanges() {
     return this.inputControl.valueChanges;
@@ -206,5 +206,9 @@ describe('KalInputComponent', () => {
 
     icons = fixture.debugElement.queryAll(By.directive(KalIconComponent));
     expect(icons.length).toEqual(0);
+  });
+
+  it('should transfert updateOn property from main control', () => {
+    expect(component.inputComponentBlur.control.updateOn).toEqual(component.inputControlBlur.updateOn);
   });
 });

@@ -2,11 +2,32 @@
   Kal-input
 </h1>
 
-<kal-input
-  [type]="type"
-  [clearable]="clearable"
-  [placeholder]="placeholder"></kal-input>
-<hr />
+<section>
+  <article>
+    <kal-form-field>
+
+      <kal-input
+        label="update on change"
+        [formControl]="controlChange"
+        [type]="type"
+        [clearable]="clearable"
+        [placeholder]="placeholder"></kal-input>
+      {{ controlChange.value}}
+    </kal-form-field>
+  </article>
+  <article>
+    <kal-form-field>
+      <kal-input
+        label="update on blur"
+        [formControl]="controlBlur"
+        [type]="type"
+        [clearable]="clearable"
+        [placeholder]="placeholder"></kal-input>
+      {{ controlBlur.value}}
+    </kal-form-field>
+  </article>
+</section>
+<hr/>
 
 
 <kal-form-field>
