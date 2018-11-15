@@ -1,11 +1,13 @@
 import {
+  AfterContentInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component, EventEmitter,
+  Component,
+  EventEmitter,
   Injector,
   Input,
   OnDestroy,
-  OnInit, Output,
+  Output,
   ViewEncapsulation
 } from '@angular/core';
 import { AbstractControl, FormControl, NgControl } from '@angular/forms';
@@ -28,7 +30,7 @@ import { buildProviders, FormElementComponent } from '../../utils/index';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: buildProviders(KalInputComponent)
 })
-export class KalInputComponent extends FormElementComponent<string> implements OnInit, OnDestroy {
+export class KalInputComponent extends FormElementComponent<string> implements OnDestroy, AfterContentInit {
 
   /**
    * list of formaters
@@ -85,6 +87,7 @@ export class KalInputComponent extends FormElementComponent<string> implements O
   get clearable(): boolean {
     return this.isClearable;
   }
+
   set clearable(clearable: boolean) {
     this.isClearable = coerceBooleanProperty(clearable);
     this.cdr.markForCheck();
@@ -118,9 +121,11 @@ export class KalInputComponent extends FormElementComponent<string> implements O
    */
   writeValue(value) {
     this.value = value;
-    value = this.formater.toUser(value);
-    this.control.setValue(value, {emitEvent: true});
-    super.writeValue(value);
+    if (this.control) {
+      value = this.formater.toUser(value);
+      this.control.setValue(value, {emitEvent: true});
+      super.writeValue(value);
+    }
   }
 
   /**
@@ -142,18 +147,27 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     return of(c.errors);
   }
 
-  ngOnInit() {
+  ngOnDestroy(): void {
+    this.controlChangedSubscription.unsubscribe();
+  }
+
+  ngAfterContentInit(): void {
+
+    // ngControl for formControl does not contain `control` on ngOnInit
     this.ngControl = this.injector.get(NgControl, null);
-    this.control = new FormControl(this.value, {updateOn: this.updateOnEvent});
+
+    // grab updateOn property from control
+    let updateOn;
+    if (this.ngControl && this.ngControl.control) {
+      updateOn = this.ngControl && this.ngControl.control ? this.ngControl.control.updateOn : undefined;
+    }
+
+    this.control = new FormControl(this.value, {updateOn});
 
     this.controlChangedSubscription = this.control.valueChanges.subscribe(value => {
       // notify parent for validation
       this.notifyUpdate(value);
     });
-  }
-
-  ngOnDestroy(): void {
-    this.controlChangedSubscription.unsubscribe();
   }
 
 }

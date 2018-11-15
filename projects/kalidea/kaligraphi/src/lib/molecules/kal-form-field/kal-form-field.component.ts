@@ -3,12 +3,11 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ContentChild, forwardRef,
-  Input,
+  ContentChild,
+  forwardRef,
   OnDestroy,
   ViewEncapsulation
 } from '@angular/core';
-import { AbstractControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 import { AutoUnsubscribe, FormElementComponent } from '../../utils/index';
@@ -41,8 +40,6 @@ export class KalFormFieldComponent implements AfterContentInit, OnDestroy {
    * For attribute
    */
   for: string;
-
-  @Input() control: AbstractControl;
 
   @ContentChild(forwardRef( () => FormElementComponent))
   formElement: FormElementComponent;
