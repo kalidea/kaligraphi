@@ -14,6 +14,26 @@ export interface ExampleDialogData {
 }
 
 
+export let counter = 0;
+
+@Component({
+  template: `
+
+    <!-- content -->
+    <div kalDialogContent>
+      Example Dialog for {{ data.user.firstname }} {{ data.user.lastname }} N°{{ id }}
+      <blockquote *ngIf="result"> closed {{ result }}</blockquote>
+    </div>
+
+    <!-- footer -->
+    <div kalDialogFooter>
+      <kal-button (click)="openDialog()">Open Sub Dialog {{ id + 1 }}</kal-button>
+      <kal-button kalDialogClose>Close Dialog</kal-button>
+      <kal-button (click)="submitDialog()">Submit Dialog</kal-button>
+    </div>
+  `,
+})
+
 export class OverviewExampleDialogComponent {
 
   /**
@@ -156,23 +176,3 @@ export class DialogComponent {
   }
 
 }
-
-export let counter = 0;
-
-@Component({
-  template: `
-
-    <!-- content -->
-    <div kalDialogContent>
-      Example Dialog for {{ data.user.firstname }} {{ data.user.lastname }} N°{{ id }}
-      <blockquote *ngIf="result"> closed {{ result }}</blockquote>
-    </div>
-
-    <!-- footer -->
-    <div kalDialogFooter>
-      <kal-button (click)="openDialog()">Open Sub Dialog {{ id + 1 }}</kal-button>
-      <kal-button kalDialogClose>Close Dialog</kal-button>
-      <kal-button (click)="submitDialog()">Submit Dialog</kal-button>
-    </div>
-  `,
-})

@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { PortalModule } from '@angular/cdk/portal';
 
 import { KalTabComponent } from './kal-tab.component';
-import { PortalModule } from '@angular/cdk/portal';
 
 describe('KalTabComponent', () => {
   let component: KalTabComponent;
