@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, Inject, ChangeDetectorRef } from '@angular/core';
-import { KalDialogService, KalDialogConfig, KAL_DIALOG_DATA, KalDialogRef } from '@kalidea/kaligraphi';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, ViewEncapsulation } from '@angular/core';
+import { KAL_DIALOG_DATA, KalDialogConfig, KalDialogRef, KalDialogService } from '@kalidea/kaligraphi';
 
 
 /**
@@ -20,7 +20,7 @@ export interface ExampleDialogData {
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DialogComponent implements OnInit {
+export class DialogComponent {
   /**
    * result of dialog after closing
    */
@@ -59,7 +59,7 @@ export class DialogComponent implements OnInit {
    */
   openConfirmDialog() {
     const config = new KalDialogConfig<ExampleDialogData>({
-      title: 'Confirmation de suppression',
+      title: 'Confirm deletion',
       ...this.config
     });
     const dialogRef = this.dialogService.open(OverviewExampleDialogComponent, config);
@@ -92,9 +92,6 @@ export class DialogComponent implements OnInit {
       this.result = result;
       this.cdr.markForCheck();
     });
-  }
-
-  ngOnInit(): void {
   }
 
 }

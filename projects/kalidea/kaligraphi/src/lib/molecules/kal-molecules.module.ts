@@ -14,7 +14,6 @@ import { KalFormFieldModule } from './kal-form-field/kal-form-field.module';
 import { KalDialogModule } from './kal-dialog/kal-dialog.module';
 import { KalDatepickerModule } from './kal-datepicker/kal-datepicker.module';
 
-
 export * from './kal-textarea/kal-textarea.module';
 export * from './kal-select/kal-select.module';
 export * from './kal-tabs/kal-tab.module';

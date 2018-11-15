@@ -82,9 +82,7 @@ export class KalDialogService {
     const positionStrategy = this.overlay.position().global().centerVertically().centerHorizontally();
     const scrollStrategy = this.overlay.scrollStrategies.block();
 
-    config = Object.assign(new KalDialogConfig(), {positionStrategy, scrollStrategy}, config);
-
-    return config;
+    return Object.assign(new KalDialogConfig(), {positionStrategy, scrollStrategy}, config);
   }
 
   /**
@@ -92,9 +90,7 @@ export class KalDialogService {
    */
   private createOverlay(config) {
 
-    const overlayRef = this.overlay.create(config);
-
-    return overlayRef;
+    return this.overlay.create(config);
   }
 
   /**
