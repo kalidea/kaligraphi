@@ -21,6 +21,7 @@ import { PhoneFormat } from './format/phone.format';
 import { StringFormat } from './format/string.format';
 
 import { buildProviders, FormElementComponent } from '../../utils/index';
+import { FormHooks } from '@angular/forms/src/model';
 
 @Component({
   selector: 'kal-input',
@@ -149,9 +150,9 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     this.ngControl = this.injector.get(NgControl, null);
 
     // grab updateOn property from control
-    let updateOn;
+    let updateOn: FormHooks;
     if (this.ngControl && this.ngControl.control) {
-      updateOn = this.ngControl && this.ngControl.control ? this.ngControl.control.updateOn : undefined;
+      updateOn = this.ngControl.control.updateOn;
     }
 
     this.control = new FormControl(this.value, {updateOn});
