@@ -100,14 +100,6 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     return KalInputComponent.formatersList[this.type] || KalInputComponent.formatersList['text'];
   }
 
-  @Input()
-  set updateOn(event) {
-    if (['change', 'blur', 'submit'].indexOf(event) === -1) {
-      throw Error('updateOn should be one of change, blur, submit');
-    }
-    this.updateOnEvent = event;
-  }
-
   clearField() {
     this.control.setValue('');
   }
