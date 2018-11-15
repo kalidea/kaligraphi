@@ -7,6 +7,7 @@ import { ListComponent } from 'src/app/molecules/list/list.component';
 import { MenuComponent } from 'src/app/molecules/menu/menu.component';
 import { FormFieldComponent } from 'src/app/molecules/form-field/form-field.component';
 import { DialogComponent } from 'src/app/molecules/dialog/dialog.component';
+import { DatepickerComponent } from 'src/app/molecules/datepicker/datepicker.component';
 
 const routes: Routes = [
   {path: 'tab-panel', component: TabPanelComponent},
@@ -16,6 +17,7 @@ const routes: Routes = [
   {path: 'menu', component: MenuComponent},
   {path: 'form-field', component: FormFieldComponent},
   {path: 'dialog', component: DialogComponent},
+  {path: 'datepicker', component: DatepickerComponent},
 ];
 
 @NgModule({

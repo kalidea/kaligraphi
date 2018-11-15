@@ -11,6 +11,7 @@ import { ListComponent } from 'src/app/molecules/list/list.component';
 import { MenuComponent } from 'src/app/molecules/menu/menu.component';
 import { FormFieldComponent } from 'src/app/molecules/form-field/form-field.component';
 import { DialogComponent } from 'src/app/molecules/dialog/dialog.component';
+import { DatepickerComponent } from 'src/app/molecules/datepicker/datepicker.component';
 
 @NgModule({
   imports: [
@@ -28,7 +29,7 @@ import { DialogComponent } from 'src/app/molecules/dialog/dialog.component';
     MenuComponent,
     FormFieldComponent,
     DialogComponent,
-
-  ],
+    DatepickerComponent,
+  ]
 })
 export class MoleculesModule { }

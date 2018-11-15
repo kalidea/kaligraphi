@@ -217,16 +217,19 @@ export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewI
       this.subscription = (this.dataSource as DataSource<T>).connect(this).subscribe(
         (items: T[]) => {
           this.results = items;
+          this.cdr.markForCheck();
         }
       );
     } else if (this.dataSource instanceof Observable) {
       this.subscription = this.dataSource.subscribe(
         (items: T[]) => {
           this.results = items;
+          this.cdr.markForCheck();
         }
       );
     } else if (Array.isArray(this.dataSource)) {
       this.results = this.dataSource;
+      this.cdr.markForCheck();
     }
   }
 

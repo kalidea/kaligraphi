@@ -1,0 +1,11 @@
+<!-- week days -->
+<div *ngFor="let day of narrowWeekDays"> {{ day }}</div>
+
+<button type="button"
+        [kalAutofocus]="isDaySelected(date)"
+        [class.selected]="isDaySelected(date)"
+        [disabled]="shouldDisable(date)"
+        (click)="pickDate(date)"
+        *ngFor="let date of datesList">
+  {{ date.getDay() }}
+</button>

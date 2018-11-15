@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { KalAtomsModule } from './atoms/kal-atoms.module';
 import { KalMoleculesModule } from './molecules/kal-molecules.module';
+import { KalUtilityModule } from './utility/kal-utility.module';
 
 export * from './atoms/kal-atoms.module';
 export * from './molecules/kal-molecules.module';
@@ -11,7 +12,8 @@ export * from './utils/index';
 
 const exports = [
   KalAtomsModule,
-  KalMoleculesModule
+  KalMoleculesModule,
+  KalUtilityModule
 ];
 
 @NgModule({
@@ -22,4 +24,5 @@ const exports = [
   exports: exports,
   declarations: []
 })
-export class KaligraphiModule { }
+export class KaligraphiModule {
+}
