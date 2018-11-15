@@ -17,12 +17,15 @@
          [class.kal-list__item--selected]="isSelected(item)"
          [class.kal-list__item--disabled]="disableRowsFunction(item)"
          (click)="selectItem(item)">
+
       <span class="kal-list__content">
         <ng-container *ngTemplateOutlet="row.view; context: {item: item}"></ng-container>
       </span>
+
       <span class="kal-list__icon">
         <kal-icon>keyboard_arrow_right</kal-icon>
       </span>
+
     </div>
 
 

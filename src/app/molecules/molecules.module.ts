@@ -10,6 +10,7 @@ import { AccordionComponent } from 'src/app/molecules/accordion/accordion.compon
 import { ListComponent } from 'src/app/molecules/list/list.component';
 import { MenuComponent } from 'src/app/molecules/menu/menu.component';
 import { FormFieldComponent } from 'src/app/molecules/form-field/form-field.component';
+import { DatepickerComponent } from 'src/app/molecules/datepicker/datepicker.component';
 import { ButtonComponent } from './button/button.component';
 
 @NgModule({
@@ -26,6 +27,8 @@ import { ButtonComponent } from './button/button.component';
     AccordionComponent,
     ListComponent,
     MenuComponent,
+    FormFieldComponent,
+    DatepickerComponent,
     FormFieldComponent,
     ButtonComponent
   ]

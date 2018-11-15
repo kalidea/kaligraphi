@@ -7,6 +7,7 @@ import {
   EventEmitter,
   HostListener,
   Input,
+  OnDestroy,
   OnInit,
   Output,
   QueryList,
@@ -15,8 +16,11 @@ import {
 } from '@angular/core';
 import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
 import { ENTER, SPACE } from '@angular/cdk/keycodes';
+import { Observable, Subscription } from 'rxjs';
 import { KalListItemDirective } from './kal-list-item.directive';
 import { KalListItemSelectionDirective } from './kal-list-item-selection.directive';
+import { CollectionViewer, DataSource, ListRange } from '@angular/cdk/collections';
+import { AutoUnsubscribe } from '../../utils';
 
 @Component({
   selector: 'kal-list',
@@ -25,7 +29,7 @@ import { KalListItemSelectionDirective } from './kal-list-item-selection.directi
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalListComponent<T> implements OnInit, AfterViewInit {
+export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Results list
@@ -35,7 +39,7 @@ export class KalListComponent<T> implements OnInit, AfterViewInit {
   /**
    * Datasource to give items list to the component
    */
-  @Input() datasource: any;
+  @Input() dataSource: DataSource<T> | Observable<T[]> | T[];
 
   /**
    * Triggered when selection has changed
@@ -50,7 +54,12 @@ export class KalListComponent<T> implements OnInit, AfterViewInit {
   /**
    * The reference to the element thats contains the kal list item directive
    */
-  @ViewChildren(KalListItemSelectionDirective) items: QueryList<KalListItemSelectionDirective>;
+  @ViewChildren(KalListItemSelectionDirective) children: QueryList<KalListItemSelectionDirective>;
+
+  /**
+   * @inheritDoc
+   */
+  viewChange: Observable<ListRange>;
 
   /**
    * The selected item
@@ -76,6 +85,12 @@ export class KalListComponent<T> implements OnInit, AfterViewInit {
    * The selected item index
    */
   private selectedItemIndex: number;
+
+  /**
+   * The subscription
+   */
+  @AutoUnsubscribe()
+  private subscription: Subscription = Subscription.EMPTY;
 
   /**
    * Is the row disabled
@@ -198,16 +213,33 @@ export class KalListComponent<T> implements OnInit, AfterViewInit {
   ngOnInit() {
     this.results = [];
 
-    if (this.datasource) {
-      this.datasource.connect().subscribe(
-        element => {
-          this.results = element;
+    if ((this.dataSource as DataSource<T>).connect instanceof Function) {
+      this.subscription = (this.dataSource as DataSource<T>).connect(this).subscribe(
+        (items: T[]) => {
+          this.results = items;
+          this.cdr.markForCheck();
         }
       );
+    } else if (this.dataSource instanceof Observable) {
+      this.subscription = this.dataSource.subscribe(
+        (items: T[]) => {
+          this.results = items;
+          this.cdr.markForCheck();
+        }
+      );
+    } else if (Array.isArray(this.dataSource)) {
+      this.results = this.dataSource;
+      this.cdr.markForCheck();
     }
   }
 
   ngAfterViewInit() {
-    this.keyManager = new ActiveDescendantKeyManager<KalListItemSelectionDirective>(this.items).withVerticalOrientation();
+    this.keyManager = new ActiveDescendantKeyManager<KalListItemSelectionDirective>(this.children).withVerticalOrientation();
+  }
+
+  ngOnDestroy() {
+    if ((this.dataSource as DataSource<T>).connect instanceof Function) {
+      (this.dataSource as DataSource<T>).disconnect(this);
+    }
   }
 }
