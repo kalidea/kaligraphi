@@ -39,7 +39,7 @@ const exports = [
   KalMenuModule,
   KalListModule,
   KalFormFieldModule,
-  KalDialogModule
+  KalDialogModule,
   KalDatepickerModule,
 ];
 
