@@ -14,11 +14,13 @@
 //
 // @return Anything
 // ---------------------------------------------------------
-@function get ($key, $map: $parameters) {
+@function get ($key, $map: $parameters, $debug: false) {
   $keys: str-explode($key, '.');
 
   @if not deep-map-check($map, $keys...) {
-    @debug 'The argument $map: `#{$map}` doesn\'t has some of the $keys: `#{$keys}`!';
+    @if $debug {
+      @debug 'The argument $map: `#{$map}` doesn\'t has some of the $keys: `#{$keys}`!';
+    }
     @return null;
   }
 
