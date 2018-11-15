@@ -1,8 +1,18 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Optional,
+  SimpleChanges,
+  ViewEncapsulation
+} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Subscription } from 'rxjs';
 import { buildProviders, FormElementComponent } from '../../utils/index';
+import { KalFormFieldComponent } from '../../molecules/kal-form-field/kal-form-field.component';
 
 @Component({
   selector: 'kal-checkbox',
@@ -24,8 +34,14 @@ export class KalCheckboxComponent extends FormElementComponent<boolean> implemen
    */
   controlSubscription: Subscription;
 
-  constructor() {
+  /**
+   * Contains label
+   */
+  readonly containsLabel;
+
+  constructor(@Optional() formField: KalFormFieldComponent) {
     super();
+    this.containsLabel = !formField;
   }
 
   /**
@@ -40,9 +56,9 @@ export class KalCheckboxComponent extends FormElementComponent<boolean> implemen
    */
   setDisabledState(disabled: boolean) {
     if (disabled) {
-      this.control.disable();
+      this.control.disable({emitEvent: false});
     } else {
-      this.control.enable();
+      this.control.enable({emitEvent: false});
     }
   }
 

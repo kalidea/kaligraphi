@@ -9,5 +9,5 @@ import { FormControl, Validator, Validators } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FormFieldComponent {
-  control1 = new FormControl('john', Validators.email)
+  control1 = new FormControl('john', Validators.email);
 }
