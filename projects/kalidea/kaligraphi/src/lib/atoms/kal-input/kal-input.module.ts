@@ -2,8 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { KalInputComponent } from './kal-input.component';
 import { KalIconModule } from '../kal-icon/kal-icon.module';
+
+import { KalInputComponent } from './kal-input.component';
+
 export * from './kal-input.component';
 
 const exports = [
@@ -13,8 +15,8 @@ const exports = [
 @NgModule({
   imports: [
     CommonModule,
-    KalIconModule,
     ReactiveFormsModule,
+    KalIconModule
   ],
   exports: exports,
   declarations: exports

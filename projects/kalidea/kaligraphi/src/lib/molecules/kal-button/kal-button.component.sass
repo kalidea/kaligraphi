@@ -25,7 +25,7 @@
         &:active, &:focus
           background-color: get('active.background-color', $theme-parameters)
           border: get('active.border', $theme-parameters)
-    &.kal-button--reverse
+    &.kal-theme--reverse
       button
         color: get('reverse.color', $theme-parameters)
         background-color: get('reverse.background-color', $theme-parameters)
@@ -44,11 +44,10 @@
 
 =kal-button($kal-parameters)
   kal-button
-    $self: &
     display: inline-block
     &:focus
       outline: none
     +kal-themed-button(get('form.elements.button.default', $kal-parameters))
     @each $key, $params in get('form.elements.button.alternates', $kal-parameters)
-      &.#{$self}--#{$key}
+      &.kal-theme--#{$key}
         +kal-themed-button($params)
