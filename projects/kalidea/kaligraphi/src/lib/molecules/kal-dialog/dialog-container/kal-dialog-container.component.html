@@ -1,0 +1,11 @@
+<div class="kal-dialog">
+
+  <!-- header -->
+  <div kalDialogHeader *ngIf="config.title">
+    <div class="kal-dialog__title">{{ config.title }}</div>
+    <kal-icon (click)="closeDialog()" *ngIf="!config.disableClose">times</kal-icon>
+  </div>
+
+  <ng-template cdkPortalOutlet></ng-template>
+
+</div>

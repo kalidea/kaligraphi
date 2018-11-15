@@ -26,6 +26,7 @@ export class AppComponent {
     {label: 'Tab panel', route: '/molecules/tab-panel'},
     {label: 'Stepper', route: '/molecules/stepper'},
     {label: 'Accordion', route: '/molecules/accordion'},
+    {label: 'Dialog', route: '/molecules/dialog'},
     {label: 'Menu', route: '/molecules/menu'},
     {label: 'Form Field', route: '/molecules/form-field'},
     {label: 'Datepicker', route: '/molecules/datepicker'},

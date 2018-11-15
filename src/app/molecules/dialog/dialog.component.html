@@ -1,0 +1,25 @@
+
+<blockquote *ngIf="result">{{ result | json }}</blockquote>
+
+<div>
+  <input type="checkbox"
+         [(ngModel)]="hasBackdrop"
+         id="hasBackdrop"/>
+  <label for="hasBackdrop">hasBackdrop</label>
+</div>
+
+<div>
+  <input type="checkbox"
+         [(ngModel)]="disableClose"
+         id="disableClose"/>
+  <label for="disableClose">disableClose</label>
+</div>
+<p>
+  <button (click)="openDialog()">Open Dialog</button>
+</p>
+
+
+<blockquote *ngIf="resultConfirm">{{ resultConfirm | json }}</blockquote>
+<p>
+  <button (click)="openConfirmDialog()">Open confirm Dialog</button>
+</p>
