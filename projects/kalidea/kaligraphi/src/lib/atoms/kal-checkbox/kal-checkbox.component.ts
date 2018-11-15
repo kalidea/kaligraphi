@@ -1,7 +1,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  Input,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -38,7 +37,7 @@ export class KalCheckboxComponent extends FormElementComponent<boolean> implemen
   /**
    * Contains label
    */
-  containsLabel = true;
+  private containsLabel = true;
 
   constructor(@Optional() formField: KalFormFieldComponent) {
     super();
@@ -59,9 +58,9 @@ export class KalCheckboxComponent extends FormElementComponent<boolean> implemen
    */
   setDisabledState(disabled: boolean) {
     if (disabled) {
-      this.control.disable();
+      this.control.disable({emitEvent: false});
     } else {
-      this.control.enable();
+      this.control.enable({emitEvent: false});
     }
   }
 
