@@ -1,7 +1,7 @@
 // kal-button parameters and alternates
 $kal-styles-button: (
   'default': (
-    'font-family': $kal-fontface-text,
+    'font-family': $base-fontface,
     'font-size': 15px,
     'font-weight': bold,
     'color': get("grey.wf800", $kal-palettes),
