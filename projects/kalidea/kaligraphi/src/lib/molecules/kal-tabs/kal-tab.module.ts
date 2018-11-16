@@ -25,9 +25,10 @@ const exports = [
 @NgModule({
   imports: [
     CommonModule,
-    PortalModule
+    PortalModule,
   ],
   exports: exports,
   declarations: exports
 })
-export class KalTabModule { }
+export class KalTabModule {
+}

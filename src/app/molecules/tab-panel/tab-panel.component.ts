@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-tab-panel',
@@ -9,7 +10,13 @@ import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@
 })
 export class TabPanelComponent implements OnInit {
 
+  formControl = new FormControl(2);
+
   constructor() { }
+
+  changeTab() {
+    this.formControl.patchValue(0);
+  }
 
   ngOnInit() {
   }
