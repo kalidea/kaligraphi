@@ -1,7 +1,77 @@
-=kal-select($parameters)
+=kal-select($kal-parameters)
   kal-select
-    +kal-generic-form($parameters)
+    display: inline-block
+    position: relative
+    //Par defaut
+    .kal-select__trigger
+      display: flex
+      align-items: center
+      background-color: get('palettes.grey.wf100',$kal-parameters)
+      color: get('palettes.grey.wf800',$kal-parameters)
+      border: 1px solid get('palettes.grey.wf300',$kal-parameters)
+      border-radius: get('form.border.radius',$kal-parameters)
+      padding: 10px 20px
+      .kal-select__triggervalue, .kal-select__placeholder
+        font-size: $kal-base-fontsize
+        font-weight: 600
+        //icone placé à droite
+        + kal-icon
+          padding-left: 24px
+          font-size: 1.2em
+    .kal-select__overlay
+      background-color: get('palettes.grey.wf100',$kal-parameters)
+      color: get('palettes.grey.wf800',$kal-parameters)
+      border: 1px solid get('palettes.grey.wf300',$kal-parameters)
+      border-radius: get('form.border.radius',$kal-parameters)
+    &:focus, &:active
+      outline: none
+      .kal-select__trigger
+        border-color: get('palettes.grey.wf500',$kal-parameters)
+    &:hover
+      cursor: pointer
+    &[disabled]
+      cursor: not-allowed
+      .kal-select__triggervalue, .kal-select__placeholder
+        color: get('palettes.grey.wf500',$kal-parameters)
+        + kal-icon
+          color: get('palettes.grey.wf500',$kal-parameters)
+    // Variante reverse
+    &.kal-select--reverse
+      .kal-select__trigger
+        background-color: get('palettes.grey.wf800',$kal-parameters)
+        color: get('palettes.white',$kal-parameters)
+        border-color: get('palettes.grey.wf300',$kal-parameters)
+        > div + kal-icon
+          color: get('palettes.orange.normal',$kal-parameters)
+      .kal-select__overlay
+        background-color: get('palettes.grey.wf800',$kal-parameters)
+        color: get('palettes.white',$kal-parameters)
+        border-color: get('palettes.grey.wf300',$kal-parameters)
+      &:focus, &:active
+        .kal-select__trigger
+          border-color: get('palettes.grey.wf100',$kal-parameters)
+      &[disabled]
+        .kal-select__trigger
+          .kal-select__triggervalue, .kal-select__placeholder
+            color: get('palettes.grey.wf300',$kal-parameters)
+            + kal-icon
+              color: get('palettes.grey.wf300',$kal-parameters)
+    // Variante sombre sans bordure
+    &.kal-select--borderless
+      .kal-select__trigger, .kal-select__overlay
+        background-color: get('palettes.grey.wf800',$kal-parameters)
+        color: get('palettes.white',$kal-parameters)
+        border-color: get('palettes.grey.wf800',$kal-parameters)
 
+      &[disabled]
+        .kal-select__trigger
+          .kal-select__triggervalue, .kal-select__placeholder
+            color: get('palettes.grey.wf300',$kal-parameters)
+            + kal-icon
+              color: get('palettes.grey.wf300',$kal-parameters)
+      &:focus, &:active
+        .kal-select__trigger
+          border-color: get('palettes.grey.wf100',$kal-parameters)
 
 .cdk-overlay-backdrop
   position: absolute

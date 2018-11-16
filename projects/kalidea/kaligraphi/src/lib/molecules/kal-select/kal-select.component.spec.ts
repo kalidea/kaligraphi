@@ -36,7 +36,7 @@ describe('TestSelectComponent', () => {
       fixture = TestBed.createComponent(TestSelectComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
-      trigger = fixture.debugElement.query(By.css('.kal-select-trigger')).nativeElement;
+      trigger = fixture.debugElement.query(By.css('.kal-select__trigger')).nativeElement;
 
       overlayContainer = fixture.debugElement.injector.get(OverlayContainer);
       overlayContainerElement = overlayContainer.getContainerElement();
@@ -81,7 +81,7 @@ describe('TestSelectComponent', () => {
 
     it('should set a default label', () => {
       fixture.detectChanges();
-      const placeHolder = fixture.debugElement.query(By.css('.kal-select-placeholder'));
+      const placeHolder = fixture.debugElement.query(By.css('.kal-select__placeholder'));
 
       expect(placeHolder.nativeElement.textContent).toEqual('Sélectionnez un élément');
     });

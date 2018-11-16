@@ -37,6 +37,7 @@ $kal-headings: (
 // Components configurations imports
 @import 'components/kal-button.styles';
 @import 'components/kal-menu.styles';
+@import 'components/kal-select.styles';
 
 // global parameters
 $kal-parameters: (
@@ -44,6 +45,7 @@ $kal-parameters: (
   headings: $kal-headings,
   text: $kal-text,
   menu: $kal-styles-menu,
+  select:$kal-styles-select,
   form: (
     elements: (
       'button': $kal-styles-button
