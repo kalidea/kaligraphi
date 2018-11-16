@@ -2,7 +2,7 @@
   "name": "kaligraphi",
   "version": "0.0.1",
   "scripts": {
-    "dev": "ng build --watch @kalidea/kaligraphi",
+    "dev": "ng build @kalidea/kaligraphi --watch ",
     "serve": "ng serve --open",
     "test": "ng test @kalidea/kaligraphi",
     "ng": "ng",
