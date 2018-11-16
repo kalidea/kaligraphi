@@ -1,88 +1,72 @@
 =kal-themed-select($theme-parameters)
-  kal-select
-    display: inline-block
-    position: relative
     .kal-select__trigger
       > div
         display: flex
         align-items: center
-        background-color: get('palettes.grey.wf100',$kal-parameters)
-        color: get('palettes.grey.wf800',$kal-parameters)
-        border: 1px solid get('palettes.grey.wf300',$kal-parameters)
-        border-radius: get('form.border.radius',$kal-parameters)
-        padding: 10px 20px
+        background-color: get('background-color', $theme-parameters)
+        border: get('border', $theme-parameters)
+        border-radius: get('border-radius', $theme-parameters)
+        padding: get('padding', $theme-parameters)
         .kal-select__triggervalue, .kal-select__placeholder
           display: inline-block
-          font-size: $kal-base-fontsize
-          font-weight: 600
-          //icone placé à droite
+          font-size: get('label.font-size', $theme-parameters)
+          font-weight: get('label.font-weight', $theme-parameters)
+          color: get('label.color', $theme-parameters)
           + kal-icon
-            padding-left: 24px
-            font-size: 1.2em
+            color: get('icon.color', $theme-parameters)
+            padding: get('icon.padding', $theme-parameters)
+            font-size: get('icon.font-size', $theme-parameters)
+    &:not([disabled])
+      &:focus, &:active
+        .kal-select__trigger
+          > div
+            border-color:  get('active.border-color', $theme-parameters)
+      &:hover
+        cursor: pointer
     &[disabled]
       cursor: not-allowed
       .kal-select__trigger
         > div
           .kal-select__triggervalue, .kal-select__placeholder
-            color: get('palettes.grey.wf500',$kal-parameters)
+            color: get('disabled.label.color', $theme-parameters)
             + kal-icon
-              color: get('palettes.grey.wf500',$kal-parameters)
-    &:not([disabled])
-      &:focus, &:active
-        .kal-select__trigger
-          border-color: get('palettes.grey.wf500',$kal-parameters)
-      &:hover
-        cursor: pointer
+              color: get('disabled.icon.color', $theme-parameters)
     .kal-select__overlay
-      background-color: get('palettes.grey.wf100',$kal-parameters)
-      color: get('palettes.grey.wf800',$kal-parameters)
-      border: 1px solid get('palettes.grey.wf300',$kal-parameters)
-      border-radius: $kal-base-borderradius
+      background-color: get('overlay.background-color', $theme-parameters)
+      color: get('overlay.color', $theme-parameters)
+      border: get('overlay.border', $theme-parameters)
+      border-radius:  get('overlay.border-radius', $theme-parameters)
 
-    // Variante reverse
     &.kal-theme--reverse
       .kal-select__trigger
         > div
-          background-color: get('palettes.grey.wf800',$kal-parameters)
-          color: get('palettes.white',$kal-parameters)
-          border-color: get('palettes.grey.wf300',$kal-parameters)
-          + kal-icon
-            color: get('palettes.orange.normal',$kal-parameters)
+          background-color:  get('background-color', $theme-parameters)
+          border-color:  get('border-color', $theme-parameters)
+          .kal-select__triggervalue, .kal-select__placeholder
+            color:  get('label.color', $theme-parameters)
+            + kal-icon
+              color: get('icon.color', $theme-parameters)
+      &:not([disabled])
+        &:focus, &:active
+          .kal-select__trigger
+            border-color:  get('active.border-color', $theme-parameters)
       &[disabled]
         .kal-select__trigger
           > div
             .kal-select__triggervalue, .kal-select__placeholder
-              color: get('palettes.grey.wf300',$kal-parameters)
+              color:  get('disabled.label.color', $theme-parameters)
               + kal-icon
-                color: get('palettes.grey.wf300',$kal-parameters)
-      &:not([disabled])
-        &:focus, &:active
-          .kal-select__trigger
-            border-color: get('palettes.grey.wf100',$kal-parameters)
-        .kal-select__overlay
-          background-color: get('palettes.grey.wf800',$kal-parameters)
-          color: get('palettes.white',$kal-parameters)
-          border-color: get('palettes.grey.wf300',$kal-parameters)
+                color: get('disabled.icon.color', $theme-parameters)
+      .kal-select__overlay
+        background-color: get('overlay.background-color', $theme-parameters)
+        color: get('overlay.color', $theme-parameters)
+        border: get('overlay.border', $theme-parameters)
 
 =kal-select($kal-parameters)
+  kal-select
+    display: inline-block
+    position: relative
     +kal-themed-select(get('form.elements.select.default', $kal-parameters))
     @each $key, $params in get('form.elements.select.alternates', $kal-parameters)
       &.kal-theme--#{$key}
         +kal-themed-select($params)
-
-
-
-
-
-.cdk-overlay-backdrop
-  position: absolute
-  top: 0
-  bottom: 0
-  left: 0
-  right: 0
-  z-index: 1000
-  opacity: 0
-
-.cdk-overlay-pane
-  position: absolute
-  z-index: 1000

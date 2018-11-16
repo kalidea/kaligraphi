@@ -1,50 +1,121 @@
 // kal-select parameters and alternates
 $kal-styles-select: (
   'default': (
-
-    'disabled': (
-
+    'background-color': get('grey.wf100',$kal-palettes),
+    'border': 1px solid get('grey.wf300',$kal-palettes),
+    'border-radius': $kal-base-borderradius,
+    'padding': 10px 20px,
+    'label': (
+      'font-size': $kal-base-fontsize,
+      'font-weight': 600,
+      'color': get('grey.wf800',$kal-palettes)
     ),
-    'hover': (
-
+    'icon': (
+      'color': get('grey.wf800',$kal-palettes),
+      'padding': 0 0 0 24px,
+      'font-size': 1.2em
+    ),
+    'disabled': (
+      'label': (
+        'color': get('grey.wf500',$kal-palettes)
+      ),
+      'icon': (
+        'color': get('grey.wf500',$kal-palettes)
+      )
     ),
     'active': (
-
+      'border-color': get('grey.wf500',$kal-palettes)
+    ),
+    'overlay': (
+      'background-color': get('grey.wf100',$kal-palettes),
+      'color': get('grey.wf800',$kal-palettes),
+      'border': 1px solid get('grey.wf500',$kal-palettes),
+      'border-radius': $kal-base-borderradius
     ),
     'reverse': (
-      'disabled': (
-
+      'background-color': get('.grey.wf800',$kal-palettes),
+      'border-color': get('grey.wf300',$kal-palettes),
+      'label': (
+        'color': get('white',$kal-palettes)
       ),
-      'hover': (
-
+      'icon': (
+        'color': get('orange.normal',$kal-palettes)
+      ),
+      'disabled': (
+        'label': (
+          'color': get('grey.wf300',$kal-palettes)
+        ),
+        'icon': (
+          'color': get('grey.wf300',$kal-palettes)
+        )
       ),
       'active': (
-
+        'border-color': get('grey.wf100',$kal-palettes)
+      ),
+      'overlay': (
+        'background-color': get('grey.wf800',$kal-palettes),
+        'color': get('white',$kal-palettes),
+        'border': 1px solid get('grey.wf300',$kal-palettes)
       )
-
-    ),
+    )
   ),
   'alternates': (
-    'secondary':(
-
-      'disabled': (
-
+    'secondary': (
+      'background-color': get('grey.wf800',$kal-palettes),
+      'border': 1px solid get('grey.wf800',$kal-palettes),
+      'border-radius': $kal-base-borderradius,
+      'padding': 10px 20px,
+      'label': (
+        'font-size': $kal-base-fontsize,
+        'font-weight': 600,
+        'color': get('white',$kal-palettes)
       ),
-      'hover': (
-
+      'icon': (
+        'color': get('white',$kal-palettes),
+        'padding-left': 24px,
+        'font-size': 1.2em
+      ),
+      'disabled': (
+        'label': (
+          'color': get('grey.wf300',$kal-palettes)
+        ),
+        'icon': (
+          'color': get('grey.wf300',$kal-palettes)
+        )
       ),
       'active': (
-
+        'border-color': get('white',$kal-palettes)
+      ),
+      'overlay': (
+        'background-color': get('grey.wf800',$kal-palettes),
+        'color': get('white',$kal-palettes),
+        'border': 1px solid get('grey.wf800',$kal-palettes),
+        'border-radius': $kal-base-borderradius
       ),
       'reverse': (
-        'disabled': (
-
+        'background-color': get('.grey.wf800',$kal-palettes),
+        'border-color': get('grey.wf800',$kal-palettes),
+        'label': (
+          'color': get('white',$kal-palettes)
         ),
-        'hover': (
-
+        'icon': (
+          'color': get('white',$kal-palettes)
+        ),
+        'disabled': (
+          'label': (
+            'color': get('grey.wf300',$kal-palettes)
+          ),
+          'icon': (
+            'color': get('grey.wf300',$kal-palettes)
+          )
         ),
         'active': (
-
+          'border-color': get('white',$kal-palettes)
+        ),
+        'overlay': (
+          'background-color': get('grey.wf800',$kal-palettes),
+          'color': get('white',$kal-palettes),
+          'border-color': 1px solid get('grey.wf300',$kal-palettes)
         )
       )
     )
