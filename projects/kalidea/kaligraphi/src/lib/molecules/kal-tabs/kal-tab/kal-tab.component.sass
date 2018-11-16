@@ -1,29 +1,29 @@
 =kal-tabs($kal-parameters)
   kal-tab
-      kal-tab-group
-        display: block
-        position: relative
-        div:nth-last-child(1)
-          display: flex
-          flex-flow: row nowrap
-          kal-tab-header
-            cursor: default
-            padding: 24px 14px 20px 14px
-            color: get("black", $kal-palettes)
-            background-color: get("white", $kal-palettes)
-            border: 1px solid get("grey.wf200", $kal-palettes)
-          .--highlighted
-            background-color: grey
-          .--selected
-            background-color: red
-          .--disabled
-            background-color: lightgrey
-        div:nth-child(2)
-          kal-tab-body
-            display: none
-            background-color: get("white", $kal-palettes)
-            border: 1px solid get("grey.wf200", $kal-palettes)
-            box-shadow: 0 0 24px rgba(0, 0, 0, 0.06)
-            padding: 20px 24px
-            &.--is-active
+    kal-tab-group
+      display: block
+      position: relative
+      div:nth-last-child(1)
+        display: flex
+        flex-flow: row nowrap
+        kal-tab-header
+          cursor: default
+          padding: 24px 14px 20px 14px
+          color: get("black", $kal-palettes)
+          background-color: get("white", $kal-palettes)
+          border: 1px solid get("grey.wf200", $kal-palettes)
+        &.--highlighted
+          background-color: grey
+        &.--selected
+          background-color: red
+        &.--disabled
+          background-color: lightgrey
+      div:nth-child(2)
+        kal-tab-body
+          display: none
+          background-color: get("white", $kal-palettes)
+          border: 1px solid get("grey.wf200", $kal-palettes)
+          box-shadow: 0 0 24px rgba(0, 0, 0, 0.06)
+          padding: 20px 24px
+          &.--is-active
               display: block
