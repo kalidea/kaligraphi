@@ -22,11 +22,6 @@ export class KalButtonComponent implements OnInit {
   @Input() size: 'normal' | 'large' = 'normal';
 
   /**
-   * Output for a event clic
-   */
-  @Output() click: EventEmitter<any> = new EventEmitter<any>();
-
-  /**
    * Is the button disabled ?
    */
   private isDisabled = false;
@@ -42,10 +37,6 @@ export class KalButtonComponent implements OnInit {
   set disabled(value: boolean) {
     this.isDisabled = coerceBooleanProperty(value);
     this.tabIndex = this.disabled ? this.tabIndex : null;
-  }
-
-  handleClick(event: any) {
-    this.click.emit(event);
   }
 
   ngOnInit() {

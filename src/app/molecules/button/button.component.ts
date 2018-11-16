@@ -11,5 +11,4 @@ export class ButtonComponent {
   disabled = false;
   themes;
 
-
 }

@@ -62,28 +62,6 @@ describe('KalButtonComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should emit event on click', () => {
-    const spy = spyOn(component.click, 'emit');
-    fixture.debugElement.query(By.css('button')).nativeElement.click();
-    expect(spy).toHaveBeenCalled();
-  });
-
-  it('should not emit event if disabled', () => {
-    component.disabled = true;
-    fixture.detectChanges(); // recalcul la vue
-    const spy = spyOn(component.click, 'emit');
-    fixture.debugElement.query(By.css('button')).nativeElement.click();
-    expect(spy).not.toHaveBeenCalled();
-  });
-
-  it('should emit event if not disabled', () => {
-    component.disabled = false;
-    fixture.detectChanges(); // recalcul la vue
-    const spy = spyOn(component.click, 'emit');
-    fixture.debugElement.query(By.css('button')).nativeElement.click();
-    expect(spy).toHaveBeenCalled();
-  });
-
   it('should create tabIndex', () => {
     const index = 5;
     component.tabIndex = index;
