@@ -2,7 +2,7 @@
   kal-tab-group
     display: block
 
-    div:nth-child(1)
+    > div:nth-child(1)
       display: flex
       flex-flow: row nowrap
       kal-tab-header
@@ -34,7 +34,7 @@
           > kal-icon
             padding: get("tabs.default.header.icon.padding", $kal-parameters)
 
-    div:nth-child(2)
+    > div:nth-child(2)
       kal-tab-body
         display: none
         background-color: get("tabs.default.body.background-color", $kal-parameters)
