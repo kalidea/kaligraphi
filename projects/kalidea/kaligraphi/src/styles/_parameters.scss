@@ -6,10 +6,10 @@
 $kal-colors: (default: #1F1F1F, reverse: #FFF) !default;
 
 // fontfaces
-$kal-base-fontsize: 'Arial' !default;
+$kal-base-fontface: 'Arial' !default;
 
 // default values for font
-$kal-base-fontfamily: $kal-base-fontsize, sans-serif !default;
+$kal-base-fontfamily: $kal-base-fontface, sans-serif !default;
 $kal-base-fontcolor: map-get($kal-colors, default) !default;
 $kal-base-fontsize: 17px !default;
 
@@ -26,24 +26,25 @@ $kal-text: (
 );
 // headings
 $kal-headings: (
-  1: ( "font-family": $kal-base-fontsize,  "font-size": $kal-base-fontsize + 25, "line-height": 54px, "font-weight": 500),
-  2: ( "font-family": $kal-base-fontsize,  "font-size": $kal-base-fontsize + 19, "line-height": 45px, "font-weight": 600),
-  3: ( "font-family": $kal-base-fontsize,  "font-size": $kal-base-fontsize + 14, "line-height": 39px, "font-weight": 500),
-  4: ( "font-family": $kal-base-fontsize,  "font-size": $kal-base-fontsize + 10, "line-height": 36px, "font-weight": 600),
-  5: ( "font-family": $kal-base-fontsize,  "font-size": $kal-base-fontsize + 5, "line-height": 30px, "font-weight": 600),
-  6: ( "font-family": $kal-base-fontsize,  "font-size": $kal-base-fontsize + 3, "line-height": 28px, "font-weight": 600)
+  1: ( "font-family": $kal-base-fontface,  "font-size": $kal-base-fontsize + 25, "line-height": 54px, "font-weight": 500),
+  2: ( "font-family": $kal-base-fontface,  "font-size": $kal-base-fontsize + 19, "line-height": 45px, "font-weight": 600),
+  3: ( "font-family": $kal-base-fontface,  "font-size": $kal-base-fontsize + 14, "line-height": 39px, "font-weight": 500),
+  4: ( "font-family": $kal-base-fontface,  "font-size": $kal-base-fontsize + 10, "line-height": 36px, "font-weight": 600),
+  5: ( "font-family": $kal-base-fontface,  "font-size": $kal-base-fontsize + 5, "line-height": 30px, "font-weight": 600),
+  6: ( "font-family": $kal-base-fontface,  "font-size": $kal-base-fontsize + 3, "line-height": 28px, "font-weight": 600)
 ) !default;
 
 // Components configurations imports
 @import 'components/kal-button.styles';
 @import 'components/kal-menu.styles';
-
+@import 'components/kal-tabs.styles';
 // global parameters
 $kal-parameters: (
   palettes: $kal-palettes,
   headings: $kal-headings,
   text: $kal-text,
   menu: $kal-styles-menu,
+  tabs: $kal-styles-tabs,
   form: (
     elements: (
       'button': $kal-styles-button

@@ -1,0 +1,45 @@
+=kal-tabs($kal-parameters)
+  kal-tab-group
+    display: block
+
+    > div:nth-child(1)
+      display: flex
+      flex-flow: row nowrap
+      kal-tab-header
+        position: relative
+        top: 1px
+        span
+          display: flex
+          flex-flow: row nowrap
+          align-items: center
+          cursor: pointer
+          font: get("tabs.default.header.font", $kal-parameters)
+          color: get("tabs.default.header.color", $kal-parameters)
+          background-color: get("tabs.default.header.background-color", $kal-parameters)
+          border: get("tabs.default.header.border", $kal-parameters)
+          padding: get("tabs.default.header.padding", $kal-parameters)
+          &:hover
+            color: get("tabs.default.header.hover.color", $kal-parameters)
+          &.kal-tab-header-highlighted
+            background-color: get("tabs.default.header.highlighted.background-color", $kal-parameters)
+            color: get("tabs.default.header.highlighted.color", $kal-parameters)
+          &.kal-tab-header-selected
+            background-color: get("tabs.default.header.selected.background-color", $kal-parameters)
+            color: get("tabs.default.header.selected.color", $kal-parameters)
+            border-bottom-color: get("tabs.default.header.selected.border-bottom-color", $kal-parameters)
+          &.kal-tab-header-disabled, &[disabled]
+            background-color: get("tabs.default.header.disabled.background-color", $kal-parameters)
+            color: get("tabs.default.header.disabled.color", $kal-parameters)
+            cursor: get("tabs.default.header.disabled.cursor", $kal-parameters)
+          > kal-icon
+            padding: get("tabs.default.header.icon.padding", $kal-parameters)
+
+    > div:nth-child(2)
+      kal-tab-body
+        display: none
+        background-color: get("tabs.default.body.background-color", $kal-parameters)
+        border: get("tabs.default.body.border", $kal-parameters)
+        box-shadow: get("tabs.default.body.box-shadow", $kal-parameters)
+        padding: get("tabs.default.body.padding", $kal-parameters)
+        &.kal-tab-body-is-active
+          display: block
