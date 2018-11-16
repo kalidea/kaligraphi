@@ -1,29 +1,45 @@
 =kal-tabs($kal-parameters)
-  kal-tab
-    kal-tab-group
-      display: block
-      position: relative
-      div:nth-last-child(1)
-        display: flex
-        flex-flow: row nowrap
-        kal-tab-header
-          cursor: default
+  kal-tab-group
+    display: block
+
+    div:nth-child(1)
+      display: flex
+      flex-flow: row nowrap
+      kal-tab-header
+        position: relative
+        top: 1px
+        span
+          display: flex
+          flex-flow: row nowrap
+          align-items: center
+          cursor: pointer
+          font-weight: 600
+          color: get("grey.wf400", $kal-palettes)
+          background-color: get("grey.wf100", $kal-palettes)
+          border: 1px solid get("grey.wf200", $kal-palettes)
           padding: 24px 14px 20px 14px
-          color: get("black", $kal-palettes)
-          background-color: get("white", $kal-palettes)
-          border: 1px solid get("grey.wf200", $kal-palettes)
-        &.--highlighted
-          background-color: grey
-        &.--selected
-          background-color: red
-        &.--disabled
-          background-color: lightgrey
-      div:nth-child(2)
-        kal-tab-body
-          display: none
-          background-color: get("white", $kal-palettes)
-          border: 1px solid get("grey.wf200", $kal-palettes)
-          box-shadow: 0 0 24px rgba(0, 0, 0, 0.06)
-          padding: 20px 24px
-          &.--is-active
-            display: block
+          &:hover
+            color: get("black", $kal-palettes)
+          &.kal-tab-header-highlighted
+            background-color: get("white", $kal-palettes)
+            color: get("black", $kal-palettes)
+          &.kal-tab-header-selected
+            background-color: get("white", $kal-palettes)
+            color: get("black", $kal-palettes)
+            border-bottom-color: get("white", $kal-palettes)
+          &.kal-tab-header-disabled, &[disabled]
+            background-color: get("grey.wf200", $kal-palettes)
+            color: get("grey.wf300", $kal-palettes)
+            cursor: not-allowed
+          > kal-icon
+            padding-right: 10px
+
+    div:nth-child(2)
+      kal-tab-body
+        display: none
+        background-color: get("white", $kal-palettes)
+        border: 1px solid get("grey.wf200", $kal-palettes)
+        box-shadow: 0 0 24px rgba(0, 0, 0, 0.06)
+        padding: 20px 24px
+        &.kal-tab-body-is-active
+          display: block
