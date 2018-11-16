@@ -13,33 +13,33 @@
           flex-flow: row nowrap
           align-items: center
           cursor: pointer
-          font-weight: 600
-          color: get("grey.wf400", $kal-palettes)
-          background-color: get("grey.wf100", $kal-palettes)
-          border: 1px solid get("grey.wf200", $kal-palettes)
-          padding: 24px 14px 20px 14px
+          font: get("tabs.default.header.font", $kal-parameters)
+          color: get("tabs.default.header.color", $kal-parameters)
+          background-color: get("tabs.default.header.background-color", $kal-parameters)
+          border: get("tabs.default.header.border", $kal-parameters)
+          padding: get("tabs.default.header.padding", $kal-parameters)
           &:hover
-            color: get("black", $kal-palettes)
+            color: get("tabs.default.header.hover.color", $kal-parameters)
           &.kal-tab-header-highlighted
-            background-color: get("white", $kal-palettes)
-            color: get("black", $kal-palettes)
+            background-color: get("tabs.default.header.highlighted.background-color", $kal-parameters)
+            color: get("tabs.default.header.highlighted.color", $kal-parameters)
           &.kal-tab-header-selected
-            background-color: get("white", $kal-palettes)
-            color: get("black", $kal-palettes)
-            border-bottom-color: get("white", $kal-palettes)
+            background-color: get("tabs.default.header.selected.background-color", $kal-parameters)
+            color: get("tabs.default.header.selected.color", $kal-parameters)
+            border-bottom-color: get("tabs.default.header.selected.border-bottom-color", $kal-parameters)
           &.kal-tab-header-disabled, &[disabled]
-            background-color: get("grey.wf200", $kal-palettes)
-            color: get("grey.wf300", $kal-palettes)
-            cursor: not-allowed
+            background-color: get("tabs.default.header.disabled.background-color", $kal-parameters)
+            color: get("tabs.default.header.disabled.color", $kal-parameters)
+            cursor: get("tabs.default.header.disabled.cursor", $kal-parameters)
           > kal-icon
-            padding-right: 10px
+            padding: get("tabs.default.header.icon.padding", $kal-parameters)
 
     div:nth-child(2)
       kal-tab-body
         display: none
-        background-color: get("white", $kal-palettes)
-        border: 1px solid get("grey.wf200", $kal-palettes)
-        box-shadow: 0 0 24px rgba(0, 0, 0, 0.06)
-        padding: 20px 24px
+        background-color: get("tabs.default.body.background-color", $kal-parameters)
+        border: get("tabs.default.body.border", $kal-parameters)
+        box-shadow: get("tabs.default.body.box-shadow", $kal-parameters)
+        padding: get("tabs.default.body.padding", $kal-parameters)
         &.kal-tab-body-is-active
           display: block
