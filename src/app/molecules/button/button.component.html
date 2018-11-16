@@ -1,27 +1,28 @@
 <h1>kal-button</h1>
 <div class="lib-flexbox">
-    <div class="lib-flexbox__item">
-      <kal-button
-        [disabled]="disabled"
-        [kalTheme]="themes"
-       >Register</kal-button>
-    </div>
+  <div class="lib-flexbox__item">
+    <kal-button
+      [disabled]="disabled"
+      [kalTheme]="themes"
+    >Register
+    </kal-button>
   </div>
+</div>
 
 
-  <div class="lib-flexbox  lib-flexbox--action">
-    <div class="lib-flexbox__item">
+<div class="lib-flexbox  lib-flexbox--action">
+  <div class="lib-flexbox__item">
 
-      <kal-select placeholder="themes" multiple="true" [(ngModel)]="themes">
-        <kal-option value="primary">primary</kal-option>
-        <kal-option value="secondary">secondary</kal-option>
-        <kal-option value="tertiary">tertiary</kal-option>
-        <kal-option value="reverse">reverse</kal-option>
-      </kal-select>
+    <kal-select placeholder="themes" multiple="true" [(ngModel)]="themes">
+      <kal-option value="primary">primary</kal-option>
+      <kal-option value="secondary">secondary</kal-option>
+      <kal-option value="tertiary">tertiary</kal-option>
+      <kal-option value="reverse">reverse</kal-option>
+    </kal-select>
 
-      <kal-checkbox
-        [(ngModel)]="disabled"
-        label="disabled"
-      ></kal-checkbox>
-    </div>
+    <kal-checkbox
+      [(ngModel)]="disabled"
+      label="disabled"
+    ></kal-checkbox>
   </div>
+</div>
