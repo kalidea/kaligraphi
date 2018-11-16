@@ -2,5 +2,51 @@
 $kal-styles-select: (
   'default': (
 
+    'disabled': (
+
+    ),
+    'hover': (
+
+    ),
+    'active': (
+
+    ),
+    'reverse': (
+      'disabled': (
+
+      ),
+      'hover': (
+
+      ),
+      'active': (
+
+      )
+
+    ),
+  ),
+  'alternates': (
+    'secondary':(
+
+      'disabled': (
+
+      ),
+      'hover': (
+
+      ),
+      'active': (
+
+      ),
+      'reverse': (
+        'disabled': (
+
+        ),
+        'hover': (
+
+        ),
+        'active': (
+
+        )
+      )
+    )
   )
 );

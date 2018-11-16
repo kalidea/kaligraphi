@@ -45,10 +45,10 @@ $kal-parameters: (
   headings: $kal-headings,
   text: $kal-text,
   menu: $kal-styles-menu,
-  select:$kal-styles-select,
   form: (
     elements: (
-      'button': $kal-styles-button
+      'button': $kal-styles-button,
+      'select': $kal-styles-select
     ),
     padding: 12px,
     border: (
