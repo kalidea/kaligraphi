@@ -1,0 +1,75 @@
+// kal-tabs parameters and alternates
+$kal-styles-checkbox: (
+  'default': (
+    'label': (
+      'padding': 0 0 0 37px,
+      'font-size': 18px,
+      'empty':(
+        'width': 18px,
+        'height': 18px,
+        'padding': 0
+      ),
+      'before':(
+        'position': absolute,
+        'top': 0,
+        'left': 0,
+        'width': 18px,
+        'height': 18px,
+        'border-radius': $kal-base-borderradius,
+        'border': 1px solid get("grey.wf300", $kal-palettes)
+      ),
+      'after':(
+        'position': absolute,
+        'top': 5px,
+        'left': 5px,
+        'display': flex,
+        'flex-flow': row wrap,
+        'justify-content': center,
+        'align-items': center,
+        'width': 8px,
+        'height': 8px,
+        'background-color': get("black", $kal-palettes),
+        'border-radius': $kal-base-borderradius,
+        'transition': all .2s,
+      ),
+    ),
+    'div':(
+      'display': inline-block,
+      'position': absolute,
+      'z-index': -1,
+      'top': 0,
+      'left': 0,
+      'height': 32px,
+      'width': 32px,
+      'border-radius': 50%,
+      'background-color': transparent
+    ),
+  ),
+  'alternates':(
+    'large':(
+      'label':(
+        'font-size': 24px,
+        'padding': 0 0 0 51px,
+        'empty':(
+          'width': 24px,
+          'height': 24px
+        ),
+        'before':(
+          'width': 24px,
+          'height': 24px
+        ),
+        'after':(
+          'width': 10px,
+          'height': 10px,
+          'top': 7px,
+          'left': 7px
+        )
+      ),
+      'div':(
+        'height': 38px,
+        'width': 38px
+      )
+
+    )
+  )
+);
