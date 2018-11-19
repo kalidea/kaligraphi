@@ -199,8 +199,10 @@ export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewI
   }
 
   selectAll() {
-    this.selectedItems.push(...this.results);
-    this.selectionChange.emit(this.results);
+    if (this.itemsSelectable === 'multiple') {
+      this.selectedItems.push(...this.results);
+      this.selectionChange.emit(this.results);
+    }
   }
 
   /**
@@ -210,7 +212,6 @@ export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewI
     if (!this.disableRowsFunction(item) && this.itemsSelectable !== 'none') {
       this.selectedItemIndex = this.results.findIndex(row => row === item);
       this.keyManager.setActiveItem(this.selectedItemIndex);
-
 
       if (this.itemsSelectable !== 'multiple') {
         this.selectedItems = [];
