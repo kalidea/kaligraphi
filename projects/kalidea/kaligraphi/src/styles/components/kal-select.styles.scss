@@ -30,10 +30,19 @@ $kal-styles-select: (
       'background-color': get('grey.wf100',$kal-palettes),
       'color': get('grey.wf800',$kal-palettes),
       'border': 1px solid get('grey.wf500',$kal-palettes),
-      'border-radius': $kal-base-borderradius
+      'border-radius': $kal-base-borderradius,
+      'padding': 12px 0,
+      'width': 100%,
+      'option': (
+        'color': get('grey.wf800',$kal-palettes),
+        'padding': 9px 0,
+        'active': (
+          'font-weight': 500
+        ),
+      ),
     ),
     'reverse': (
-      'background-color': get('.grey.wf800',$kal-palettes),
+      'background-color': get('grey.wf800',$kal-palettes),
       'border-color': get('grey.wf300',$kal-palettes),
       'label': (
         'color': get('white',$kal-palettes)
@@ -55,9 +64,17 @@ $kal-styles-select: (
       'overlay': (
         'background-color': get('grey.wf800',$kal-palettes),
         'color': get('white',$kal-palettes),
-        'border': 1px solid get('grey.wf300',$kal-palettes)
-      )
-    )
+        'border': 1px solid get('grey.wf300',$kal-palettes),
+        'option': (
+          'color': get('white',$kal-palettes),
+          'padding': 9px 0,
+          'active': (
+            'color': get("orange.normal",$kal-palettes),
+            'font-weight': 500
+          ),
+        ),
+      ),
+    ),
   ),
   'alternates': (
     'secondary': (
