@@ -65,22 +65,17 @@
     border-radius:  get('overlay.border-radius', $theme-parameters)
     padding: get('overlay.padding', $theme-parameters)
     width: get('overlay.width', $theme-parameters)
-    .kal-option-selection
-      cursor: pointer
-      padding: get('overlay.option.padding', $theme-parameters)
+    .kal-option .kal-option__selection
       color: get('overlay.option.color', $theme-parameters),
-      &:hover, &:focus, &:active
-        font-weight: get('overlay.option.font-weight', $theme-parameters)
 
     &.kal-theme--reverse
       background-color: get('reverse.overlay.background-color', $theme-parameters)
       color:  get('reverse.overlay.color', $theme-parameters)
       border: get('reverse.overlay.border', $theme-parameters)
-      .kal-option-selection
+      kal-option .kal-option__selection
         color:  get('reverse.overlay.option.color', $theme-parameters)
-        &:hover, &:focus, &:active
-          font-weight: get('overlay.option.font-weight', $theme-parameters)
-          color: get('reverse.overlay.option.color', $theme-parameters)
+        &:hover, &:focus, &:active, &--active
+          color: get('reverse.overlay.option.active.color', $theme-parameters)
 
 =kal-select($kal-parameters)
   .kal-select__overlay
