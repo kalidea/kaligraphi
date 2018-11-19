@@ -256,6 +256,7 @@ export class KalSelectComponent
     Promise.resolve().then(() => {
       this.select(value);
       super.writeValue(value);
+      this.cdr.markForCheck();
     });
   }
 
