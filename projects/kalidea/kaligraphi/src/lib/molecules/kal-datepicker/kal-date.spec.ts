@@ -44,7 +44,7 @@ describe('KalDate class', () => {
   it('should manage invalid date', () => {
 
     // alpha char
-    let kalDate = new KalDate('aa', 'dd/MM/yyyy');
+    let kalDate = new KalDate('aa');
     expect(kalDate.valid).toBeFalsy();
     expect(kalDate.toString()).toEqual('');
 
@@ -54,7 +54,13 @@ describe('KalDate class', () => {
     expect(kalDate.toString()).toEqual('');
 
     // null
+    const currentDate = DateTime.local().toFormat('dd/MM/yyyy');
     kalDate = new KalDate(null);
+    expect(kalDate.valid).toBeTruthy();
+    expect(kalDate.toString()).toEqual(currentDate);
+
+    // empty string
+    kalDate = new KalDate('');
     expect(kalDate.valid).toBeFalsy();
     expect(kalDate.toString()).toEqual('');
   });

@@ -145,15 +145,18 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   writeValue(value: KalDateType) {
 
     // transform given value as date
-    value = coerceKalDateProperty(value);
+    const kalDate = coerceKalDateProperty(value);
 
-    super.writeValue(value);
+    super.writeValue(kalDate);
 
-    // display the given date in our input
-    this.setInputValue(value);
+    // we should check the value because we can have a `null` from the parent
+    // and we don't want to display any date in the input
+    if (value) {
+      this.setInputValue(kalDate);
+    }
 
     // store the date
-    this.currentDate = value;
+    this.currentDate = kalDate;
   }
 
   ngOnInit() {

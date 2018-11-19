@@ -25,6 +25,8 @@ export { KalDatepickerMultiViewComponent } from './kal-datepicker-multi-view/kal
 // KalUtilityModule is used for ``KalAutoFocusDirective`
 import { KalUtilityModule } from '../../utility/kal-utility.module';
 
+export { KalDate } from './kal-date';
+
 const exports = [
   KalDatepickerComponent,
   KalDatepickerHeaderComponent,
