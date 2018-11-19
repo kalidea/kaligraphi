@@ -1,12 +1,34 @@
-<kal-select #kalselect tabindex="1" placeholder="Select an item"  class="kal-theme--secondary">
+<kal-select  tabindex="1" placeholder="Select an item"  class="">
   <kal-option *ngFor="let i of [0, 1, 2, 3, 10]">
     OPTION {{i}}
   </kal-option>
 </kal-select>
 <hr>
+<kal-select  tabindex="1" placeholder="Select an item"  class="kal-theme--reverse">
+  <kal-option *ngFor="let i of [0, 1, 2, 3, 10]">
+    OPTION {{i}}
+  </kal-option>
+</kal-select>
+<hr>
+<kal-select  tabindex="1" placeholder="Select an item"  class="kal-theme--secondary">
+  <kal-option *ngFor="let i of [0, 1, 2, 3, 10]">
+    OPTION {{i}}
+  </kal-option>
+</kal-select>
+<hr>
+
 <kal-select tabindex="3" multiple placeholder="Select multiple items">
   <kal-option #option *ngFor="let i of [0, 1, 2, 3, 10]">
     <kal-checkbox [formControl]="option.formControl"></kal-checkbox>
+    OPTION {{i}}
+  </kal-option>
+</kal-select>
+
+<hr>
+
+<kal-select tabindex="3" multiple placeholder="Select multiple items">
+  <kal-option #option2 *ngFor="let i of [0, 1, 2, 3, 10]">
+    <kal-checkbox [formControl]="option2.formControl"></kal-checkbox>
     OPTION {{i}}
   </kal-option>
 </kal-select>

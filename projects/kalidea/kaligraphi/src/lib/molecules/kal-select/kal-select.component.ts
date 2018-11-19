@@ -334,7 +334,8 @@ export class KalSelectComponent
     this.selection = [];
 
     this.overlayRef = this.overlay.create({
-      hasBackdrop: true
+      hasBackdrop: true,
+
     });
 
     this.overlayRef.backdropClick().subscribe(() => {
