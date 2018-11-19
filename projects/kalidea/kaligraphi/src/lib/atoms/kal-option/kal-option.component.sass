@@ -8,9 +8,10 @@
       justify-content: center
       align-items: center
       padding: 5px 0
-      &--active, &:hover, &:active, &:focus
-        cursor: pointer
-        font-weight: 500
+      &:not([disabled]), &:not(.kal-option__selection--disabled)
+        &.kal-option__selection--active, &.kal-option__selection:hover, &.kal-option__selection:active, &.kal-option__selection:focus
+          cursor: pointer
+          font-weight: 500
       &--disabled, &[disabled]
         cursor: not-allowed
         color: get("grey.wf300", $kal-palettes)

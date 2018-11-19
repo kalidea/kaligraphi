@@ -39,6 +39,9 @@ $kal-styles-select: (
         'active': (
           'font-weight': 500
         ),
+        'disabled': (
+          'color': get("grey.wf500", $kal-palettes)
+        ),
       ),
     ),
     'reverse': (
@@ -71,6 +74,9 @@ $kal-styles-select: (
           'active': (
             'color': get("orange.normal",$kal-palettes),
             'font-weight': 500
+          ),
+          'disabled': (
+            'color': get("grey.wf500", $kal-palettes)
           ),
         ),
       ),
@@ -115,6 +121,9 @@ $kal-styles-select: (
           'color': get("orange.normal",$kal-palettes),
           'font-weight': 500
           ),
+          'disabled': (
+            'color': get("grey.wf500", $kal-palettes)
+          ),
         ),
       ),
       'reverse': (
@@ -147,6 +156,9 @@ $kal-styles-select: (
             'active': (
               'color': get("orange.normal",$kal-palettes),
               'font-weight': 500
+            ),
+            'disabled': (
+              'color': get("grey.wf500", $kal-palettes)
             )
           )
         )

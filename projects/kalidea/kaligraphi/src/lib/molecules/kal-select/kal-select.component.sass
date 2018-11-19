@@ -67,6 +67,8 @@
     width: get('overlay.width', $theme-parameters)
     .kal-option .kal-option__selection
       color: get('overlay.option.color', $theme-parameters),
+      &[disabled]
+        color: get('overlay.option.disabled.color', $theme-parameters)
 
     &.kal-theme--reverse
       background-color: get('reverse.overlay.background-color', $theme-parameters)
@@ -74,8 +76,12 @@
       border: get('reverse.overlay.border', $theme-parameters)
       kal-option .kal-option__selection
         color:  get('reverse.overlay.option.color', $theme-parameters)
-        &:hover, &:focus, &:active, &--active
-          color: get('reverse.overlay.option.active.color', $theme-parameters)
+        &:not([disbaled]), &:not(.kal-option__selection--disabled)
+          &:hover, &:focus, &:active, &.kal-option__selection--active
+            color: get('reverse.overlay.option.active.color', $theme-parameters)
+        &[disabled], &--disabled
+          cursor: not-allowed
+          color: get('overlay.option.disabled.color', $theme-parameters)
 
 =kal-select($kal-parameters)
   .kal-select__overlay
