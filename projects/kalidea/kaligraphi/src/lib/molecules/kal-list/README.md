@@ -51,6 +51,7 @@ class DataSource {
 
 ```html
 <kal-list [datasource]="datasource"
+          [selectable]="multiple"
           (selectionChange)="selectRow($event)">
 
           <ng-template kalListItem let-item="item">

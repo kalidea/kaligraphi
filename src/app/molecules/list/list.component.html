@@ -1,9 +1,11 @@
 <kal-list
+  #kalListItem
   tabindex="1"
   (selectionChange)="selectedValue = $event"
   [dataSource]="dataSource"
   [groupByFunction]="groupByFunction"
-  [disableRowsFunction]="disableRowsFunction">
+  [disableRowsFunction]="disableRowsFunction"
+  [selectable]="itemsSelectable">
 
   <ng-template kalListItem let-item="item">
     {{ item.name }}
@@ -15,5 +17,9 @@
   {{ selectedValue | json }}
 </div>
 
-<button type="button" (click)="addGroupByFunction()">Group items</button>
-<button type="button" (click)="disableRow()">Disable rows</button>
+<kal-button type="button" kalTheme="secondary" (click)="addGroupByFunction()">Group items</kal-button>
+<kal-button type="button" kalTheme="secondary" (click)="disableRow()">Disable rows</kal-button>
+<kal-button type="button" kalTheme="secondary" (click)="unselectRows()">Unselectable rows</kal-button>
+<kal-button type="button" kalTheme="secondary" (click)="selectSingleRow()">Single selectable row</kal-button>
+<kal-button type="button" kalTheme="secondary" (click)="selectMultipleRows()">Multiple selectable rows</kal-button>
+<kal-button type="button" kalTheme="secondary" (click)="kalListItem.selectAll()">Select All rows</kal-button>

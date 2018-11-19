@@ -44,7 +44,7 @@ export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewI
   /**
    * Triggered when selection has changed
    */
-  @Output() selectionChange = new EventEmitter<T>();
+  @Output() selectionChange = new EventEmitter<T[] | T>();
 
   /**
    * Row template
@@ -62,9 +62,34 @@ export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewI
   viewChange: Observable<ListRange>;
 
   /**
-   * The selected item
+   * Selectable items (none, single, multiple)
    */
-  private selectedItem = null;
+  @Input()
+  set selectable(value: string) {
+
+    if (value === 'multiple') {
+      this.itemsSelectable = 'multiple';
+    } else if (value === 'none') {
+      this.selectedItems = [];
+      this.itemsSelectable = 'none';
+    } else {
+      this.selectedItems = [];
+      this.itemsSelectable = null;
+    }
+
+    this.cdr.markForCheck();
+
+  }
+
+  /**
+   * Selectable items (none, single, multiple)
+   */
+  itemsSelectable: 'multiple' | 'none' = null;
+
+  /**
+   * The selected items list
+   */
+  private selectedItems = [];
 
   /**
    * The config is use to group all items
@@ -173,15 +198,35 @@ export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewI
     }
   }
 
+  selectAll() {
+    this.selectedItems.push(...this.results);
+    this.selectionChange.emit(this.results);
+  }
+
   /**
    * Select an item in list and emit an event with the selected item value
    */
   selectItem(item: T) {
-    if (!this.disableRowsFunction(item)) {
+    if (!this.disableRowsFunction(item) && this.itemsSelectable !== 'none') {
       this.selectedItemIndex = this.results.findIndex(row => row === item);
-      this.selectedItem = item;
       this.keyManager.setActiveItem(this.selectedItemIndex);
-      this.selectionChange.emit(item);
+
+
+      if (this.itemsSelectable !== 'multiple') {
+        this.selectedItems = [];
+        this.selectedItems.push(item);
+      } else {
+
+        const index = this.selectedItems.findIndex(row => row === item);
+
+        if (index !== -1) {
+          this.selectedItems.splice(index, 1);
+        } else {
+          this.selectedItems.push(item);
+        }
+      }
+
+      this.selectionChange.emit(this.itemsSelectable === 'multiple' ? this.selectedItems : item);
     }
   }
 
@@ -189,14 +234,14 @@ export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewI
    * Is the item selected
    */
   isSelected(item): boolean {
-    return this.selectedItem === item;
+    return this.selectedItems.indexOf(item) !== -1;
   }
 
   /**
    * Reset the selected item
    */
   reset() {
-    this.selectedItem = null;
+    this.selectedItems = [];
     this.cdr.markForCheck();
   }
 
