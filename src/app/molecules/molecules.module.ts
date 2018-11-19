@@ -13,6 +13,7 @@ import { FormFieldComponent } from 'src/app/molecules/form-field/form-field.comp
 import { DialogComponent } from 'src/app/molecules/dialog/dialog.component';
 import { DatepickerComponent } from 'src/app/molecules/datepicker/datepicker.component';
 import { ButtonComponent } from './button/button.component';
+import { DropdownComponent } from './dropdown/dropdown.component';
 
 @NgModule({
   imports: [
@@ -33,7 +34,8 @@ import { ButtonComponent } from './button/button.component';
     DialogComponent,
     DatepickerComponent,
     FormFieldComponent,
-    ButtonComponent
+    ButtonComponent,
+    DropdownComponent
   ]
 })
 export class MoleculesModule { }

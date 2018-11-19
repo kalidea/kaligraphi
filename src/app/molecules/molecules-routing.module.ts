@@ -9,6 +9,7 @@ import { FormFieldComponent } from 'src/app/molecules/form-field/form-field.comp
 import { DialogComponent } from 'src/app/molecules/dialog/dialog.component';
 import { DatepickerComponent } from 'src/app/molecules/datepicker/datepicker.component';
 import { ButtonComponent } from 'src/app/molecules/button/button.component';
+import { DropdownComponent } from 'src/app/molecules/dropdown/dropdown.component';
 
 const routes: Routes = [
   {path: 'tab-panel', component: TabPanelComponent},
@@ -20,6 +21,7 @@ const routes: Routes = [
   {path: 'dialog', component: DialogComponent},
   {path: 'datepicker', component: DatepickerComponent},
   {path: 'button', component: ButtonComponent},
+  {path: 'dropdown', component: DropdownComponent},
 ];
 
 @NgModule({

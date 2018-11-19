@@ -30,5 +30,6 @@ export class AppComponent {
     {label: 'Menu', route: '/molecules/menu'},
     {label: 'Form Field', route: '/molecules/form-field'},
     {label: 'Datepicker', route: '/molecules/datepicker'},
+    {label: 'Dropdown', route: '/molecules/dropdown'},
   ];
 }
