@@ -4,11 +4,13 @@ import {
   Component,
   EventEmitter,
   forwardRef,
-  Inject, OnInit,
+  Inject,
+  OnInit,
   Output,
   ViewEncapsulation
 } from '@angular/core';
 import { DateObjectUnits, Info } from 'luxon';
+import { AbstractControl } from '@angular/forms';
 import { KalDatepickerComponent } from '../kal-datepicker.component';
 import { KalDate } from '../kal-date';
 
@@ -81,7 +83,8 @@ export class KalMonthCalendarComponent implements OnInit {
    * It allows us to enable and disable the buttons.
    */
   shouldDisable(date: KalDate) {
-    return this.datepicker.parentControlValidator({value: date}) !== null;
+    const parentValidator = this.datepicker.parentControlValidator;
+    return parentValidator ? parentValidator({value: date} as AbstractControl) !== null : false;
   }
 
   /**
@@ -95,6 +98,6 @@ export class KalMonthCalendarComponent implements OnInit {
 
   ngOnInit(): void {
     // avoid reference
-    this.displayedDate = new KalDate(this.datepicker.currentDate);
+    this.displayedDate = new KalDate(this.datepicker.currentDate || null);
   }
 }
