@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, FormControl, ValidationErrors } from '@angular/forms';
-import { KalDate } from '../../../../projects/kalidea/kaligraphi/src/lib/molecules/kal-datepicker/kal-date';
+import { KalDate } from '@kalidea/kaligraphi';
 
 @Component({
   selector: 'app-datepicker',
