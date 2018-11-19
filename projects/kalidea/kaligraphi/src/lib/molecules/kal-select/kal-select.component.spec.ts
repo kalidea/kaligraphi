@@ -9,12 +9,14 @@ import { Overlay, OverlayContainer } from '@angular/cdk/overlay';
 import { KalSelectComponent } from './kal-select.component';
 import { KalOptionComponent, KalOptionModule } from '../../atoms/kal-option/kal-option.module';
 import { createKeyboardEvent } from '../../utils/tests/event-keyboard';
+import { KalUtilityModule } from '../../utility/kal-utility.module';
+import { KalIconModule } from '../../atoms/kal-icon/kal-icon.module';
 
 function configureTestingModule(declarations: any[]) {
   TestBed.configureTestingModule({
     declarations: [KalSelectComponent, CdkPortal, ...declarations],
     providers: [Overlay],
-    imports: [KalOptionModule]
+    imports: [KalOptionModule, KalIconModule, KalUtilityModule]
   }).compileComponents();
 }
 
