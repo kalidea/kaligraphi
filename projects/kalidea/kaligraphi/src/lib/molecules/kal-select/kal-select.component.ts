@@ -20,6 +20,7 @@ import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
 import { DOWN_ARROW, ENTER, ESCAPE, SPACE, UP_ARROW } from '@angular/cdk/keycodes';
 import { NgControl } from '@angular/forms';
 import { filter } from 'rxjs/operators';
+
 import { buildProviders, FormElementComponent } from '../../utils/index';
 import { KalOptionComponent } from '../../atoms/kal-option/kal-option.component';
 
@@ -170,8 +171,50 @@ export class KalSelectComponent
     }
 
     this.focus();
-    this.overlayRef.attach(this.optionsPortal);
+    this.getOverlayRef().attach(this.optionsPortal);
     this.isPanelOpen = true;
+  }
+
+  private getHostWidth() {
+    const size = this.elementRef.nativeElement.getBoundingClientRect();
+    return size.width;
+  }
+
+  /**
+   * create overlayRef
+   */
+  private createOverlay() {
+    const positionStrategy = this.overlay
+      .position()
+      .flexibleConnectedTo(this.elementRef)
+      .withPositions([
+        {originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top'}
+      ]);
+    this.overlayRef = this.overlay.create({
+      hasBackdrop: true,
+      positionStrategy,
+      width: this.getHostWidth(),
+      scrollStrategy: this.overlay.scrollStrategies.reposition()
+    });
+
+    this.overlayRef.backdropClick().subscribe(() => {
+      this.isFocused = false;
+      this.close();
+    });
+
+    this.overlayRef.keydownEvents()
+      .pipe(filter(event => event.keyCode === ESCAPE))
+      .subscribe(() => this.close());
+  }
+
+  /**
+   * get overlayRef and create it if doesn't exists
+   */
+  private getOverlayRef() {
+    if (!this.overlayRef) {
+      this.createOverlay();
+    }
+    return this.overlayRef;
   }
 
   /**
@@ -333,18 +376,7 @@ export class KalSelectComponent
 
     this.selection = [];
 
-    this.overlayRef = this.overlay.create({
-      hasBackdrop: true
-    });
 
-    this.overlayRef.backdropClick().subscribe(() => {
-      this.isFocused = false;
-      this.close();
-    });
-
-    this.overlayRef.keydownEvents()
-      .pipe(filter(event => event.keyCode === ESCAPE))
-      .subscribe(() => this.close());
   }
 
   ngAfterContentInit() {
