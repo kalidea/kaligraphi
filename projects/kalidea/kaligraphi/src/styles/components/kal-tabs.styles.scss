@@ -1,0 +1,39 @@
+// kal-tabs parameters and alternates
+$kal-styles-tabs: (
+  'default': (
+    'header' : (
+      'font': $kal-base-fontfamily $kal-base-fontsize 600,
+      'color': get("grey.wf400", $kal-palettes),
+      'background-color': get("grey.wf100", $kal-palettes),
+      'border': 1px solid get("grey.wf200", $kal-palettes),
+      'padding': 24px 14px 20px 14px,
+      'hover': (
+        'color': get("black", $kal-palettes)
+      ),
+      'highlighted': (
+        'background-color': get("white", $kal-palettes),
+        'color': get("black", $kal-palettes),
+        'border-bottom-color': get("white", $kal-palettes)
+      ),
+      'selected' :(
+        'background-color': get("white", $kal-palettes),
+        'color': get("black", $kal-palettes),
+        'border-bottom-color': get("white", $kal-palettes)
+      ),
+      'disabled': (
+        'background-color': get("grey.wf200", $kal-palettes),
+        'color': get("grey.wf300", $kal-palettes),
+        'cursor': not-allowed
+      ),
+      'icon': (
+        'padding': 0 10px 0 0
+      )
+    ),
+    'body': (
+      'background-color': get("white", $kal-palettes),
+      'border': 1px solid get("grey.wf200", $kal-palettes),
+      'box-shadow': 0 0 24px rgba(0, 0, 0, 0.06),
+      'padding': 20px 24px
+    )
+  )
+);

@@ -18,15 +18,17 @@ import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
 import { KalTabComponent } from '../kal-tab/kal-tab.component';
 import { KalTabChange } from '../kal-tab-change';
 import { KalTabHeaderComponent } from '../kal-tab-header/kal-tab-header.component';
+import { buildProviders, FormElementComponent } from '../../../utils/index';
 
 @Component({
   selector: 'kal-tab-group',
   templateUrl: './kal-tab-group.component.html',
   styleUrls: ['./kal-tab-group.component.sass'],
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: buildProviders(KalTabGroupComponent)
 })
-export class KalTabGroupComponent implements AfterContentInit, AfterViewInit {
+export class KalTabGroupComponent extends FormElementComponent<number> implements AfterContentInit, AfterViewInit {
 
   /**
    * This event is emitted when a tab is selected
@@ -58,7 +60,13 @@ export class KalTabGroupComponent implements AfterContentInit, AfterViewInit {
    */
   private isFocused: boolean;
 
+  /**
+   * Tab to select when the content is init
+   */
+  private tabToSelect = null;
+
   constructor(private cdr: ChangeDetectorRef) {
+    super();
   }
 
   /**
@@ -68,6 +76,21 @@ export class KalTabGroupComponent implements AfterContentInit, AfterViewInit {
     return this.selectedTabIndex;
   }
 
+  writeValue(value: number = null) {
+
+    this.tabToSelect = value;
+
+    if ('' + value && !isNaN(value) && this.tabs) {
+
+      const selectedTab = this.tabs.find((element, i) => i === value);
+
+      if (selectedTab) {
+        this.selectTabHeader(selectedTab, value);
+      }
+    }
+
+  }
+
   /**
    * Select a tab and emit an event with the index of the selected tab
    */
@@ -75,6 +98,7 @@ export class KalTabGroupComponent implements AfterContentInit, AfterViewInit {
     if (!tab.disabled) {
       this.selectedTabIndex = tabIndex;
       this.keyManager.setActiveItem(this.selectedIndex);
+      this.notifyUpdate(tabIndex);
       this.selectedTab.emit(new KalTabChange(tab, tabIndex));
     }
   }
@@ -130,14 +154,20 @@ export class KalTabGroupComponent implements AfterContentInit, AfterViewInit {
   }
 
   ngAfterContentInit() {
-    this.tabs.forEach(
-      (tab, index) => {
-        if (tab.selected) {
-          this.selectedTabIndex = index;
-          return;
+    if (this.tabToSelect) {
+
+      this.selectedTabIndex = this.tabToSelect;
+
+    } else {
+      this.tabs.forEach(
+        (tab, index) => {
+          if (tab.selected) {
+            this.selectedTabIndex = index;
+            return;
+          }
         }
-      }
-    );
+      );
+    }
 
     this.cdr.markForCheck();
   }

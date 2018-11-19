@@ -25,7 +25,7 @@
 ####With template label
 
 ```html
-<kal-tab-group>
+<kal-tab-group [formControl]="formControl">
 
   <kal-tab selected>
     <ng-template kalTabLabel>
@@ -59,6 +59,23 @@
 
 </kal-tab-group>
 
+<kal-button (click)="changeTab()">Change tab</kal-button>
+
+```
+
+
+```typescript
+class Test {
+
+  formControl = new FormControl(2);
+
+  constructor() {
+  }
+
+  changeTab() {
+    this.formControl.patchValue(1);
+  }
+}
 ```
 
 ##SPECIFICATIONS
