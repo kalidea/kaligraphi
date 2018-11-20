@@ -60,35 +60,43 @@ export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewI
    * @inheritDoc
    */
   viewChange: Observable<ListRange>;
+
   /**
    * Selectable items (none, single, multiple)
    */
   itemsSelectable: 'multiple' | 'none' = null;
+
   /**
    * The selected items list
    */
   private selectedItems = [];
+
   /**
    * The config is use to group all items
    */
   private groupByConfig: (item: T) => string = null;
+
   /**
    * Manages keyboard events for options in the panel
    */
   private keyManager: ActiveDescendantKeyManager<KalListItemSelectionDirective>;
+
   /**
    * Whether or not the select is focus
    */
   private isFocused: boolean;
+
   /**
    * The selected item index
    */
   private selectedItemIndex: number;
+
   /**
    * The subscription
    */
   @AutoUnsubscribe()
   private subscription: Subscription = Subscription.EMPTY;
+
   /**
    * Is the row disabled
    */
