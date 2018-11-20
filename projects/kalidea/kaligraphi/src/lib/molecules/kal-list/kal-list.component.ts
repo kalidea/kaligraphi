@@ -200,6 +200,7 @@ export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewI
 
   selectAll() {
     if (this.itemsSelectable === 'multiple') {
+      this.selectedItems = [];
       this.selectedItems.push(...this.results);
       this.selectionChange.emit(this.results);
     }
