@@ -16,7 +16,7 @@ import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
 import { Subscription } from 'rxjs';
 
 import { KalOptionComponent } from '../kal-option/kal-option.component';
-import { AutoUnsubscribe } from '@kalidea/kaligraphi';
+import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 
 @Component({
   selector: 'kal-menu',

@@ -30,7 +30,6 @@
     "@angular/platform-browser": "~7.0.0",
     "@angular/platform-browser-dynamic": "~7.0.0",
     "@angular/router": "~7.0.0",
-    "@kalidea/kaligraphi": "0.0.35",
     "core-js": "^2.5.4",
     "lodash": "^4.17.11",
     "luxon": "^1.4.4",
