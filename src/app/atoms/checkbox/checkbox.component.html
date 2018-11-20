@@ -25,6 +25,14 @@
   class="kal-theme--switch">
 </kal-checkbox>
 
+<div style="background-color: #1f1f1f;">
+  <kal-checkbox
+    label="switch checkbox reverse"
+    [formControl]="control"
+    class="kal-theme--switch kal-theme--reverse">
+  </kal-checkbox>
+</div>
+
 <p>Value : {{ valueByControl }}</p>
 <p>
   <a (click)="toggleDisableStateByControl()">

@@ -1,5 +1,10 @@
 
 =kal-themed-checkbox($kal-parameters)
+    position: get("position", $kal-parameters)
+    z-index: get("z-index", $kal-parameters)
+    display: get("display", $kal-parameters)
+    padding: get("padding", $kal-parameters)
+    height:  get("height", $kal-parameters)
     // on  cache input
     [type="checkbox"]
       position: absolute
@@ -24,6 +29,7 @@
         position: get("label.before.position", $kal-parameters)
         top: get("label.before.top", $kal-parameters)
         left: get("label.before.left", $kal-parameters)
+        z-index: get("label.before.z-index", $kal-parameters)
         width: get("label.before.width", $kal-parameters)
         height: get("label.before.height", $kal-parameters)
         border-radius: get("label.before.border-radius", $kal-parameters)
@@ -34,6 +40,7 @@
         position: get("label.after.position", $kal-parameters)
         top: get("label.after.top", $kal-parameters)
         left: get("label.after.left", $kal-parameters)
+        z-index: get("label.after.z-index", $kal-parameters)
         display: get("label.after.display", $kal-parameters)
         flex-flow: get("label.after.flex-flow", $kal-parameters)
         justify-content: get("label.after.justify-content", $kal-parameters)
@@ -67,6 +74,9 @@
       &::after
         background-color: get("label.disabled.after.background-color", $kal-parameters)
         box-shadow: get("label.disabled.after.box-shadow", $kal-parameters)
+      &::before
+        background-color: get("label.disabled.before.background-color", $kal-parameters)
+        border-color: get("label.disabled.before.border-color", $kal-parameters)
     // Surbrillance du check
     div
       display: get("div.display", $kal-parameters)
@@ -78,18 +88,29 @@
       width: get("div.width", $kal-parameters)
       border-radius: get("div.border-radius", $kal-parameters)
       background-color: get("div.background-color", $kal-parameters)
+      opacity: get("div.opacity", $kal-parameters)
     &:not(:disabled):hover div
       background-color: get("hover.div.background-color", $kal-parameters)
+    [type="checkbox"]:not(:checked) ~ div
+      left:  get("div.checkfalse.left", $kal-parameters)
+    [type="checkbox"]:checked ~ div
+      left:  get("div.checktrue.left", $kal-parameters)
     [type="checkbox"]:not(:disabled):focus ~ div,
     [type="checkbox"]:not(:disabled):active ~ div
       background-color: get("active.div.background-color", $kal-parameters)
+
     // Variante couleur
     &.kal-theme--reverse
       label
         color: get("reverse.label.color", $kal-parameters)
-      [type="checkbox"] + label::before
+      [type="checkbox"]:not(:disabled) + label::before
         background-color: get("reverse.label.before.background-color", $kal-parameters)
-      [type="checkbox"] + label::after
+        border: get("reverse.label.before.border", $kal-parameters)
+      // Aspect before si"coché"
+      [type="checkbox"]:not(:disabled):checked + label::before
+        background-color: get("reverse.label.checktrue.before.background-color", $kal-parameters)
+        border-color: get("reverse.label.checktrue.before.border-color", $kal-parameters)
+      [type="checkbox"]:not(:disabled) + label::after
         background-color: get("reverse.label.after.background-color", $kal-parameters)
       [type="checkbox"]:disabled + label::before
         border-color: get("reverse.label.before.disabled.border-color", $kal-parameters)
@@ -104,10 +125,6 @@
 
 =kal-checkbox($kal-parameters)
   kal-checkbox
-    position: relative
-    z-index: 2
-    display: block
-    padding: 7px
     +kal-themed-checkbox(get('form.elements.checkbox.default', $kal-parameters))
     @each $key, $params in get('form.elements.checkbox.alternates', $kal-parameters)
       &.kal-theme--#{$key}

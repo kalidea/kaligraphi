@@ -1,6 +1,11 @@
 // kal-tabs parameters and alternates
 $kal-styles-checkbox: (
   'default': (
+    'position': relative,
+    'z-index': 1,
+    'display': block,
+    'padding': 7px,
+    'height': auto,
     'label': (
       'padding': 0 0 0 37px,
       'font-size': 18px,
@@ -11,6 +16,7 @@ $kal-styles-checkbox: (
       ),
       'before':(
         'position': absolute,
+        'z-index': 3,
         'top': 0,
         'left': 0,
         'width': 18px,
@@ -23,6 +29,7 @@ $kal-styles-checkbox: (
         'position': absolute,
         'top': 5px,
         'left': 5px,
+        'z-index': 4,
         'display': flex,
         'flex-flow': row wrap,
         'justify-content': center,
@@ -39,6 +46,10 @@ $kal-styles-checkbox: (
         'cursor': not-allowed,
         'after': (
           'background-color': get("grey.wf500", $kal-palettes)
+        ),
+        'before': (
+          'background-color': get("grey.wf100", $kal-palettes),
+          'border-color': get("grey.wf3100", $kal-palettes),
         )
       ),
       'checktrue': (
@@ -65,22 +76,35 @@ $kal-styles-checkbox: (
     'div':(
       'display': inline-block,
       'position': absolute,
-      'z-index': -1,
+      'z-index': 2,
       'top': 0,
       'left': 0,
       'height': 32px,
       'width': 32px,
       'border-radius': 50%,
-      'background-color': transparent
+      'background-color': transparent,
+      'opacity': 1,
+      'checktrue':(
+        'top': 0,
+        'left': 0,
+      ),
+      'checkfalse':(
+        'top': 0,
+        'left': 0,
+      ),
     ),
     'hover':(
       'div':(
-        'background-color': get("grey.wf100", $kal-palettes)
+        'background-color': get("grey.wf100", $kal-palettes),
+        'top': 0,
+        'left': 0,
       ),
     ),
     'active':(
       'div':(
-        'background-color': get("grey.wf200", $kal-palettes)
+        'background-color': get("grey.wf200", $kal-palettes),
+        'top': 0,
+        'left': 0,
       ),
     ),
     'reverse':(
@@ -99,6 +123,11 @@ $kal-styles-checkbox: (
             'background-color': get("grey.wf500", $kal-palettes)
           ),
         ),
+        'checktrue':(
+          'before': (
+            'background-color': get("grey.wf800", $kal-palettes)
+          ),
+        ),
       ),
       'hover':(
         'div':(
@@ -114,6 +143,11 @@ $kal-styles-checkbox: (
   ),
   'alternates':(
     'large':(
+      'position': relative,
+      'z-index': 2,
+      'display': block,
+      'padding': 7px,
+      'height': auto,
       'label':(
         'font-size': 24px,
         'padding': 0 0 0 51px,
@@ -143,6 +177,11 @@ $kal-styles-checkbox: (
       )
     ),
     'switch': (
+      'position': relative,
+      'z-index': 2,
+      'display': block,
+      'padding': 3.5px,
+      'height': 32px,
       'label':(
         'padding': 0 0 0 57px,
         'empty':(
@@ -154,6 +193,7 @@ $kal-styles-checkbox: (
           'position': absolute,
           'top': 0,
           'left': 0,
+          'z-index': 3,
           'width': 45px,
           'height': 24px,
           'border-radius': 24px,
@@ -164,6 +204,7 @@ $kal-styles-checkbox: (
           'position': absolute,
           'top': 2px,
           'left': 2px,
+          'z-index': 5,
           'display': flex,
           'flex-flow': row wrap,
           'justify-content': center,
@@ -181,7 +222,11 @@ $kal-styles-checkbox: (
           'after': (
             'background-color': get("grey.wf300", $kal-palettes),
             'box-shadow': none
-          )
+          ),
+          'before': (
+            'background-color': get("grey.wf200", $kal-palettes),
+            'border-color': get("grey.wf200", $kal-palettes),
+          ),
         ),
         'checktrue': (
           'after': (
@@ -207,26 +252,72 @@ $kal-styles-checkbox: (
       'div':(
         'display': inline-block,
         'position': absolute,
-        'z-index': -1,
+        'z-index': 4,
         'top': 0,
         'left': 0,
         'height': 32px,
         'width': 32px,
         'border-radius': 50%,
-        'background-color': transparent
+        'background-color': transparent,
+        'opacity': .6,
+          'checktrue':(
+          'left': 20px,
+          ),
+          'checkfalse':(
+          'left': 0,
+          ),
       ),
       'hover':(
         'div':(
-          'background-color': get("grey.wf100", $kal-palettes)
+          'background-color': get("grey.wf400", $kal-palettes)
         ),
       ),
       'active':(
         'div':(
-          'background-color': get("grey.wf200", $kal-palettes)
+          'background-color': get("grey.wf600", $kal-palettes)
         ),
       ),
-
-
+      'reverse': (
+        'label':(
+          'color': get("white", $kal-palettes),
+          'before':(
+            'border': 1px solid get("grey.wf300", $kal-palettes),
+            'background-color': get("grey.wf800",  $kal-palettes),
+          ),
+          'disabled' :(
+            'color': get("grey.wf800", $kal-palettes),
+            'border-color': get("grey.wf500", $kal-palettes),
+            'cursor': not-allowed,
+            'after': (
+              'background-color': get("grey.wf300", $kal-palettes),
+              'box-shadow': none
+            ),
+            'before': (
+              'background-color': get("grey.wf800", $kal-palettes),
+              'border-color': get("grey.wf500", $kal-palettes),
+            ),
+          ),
+          'checktrue': (
+            'before': (
+              'background-color': get("green.normal", $kal-palettes),
+              'border-color': get("green.normal", $kal-palettes),
+            ),
+          ),
+        ),
+        'div': (
+          'opacity': .6,
+        ),
+        'hover':(
+          'div':(
+            'background-color': get("grey.wf400", $kal-palettes)
+          ),
+        ),
+        'active':(
+          'div':(
+            'background-color': get("grey.wf400", $kal-palettes)
+          ),
+        ),
+      ),
     ),
   )
 );
