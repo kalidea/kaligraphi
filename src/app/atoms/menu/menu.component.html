@@ -1,10 +1,10 @@
-<kal-button [kalMenuTriggerFor]="menu">
-  <kal-icon>home</kal-icon>
+<span [kalMenuTriggerFor]="menu">
   toggle
-</kal-button>
+</span>
 
 <kal-menu #menu>
-  <kal-option>Option 1</kal-option>
-  <kal-option>Option 2</kal-option>
-  <kal-option>Option 3</kal-option>
+  <kal-option (selectionChange)="selected($event)">Option 1</kal-option>
+  <kal-option (selectionChange)="selected($event)">Option 2</kal-option>
+  <kal-option (selectionChange)="selected($event)">Option 3</kal-option>
 </kal-menu>
+

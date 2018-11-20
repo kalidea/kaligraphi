@@ -11,6 +11,12 @@ export class MenuComponent implements OnInit {
 
   constructor() { }
 
+
+  selected($event) {
+    console.log('selected', $event);
+  }
+
+
   ngOnInit() {
   }
 

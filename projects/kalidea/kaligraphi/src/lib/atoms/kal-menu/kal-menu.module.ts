@@ -3,15 +3,15 @@ import { CommonModule } from '@angular/common';
 import { PortalModule } from '@angular/cdk/portal';
 import { OverlayModule } from '@angular/cdk/overlay';
 
-import { KalMenuDirective } from './kal-menu.directive';
+import { KalMenuTriggerForDirective } from './kal-menu-trigger-for.directive';
 import { KalMenuComponent } from './kal-menu.component';
 import { KalOptionModule } from '../kal-option/kal-option.module';
 
-export * from './kal-menu.directive';
+export * from './kal-menu-trigger-for.directive';
 export * from './kal-menu.component';
 
 const exports = [
-  KalMenuDirective,
+  KalMenuTriggerForDirective,
   KalMenuComponent,
 ];
 
