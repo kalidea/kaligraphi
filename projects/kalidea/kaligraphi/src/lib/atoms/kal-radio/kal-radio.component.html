@@ -5,9 +5,7 @@
        [value]="value"
        [disabled]="disabled"
        (change)="changeSelectedRadio($event)"/>
-
-<div [class.kal-radio-label-before]="labelPosition === 'before'">
-  <label [for]="id">
+<label [for]="id" [class.kal-radio__label--before]="labelPosition === 'before'">
     <ng-content></ng-content>
-  </label>
-</div>
+</label>
+<div></div>
