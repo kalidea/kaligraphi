@@ -1,20 +1,39 @@
-<h1>Checkbox by using control</h1>
+<h5>Checkbox by using control</h5>
 
 <kal-checkbox
-  label="Checkbox with control"
+  label="Checkbox default"
   [formControl]="control">
 </kal-checkbox>
 
+<div style="background-color: #1f1f1f;">
+  <kal-checkbox
+    label="Checkbox default reverse"
+    [formControl]="control"
+    class="kal-theme--reverse">
+  </kal-checkbox>
+</div>
+
+<kal-checkbox
+  label="Checkbox large"
+  [formControl]="control"
+  class="kal-theme--large">
+</kal-checkbox>
+
+<kal-checkbox
+  label="switch checkbox"
+  [formControl]="control"
+  class="kal-theme--switch">
+</kal-checkbox>
+
 <p>Value : {{ valueByControl }}</p>
+<p>
+  <a (click)="toggleDisableStateByControl()">
+    Toggle disabled state of the checkbox by using control
+  </a>
+</p>
+<hr>
 
-<a (click)="toggleDisableStateByControl()">
-  Toggle disabled state of the checkbox by using control
-</a>
-
-<br />
-<br />
-
-<h1>Checkbox by using input</h1>
+<h5>Checkbox by using input</h5>
 
 <kal-checkbox
   label="Checkbox with input"
