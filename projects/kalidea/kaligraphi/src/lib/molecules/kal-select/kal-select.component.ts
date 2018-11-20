@@ -5,7 +5,8 @@ import {
   Component,
   ContentChildren,
   ElementRef,
-  HostListener, Injector,
+  HostListener,
+  Injector,
   Input,
   OnDestroy,
   OnInit,
@@ -256,7 +257,6 @@ export class KalSelectComponent
     Promise.resolve().then(() => {
       this.select(value);
       super.writeValue(value);
-      this.cdr.markForCheck();
     });
   }
 
@@ -329,7 +329,6 @@ export class KalSelectComponent
   }
 
   ngOnInit() {
-
     this.ngControl = this.injector.get(NgControl, null);
 
     this.selection = [];
@@ -353,6 +352,10 @@ export class KalSelectComponent
 
     this.options.map(o => {
       o.selectionChange.subscribe(event => this.optionSelected(event));
+    });
+
+    this.options.changes.subscribe(() => {
+      this.select(this.ngControl.value);
     });
 
     if (this.options.length === 1) {
