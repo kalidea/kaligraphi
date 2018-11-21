@@ -42,8 +42,6 @@
 =kal-button($kal-parameters)
   kal-button
     display: inline-block
-    &:focus
-      outline: none
     +kal-themed-button(get('form.elements.button.default', $kal-parameters))
     @each $key, $params in get('form.elements.button.alternates', $kal-parameters)
       &.kal-theme--#{$key}

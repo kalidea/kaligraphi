@@ -9,7 +9,16 @@
   <kal-radio value="test3">test 3</kal-radio><br />
 </kal-radio-group>
 </div>
-
+<h5>Radio button by using control</h5>
+<div style="margin: 20px 0; padding: 10px;">
+  <kal-radio-group [formControl]="control"
+                   [name]="nameRadioButtonWithControl">
+    <kal-radio value="test">test</kal-radio><br />
+    <kal-radio value="test1">test 1</kal-radio><br />
+    <kal-radio value="test2">test 2</kal-radio><br />
+    <kal-radio value="test3">test 3</kal-radio><br />
+  </kal-radio-group>
+</div>
 <div>
   <input #inputElementWithControl type="text"><br>
   <button (click)="changeRadioValueWithControl(inputElementWithControl.value)"> Change radio value</button><br>
@@ -23,13 +32,21 @@
   <kal-radio-group [formControl]="control"
                    labelPosition="before"
                    [name]="nameRadioButtonWithControl">
-    <kal-radio class="kal-radio--large" value="test">test</kal-radio><br />
-    <kal-radio class="kal-radio--large" value="test1">test 1</kal-radio><br />
-    <kal-radio class="kal-radio--large" value="test2">test 2</kal-radio><br />
-    <kal-radio class="kal-radio--large" value="test3">test 3</kal-radio><br />
+    <kal-radio class="kal-theme--large" value="test">test</kal-radio><br />
+    <kal-radio class="kal-theme--large" value="test1">test 1</kal-radio><br />
+    <kal-radio class="kal-theme--large" value="test2">test 2</kal-radio><br />
+    <kal-radio class="kal-theme--large" value="test3">test 3</kal-radio><br />
   </kal-radio-group>
 </div>
-
+<div style="margin: 20px 0; padding: 10px;">
+  <kal-radio-group [formControl]="control"
+                   [name]="nameRadioButtonWithControl">
+    <kal-radio class="kal-theme--large" value="test">test</kal-radio><br />
+    <kal-radio class="kal-theme--large" value="test1">test 1</kal-radio><br />
+    <kal-radio class="kal-theme--large" value="test2">test 2</kal-radio><br />
+    <kal-radio class="kal-theme--large" value="test3">test 3</kal-radio><br />
+  </kal-radio-group>
+</div>
 <div>
   <input #inputElementWithControl type="text"><br>
   <button (click)="changeRadioValueWithControl(inputElementWithControl.value)"> Change radio value</button><br>
@@ -45,10 +62,10 @@
                    [name]="nameRadioButtonWithEvent"
                    [disabled]="disabled"
                    (valueChange)="displayValue($event)">
-    <kal-radio class="kal-radio--reverse" value="test">test</kal-radio><br />
-    <kal-radio class="kal-radio--reverse" value="test1">test 1</kal-radio><br />
-    <kal-radio class="kal-radio--reverse" value="test2">test 2</kal-radio><br />
-    <kal-radio class="kal-radio--reverse" value="test3">test 3</kal-radio><br />
+    <kal-radio class="kal-theme--reverse" value="test">test</kal-radio><br />
+    <kal-radio class="kal-theme--reverse" value="test1">test 1</kal-radio><br />
+    <kal-radio class="kal-theme--reverse" value="test2">test 2</kal-radio><br />
+    <kal-radio class="kal-theme--reverse" value="test3">test 3</kal-radio><br />
   </kal-radio-group>
 </div>
 <div>
@@ -66,10 +83,10 @@
                    [name]="nameRadioButtonWithEvent"
                    [disabled]="disabled"
                    (valueChange)="displayValue($event)">
-    <kal-radio class="kal-radio--reverse kal-radio--large" value="test">test</kal-radio><br />
-    <kal-radio class="kal-radio--reverse kal-radio--large" value="test1">test 1</kal-radio><br />
-    <kal-radio class="kal-radio--reverse kal-radio--large" value="test2">test 2</kal-radio><br />
-    <kal-radio class="kal-radio--reverse kal-radio--large" value="test3">test 3</kal-radio><br />
+    <kal-radio class="kal-theme--reverse kal-theme--large" value="test">test</kal-radio><br />
+    <kal-radio class="kal-theme--reverse kal-theme--large" value="test1">test 1</kal-radio><br />
+    <kal-radio class="kal-theme--reverse kal-theme--large" value="test2">test 2</kal-radio><br />
+    <kal-radio class="kal-theme--reverse kal-theme--large" value="test3">test 3</kal-radio><br />
   </kal-radio-group>
 </div>
 <div>
