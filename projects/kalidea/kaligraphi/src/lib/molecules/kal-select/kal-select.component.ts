@@ -16,17 +16,18 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { Overlay, OverlayRef } from '@angular/cdk/overlay';
-import { TemplatePortal } from '@angular/cdk/portal';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
-import { DOWN_ARROW, ENTER, ESCAPE, SPACE, UP_ARROW } from '@angular/cdk/keycodes';
-import { NgControl } from '@angular/forms';
-import { filter } from 'rxjs/operators';
+import {Overlay, OverlayRef} from '@angular/cdk/overlay';
+import {TemplatePortal} from '@angular/cdk/portal';
+import {coerceBooleanProperty} from '@angular/cdk/coercion';
+import {ActiveDescendantKeyManager} from '@angular/cdk/a11y';
+import {DOWN_ARROW, ENTER, ESCAPE, SPACE, UP_ARROW} from '@angular/cdk/keycodes';
+import {NgControl} from '@angular/forms';
+import {filter} from 'rxjs/operators';
 
-import { buildProviders, FormElementComponent } from '../../utils/index';
-import { KalOptionComponent } from '../../atoms/kal-option/kal-option.component';
-import { KalThemeDirective } from '../../utility/directives/kal-theme/kal-theme.directive';
+import {AutoUnsubscribe, buildProviders, FormElementComponent} from '../../utils/index';
+import {KalOptionComponent} from '../../atoms/kal-option/kal-option.component';
+import {KalThemeDirective} from '../../utility/directives/kal-theme/kal-theme.directive';
+import {Subscription, merge} from 'rxjs';
 
 @Component({
   selector: 'kal-select',
@@ -313,6 +314,7 @@ export class KalSelectComponent
     if (!this.overlayRef) {
       this.createOverlay();
     }
+
     return this.overlayRef;
   }
 
@@ -386,10 +388,7 @@ export class KalSelectComponent
 
   ngOnInit() {
     this.ngControl = this.injector.get(NgControl, null);
-
     this.selection = [];
-
-
   }
 
   ngAfterContentInit() {
@@ -410,7 +409,9 @@ export class KalSelectComponent
   }
 
   ngOnDestroy() {
-    this.overlayRef.dispose();
+    if (this.overlayRef) {
+      this.overlayRef.dispose();
+    }
   }
 
 }
