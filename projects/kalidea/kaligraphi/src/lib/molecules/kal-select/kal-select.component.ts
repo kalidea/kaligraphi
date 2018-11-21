@@ -24,10 +24,9 @@ import {DOWN_ARROW, ENTER, ESCAPE, SPACE, UP_ARROW} from '@angular/cdk/keycodes'
 import {NgControl} from '@angular/forms';
 import {filter} from 'rxjs/operators';
 
-import {AutoUnsubscribe, buildProviders, FormElementComponent} from '../../utils/index';
+import {buildProviders, FormElementComponent} from '../../utils/index';
 import {KalOptionComponent} from '../../atoms/kal-option/kal-option.component';
 import {KalThemeDirective} from '../../utility/directives/kal-theme/kal-theme.directive';
-import {Subscription, merge} from 'rxjs';
 
 @Component({
   selector: 'kal-select',
@@ -203,6 +202,15 @@ export class KalSelectComponent
    * Select an option by his value
    */
   select(value: any, withNotify = false): void {
+
+    if(this.isMultiple && value instanceof Array){
+     const op =  this.options.filter( (item) => value.indexOf(item.value) >= 0);
+
+op.map( (o ) => this.optionSelected(o));
+
+   return ;
+    }
+
     const optionSelect = this.options.find((item) => item.value === value);
     if (optionSelect) {
       this.keyManager.setActiveItem(optionSelect);
