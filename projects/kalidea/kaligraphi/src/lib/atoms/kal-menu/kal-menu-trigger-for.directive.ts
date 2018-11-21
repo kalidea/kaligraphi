@@ -1,5 +1,5 @@
 import { Directive, ElementRef, HostListener, Input, OnDestroy, ViewContainerRef } from '@angular/core';
-import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { Overlay, OverlayRef, PositionStrategy } from '@angular/cdk/overlay';
 import { DOWN_ARROW, ENTER, ESCAPE, SPACE, UP_ARROW } from '@angular/cdk/keycodes';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { filter, tap } from 'rxjs/operators';
@@ -11,7 +11,7 @@ import { KalMenuComponent } from './kal-menu.component';
 })
 export class KalMenuTriggerForDirective implements OnDestroy {
 
-  @Input('kalMenuTriggerFor') menu: KalMenuComponent;
+  @Input() menu: KalMenuComponent;
 
   private overlayRef: OverlayRef;
 
@@ -68,19 +68,22 @@ export class KalMenuTriggerForDirective implements OnDestroy {
     return size.width || 200;
   }
 
-  /**
-   * create overlay
-   */
-  private createOverlay() {
-    const positionStrategy = this.overlay
+  private getPositionStrategy(): PositionStrategy {
+    return this.overlay
       .position()
       .flexibleConnectedTo(this.elementRef)
       .withPositions([
         {originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top'}
       ]);
+  }
+
+  /**
+   * create overlay
+   */
+  private createOverlay() {
 
     this.overlayRef = this.overlay.create({
-      positionStrategy,
+      positionStrategy: this.getPositionStrategy(),
       panelClass: 'kal-menu__overlay',
       hasBackdrop: true,
       minWidth: this.getHostWidth(),
@@ -94,8 +97,7 @@ export class KalMenuTriggerForDirective implements OnDestroy {
     this.overlayRef.keydownEvents()
       .pipe(
         tap(event => {
-          const keyCode = event.keyCode;
-          if ([UP_ARROW, DOWN_ARROW, ENTER, SPACE].indexOf(keyCode) > -1) {
+          if ([UP_ARROW, DOWN_ARROW, ENTER, SPACE].indexOf(event.keyCode) > -1) {
             this.menu.handleKeydown(event);
           }
         }),
@@ -116,7 +118,6 @@ export class KalMenuTriggerForDirective implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-
     if (this.overlayRef) {
       this.overlayRef.dispose();
       this.overlayRef = null;
