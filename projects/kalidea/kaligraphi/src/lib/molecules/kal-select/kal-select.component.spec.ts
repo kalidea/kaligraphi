@@ -9,12 +9,14 @@ import { Overlay, OverlayContainer } from '@angular/cdk/overlay';
 import { KalSelectComponent } from './kal-select.component';
 import { KalOptionComponent, KalOptionModule } from '../../atoms/kal-option/kal-option.module';
 import { createKeyboardEvent } from '../../utils/tests/event-keyboard';
+import { KalUtilityModule } from '../../utility/kal-utility.module';
+import { KalIconModule } from '../../atoms/kal-icon/kal-icon.module';
 
 function configureTestingModule(declarations: any[]) {
   TestBed.configureTestingModule({
     declarations: [KalSelectComponent, CdkPortal, ...declarations],
     providers: [Overlay],
-    imports: [KalOptionModule]
+    imports: [KalOptionModule, KalIconModule, KalUtilityModule]
   }).compileComponents();
 }
 
@@ -36,7 +38,7 @@ describe('TestSelectComponent', () => {
       fixture = TestBed.createComponent(TestSelectComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
-      trigger = fixture.debugElement.query(By.css('.kal-select-trigger')).nativeElement;
+      trigger = fixture.debugElement.query(By.css('.kal-select__trigger')).nativeElement;
 
       overlayContainer = fixture.debugElement.injector.get(OverlayContainer);
       overlayContainerElement = overlayContainer.getContainerElement();
@@ -81,14 +83,14 @@ describe('TestSelectComponent', () => {
 
     it('should set a default label', () => {
       fixture.detectChanges();
-      const placeHolder = fixture.debugElement.query(By.css('.kal-select-placeholder'));
+      const placeHolder = fixture.debugElement.query(By.css('.kal-select__placeholder'));
 
       expect(placeHolder.nativeElement.textContent).toEqual('Sélectionnez un élément');
     });
 
     it('should close when option is clicked', () => {
       trigger.click();
-      const options = fixture.debugElement.query(By.css('.kal-option-selection')).nativeElement;
+      const options = fixture.debugElement.query(By.css('.kal-option__selection')).nativeElement;
       options.click();
 
       expect(component.select.panelOpen).toBeFalsy();
@@ -109,7 +111,7 @@ describe('TestSelectComponent', () => {
     it('should select an option in option list', () => {
       const spy = spyOn(component.select.valueChange, 'emit');
       trigger.click();
-      const options = fixture.debugElement.query(By.css('.kal-option-selection')).nativeElement;
+      const options = fixture.debugElement.query(By.css('.kal-option__selection')).nativeElement;
       options.click();
 
       const selectedOption = component.select.selected as KalOptionComponent;
@@ -123,7 +125,7 @@ describe('TestSelectComponent', () => {
       const spy = spyOn(component.select.valueChange, 'emit');
 
       component.select.open();
-      const options = fixture.debugElement.query(By.css('.kal-option-selection')).nativeElement;
+      const options = fixture.debugElement.query(By.css('.kal-option__selection')).nativeElement;
       options.click();
 
       expect(spy).toHaveBeenCalled();
@@ -143,7 +145,7 @@ describe('TestSelectComponent', () => {
       component.select.multiple = true;
 
       trigger.click();
-      const options = fixture.debugElement.queryAll(By.css('.kal-option-selection'));
+      const options = fixture.debugElement.queryAll(By.css('.kal-option__selection'));
       options.map(o => o.nativeElement.click());
 
       const selectedOptions = component.select.selected as KalOptionComponent[];

@@ -10,6 +10,15 @@ import { FormControl } from '@angular/forms';
 })
 export class CheckboxComponent implements OnInit {
 
+
+  theme = '';
+
+  reverse = false;
+
+  large = false;
+
+  label = 'checkbox';
+
   /**
    * control that contains the checkbox value
    */
@@ -26,6 +35,17 @@ export class CheckboxComponent implements OnInit {
   private value = true;
 
   constructor() {
+  }
+
+  get themesList() {
+    const themes = [this.theme];
+    if (this.reverse) {
+      themes.push('reverse');
+    }
+    if (this.large) {
+      themes.push('large');
+    }
+    return themes;
   }
 
   /**

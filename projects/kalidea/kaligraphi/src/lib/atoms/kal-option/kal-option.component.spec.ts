@@ -28,7 +28,7 @@ describe('KalOptionComponent', () => {
 
   it('should call event method on click', () => {
     const spy = spyOn(component, 'emitSelectionEvent');
-    const option = fixture.debugElement.query(By.css('.kal-option-selection')).nativeElement;
+    const option = fixture.debugElement.query(By.css('.kal-option__selection')).nativeElement;
     option.click();
 
     expect(spy).toHaveBeenCalled();

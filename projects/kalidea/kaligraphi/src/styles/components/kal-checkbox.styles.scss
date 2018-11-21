@@ -1,0 +1,323 @@
+// kal-tabs parameters and alternates
+$kal-styles-checkbox: (
+  'default': (
+    'position': relative,
+    'z-index': 1,
+    'display': block,
+    'padding': 7px,
+    'height': auto,
+    'label': (
+      'padding': 0 0 0 37px,
+      'font-size': 18px,
+      'empty':(
+        'width': 18px,
+        'height': 18px,
+        'padding': 0
+      ),
+      'before':(
+        'position': absolute,
+        'z-index': 3,
+        'top': 0,
+        'left': 0,
+        'width': 18px,
+        'height': 18px,
+        'border-radius': $kal-base-borderradius,
+        'border': 1px solid get("grey.wf300", $kal-palettes),
+        'background-color': get("white", $kal-palettes),
+      ),
+      'after':(
+        'position': absolute,
+        'top': 5px,
+        'left': 5px,
+        'z-index': 4,
+        'display': flex,
+        'flex-flow': row wrap,
+        'justify-content': center,
+        'align-items': center,
+        'width': 8px,
+        'height': 8px,
+        'background-color': get("black", $kal-palettes),
+        'border-radius': $kal-base-borderradius,
+        'transition': all .2s,
+        'box-shadow': none
+      ),
+      'disabled' :(
+        'color': get("grey.wf500", $kal-palettes),
+        'cursor': not-allowed,
+        'after': (
+          'background-color': get("grey.wf500", $kal-palettes)
+        ),
+        'before': (
+          'background-color': get("grey.wf100", $kal-palettes),
+          'border-color': get("grey.wf3100", $kal-palettes),
+        )
+      ),
+      'checktrue': (
+        'after': (
+          'opacity': 1,
+          'transform': scale(1),
+          'left': 5px
+         ),
+        'before': (
+          'background-color': get("white", $kal-palettes),
+          'border-color': get("grey.wf300", $kal-palettes),
+        ),
+      ),
+      'checkfalse': (
+        'after': (
+          'opacity': 0,
+          'transform': scale(0)
+        ),
+        'before': (
+          'background-color': get("grey.wf100", $kal-palettes)
+        )
+      ),
+    ),
+    'div':(
+      'display': inline-block,
+      'position': absolute,
+      'z-index': 2,
+      'top': 0,
+      'left': 0,
+      'height': 32px,
+      'width': 32px,
+      'border-radius': 50%,
+      'background-color': transparent,
+      'opacity': 1,
+      'checktrue':(
+        'top': 0,
+        'left': 0,
+      ),
+      'checkfalse':(
+        'top': 0,
+        'left': 0,
+      ),
+    ),
+    'hover':(
+      'div':(
+        'background-color': get("grey.wf100", $kal-palettes),
+        'top': 0,
+        'left': 0,
+      ),
+    ),
+    'active':(
+      'div':(
+        'background-color': get("grey.wf200", $kal-palettes),
+        'top': 0,
+        'left': 0,
+      ),
+    ),
+    'reverse':(
+      'label': (
+        'color': get("white", $kal-palettes),
+        'before':(
+          'background-color': get("grey.wf800", $kal-palettes),
+          'disabled':(
+            'border-color': get("grey.wf500", $kal-palettes),
+            'background-color': get("grey.wf700", $kal-palettes),
+          ),
+        ),
+        'after':(
+          'background-color': get("white", $kal-palettes),
+          'disabled': (
+            'background-color': get("grey.wf500", $kal-palettes)
+          ),
+        ),
+        'checktrue':(
+          'before': (
+            'background-color': get("grey.wf800", $kal-palettes)
+          ),
+        ),
+      ),
+      'hover':(
+        'div':(
+          'background-color': get("grey.wf700", $kal-palettes)
+        ),
+      ),
+      'active':(
+        'div':(
+          'background-color': get("grey.wf600", $kal-palettes)
+        ),
+      ),
+    ),
+  ),
+  'alternates':(
+    'large':(
+      'position': relative,
+      'z-index': 2,
+      'display': block,
+      'padding': 7px,
+      'height': auto,
+      'label':(
+        'font-size': 24px,
+        'padding': 0 0 0 51px,
+        'empty':(
+          'width': 24px,
+          'height': 24px
+        ),
+        'before':(
+          'width': 24px,
+          'height': 24px
+        ),
+        'after':(
+          'width': 10px,
+          'height': 10px,
+          'top': 7px,
+          'left': 7px
+        ),
+        'checktrue': (
+          'after': (
+            'left': 7px
+          ),
+        ),
+      ),
+      'div':(
+        'height': 38px,
+        'width': 38px
+      )
+    ),
+    'switch': (
+      'position': relative,
+      'z-index': 2,
+      'display': block,
+      'padding': 3.5px,
+      'height': 32px,
+      'label':(
+        'padding': 0 0 0 57px,
+        'empty':(
+          'width': 45px,
+          'height': 24px,
+          'padding': 0
+        ),
+        'before':(
+          'position': absolute,
+          'top': 0,
+          'left': 0,
+          'z-index': 3,
+          'width': 45px,
+          'height': 24px,
+          'border-radius': 24px,
+          'border': 1px solid get("grey.wf350", $kal-palettes),
+          'background-color': get("grey.wf350",  $kal-palettes),
+        ),
+        'after':(
+          'position': absolute,
+          'top': 2px,
+          'left': 2px,
+          'z-index': 5,
+          'display': flex,
+          'flex-flow': row wrap,
+          'justify-content': center,
+          'align-items': center,
+          'width': 20px,
+          'height': 20px,
+          'background-color': get("white", $kal-palettes),
+          'border-radius': 50%,
+          'transition': none,
+          'box-shadow': 0px 2px 2px rgba(0, 0, 0, 0.25)
+        ),
+        'disabled' :(
+          'color': get("grey.wf500", $kal-palettes),
+          'cursor': not-allowed,
+          'after': (
+            'background-color': get("grey.wf300", $kal-palettes),
+            'box-shadow': none
+          ),
+          'before': (
+            'background-color': get("grey.wf200", $kal-palettes),
+            'border-color': get("grey.wf200", $kal-palettes),
+          ),
+        ),
+        'checktrue': (
+          'after': (
+            'opacity': 1,
+            'transform': scale(1),
+            'left': 23px
+          ),
+          'before': (
+            'background-color': get("green.normal", $kal-palettes),
+            'border-color': get("green.normal", $kal-palettes),
+          ),
+        ),
+        'checkfalse': (
+          'after': (
+            'opacity': 1,
+            'transform': scale(1)
+          ),
+          'before': (
+            'background-color': get("grey.wf350", $kal-palettes)
+          )
+        ),
+      ),
+      'div':(
+        'display': inline-block,
+        'position': absolute,
+        'z-index': 4,
+        'top': 0,
+        'left': 0,
+        'height': 32px,
+        'width': 32px,
+        'border-radius': 50%,
+        'background-color': transparent,
+        'opacity': .6,
+          'checktrue':(
+          'left': 20px,
+          ),
+          'checkfalse':(
+          'left': 0,
+          ),
+      ),
+      'hover':(
+        'div':(
+          'background-color': get("grey.wf400", $kal-palettes)
+        ),
+      ),
+      'active':(
+        'div':(
+          'background-color': get("grey.wf600", $kal-palettes)
+        ),
+      ),
+      'reverse': (
+        'label':(
+          'color': get("white", $kal-palettes),
+          'before':(
+            'border': 1px solid get("grey.wf300", $kal-palettes),
+            'background-color': get("grey.wf800",  $kal-palettes),
+          ),
+          'disabled' :(
+            'color': get("grey.wf800", $kal-palettes),
+            'border-color': get("grey.wf500", $kal-palettes),
+            'cursor': not-allowed,
+            'after': (
+              'background-color': get("grey.wf300", $kal-palettes),
+              'box-shadow': none
+            ),
+            'before': (
+              'background-color': get("grey.wf800", $kal-palettes),
+              'border-color': get("grey.wf500", $kal-palettes),
+            ),
+          ),
+          'checktrue': (
+            'before': (
+              'background-color': get("green.normal", $kal-palettes),
+              'border-color': get("green.normal", $kal-palettes),
+            ),
+          ),
+        ),
+        'div': (
+          'opacity': .6,
+        ),
+        'hover':(
+          'div':(
+            'background-color': get("grey.wf400", $kal-palettes)
+          ),
+        ),
+        'active':(
+          'div':(
+            'background-color': get("grey.wf400", $kal-palettes)
+          ),
+        ),
+      ),
+    ),
+  )
+);
