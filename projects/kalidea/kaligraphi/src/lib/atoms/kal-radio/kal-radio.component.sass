@@ -1,11 +1,5 @@
 
-=kal-radio($kal-parameters)
-  kal-radio
-    position: relative
-    display: inline-block
-    padding: 7px
-    z-index: 2
-    // on  cache input
+=kal-themed-radio($theme-parameters)
     [type="radio"]
       position: absolute
       left: -9999px
@@ -141,3 +135,14 @@
       [type="radio"]:focus ~ div,
       [type="radio"]:active ~ div
         background-color: get("palettes.grey.wf600", $kal-parameters)
+
+=kal-radio($kal-parameters)
+  kal-radio
+    position: relative
+    display: inline-block
+    padding: 7px
+    z-index: 2
+    +kal-themed-radio(get('form.elements.radio.default', $kal-parameters))
+    @each $key, $params in get('form.elements.radio.alternates', $kal-parameters)
+      &.kal-theme--#{$key}
+        +kal-themed-button($params)
