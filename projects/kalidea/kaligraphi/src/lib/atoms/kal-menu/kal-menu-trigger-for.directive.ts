@@ -11,15 +11,28 @@ import { KalMenuComponent } from './kal-menu.component';
 })
 export class KalMenuTriggerForDirective implements OnDestroy {
 
-  @Input() menu: KalMenuComponent;
+  /**
+   * private reference from menuComponent
+   */
+  private menu: KalMenuComponent;
 
+  /**
+   * local overlayref
+   */
   private overlayRef: OverlayRef;
 
+  /**
+   * is the menu open ?
+   */
   private menuOpen = false;
 
   constructor(private overlay: Overlay,
               private elementRef: ElementRef,
               private viewContainerRef: ViewContainerRef) {
+  }
+
+  @Input() set kalMenuTriggerFor(menu: KalMenuComponent) {
+    this.menu = menu;
   }
 
   @HostListener('click')
