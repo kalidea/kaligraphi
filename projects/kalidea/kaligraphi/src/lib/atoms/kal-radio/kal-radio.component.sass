@@ -5,62 +5,60 @@
       left: -9999px
     // on revoit le label
     label
-      position: relative
-      display: flex
-      flex-flow: row wrap
-      align-items: center
-      padding-left: 37px
-      font-size: 18px
-      cursor: pointer
+      position: get("label.position", $kal-parameters)
+      display: get("label.flex", $kal-parameters)
+      flex-flow: get("label.flex-flow", $kal-parameters)
+      align-items: get("label.align-items", $kal-parameters)
+      padding: get("label.padding", $kal-parameters)
+      font-size: get("label.font-size", $kal-parameters)
+      cursor: get("label.cursor", $kal-parameters)
       // cas du label à gauche
-      &.kal-radio__label--before
-        padding-right: 37px
-        padding-left: 0
+      &.kal-radio__label--left
+        padding: get("label.labelleft.padding", $kal-parameters)
         + div
-          right: 0
-          left: auto
-      &.kal-radio__label--before::before
-        right: 0
-        left: auto
-      &.kal-radio__label--before::after
-        right: 5px
-        left: auto
-      // cas du label vide
+          right: get("label.labelleft.div.right", $kal-parameters)
+          left: get("label.labelleft.div.left", $kal-parameters)
+      &.kal-radio__label--left::before
+        right: get("label.labelleft.before.right", $kal-parameters)
+        left: get("label.labelleft.before.left", $kal-parameters)
+      &.kal-radio__label--left::after
+        right: get("label.labelleft.after.right", $kal-parameters)
+        left: get("label.labelleft.left", $kal-parameters)
       &:empty
-        display: inline-flex
-        width: 18px
-        height: 18px
-        padding-left: 0
+        display:  get("label.empty.display", $kal-parameters)
+        width: get("label.empty.width", $kal-parameters)
+        height: get("label.empty.height", $kal-parameters)
+        padding: get("label.empty.padding", $kal-parameters)
       // le before represente la case
       &::before
-        content: ''
-        position: absolute
-        top: 0
-        left: 0
-        width: 18px
-        height: 18px /* dim. de la case */
-        border: 1px solid get("palettes.grey.wf300", $kal-parameters)
-        border-radius: 50%
-        background-color: get("palettes.grey.wf100", $kal-parameters)
+        content: get("label.before.content", $kal-parameters)
+        position: get("label.before.position", $kal-parameters)
+        top:  get("label.before.top", $kal-parameters)
+        left:  get("label.before.left", $kal-parameters)
+        width:  get("label.before.width", $kal-parameters)
+        height:  get("label.before.height", $kal-parameters)
+        border:  get("label.before.border", $kal-parameters)
+        border-radius:  get("label.before.border-radius", $kal-parameters)
+        background-color:  get("label.before.background-color", $kal-parameters)
       // le after represente la coche
       &::after
-        content: ''
-        position: absolute
-        top: 5px
-        left: 5px
-        display: flex
-        flex-flow: row wrap
-        justify-content: center
-        align-items: center
-        width: 8px
-        height: 8px
-        background-color: get("palettes.black", $kal-parameters)
-        border-radius: 50%
-        transition: all .2s
-        opacity: 0
-        transform: scale(0)
+        content: get("label.after.content", $kal-parameters)
+        position: get("label.after.position", $kal-parameters)
+        top: get("label.after.top", $kal-parameters)
+        left: get("label.after.left", $kal-parameters)
+        display: get("label.after.display", $kal-parameters)
+        flex-flow: get("label.after.flex-flow", $kal-parameters)
+        justify-content: get("label.after.justify-content", $kal-parameters)
+        align-items: get("label.after.align-items", $kal-parameters)
+        width: get("label.after.width", $kal-parameters)
+        height: get("label.after.height", $kal-parameters)
+        background-color: get("label.after.background-color", $kal-parameters)
+        border-radius: get("label.after.border-radius", $kal-parameters)
+        transition: get("label.after.transition", $kal-parameters)
+        opacity: get("label.after.opacity", $kal-parameters)
+        transform: get("label.after.transform", $kal-parameters)
     // Aspect after before si"coché"
-    [type="radio"]:checked + label
+    [type="radio"]:not(:disabled):checked + label
       &::before
         background-color: get("palettes.white", $kal-parameters)
       &::after
@@ -88,28 +86,9 @@
     [type="radio"]:focus ~ div,
     [type="radio"]:active ~ div
       background-color: get("palettes.grey.wf200", $kal-parameters)
-    // Variante taille
-    &.kal-radio--large
-      label
-        font-size: 24px
-        padding-left: 51px
-      div
-        height: 38px
-        width: 38px
-      [type="radio"] + label
-        &:empty
-          width: 24px
-          height: 24px
-        &::before
-          width: 24px
-          height: 24px
-        &::after
-          width: 10px
-          height: 10px
-          top: 7px
-          left: 7px
+
     // Variante couleur
-    &.kal-radio--reverse
+    &.kal-theme--reverse
       label
         color: get("palettes.white", $kal-parameters)
       [type="radio"]:checked + label
@@ -136,6 +115,26 @@
       [type="radio"]:active ~ div
         background-color: get("palettes.grey.wf600", $kal-parameters)
 
+    // Variante taille
+    &.kal-theme--large
+      label
+        font-size: 24px
+        padding-left: 51px
+      div
+        height: 38px
+        width: 38px
+      [type="radio"] + label
+        &:empty
+          width: 24px
+          height: 24px
+        &::before
+          width: 24px
+          height: 24px
+        &::after
+          width: 10px
+          height: 10px
+          top: 7px
+          left: 7px
 =kal-radio($kal-parameters)
   kal-radio
     position: relative
