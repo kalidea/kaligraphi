@@ -1,30 +1,28 @@
-<h1>Checkbox by using control</h1>
+<h5>Checkbox by using control</h5>
 
-<kal-checkbox
-  label="Checkbox with control"
-  [formControl]="control">
-</kal-checkbox>
+<div style="padding: 50px" [class.darkBg]="reverse">
 
-<p>Value : {{ valueByControl }}</p>
+  <kal-checkbox
+    [kalTheme]="themesList"
+    [label]="label"
+  ></kal-checkbox>
 
-<a (click)="toggleDisableStateByControl()">
-  Toggle disabled state of the checkbox by using control
-</a>
+</div>
 
-<br />
-<br />
+<hr/>
+<section class="configurator">
+  <kal-select [(ngModel)]="theme">
+    <kal-option value="">Default</kal-option>
+    <kal-option value="switch">Switch</kal-option>
+  </kal-select>
 
-<h1>Checkbox by using input</h1>
+  <kal-checkbox
+    label="Reverse"
+    [(ngModel)]="reverse">
+  </kal-checkbox>
 
-<kal-checkbox
-  label="Checkbox with input"
-  [value]="true"
-  [disabled]="disabled"
-  (valueChange)="setValue($event)">
-</kal-checkbox>
-
-<p>Value : {{ valueByOutput }}</p>
-
-<a (click)="toggleDisableStateByInput()">
-  Toggle disabled state of the checkbox by using input
-</a>
+  <kal-checkbox
+    label="Large"
+    [(ngModel)]="large">
+  </kal-checkbox>
+</section>

@@ -38,6 +38,7 @@ $kal-headings: (
 @import 'components/kal-button.styles';
 @import 'components/kal-menu.styles';
 @import 'components/kal-tabs.styles';
+@import 'components/kal-checkbox.styles';
 @import 'components/kal-select.styles';
 
 // global parameters
@@ -50,6 +51,7 @@ $kal-parameters: (
   form: (
     elements: (
       'button': $kal-styles-button,
+      'checkbox': $kal-styles-checkbox,
       'select': $kal-styles-select
     ),
     padding: 12px,
