@@ -1,17 +1,98 @@
-=kal-select($parameters)
+=kal-themed-select($theme-parameters)
+    .kal-select__trigger
+      > div
+        display: flex
+        align-items: center
+        background-color: get('background-color', $theme-parameters)
+        border: get('border', $theme-parameters)
+        border-radius: get('border-radius', $theme-parameters)
+        padding: get('padding', $theme-parameters)
+        .kal-select__triggervalue, .kal-select__placeholder
+          display: inline-block
+          font-size: get('label.font-size', $theme-parameters)
+          font-weight: get('label.font-weight', $theme-parameters)
+          color: get('label.color', $theme-parameters)
+          + kal-icon
+            color: get('icon.color', $theme-parameters)
+            padding: get('icon.padding', $theme-parameters)
+            font-size: get('icon.font-size', $theme-parameters)
+    &:not([disabled])
+      &:focus, &:active
+        .kal-select__trigger
+          > div
+            border-color:  get('active.border-color', $theme-parameters)
+      &:hover
+        cursor: pointer
+    &[disabled]
+      cursor: not-allowed
+      .kal-select__trigger
+        > div
+          .kal-select__triggervalue, .kal-select__placeholder
+            color: get('disabled.label.color', $theme-parameters)
+            + kal-icon
+              color: get('disabled.icon.color', $theme-parameters)
+    .kal-select__overlay
+      background-color: get('overlay.background-color', $theme-parameters)
+      color: get('overlay.color', $theme-parameters)
+      border: get('overlay.border', $theme-parameters)
+      border-radius:  get('overlay.border-radius', $theme-parameters)
+
+    &.kal-theme--reverse
+      .kal-select__trigger
+        > div
+          background-color:  get('reverse.background-color', $theme-parameters)
+          border-color:  get('reverse.border-color', $theme-parameters)
+          .kal-select__triggervalue, .kal-select__placeholder
+            color:  get('reverse.label.color', $theme-parameters)
+            + kal-icon
+              color: get('reverse.icon.color', $theme-parameters)
+      &:not([disabled])
+        &:focus, &:active
+          .kal-select__trigger
+            border-color:  get('reverse.active.border-color', $theme-parameters)
+      &[disabled]
+        .kal-select__trigger
+          > div
+            .kal-select__triggervalue, .kal-select__placeholder
+              color:  get('reverse.disabled.label.color', $theme-parameters)
+              + kal-icon
+                color: get('reverse.disabled.icon.color', $theme-parameters)
+
+=kal-themed-select__overlay($theme-parameters)
+    background-color: get('overlay.background-color', $theme-parameters)
+    color: get('overlay.color', $theme-parameters)
+    border: get('overlay.border', $theme-parameters)
+    border-radius:  get('overlay.border-radius', $theme-parameters)
+    padding: get('overlay.padding', $theme-parameters)
+    width: get('overlay.width', $theme-parameters)
+    .kal-option .kal-option__selection
+      color: get('overlay.option.color', $theme-parameters)
+      &[disabled]
+        color: get('overlay.option.disabled.color', $theme-parameters)
+
+    &.kal-theme--reverse
+      background-color: get('reverse.overlay.background-color', $theme-parameters)
+      color:  get('reverse.overlay.color', $theme-parameters)
+      border: get('reverse.overlay.border', $theme-parameters)
+      kal-option .kal-option__selection
+        color:  get('reverse.overlay.option.color', $theme-parameters)
+        &:not([disbaled]), &:not(.kal-option__selection--disabled)
+          &:hover, &:focus, &:active, &.kal-option__selection--active
+            color: get('reverse.overlay.option.active.color', $theme-parameters)
+        &[disabled], &--disabled
+          cursor: not-allowed
+          color: get('overlay.option.disabled.color', $theme-parameters)
+
+=kal-select($kal-parameters)
+  .kal-select__overlay
+    +kal-themed-select__overlay(get('form.elements.select.default', $kal-parameters))
+    @each $key, $params in get('form.elements.select.alternates', $kal-parameters)
+      &.kal-theme--#{$key}
+        +kal-themed-select__overlay($params)
   kal-select
-    +kal-generic-form($parameters)
-
-
-.cdk-overlay-backdrop
-  position: absolute
-  top: 0
-  bottom: 0
-  left: 0
-  right: 0
-  z-index: 1000
-  opacity: 0
-
-.cdk-overlay-pane
-  position: absolute
-  z-index: 1000
+    display: inline-block
+    position: relative
+    +kal-themed-select(get('form.elements.select.default', $kal-parameters))
+    @each $key, $params in get('form.elements.select.alternates', $kal-parameters)
+      &.kal-theme--#{$key}
+        +kal-themed-select($params)
