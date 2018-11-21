@@ -31,10 +31,10 @@
     "@angular/platform-browser-dynamic": "~7.0.0",
     "@angular/router": "~7.0.0",
     "core-js": "^2.5.4",
-    "rxjs": "~6.3.3",
-    "zone.js": "~0.8.26",
     "lodash": "^4.17.11",
-    "luxon": "^1.4.4"
+    "luxon": "^1.4.4",
+    "rxjs": "~6.3.3",
+    "zone.js": "~0.8.26"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.10.0",
