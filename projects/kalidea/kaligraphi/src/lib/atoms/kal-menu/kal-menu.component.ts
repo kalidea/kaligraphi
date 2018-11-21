@@ -7,13 +7,12 @@ import {
   OnDestroy,
   Output,
   QueryList,
-  Renderer2,
   TemplateRef,
   ViewChild
 } from '@angular/core';
 import { DOWN_ARROW, ENTER, ESCAPE, SPACE, UP_ARROW } from '@angular/cdk/keycodes';
 import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
-import { Subscription } from 'rxjs';
+import { merge, Subscription } from 'rxjs';
 
 import { KalOptionComponent } from '../kal-option/kal-option.component';
 import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
@@ -40,10 +39,15 @@ export class KalMenuComponent implements AfterContentInit, OnDestroy {
   @Output() readonly closed: EventEmitter<void | 'click' | 'keydown' | 'tab' | 'pick'> =
     new EventEmitter<void | 'click' | 'keydown' | 'tab' | 'pick'>();
 
+  @Output() readonly selectionChange = new  EventEmitter<KalOptionComponent>();
+
   private keyManager: ActiveDescendantKeyManager<KalOptionComponent>;
 
   @AutoUnsubscribe()
   private tabSubscription: Subscription = Subscription.EMPTY;
+
+  @AutoUnsubscribe()
+  private selectionSubscription: Subscription = Subscription.EMPTY;
 
   constructor(
     public elementRef: ElementRef
@@ -80,8 +84,15 @@ export class KalMenuComponent implements AfterContentInit, OnDestroy {
     }
   }
 
-  setFirstItemActive(){
+  setFirstItemActive() {
     this.keyManager.setFirstItemActive();
+  }
+
+  /**
+   * reset key manager to remove previously selected option
+   */
+  resetKeyManager() {
+    this.keyManager.setActiveItem(-1);
   }
 
   ngAfterContentInit() {
@@ -91,6 +102,14 @@ export class KalMenuComponent implements AfterContentInit, OnDestroy {
       .withTypeAhead();
     this.tabSubscription = this.keyManager.tabOut.subscribe(() => this.closed.emit('tab'));
 
+    // watch for selection and close this dropdown
+    this.selectionSubscription = merge<KalOptionComponent>(...this.options.map(option => option.selectionChange))
+      .subscribe(
+        (value) => {
+          this.selectionChange.emit(value);
+          this.closed.emit();
+        }
+      );
   }
 
   ngOnDestroy(): void {

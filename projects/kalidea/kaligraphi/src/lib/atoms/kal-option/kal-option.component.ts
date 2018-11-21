@@ -28,6 +28,11 @@ export class KalOptionComponent implements AfterViewInit, Highlightable {
   @Input() value: any;
 
   /**
+   * label for this option, if not provided get textContent
+   */
+  @Input() label: string;
+
+  /**
    * Event emitted when the option is selected or deselected
    */
   @Output() readonly selectionChange = new EventEmitter<KalOptionComponent>();
@@ -84,10 +89,18 @@ export class KalOptionComponent implements AfterViewInit, Highlightable {
   }
 
   /**
+   * get label for this option
+   */
+  getLabel(): string {
+    return (this.label || this._element.nativeElement.textContent || '').trim();
+  }
+
+  /**
    * Get display value of the option
+   * @deprecated
    */
   get viewValue(): string {
-    return (this._element.nativeElement.textContent || '').trim();
+    return this.getLabel();
   }
 
   /**

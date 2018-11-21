@@ -11,7 +11,7 @@ import { KalMenuComponent } from './kal-menu.component';
 })
 export class KalMenuTriggerForDirective implements OnDestroy {
 
-  @Input('kalMenuTriggerFor') content: KalMenuComponent;
+  @Input('kalMenuTriggerFor') menu: KalMenuComponent;
 
   private overlayRef: OverlayRef;
 
@@ -37,6 +37,7 @@ export class KalMenuTriggerForDirective implements OnDestroy {
     if (!this.menuOpen) {
       return;
     }
+    this.menu.resetKeyManager();
     this.overlayRef.detach();
     this.menuOpen = false;
   }
@@ -48,12 +49,11 @@ export class KalMenuTriggerForDirective implements OnDestroy {
     if (this.menuOpen) {
       return;
     }
-    const portal = new TemplatePortal(this.content.templateRef, this.viewContainerRef);
+    const portal = new TemplatePortal(this.menu.templateRef, this.viewContainerRef);
+
     this.getOverlay().attach(portal);
-    this.content.setFirstItemActive();
 
-
-    this.content.closed.subscribe( () => {
+    this.menu.closed.subscribe(() => {
       this.closeMenu();
     });
 
@@ -93,10 +93,10 @@ export class KalMenuTriggerForDirective implements OnDestroy {
 
     this.overlayRef.keydownEvents()
       .pipe(
-        tap( event => {
+        tap(event => {
           const keyCode = event.keyCode;
-          if ([UP_ARROW, DOWN_ARROW, ENTER, SPACE].indexOf(keyCode)>-1) {
-            this.content.handleKeydown(event);
+          if ([UP_ARROW, DOWN_ARROW, ENTER, SPACE].indexOf(keyCode) > -1) {
+            this.menu.handleKeydown(event);
           }
         }),
         filter(event => event.keyCode === ESCAPE)
