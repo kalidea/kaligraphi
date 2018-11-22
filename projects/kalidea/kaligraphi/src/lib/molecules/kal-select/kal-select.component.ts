@@ -297,6 +297,7 @@ export class KalSelectComponent
       .withPositions([
         {originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top'}
       ]);
+
     this.overlayRef = this.overlay.create({
       positionStrategy,
       hasBackdrop: true,
@@ -416,6 +417,9 @@ export class KalSelectComponent
     }
   }
 
+  /**
+   * Disposes the resources
+   */
   private cleanSubscriptionsList(): void {
     this.subscriptionsList.forEach(
       subscription => {
@@ -427,28 +431,30 @@ export class KalSelectComponent
     this.subscriptionsList = [];
   }
 
+  /**
+   * Subscribe event click options
+   */
+  private registerSubscriptionsList(): void {
+    this.options.map(o => {
+      this.subscriptionsList.push(
+        o.selectionChange.subscribe(event => this.optionSelected(event)));
+    });
+  }
+
   ngOnInit() {
     this.ngControl = this.injector.get(NgControl, null);
     this.selection = [];
   }
 
   ngAfterContentInit() {
-
     this.initKeyManager();
-
-    this.options.map(o => {
-      this.subscriptionsList.push(
-        o.selectionChange.subscribe(event => this.optionSelected(event)));
-    });
+    this.registerSubscriptionsList();
 
     this.options.changes.subscribe(() => {
       this.select(this.ngControl.value);
 
       this.cleanSubscriptionsList();
-      this.options.map(o => {
-        this.subscriptionsList.push(
-          o.selectionChange.subscribe(event => this.optionSelected(event)));
-      });
+      this.registerSubscriptionsList();
     });
 
     if (this.options.length === 1) {
