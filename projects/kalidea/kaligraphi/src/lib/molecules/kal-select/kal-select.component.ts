@@ -186,7 +186,12 @@ export class KalSelectComponent
     }
 
     this.focus();
-    this.getOverlayRef().attach(this.optionsPortal);
+
+    if (!this.overlayRef) {
+      this.createOverlay();
+    }
+
+    this.overlayRef.attach(this.optionsPortal);
     this.isPanelOpen = true;
   }
 
@@ -253,10 +258,8 @@ export class KalSelectComponent
 
     if (isOpenKey) {
       if (!this.panelOpen) {
-        event.preventDefault();
         this.open();
       } else if (this.keyManager.activeItem) {
-        event.preventDefault();
         this.optionSelected(this.keyManager.activeItem);
       }
 
@@ -267,7 +270,6 @@ export class KalSelectComponent
 
     // If panel is closed and is not the multiple mode ,the arrows change the selection
     if (!this.multiple && !this.panelOpen && isArrowKey && this.keyManager.activeItem) {
-      event.preventDefault();
       this.optionSelected(this.keyManager.activeItem);
     }
   }
@@ -280,11 +282,6 @@ export class KalSelectComponent
       this.select(value);
       super.writeValue(value);
     });
-  }
-
-  private getHostWidth() {
-    const size = this.elementRef.nativeElement.getBoundingClientRect();
-    return size.width;
   }
 
   /**
@@ -301,7 +298,7 @@ export class KalSelectComponent
     this.overlayRef = this.overlay.create({
       positionStrategy,
       hasBackdrop: true,
-      width: this.getHostWidth(),
+      width:  this.elementRef.nativeElement.getBoundingClientRect().width,
       scrollStrategy: this.overlay.scrollStrategies.reposition()
     });
 
@@ -313,17 +310,6 @@ export class KalSelectComponent
     this.overlayRef.keydownEvents()
       .pipe(filter(event => event.keyCode === ESCAPE))
       .subscribe(() => this.close());
-  }
-
-  /**
-   * get overlayRef and create it if doesn't exists
-   */
-  private getOverlayRef() {
-    if (!this.overlayRef) {
-      this.createOverlay();
-    }
-
-    return this.overlayRef;
   }
 
   /**
