@@ -37,12 +37,12 @@ $kal-styles-button: (
       'kal-icon': (
         'margin': 0 10px 0 0,
         'font-size': $kal-base-fontsize +2,
-        'color': inherit,
+        'color': inherit
       ),
       'disabled': (
         'color': get("grey.wf300", $kal-palettes),
         'background-color': get("grey.wf700", $kal-palettes),
-        'border': 1px solid get("grey.wf700", $kal-palettes),
+        'border': 1px solid get("grey.wf700", $kal-palettes)
       ),
       'hover': (
         'background-color': get("grey.wf100", $kal-palettes),
@@ -52,7 +52,7 @@ $kal-styles-button: (
         'background-color': get("grey.wf200", $kal-palettes),
         'border': 1px solid get("grey.wf300", $kal-palettes)
       )
-    ),
+    )
   ),
   'alternates' : (
     'primary': (
