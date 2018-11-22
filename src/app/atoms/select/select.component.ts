@@ -12,16 +12,15 @@ import {delay} from 'rxjs/operators';
 })
 export class SelectComponent implements OnInit {
 
-  formControl = new FormControl('OPTION 3')
-  formControl2 = new FormControl(['OPTION 3', 'OPTION 1'])
+  formControl = new FormControl('OPTION 3');
+  formControl2 = new FormControl(['OPTION 3', 'OPTION 1']);
 
   list = [];
 
-  constructor( private cdr: ChangeDetectorRef) {
+  constructor(private cdr: ChangeDetectorRef) {
   }
 
   ngOnInit() {
-
 
 
     const ob = new Observable((observer) => {
@@ -31,7 +30,7 @@ export class SelectComponent implements OnInit {
       observer.next();
 
 
-  });
+    });
 
     ob.pipe(delay(5000)).subscribe(() => {
       this.list = ['OPTION 1', 'OPTION 2', 'OPTION 3', 'OPTION 4', 'OPTION 5'];
@@ -39,3 +38,4 @@ export class SelectComponent implements OnInit {
     });
 
   }
+}

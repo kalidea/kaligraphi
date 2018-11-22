@@ -16,17 +16,18 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import {Overlay, OverlayRef} from '@angular/cdk/overlay';
-import {TemplatePortal} from '@angular/cdk/portal';
-import {coerceBooleanProperty} from '@angular/cdk/coercion';
-import {ActiveDescendantKeyManager} from '@angular/cdk/a11y';
-import {DOWN_ARROW, ENTER, ESCAPE, SPACE, UP_ARROW} from '@angular/cdk/keycodes';
-import {NgControl} from '@angular/forms';
-import {filter} from 'rxjs/operators';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { TemplatePortal } from '@angular/cdk/portal';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
+import { DOWN_ARROW, ENTER, ESCAPE, SPACE, UP_ARROW } from '@angular/cdk/keycodes';
+import { NgControl } from '@angular/forms';
+import { filter } from 'rxjs/operators';
 
-import {buildProviders, FormElementComponent} from '../../utils/index';
-import {KalOptionComponent} from '../../atoms/kal-option/kal-option.component';
-import {KalThemeDirective} from '../../utility/directives/kal-theme/kal-theme.directive';
+import { buildProviders, FormElementComponent } from '../../utils/index';
+import { KalOptionComponent } from '../../atoms/kal-option/kal-option.component';
+import { KalThemeDirective } from '../../utility/directives/kal-theme/kal-theme.directive';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'kal-select',
@@ -79,6 +80,8 @@ export class KalSelectComponent
    * Whether or not the overlay panel is open
    */
   private isPanelOpen: boolean;
+
+  private subscriptionsList: Subscription[] = [];
 
   constructor(private overlay: Overlay,
               private elementRef: ElementRef<HTMLElement>,
@@ -202,19 +205,15 @@ export class KalSelectComponent
    * Select an option by his value
    */
   select(value: any, withNotify = false): void {
-
-    if(this.isMultiple && value instanceof Array){
-     const op =  this.options.filter( (item) => value.indexOf(item.value) >= 0);
-
-op.map( (o ) => this.optionSelected(o));
-
-   return ;
-    }
-
-    const optionSelect = this.options.find((item) => item.value === value);
-    if (optionSelect) {
-      this.keyManager.setActiveItem(optionSelect);
-      this.optionSelected(this.keyManager.activeItem, withNotify);
+    if (this.isMultiple && value instanceof Array) {
+      const multipleOptions = this.options.filter((item) => value.indexOf(item.value) >= 0);
+      this.multipleOptionSelected(multipleOptions, withNotify);
+    } else {
+      const optionSelect = this.options.find((item) => item.value === value);
+      if (optionSelect) {
+        this.keyManager.setActiveItem(optionSelect);
+        this.optionSelected(this.keyManager.activeItem, withNotify);
+      }
     }
   }
 
@@ -327,6 +326,29 @@ op.map( (o ) => this.optionSelected(o));
   }
 
   /**
+   * Event emitted when several options are selected
+   * Set the option as active
+   * @param option KalOptionComponent
+   * @param withNotify boolean
+   */
+  private multipleOptionSelected(options: KalOptionComponent[], withNotify = true) {
+    if (!this.isMultiple) {
+      return;
+    }
+
+    options.map((option) => {
+      this.optionSelectedOnMultipleMode(option);
+    });
+
+    if (withNotify) {
+      super.notifyUpdate(this.selectedValue);
+      this.valueChange.emit(this.selectedValue);
+    }
+
+    this.cdr.markForCheck();
+  }
+
+  /**
    * Event emitted when an option is selected
    * Set the option as active
    * @param option KalOptionComponent
@@ -404,11 +426,24 @@ op.map( (o ) => this.optionSelected(o));
     this.initKeyManager();
 
     this.options.map(o => {
-      o.selectionChange.subscribe(event => this.optionSelected(event));
+      this.subscriptionsList.push(
+        o.selectionChange.subscribe(event => this.optionSelected(event)));
     });
 
     this.options.changes.subscribe(() => {
       this.select(this.ngControl.value);
+
+      this.subscriptionsList.forEach(
+        subscription => {
+          if (subscription) {
+            subscription.unsubscribe();
+          }
+        });
+
+      this.options.map(o => {
+        this.subscriptionsList.push(
+          o.selectionChange.subscribe(event => this.optionSelected(event)));
+      });
     });
 
     if (this.options.length === 1) {
@@ -420,6 +455,14 @@ op.map( (o ) => this.optionSelected(o));
     if (this.overlayRef) {
       this.overlayRef.dispose();
     }
+
+    this.subscriptionsList.forEach(
+      subscription => {
+        if (subscription) {
+          subscription.unsubscribe();
+        }
+      }
+    );
   }
 
 }
