@@ -44,6 +44,8 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     'password': new StringFormat()
   };
 
+  control: FormControl;
+
   /**
    * type of input  ( text, password, email, number, ... )
    */
@@ -58,8 +60,6 @@ export class KalInputComponent extends FormElementComponent<string> implements O
    * Custom icon to use for the input
    */
   @Input() icon: string;
-
-  control: FormControl;
 
   @Output() readonly iconClicked = new EventEmitter();
 
@@ -114,10 +114,16 @@ export class KalInputComponent extends FormElementComponent<string> implements O
    */
   writeValue(value) {
     this.value = value;
+
     if (this.control) {
       value = this.formater.toUser(value);
-      this.control.setValue(value, {emitEvent: true});
+
+      this.value = value;
+      this.control.setValue(value, {emitEvent: false});
+
       super.writeValue(value);
+
+      this.cdr.detectChanges();
     }
   }
 

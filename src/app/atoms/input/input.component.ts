@@ -18,8 +18,8 @@ export class InputComponent implements OnInit {
   content = '';
 
   controlChange = new FormControl('', {updateOn: 'change'});
-  controlBlur = new FormControl('', {updateOn: 'blur'});
 
+  controlBlur = new FormControl('', {updateOn: 'blur'});
 
   constructor() {
   }
