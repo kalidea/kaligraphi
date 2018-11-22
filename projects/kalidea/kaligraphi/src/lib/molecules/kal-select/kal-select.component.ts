@@ -247,28 +247,20 @@ export class KalSelectComponent
    */
   @HostListener('keydown', ['$event'])
   handleKeydown(event: KeyboardEvent): void {
-
     if (!this.focused) {
       return;
     }
 
     const {keyCode} = event;
-
     if (keyCode === ENTER || keyCode === SPACE) {
-      if (!this.panelOpen) {
-        this.open();
-      } else if (this.keyManager.activeItem) {
-        this.optionSelected(this.keyManager.activeItem);
-      }
-
+      this.handleSelectKeyEvent();
       return;
     }
 
     this.keyManager.onKeydown(event);
 
-    const isArrowKey = keyCode === DOWN_ARROW || keyCode === UP_ARROW;
-
     // If panel is closed and is not the multiple mode ,the arrows change the selection
+    const isArrowKey = keyCode === DOWN_ARROW || keyCode === UP_ARROW;
     if (!this.multiple && !this.panelOpen && isArrowKey && this.keyManager.activeItem) {
       this.optionSelected(this.keyManager.activeItem);
     }
@@ -285,6 +277,17 @@ export class KalSelectComponent
   }
 
   /**
+   * Handles enter ans space keydown events on the select
+   */
+  private handleSelectKeyEvent() {
+    if (!this.panelOpen) {
+      this.open();
+    } else if (this.keyManager.activeItem) {
+      this.optionSelected(this.keyManager.activeItem);
+    }
+  }
+
+  /**
    * create overlayRef
    */
   private createOverlay() {
@@ -298,7 +301,7 @@ export class KalSelectComponent
     this.overlayRef = this.overlay.create({
       positionStrategy,
       hasBackdrop: true,
-      width:  this.elementRef.nativeElement.getBoundingClientRect().width,
+      width: this.elementRef.nativeElement.getBoundingClientRect().width,
       scrollStrategy: this.overlay.scrollStrategies.reposition()
     });
 
