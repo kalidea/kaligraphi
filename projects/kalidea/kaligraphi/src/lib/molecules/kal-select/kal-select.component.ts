@@ -416,6 +416,17 @@ export class KalSelectComponent
     }
   }
 
+  private cleanSubscriptionsList(): void {
+    this.subscriptionsList.forEach(
+      subscription => {
+        if (subscription) {
+          subscription.unsubscribe();
+        }
+      });
+
+    this.subscriptionsList = [];
+  }
+
   ngOnInit() {
     this.ngControl = this.injector.get(NgControl, null);
     this.selection = [];
@@ -433,13 +444,7 @@ export class KalSelectComponent
     this.options.changes.subscribe(() => {
       this.select(this.ngControl.value);
 
-      this.subscriptionsList.forEach(
-        subscription => {
-          if (subscription) {
-            subscription.unsubscribe();
-          }
-        });
-
+      this.cleanSubscriptionsList();
       this.options.map(o => {
         this.subscriptionsList.push(
           o.selectionChange.subscribe(event => this.optionSelected(event)));
@@ -456,13 +461,7 @@ export class KalSelectComponent
       this.overlayRef.dispose();
     }
 
-    this.subscriptionsList.forEach(
-      subscription => {
-        if (subscription) {
-          subscription.unsubscribe();
-        }
-      }
-    );
+    this.cleanSubscriptionsList();
   }
 
 }
