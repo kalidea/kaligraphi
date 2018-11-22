@@ -16,7 +16,8 @@
     "e2e": "ng e2e",
     "serve:playground": "npm run serve",
     "build:playground": "ng build playground --prod",
-    "build:all": "npm run build:lib && npm run build:playground"
+    "build:all": "npm run build:lib && npm run build:playground",
+    "verify": "ng lint @kalidea/kaligraphi && npm run test:ci && npm run build:all"
   },
   "private": true,
   "dependencies": {

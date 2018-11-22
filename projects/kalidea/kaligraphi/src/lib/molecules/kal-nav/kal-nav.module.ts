@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { KalMenuComponent } from './kal-menu.component';
 import { RouterModule } from '@angular/router';
 
-export * from './kal-menu.component';
+import { KalNavComponent } from './kal-nav.component';
+
+export * from './kal-nav.component';
 
 const exports = [
-  KalMenuComponent,
+  KalNavComponent,
 ];
 
 @NgModule({
@@ -17,4 +18,4 @@ const exports = [
   declarations: exports,
   exports
 })
-export class KalMenuModule { }
+export class KalNavModule { }

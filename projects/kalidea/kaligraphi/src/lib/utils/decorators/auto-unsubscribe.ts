@@ -13,6 +13,9 @@
   }
  ```
  */
+import { isArray } from 'util';
+import { Subscription } from 'rxjs';
+
 export function AutoUnsubscribe() {
 
   const decoratorSubscriptionsListKey = 'decoratorSubscriptionsListKey';
@@ -31,10 +34,14 @@ export function AutoUnsubscribe() {
       // autoUnsubscribe
       target.constructor.prototype.ngOnDestroy = function () {
         target[decoratorSubscriptionsListKey].forEach((property) => {
-          const subscription = this[property];
-          if (subscription && subscription.unsubscribe) {
-            subscription.unsubscribe();
-          }
+          const subscriptions: Subscription[] = isArray(this[property]) ? this[property] : [this[property]];
+
+          subscriptions.forEach(subscription => {
+            if (subscription && subscription.unsubscribe) {
+              subscription.unsubscribe();
+            }
+          });
+
         });
 
         original.apply(this, arguments);
