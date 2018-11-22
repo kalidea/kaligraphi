@@ -1,7 +1,4 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewEncapsulation} from '@angular/core';
-import { FormControl } from '@angular/forms';
-import {Observable} from 'rxjs';
-import {delay} from 'rxjs/operators';
+import {ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation} from '@angular/core';
 
 @Component({
   selector: 'app-select',
@@ -12,11 +9,10 @@ import {delay} from 'rxjs/operators';
 })
 export class SelectComponent implements OnInit {
 
-  constructor(private cdr: ChangeDetectorRef) {
+  constructor() {
   }
 
   ngOnInit() {
-
 
   }
 }
