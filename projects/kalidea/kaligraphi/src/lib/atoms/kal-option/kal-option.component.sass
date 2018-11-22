@@ -2,7 +2,7 @@
   kal-option
     display: flex
     flex-flow: column nowrap
-    padding: 0 10px
+    padding: 0 18px
     .kal-option__selection
       display: flex
       flex-flow: row nowrap
@@ -10,7 +10,7 @@
       align-items: center
       padding: 5px 0
       &:not([disabled]), &:not(.kal-option__selection--disabled)
-        &.kal-option__selection--active, &.kal-option__selection:hover, &.kal-option__selection:active, &.kal-option__selection:focus
+      &.kal-option__selection--highlighted,  &.kal-option__selection--active, &.kal-option__selection:hover, &.kal-option__selection:active, &.kal-option__selection:focus
           cursor: pointer
           font-weight: 500
       &--disabled, &[disabled]

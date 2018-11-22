@@ -1,5 +1,5 @@
-<kal-button [kalMenuTriggerFor]="menu">
-  toggle
+<kal-button [kalMenuTriggerFor]="menu" class="kal-theme--primary">
+  Toggle button primary
 </kal-button>
 
 <kal-menu #menu kalTheme="primary">
@@ -8,3 +8,56 @@
   <kal-option (selectionChange)="selected($event)">Option 3</kal-option>
 </kal-menu>
 
+<kal-button [kalMenuTriggerFor]="menuA" class="kal-theme--secondary">
+  Toggle button primary
+</kal-button>
+
+<kal-menu #menuA kalTheme="secondary">
+  <kal-option (selectionChange)="selected($event)">Option 1</kal-option>
+  <kal-option (selectionChange)="selected($event)">Option 2</kal-option>
+  <kal-option (selectionChange)="selected($event)">Option 3</kal-option>
+</kal-menu>
+
+<kal-button [kalMenuTriggerFor]="menuB"  class="kal-theme--tertiary">
+  Toggle button primary
+</kal-button>
+
+<kal-menu #menuB kalTheme="tertiary">
+  <kal-option (selectionChange)="selected($event)">Option 1</kal-option>
+  <kal-option (selectionChange)="selected($event)">Option 2</kal-option>
+  <kal-option (selectionChange)="selected($event)">Option 3</kal-option>
+</kal-menu>
+
+<hr>
+
+<div style="background-color: #1f1f1f; padding: 30px; height : 300px">
+  <kal-button [kalMenuTriggerFor]="menuC" class="kal-theme--primary kal-theme--reverse">
+    Toggle button primary
+  </kal-button>
+
+  <kal-menu #menuC kalTheme="primary reverse">
+    <kal-option (selectionChange)="selected($event)">Option 1</kal-option>
+    <kal-option (selectionChange)="selected($event)">Option 2</kal-option>
+    <kal-option (selectionChange)="selected($event)">Option 3</kal-option>
+  </kal-menu>
+
+  <kal-button [kalMenuTriggerFor]="menuD" class="kal-theme--secondary kal-theme--reverse">
+    Toggle button secondary
+  </kal-button>
+
+  <kal-menu #menuD kalTheme="secondary reverse">
+    <kal-option (selectionChange)="selected($event)">Option 1</kal-option>
+    <kal-option (selectionChange)="selected($event)">Option 2</kal-option>
+    <kal-option (selectionChange)="selected($event)">Option 3</kal-option>
+  </kal-menu>
+
+  <kal-button [kalMenuTriggerFor]="menuE"  class="kal-theme--tertiary kal-theme--reverse">
+    Toggle button tertiary
+  </kal-button>
+
+  <kal-menu #menuE kalTheme="tertiary reverse">
+    <kal-option (selectionChange)="selected($event)">Option 1</kal-option>
+    <kal-option (selectionChange)="selected($event)">Option 2</kal-option>
+    <kal-option (selectionChange)="selected($event)">Option 3</kal-option>
+  </kal-menu>
+</div>

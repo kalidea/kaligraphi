@@ -1,24 +1,44 @@
 // kal-tabs parameters and alternates
 $kal-styles-menu: (
   'default': (
-    'border': 1px solid get("grey.wf300", $kal-palettes),
-    'background-color': get("grey.wf100", $kal-palettes),
+    'border': 1px solid get("grey.wf100", $kal-palettes),
+    'background-color': get("white", $kal-palettes),
     'border-radius': $kal-base-borderradius,
     'color': get("grey.wf800", $kal-palettes),
     'margin': 1px 0 0 0,
+    'padding': 8px 0,
     'reverse': (
       'border': 1px solid get("grey.wf800", $kal-palettes),
-      'background-color': get("palettes.grey.wf800", $kal-palettes),
+      'background-color': get("grey.wf800", $kal-palettes),
       'color': get("white, $kal-palettes", $kal-palettes)
     ),
   ),
   'alternates':(
     'primary': (
-      'border': 1px solid get("grey.wf300", $kal-palettes),
-      'background-color': get("palettes.grey.wf800", $kal-palettes),
+      'border': 1px solid get("orange.dark", $kal-palettes),
+      'background-color': get("white", $kal-palettes),
       'reverse': (
-        'border': 1px solid get("grey.wf800", $kal-palettes),
-        'background-color': get("grey.wf800", $kal-palettes)
+        'border': 1px solid get("orange.dark", $kal-palettes),
+        'background-color': get("white", $kal-palettes)
+      )
+    ),
+    'secondary': (
+      'border': 1px solid get("white", $kal-palettes),
+      'background-color': get("grey.wf600", $kal-palettes),
+      'color': get("white", $kal-palettes),
+      'reverse': (
+        'border': 1px solid get("grey.wf300", $kal-palettes),
+        'background-color': get("grey.wf600", $kal-palettes),
+        'color': get("white", $kal-palettes),
+      )
+    ),
+    'tertiary': (
+      'border': 1px solid get("grey.wf300", $kal-palettes),
+      'background-color': get("grey.wf200", $kal-palettes),
+      'reverse': (
+        'border': 1px solid get("white", $kal-palettes),
+        'background-color': get("grey.wf800", $kal-palettes),
+        'color': get("white", $kal-palettes),
       )
     )
   )
