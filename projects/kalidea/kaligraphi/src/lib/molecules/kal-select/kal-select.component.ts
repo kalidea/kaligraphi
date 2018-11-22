@@ -247,16 +247,14 @@ export class KalSelectComponent
    */
   @HostListener('keydown', ['$event'])
   handleKeydown(event: KeyboardEvent): void {
-    const {keyCode} = event;
-
-    const isOpenKey = keyCode === ENTER || keyCode === SPACE;
-    const isArrowKey = keyCode === DOWN_ARROW || keyCode === UP_ARROW;
 
     if (!this.focused) {
       return;
     }
 
-    if (isOpenKey) {
+    const {keyCode} = event;
+
+    if (keyCode === ENTER || keyCode === SPACE) {
       if (!this.panelOpen) {
         this.open();
       } else if (this.keyManager.activeItem) {
@@ -267,6 +265,8 @@ export class KalSelectComponent
     }
 
     this.keyManager.onKeydown(event);
+
+    const isArrowKey = keyCode === DOWN_ARROW || keyCode === UP_ARROW;
 
     // If panel is closed and is not the multiple mode ,the arrows change the selection
     if (!this.multiple && !this.panelOpen && isArrowKey && this.keyManager.activeItem) {
