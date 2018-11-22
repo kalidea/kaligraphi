@@ -177,9 +177,9 @@ describe('KalInputComponent', () => {
     expect(fixture.debugElement.query(By.css('.counter'))).toBeTruthy();
     expect(fixture.debugElement.query(By.css('.counter')).nativeElement.textContent.trim()).toEqual(`${text.length} / ${max}`);
 
-    // component.value += text;
-    //
-    // expect(fixture.debugElement.query(By.css('.counter')).nativeElement.textContent.trim()).toEqual(`${text.length * 2} / ${max}`);
+    component.value += text;
+
+    expect(fixture.debugElement.query(By.css('.counter')).nativeElement.textContent.trim()).toEqual(`${text.length * 2} / ${max}`);
   });
 
   it('should display a custom icon', () => {
