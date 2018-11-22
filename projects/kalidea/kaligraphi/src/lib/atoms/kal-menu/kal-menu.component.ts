@@ -2,9 +2,10 @@ import {
   AfterContentInit,
   Component,
   ContentChildren,
-  ElementRef,
   EventEmitter,
+  Host,
   OnDestroy,
+  Optional,
   Output,
   QueryList,
   TemplateRef,
@@ -16,50 +17,46 @@ import { merge, Subscription } from 'rxjs';
 
 import { KalOptionComponent } from '../kal-option/kal-option.component';
 import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
+import { KalThemeDirective } from '../../utility/directives/kal-theme/kal-theme.directive';
 
 @Component({
   selector: 'kal-menu',
   template: `
     <ng-template>
       <div
-        class="kal-menu__content"
-        (click)="handleMouse($event)"
+        [ngClass]="contentClass"
+        [kalTheme]="theme"
         role="menu">
         <ng-content></ng-content>
       </div>
     </ng-template>`
 })
 export class KalMenuComponent implements AfterContentInit, OnDestroy {
+
+  readonly contentClass = 'kal-menu__content';
+
+  theme: string | string[];
+
   @ContentChildren(KalOptionComponent) options: QueryList<KalOptionComponent>;
 
   @ViewChild(TemplateRef) templateRef: TemplateRef<any>;
-
 
   /** Event emitted when the menu is closed. */
   @Output() readonly closed: EventEmitter<void | 'click' | 'keydown' | 'tab' | 'pick'> =
     new EventEmitter<void | 'click' | 'keydown' | 'tab' | 'pick'>();
 
-  @Output() readonly selectionChange = new  EventEmitter<KalOptionComponent>();
+  @Output() readonly selectionChange = new EventEmitter<KalOptionComponent>();
+
+  @AutoUnsubscribe()
+  private subscriptionsList: Subscription[] = [];
 
   private keyManager: ActiveDescendantKeyManager<KalOptionComponent>;
 
-  @AutoUnsubscribe()
-  private tabSubscription: Subscription = Subscription.EMPTY;
-
-  @AutoUnsubscribe()
-  private selectionSubscription: Subscription = Subscription.EMPTY;
-
-  constructor(
-    public elementRef: ElementRef
-  ) {
+  constructor(@Optional() @Host() private trigger: KalThemeDirective) {
   }
 
   get activeItem(): KalOptionComponent {
     return this.keyManager.activeItem;
-  }
-
-  handleMouse(event: MouseEvent) {
-    this.closed.emit('click');
   }
 
   handleKeydown(event: KeyboardEvent) {
@@ -84,10 +81,6 @@ export class KalMenuComponent implements AfterContentInit, OnDestroy {
     }
   }
 
-  setFirstItemActive() {
-    this.keyManager.setFirstItemActive();
-  }
-
   /**
    * reset key manager to remove previously selected option
    */
@@ -96,20 +89,28 @@ export class KalMenuComponent implements AfterContentInit, OnDestroy {
   }
 
   ngAfterContentInit() {
+    // set kalMenu theme to overlay content
+    if (this.trigger) {
+      this.theme = this.trigger.kalTheme;
+    }
+
+    // init key manager
     this.keyManager = new ActiveDescendantKeyManager<KalOptionComponent>(this.options)
       .withWrap()
       .withVerticalOrientation()
       .withTypeAhead();
-    this.tabSubscription = this.keyManager.tabOut.subscribe(() => this.closed.emit('tab'));
+    const tabSubscription = this.keyManager.tabOut.subscribe(() => this.closed.emit('tab'));
 
     // watch for selection and close this dropdown
-    this.selectionSubscription = merge<KalOptionComponent>(...this.options.map(option => option.selectionChange))
+    const selectionSubscription = merge<KalOptionComponent>(...this.options.map(option => option.selectionChange))
       .subscribe(
         (value) => {
           this.selectionChange.emit(value);
           this.closed.emit();
         }
       );
+
+    this.subscriptionsList.push(tabSubscription, selectionSubscription);
   }
 
   ngOnDestroy(): void {

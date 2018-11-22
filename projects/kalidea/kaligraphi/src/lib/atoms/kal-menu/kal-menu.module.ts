@@ -6,6 +6,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { KalMenuTriggerForDirective } from './kal-menu-trigger-for.directive';
 import { KalMenuComponent } from './kal-menu.component';
 import { KalOptionModule } from '../kal-option/kal-option.module';
+import { KalUtilityModule } from '../../utility/kal-utility.module';
 
 export * from './kal-menu-trigger-for.directive';
 export * from './kal-menu.component';
@@ -22,7 +23,8 @@ const exports = [
     CommonModule,
     PortalModule,
     OverlayModule,
-    KalOptionModule
+    KalOptionModule,
+    KalUtilityModule
   ],
   entryComponents: [
   ]

@@ -8,7 +8,13 @@ export class KalThemeDirective {
 
   static readonly prefix = 'kal-theme--';
 
+  private themes: string[];
+
   constructor(private renderer: Renderer2, private elementRef: ElementRef) {
+  }
+
+  get kalTheme() {
+    return this.themes;
   }
 
   @Input()
@@ -22,7 +28,9 @@ export class KalThemeDirective {
       themes = (<string>themes || '').split(/[ ,]+/);
     }
 
-    (<string[]>themes)
+    this.themes = themes as string[];
+
+    (<string[]>this.themes)
       .filter(theme => theme !== '')
       .forEach(className => {
         this.renderer.addClass(this.elementRef.nativeElement, KalThemeDirective.prefix + className);

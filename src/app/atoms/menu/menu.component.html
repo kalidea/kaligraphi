@@ -1,8 +1,8 @@
-<span [kalMenuTriggerFor]="menu">
+<kal-button [kalMenuTriggerFor]="menu">
   toggle
-</span>
+</kal-button>
 
-<kal-menu #menu>
+<kal-menu #menu kalTheme="primary">
   <kal-option (selectionChange)="selected($event)">Option 1</kal-option>
   <kal-option (selectionChange)="selected($event)">Option 2</kal-option>
   <kal-option (selectionChange)="selected($event)">Option 3</kal-option>

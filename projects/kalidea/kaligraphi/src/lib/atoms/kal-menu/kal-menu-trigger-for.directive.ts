@@ -3,8 +3,10 @@ import { Overlay, OverlayRef, PositionStrategy } from '@angular/cdk/overlay';
 import { DOWN_ARROW, ENTER, ESCAPE, SPACE, UP_ARROW } from '@angular/cdk/keycodes';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { filter, tap } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 import { KalMenuComponent } from './kal-menu.component';
+import { AutoUnsubscribe } from '../../utils';
 
 @Directive({
   selector: '[kalMenuTriggerFor]'
@@ -25,6 +27,9 @@ export class KalMenuTriggerForDirective implements OnDestroy {
    * is the menu open ?
    */
   private menuOpen = false;
+
+  @AutoUnsubscribe()
+  private subscriptionsList: Subscription[] = [];
 
   constructor(private overlay: Overlay,
               private elementRef: ElementRef,
@@ -66,9 +71,12 @@ export class KalMenuTriggerForDirective implements OnDestroy {
 
     this.getOverlay().attach(portal);
 
-    this.menu.closed.subscribe(() => {
+    const menuCloseSubscription = this.menu.closed.subscribe(() => {
       this.closeMenu();
     });
+
+    // store subscription for futur unsubscribe
+    this.subscriptionsList.push(menuCloseSubscription);
 
     this.menuOpen = true;
   }
@@ -97,17 +105,18 @@ export class KalMenuTriggerForDirective implements OnDestroy {
 
     this.overlayRef = this.overlay.create({
       positionStrategy: this.getPositionStrategy(),
+      backdropClass: 'kal-menu__overlay-backdrop',
       panelClass: 'kal-menu__overlay',
       hasBackdrop: true,
       minWidth: this.getHostWidth(),
       scrollStrategy: this.overlay.scrollStrategies.reposition()
     });
 
-    this.overlayRef.backdropClick().subscribe(() => {
+    const backdropClickSubscription = this.overlayRef.backdropClick().subscribe(() => {
       this.closeMenu();
     });
 
-    this.overlayRef.keydownEvents()
+    const keydownSubscription = this.overlayRef.keydownEvents()
       .pipe(
         tap(event => {
           if ([UP_ARROW, DOWN_ARROW, ENTER, SPACE].indexOf(event.keyCode) > -1) {
@@ -117,6 +126,10 @@ export class KalMenuTriggerForDirective implements OnDestroy {
         filter(event => event.keyCode === ESCAPE)
       )
       .subscribe(() => this.closeMenu());
+
+
+    // store subscriptions for futur unsubscribe
+    this.subscriptionsList.push(backdropClickSubscription, keydownSubscription);
 
   }
 
