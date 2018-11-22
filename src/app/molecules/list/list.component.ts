@@ -31,6 +31,11 @@ export class ListComponent implements OnInit {
    */
   selectedValue;
 
+  /**
+   * items selectable
+   */
+  itemsSelectable = null;
+
   constructor() {
   }
 
@@ -46,6 +51,18 @@ export class ListComponent implements OnInit {
    */
   disableRow() {
     this.disableRowsFunction = !this.disableRowsFunction ? (item) => item['disabled'] : null;
+  }
+
+  selectMultipleRows() {
+    this.itemsSelectable = 'multiple';
+  }
+
+  unselectRows() {
+    this.itemsSelectable = 'none';
+  }
+
+  selectSingleRow() {
+    this.itemsSelectable = null;
   }
 
   ngOnInit() {

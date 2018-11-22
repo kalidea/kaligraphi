@@ -10,6 +10,8 @@ export class KalThemeDirective {
 
   private themes: string[];
 
+  public rawThemes: string | string[];
+
   constructor(private renderer: Renderer2, private elementRef: ElementRef) {
   }
 
@@ -19,6 +21,8 @@ export class KalThemeDirective {
 
   @Input()
   set kalTheme(themes: string | string[]) {
+
+    this.rawThemes = themes;
 
     // remove old theme
     this.removeOldThemes();
@@ -32,8 +36,9 @@ export class KalThemeDirective {
 
     (<string[]>this.themes)
       .filter(theme => theme !== '')
+      .map(theme => KalThemeDirective.prefix + theme)
       .forEach(className => {
-        this.renderer.addClass(this.elementRef.nativeElement, KalThemeDirective.prefix + className);
+        this.renderer.addClass(this.elementRef.nativeElement, className);
       });
 
   }

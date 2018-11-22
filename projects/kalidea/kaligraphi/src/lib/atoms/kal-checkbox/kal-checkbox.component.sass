@@ -1,4 +1,131 @@
 
-=kal-checkbox($parameters)
+=kal-themed-checkbox($theme-parameters)
+    position: get("position", $theme-parameters)
+    z-index: get("z-index", $theme-parameters)
+    display: get("display", $theme-parameters)
+    padding: get("padding", $theme-parameters)
+    height:  get("height", $theme-parameters)
+    // on  cache input
+    [type="checkbox"]
+      position: absolute
+      left: -9999px
+    // on revoit le label
+    label
+      position: relative
+      padding: get("label.padding", $theme-parameters)
+      cursor: pointer
+      display: flex
+      flex-flow: row wrap
+      align-items: center
+      font-size: get("label.font-size", $theme-parameters)
+      // cas du label vide
+      &:empty
+        display: inline-flex
+        width: get("label.empty.width", $theme-parameters)
+        height:  get("label.empty.height", $theme-parameters)
+        padding:  get("label.empty.padding", $theme-parameters)
+      &::before
+        content: ''
+        position: get("label.before.position", $theme-parameters)
+        top: get("label.before.top", $theme-parameters)
+        left: get("label.before.left", $theme-parameters)
+        z-index: get("label.before.z-index", $theme-parameters)
+        width: get("label.before.width", $theme-parameters)
+        height: get("label.before.height", $theme-parameters)
+        border-radius: get("label.before.border-radius", $theme-parameters)
+        border: get("label.before.border", $theme-parameters)
+        background-color: get("label.before.background-color", $theme-parameters)
+      &::after
+        content: ''
+        position: get("label.after.position", $theme-parameters)
+        top: get("label.after.top", $theme-parameters)
+        left: get("label.after.left", $theme-parameters)
+        z-index: get("label.after.z-index", $theme-parameters)
+        display: get("label.after.display", $theme-parameters)
+        flex-flow: get("label.after.flex-flow", $theme-parameters)
+        justify-content: get("label.after.justify-content", $theme-parameters)
+        align-items: get("label.after.align-items", $theme-parameters)
+        width: get("label.after.width", $theme-parameters)
+        height: get("label.after.height", $theme-parameters)
+        background-color: get("label.after.background-color", $theme-parameters)
+        border-radius: get("label.after.border-radius", $theme-parameters)
+        transition:  get("label.after.transition", $theme-parameters)
+        box-shadow:  get("label.after.box-shadow", $theme-parameters),
+    // Aspect before si "non coché"
+    [type="checkbox"]:not(:checked) + label::before
+      background-color: get("label.checkfalse.before.background-color", $theme-parameters)
+    // Aspect before si"coché"
+    [type="checkbox"]:checked + label::before
+      background-color: get("label.checktrue.before.background-color", $theme-parameters)
+      border-color: get("label.checktrue.before.border-color", $theme-parameters)
+    // Aspect after si "non cochée"
+    [type="checkbox"]:not(:checked) + label::after
+      opacity: get("label.checkfalse.after.opacity", $theme-parameters)
+      transform: get("label.checkfalse.after.transform", $theme-parameters)
+    // Aspect after si "cochée"
+    [type="checkbox"]:checked + label::after
+      opacity: get("label.checktrue.after.opacity", $theme-parameters)
+      transform: get("label.checktrue.after.transform", $theme-parameters)
+      left: get("label.checktrue.after.left", $theme-parameters)
+    // Aspect after si "disabled"
+    [type="checkbox"]:disabled + label
+      color: get("label.disabled.color", $theme-parameters)
+      cursor: get("label.disabled.cursor", $theme-parameters)
+      &::after
+        background-color: get("label.disabled.after.background-color", $theme-parameters)
+        box-shadow: get("label.disabled.after.box-shadow", $theme-parameters)
+      &::before
+        background-color: get("label.disabled.before.background-color", $theme-parameters)
+        border-color: get("label.disabled.before.border-color", $theme-parameters)
+    // Surbrillance du check
+    div
+      display: get("div.display", $theme-parameters)
+      position: get("div.position", $theme-parameters)
+      z-index: get("div.z-index", $theme-parameters)
+      top: get("div.top", $theme-parameters)
+      left: get("div.left", $theme-parameters)
+      height: get("div.height", $theme-parameters)
+      width: get("div.width", $theme-parameters)
+      border-radius: get("div.border-radius", $theme-parameters)
+      background-color: get("div.background-color", $theme-parameters)
+      opacity: get("div.opacity", $theme-parameters)
+    &:not(:disabled):hover div
+      background-color: get("hover.div.background-color", $theme-parameters)
+    [type="checkbox"]:not(:checked) ~ div
+      left:  get("div.checkfalse.left", $theme-parameters)
+    [type="checkbox"]:checked ~ div
+      left:  get("div.checktrue.left", $theme-parameters)
+    [type="checkbox"]:not(:disabled):focus ~ div,
+    [type="checkbox"]:not(:disabled):active ~ div
+      background-color: get("active.div.background-color", $theme-parameters)
+
+    // Variante couleur
+    &.kal-theme--reverse
+      label
+        color: get("reverse.label.color", $theme-parameters)
+      [type="checkbox"]:not(:disabled) + label::before
+        background-color: get("reverse.label.before.background-color", $theme-parameters)
+        border: get("reverse.label.before.border", $theme-parameters)
+      // Aspect before si"coché"
+      [type="checkbox"]:not(:disabled):checked + label::before
+        background-color: get("reverse.label.checktrue.before.background-color", $theme-parameters)
+        border-color: get("reverse.label.checktrue.before.border-color", $theme-parameters)
+      [type="checkbox"]:not(:disabled) + label::after
+        background-color: get("reverse.label.after.background-color", $theme-parameters)
+      [type="checkbox"]:disabled + label::before
+        border-color: get("reverse.label.before.disabled.border-color", $theme-parameters)
+        background-color: get("reverse.label.before.disabled.background-color", $theme-parameters)
+      [type="checkbox"]:disabled + label::after
+        background-color: get("reverse.label.after.disabled.background-color", $theme-parameters)
+      &:not(:disabled):hover div
+        background-color: get("reverse.hover.div.background-color", $theme-parameters)
+      [type="checkbox"]:not(:disabled):focus ~ div,
+      [type="checkbox"]:not(:disabled):active ~ div
+        background-color: get("reverse.active.div.background-color", $theme-parameters)
+
+=kal-checkbox($kal-parameters)
   kal-checkbox
-    +kal-generic-form($parameters)
+    +kal-themed-checkbox(get('form.elements.checkbox.default', $kal-parameters))
+    @each $key, $params in get('form.elements.checkbox.alternates', $kal-parameters)
+      &.kal-theme--#{$key}
+        +kal-themed-checkbox($params)

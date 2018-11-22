@@ -5,10 +5,13 @@ import {
   Component,
   ContentChildren,
   ElementRef,
-  HostListener, Injector,
+  Host,
+  HostListener,
+  Injector,
   Input,
   OnDestroy,
   OnInit,
+  Optional,
   QueryList,
   ViewChild,
   ViewEncapsulation
@@ -20,8 +23,10 @@ import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
 import { DOWN_ARROW, ENTER, ESCAPE, SPACE, UP_ARROW } from '@angular/cdk/keycodes';
 import { NgControl } from '@angular/forms';
 import { filter } from 'rxjs/operators';
+
 import { buildProviders, FormElementComponent } from '../../utils/index';
 import { KalOptionComponent } from '../../atoms/kal-option/kal-option.component';
+import { KalThemeDirective } from '../../utility/directives/kal-theme/kal-theme.directive';
 
 @Component({
   selector: 'kal-select',
@@ -78,7 +83,8 @@ export class KalSelectComponent
   constructor(private overlay: Overlay,
               private elementRef: ElementRef<HTMLElement>,
               private cdr: ChangeDetectorRef,
-              private injector: Injector) {
+              private injector: Injector,
+              @Optional() @Host() private themeDirective: KalThemeDirective) {
     super();
   }
 
@@ -151,6 +157,13 @@ export class KalSelectComponent
   }
 
   /**
+   * get themes applied on host
+   */
+  get theme() {
+    return this.themeDirective ? this.themeDirective.rawThemes : '';
+  }
+
+  /**
    * Toggles the overlay panel open or closed
    */
   toggleOverlay() {
@@ -170,7 +183,7 @@ export class KalSelectComponent
     }
 
     this.focus();
-    this.overlayRef.attach(this.optionsPortal);
+    this.getOverlayRef().attach(this.optionsPortal);
     this.isPanelOpen = true;
   }
 
@@ -179,7 +192,9 @@ export class KalSelectComponent
    */
   close(): void {
     this.checkResetActiveItem();
-    this.overlayRef.detach();
+    if (this.overlayRef) {
+      this.overlayRef.detach();
+    }
     this.isPanelOpen = false;
   }
 
@@ -256,8 +271,49 @@ export class KalSelectComponent
     Promise.resolve().then(() => {
       this.select(value);
       super.writeValue(value);
-      this.cdr.markForCheck();
     });
+  }
+
+  private getHostWidth() {
+    const size = this.elementRef.nativeElement.getBoundingClientRect();
+    return size.width;
+  }
+
+  /**
+   * create overlayRef
+   */
+  private createOverlay() {
+    const positionStrategy = this.overlay
+      .position()
+      .flexibleConnectedTo(this.elementRef)
+      .withPositions([
+        {originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top'}
+      ]);
+    this.overlayRef = this.overlay.create({
+      positionStrategy,
+      hasBackdrop: true,
+      width: this.getHostWidth(),
+      scrollStrategy: this.overlay.scrollStrategies.reposition()
+    });
+
+    this.overlayRef.backdropClick().subscribe(() => {
+      this.isFocused = false;
+      this.close();
+    });
+
+    this.overlayRef.keydownEvents()
+      .pipe(filter(event => event.keyCode === ESCAPE))
+      .subscribe(() => this.close());
+  }
+
+  /**
+   * get overlayRef and create it if doesn't exists
+   */
+  private getOverlayRef() {
+    if (!this.overlayRef) {
+      this.createOverlay();
+    }
+    return this.overlayRef;
   }
 
   /**
@@ -329,30 +385,23 @@ export class KalSelectComponent
   }
 
   ngOnInit() {
-
     this.ngControl = this.injector.get(NgControl, null);
 
     this.selection = [];
 
-    this.overlayRef = this.overlay.create({
-      hasBackdrop: true
-    });
 
-    this.overlayRef.backdropClick().subscribe(() => {
-      this.isFocused = false;
-      this.close();
-    });
-
-    this.overlayRef.keydownEvents()
-      .pipe(filter(event => event.keyCode === ESCAPE))
-      .subscribe(() => this.close());
   }
 
   ngAfterContentInit() {
+
     this.initKeyManager();
 
     this.options.map(o => {
       o.selectionChange.subscribe(event => this.optionSelected(event));
+    });
+
+    this.options.changes.subscribe(() => {
+      this.select(this.ngControl.value);
     });
 
     if (this.options.length === 1) {

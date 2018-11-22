@@ -52,7 +52,7 @@ export class KalMenuComponent implements AfterContentInit, OnDestroy {
 
   private keyManager: ActiveDescendantKeyManager<KalOptionComponent>;
 
-  constructor(@Optional() @Host() private trigger: KalThemeDirective) {
+  constructor(@Optional() @Host() private themeDirective: KalThemeDirective) {
   }
 
   get activeItem(): KalOptionComponent {
@@ -90,8 +90,8 @@ export class KalMenuComponent implements AfterContentInit, OnDestroy {
 
   ngAfterContentInit() {
     // set kalMenu theme to overlay content
-    if (this.trigger) {
-      this.theme = this.trigger.kalTheme;
+    if (this.themeDirective) {
+      this.theme = this.themeDirective.kalTheme;
     }
 
     // init key manager
