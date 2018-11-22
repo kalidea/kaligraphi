@@ -114,6 +114,7 @@ export class KalInputComponent extends FormElementComponent<string> implements O
    */
   writeValue(value) {
     this.value = value;
+
     if (this.control) {
       value = this.formater.toUser(value);
 
