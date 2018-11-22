@@ -22,8 +22,8 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
 import { DOWN_ARROW, ENTER, ESCAPE, SPACE, UP_ARROW } from '@angular/cdk/keycodes';
 import { NgControl } from '@angular/forms';
-import { filter } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
+import { filter, startWith } from 'rxjs/operators';
+import { merge, Subscription } from 'rxjs';
 
 import { buildProviders, FormElementComponent } from '../../utils/index';
 import { KalOptionComponent } from '../../atoms/kal-option/kal-option.component';
@@ -420,16 +420,6 @@ export class KalSelectComponent
     this.subscriptionsList = [];
   }
 
-  /**
-   * Subscribe event click options
-   */
-  private registerSubscriptionsList(): void {
-    this.options.map(o => {
-      this.subscriptionsList.push(
-        o.selectionChange.subscribe(event => this.optionSelected(event)));
-    });
-  }
-
   ngOnInit() {
     this.ngControl = this.injector.get(NgControl, null);
     this.selection = [];
@@ -437,14 +427,20 @@ export class KalSelectComponent
 
   ngAfterContentInit() {
     this.initKeyManager();
-    this.registerSubscriptionsList();
 
-    this.options.changes.subscribe(() => {
-      this.select(this.ngControl.value);
+    this.options.changes
+      .pipe(startWith(0))
+      .subscribe(() => {
+        if (this.ngControl) {
+          this.select(this.ngControl.value);
+        }
 
-      this.cleanSubscriptionsList();
-      this.registerSubscriptionsList();
-    });
+        this.cleanSubscriptionsList();
+        this.subscriptionsList.push(
+          merge<KalOptionComponent>(...this.options.map(option => option.selectionChange))
+            .subscribe(event => this.optionSelected(event))
+        );
+      });
 
     if (this.options.length === 1) {
       this.optionSelected(this.options.first);
