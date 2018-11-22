@@ -1,0 +1,25 @@
+// kal-tabs parameters and alternates
+$kal-styles-menu: (
+  'default': (
+    'border': 1px solid get("grey.wf300", $kal-palettes),
+    'background-color': get("grey.wf100", $kal-palettes),
+    'border-radius': $kal-base-borderradius,
+    'color': get("grey.wf800", $kal-palettes),
+    'margin': 1px 0 0 0,
+    'reverse': (
+      'border': 1px solid get("grey.wf800", $kal-palettes),
+      'background-color': get("palettes.grey.wf800", $kal-palettes),
+      'color': get("white, $kal-palettes", $kal-palettes)
+    ),
+  ),
+  'alternates':(
+    'primary': (
+      'border': 1px solid get("grey.wf300", $kal-palettes),
+      'background-color': get("palettes.grey.wf800", $kal-palettes),
+      'reverse': (
+        'border': 1px solid get("grey.wf800", $kal-palettes),
+        'background-color': get("grey.wf800", $kal-palettes)
+      )
+    )
+  )
+);
