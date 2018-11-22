@@ -23,11 +23,11 @@ import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
 import { DOWN_ARROW, ENTER, ESCAPE, SPACE, UP_ARROW } from '@angular/cdk/keycodes';
 import { NgControl } from '@angular/forms';
 import { filter } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 import { buildProviders, FormElementComponent } from '../../utils/index';
 import { KalOptionComponent } from '../../atoms/kal-option/kal-option.component';
 import { KalThemeDirective } from '../../utility/directives/kal-theme/kal-theme.directive';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'kal-select',
