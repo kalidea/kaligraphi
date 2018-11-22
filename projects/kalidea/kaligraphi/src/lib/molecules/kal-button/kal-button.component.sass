@@ -1,5 +1,7 @@
 =kal-themed-button($theme-parameters)
     button
+      display:  get('display', $theme-parameters)
+      align-items:  get('align-items', $theme-parameters)
       font-family: get('font-family', $theme-parameters)
       font-size: get('font-size', $theme-parameters)
       font-weight: get('font-weight', $theme-parameters)
@@ -10,11 +12,19 @@
       margin: get('margin', $theme-parameters)
       padding: get('padding', $theme-parameters)
       cursor: pointer
+      kal-icon
+        margin: get('kal-icon.margin', $theme-parameters)
+        font-size: get('kal-icon.font-size', $theme-parameters)
+        color: get('kal-icon.color', $theme-parameters)
       &[disabled]
         color: get('disabled.color', $theme-parameters)
         background-color: get('disabled.background-color', $theme-parameters)
         border: get('disabled.border', $theme-parameters)
         cursor: not-allowed
+        kal-icon
+          margin: get('disabled.kal-icon.margin', $theme-parameters)
+          font-size: get('disabled.kal-icon.font-size', $theme-parameters)
+          color: get('disabled.kal-icon.color', $theme-parameters)
       &:not([disabled])
         &:hover
           background-color: get('hover.background-color', $theme-parameters)
@@ -27,10 +37,16 @@
         color: get('reverse.color', $theme-parameters)
         background-color: get('reverse.background-color', $theme-parameters)
         border: get('reverse.border', $theme-parameters)
+        kal-icon
+          margin: get('reverse.kal-icon.margin', $theme-parameters)
+          font-size: get('reverse.kal-icon.font-size', $theme-parameters)
+          color: get('reverse.kal-icon.color', $theme-parameters)
         &[disabled]
           color: get('reverse.disabled.color', $theme-parameters)
           background-color: get('reverse.disabled.background-color', $theme-parameters)
           border: get('reverse.disabled.border', $theme-parameters)
+          kal-icon
+            color: get('reverse.disabled.kal-icon.color', $theme-parameters)
         &:not([disabled])
           &:hover
             background-color: get('reverse.hover.background-color', $theme-parameters)
