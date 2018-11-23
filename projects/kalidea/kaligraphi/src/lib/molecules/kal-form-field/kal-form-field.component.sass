@@ -1,7 +1,16 @@
+=kal-themed-form-field($theme-parameters)
+  kal-form-field
+    .class-form-field__wrapper
+      &.kal-form-field--error
+        .kal-form-field__label
+          color: get('wrapper.error.color', $theme-parameters)
+      .kal-form-field__label
+        color:  get('wrapper.label.color', $theme-parameters)
+        line-height: get('wrapper.label.line-height', $theme-parameters)
+        padding: get('wrapper.label.padding', $theme-parameters)
+      .kal-form-field__label
+        &.kal-form-field--required::after
+          content: get('wrapper.label.required.content', $theme-parameters)
 
-.kal-form-field-required
-  &::after
-    content: '*'
-
-.kal-form-field-error
-  color: red
+=kal-form-field($kal-parameters)
+  +kal-themed-form-field(get('form.elements.formfield.default', $kal-parameters))
