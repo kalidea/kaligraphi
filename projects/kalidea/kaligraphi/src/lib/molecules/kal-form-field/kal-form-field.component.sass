@@ -1,21 +1,29 @@
 =kal-themed-form-field($theme-parameters)
-    .class-form-field__wrapper
+    .kal-form-field__wrapper
       background-color: get('wrapper.background-color', $theme-parameters)
+
       &.kal-form-field--error
         .kal-form-field__label
           color: get('wrapper.error.color', $theme-parameters)
-          kal-input > div input
-            border: 1px solid #ff0000
+        kal-input > div input
+          border: get('wrapper.error.input.border', $theme-parameters)
+
       .kal-form-field__label
+        display:  get('wrapper.label.display', $theme-parameters)
+        align-items:  get('wrapper.label.align-items', $theme-parameters)
         color:  get('wrapper.label.color', $theme-parameters)
         line-height: get('wrapper.label.line-height', $theme-parameters)
         padding: get('wrapper.label.padding', $theme-parameters)
+
       .kal-form-field__label
         &.kal-form-field--required::after
           content: get('wrapper.label.required.content', $theme-parameters)
+
     &.kal-theme--reverse
-      .kal-form-field__label
-        color: get('reverse.wrapper.label.color', $theme-parameters)
+      .kal-form-field__wrapper
+        background-color: get('reverse.wrapper.background-color', $theme-parameters)
+        .kal-form-field__label
+          color: get('reverse.wrapper.label.color', $theme-parameters)
 
 
 =kal-form-field($kal-parameters)

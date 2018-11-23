@@ -1,14 +1,19 @@
 $kal-styles-formfield: (
   'default': (
     'wrapper': (
-      'background-color': get('grey.wh800', $kal-palettes),
+      'background-color': get('white', $kal-palettes),
       'error': (
         'color': get('red.normal', $kal-palettes),
+        'input':(
+          'border': 1px solid get('red.normal', $kal-palettes),
+        ),
       ),
       'label':(
-        'color': get('grey.wh800', $kal-palettes),
+        'display': flex,
+        'align-items': center,
+        'color': get('grey.wf800', $kal-palettes),
         'line-height': 1,
-        'padding': 0 0 12px 0,
+        'padding': 6px 0 12px 0,
         'required':(
           'content': '*',
         ),
@@ -16,11 +21,9 @@ $kal-styles-formfield: (
     ),
     'reverse': (
       'wrapper': (
-        'error': (
-          'color': get('red.normal', $kal-palettes),
-        ),
+        'background-color': get('grey.wf800', $kal-palettes),
         'label':(
-          'color': get('white', $kal-palettes),
+          'color': get('grey.wf100', $kal-palettes),
         ),
       ),
     ),
