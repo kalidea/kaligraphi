@@ -2,14 +2,14 @@ $kal-styles-formfield: (
   'default': (
     'wrapper': (
       'error': (
-        'color': get('red.normal', $kal-palettes)
+        'color': get('red.normal', $kal-palettes),
       ),
       'label':(
         'color': get('grey.wh800', $kal-palettes),
         'line-height': 1,
         'padding': 0 0 12px 0,
         'required':(
-          'content': '*'
+          'content': '*',
         ),
       ),
     ),

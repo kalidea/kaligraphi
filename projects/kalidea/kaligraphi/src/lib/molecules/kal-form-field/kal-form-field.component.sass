@@ -1,5 +1,4 @@
 =kal-themed-form-field($theme-parameters)
-  kal-form-field
     .class-form-field__wrapper
       &.kal-form-field--error
         .kal-form-field__label
@@ -13,4 +12,5 @@
           content: get('wrapper.label.required.content', $theme-parameters)
 
 =kal-form-field($kal-parameters)
-  +kal-themed-form-field(get('form.elements.formfield.default', $kal-parameters))
+  kal-form-field
+    +kal-themed-form-field(get('form.elements.formfield.default', $kal-parameters))
