@@ -22,8 +22,9 @@
     &.kal-theme--reverse
       .kal-form-field__wrapper
         background-color: get('reverse.wrapper.background-color', $theme-parameters)
-        .kal-form-field__label
-          color: get('reverse.wrapper.label.color', $theme-parameters)
+        &:not(.kal-form-field--error)
+          .kal-form-field__label
+            color: get('reverse.wrapper.label.color', $theme-parameters)
 
 
 =kal-form-field($kal-parameters)
