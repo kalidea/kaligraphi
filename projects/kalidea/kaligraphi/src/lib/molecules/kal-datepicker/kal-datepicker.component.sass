@@ -1,19 +1,56 @@
 =kal-themed-datepicker($theme-parameters)
+  .kal-datepicker__input
+    position: relative
   .kal-datepicker__calendar
     display: flex
     flex-flow: column nowrap
     background-color: #ffffff
     border: 1px solid #B8B8B8
     padding: 18px
+    max-width: 208px
     kal-datepicker-header
       .kal-datepicker-header__wrapper
         display: flex
         flex-flow: row nowrap
         align-items: center
+        padding: 0 0 10px 0
         *:nth-child(2)
           flex: 1
           text-align: center
+
     kal-month-calendar
+      .kal-day-calendar__letter, .kal-day-calendar__number
+        display: flex
+        flex-flow: row wrap
+        justify-content: center
+        align-items: center
+
+      .kal-day-calendar__letter
+        padding: 0 0 5px 0
+        font-size: 80%
+        div
+          display: flex
+          align-items: center
+          justify-content: center
+          width: 24px
+          height: 24px
+          padding: 2px
+          color: #7A7A7A
+
+      .kal-day-calendar__number
+        button
+          width: 24px
+          height: 24px
+          border: none
+          border-radius: 50%
+          padding: 2px
+          text-align: center
+          background-color: transparent
+          &:not(:disabled)
+            &:hover, &:active, &:focus
+              cursor: pointer
+              background-color: #1F1F1F
+              color: #ffffff
 
     kal-datepicker-multi-view
 
