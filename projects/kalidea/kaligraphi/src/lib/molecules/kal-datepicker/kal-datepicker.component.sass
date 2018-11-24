@@ -1,0 +1,22 @@
+=kal-themed-datepicker($theme-parameters)
+  .kal-datepicker__calendar
+    display: flex
+    flex-flow: column nowrap
+    background-color: #ffffff
+    border: 1px solid #B8B8B8
+    padding: 18px
+    kal-datepicker-header
+      .kal-datepicker-header__wrapper
+        display: flex
+        flex-flow: row nowrap
+        align-items: center
+        *:nth-child(2)
+          flex: 1
+          text-align: center
+    kal-month-calendar
+
+    kal-datepicker-multi-view
+
+
+=kal-datepicker($kal-parameters)
+  +kal-themed-datepicker(get('datepicker.default', $kal-parameters))

@@ -2,7 +2,6 @@
 @import "palettes";
 @import "functions/index";
 
-
 $kal-colors: (default: #1F1F1F, reverse: #FFF) !default;
 
 // fontfaces
@@ -40,6 +39,7 @@ $kal-headings: (
 @import 'components/kal-tabs.styles';
 @import 'components/kal-checkbox.styles';
 @import 'components/kal-select.styles';
+@import 'components/kal-datepicker.styles';
 
 // global parameters
 $kal-parameters: (
@@ -48,6 +48,7 @@ $kal-parameters: (
   text: $kal-text,
   nav: $kal-styles-nav,
   tabs: $kal-styles-tabs,
+  datepicker: $kal-styles-datepicker,
   form: (
     elements: (
       'button': $kal-styles-button,
