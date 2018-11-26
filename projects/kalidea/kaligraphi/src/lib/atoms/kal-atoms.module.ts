@@ -36,6 +36,7 @@ const exports = [
     ...exports
   ],
   exports: exports,
+  declarations: [],
 })
 export class KalAtomsModule {
 }
