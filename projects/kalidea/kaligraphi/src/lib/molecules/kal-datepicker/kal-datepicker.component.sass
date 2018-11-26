@@ -7,7 +7,7 @@
     background-color: #ffffff
     border: 1px solid #B8B8B8
     padding: 18px
-    max-width: 208px
+    width: 224px
     kal-datepicker-header
       .kal-datepicker-header__wrapper
         display: flex
@@ -62,9 +62,11 @@
           flex: 2
           column-count: 2
           column-width: .5em
-          max-height: 110px
+          height: 150px
+        .kal-datepicker-multi-view__month, .kal-datepicker-multi-view__year
           div
             border-radius: 4px
+            padding: 3px 2px
             &:not([disabled])
               &:hover, &:active, &:focus, &[selected]
                 cursor: pointer
@@ -74,11 +76,12 @@
           flex: 1
           overflow-x: hidden
           overflow-y: auto
-          max-height: 110px
+          height: 140px
           /* Let's get this party started */
           &::-webkit-scrollbar
             width: 9px
-
+            background: #F5F5F5
+            border: 1px solid #B8B8B8
           /* Track */
           &::-webkit-scrollbar-track
             -webkit-border-radius: 2px
@@ -90,7 +93,7 @@
             border-radius: 2px
             background: rgba(184, 184, 184, 0.8)
           &::-webkit-scrollbar-thumb:window-inactive
-            background: rgba(184, 184, 184, 0.4)
+            backgrond: rgba(184, 184, 184, 0.4)
 
 =kal-datepicker($kal-parameters)
   +kal-themed-datepicker(get('datepicker.default', $kal-parameters))
