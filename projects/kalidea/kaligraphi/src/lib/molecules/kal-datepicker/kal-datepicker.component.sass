@@ -51,6 +51,46 @@
               cursor: pointer
               background-color: #1F1F1F
               color: #ffffff
+          &[selected]
+            cursor: pointer
+            background-color: #1F1F1F
+            color: #ffffff
+    kal-datepicker-multi-view
+      .kal-datepicker-multi-view__wrapper
+        display: flex
+        .kal-datepicker-multi-view__month
+          flex: 2
+          column-count: 2
+          column-width: .5em
+          max-height: 110px
+          div
+            border-radius: 4px
+            &:not([disabled])
+              &:hover, &:active, &:focus, &[selected]
+                cursor: pointer
+                background-color: #1F1F1F
+                color: #ffffff
+        .kal-datepicker-multi-view__year
+          flex: 1
+          overflow-x: hidden
+          overflow-y: auto
+          max-height: 110px
+          /* Let's get this party started */
+          &::-webkit-scrollbar
+            width: 9px
+
+          /* Track */
+          &::-webkit-scrollbar-track
+            -webkit-border-radius: 2px
+            border-radius: 2px
+
+          /* Handle */
+          &::-webkit-scrollbar-thumb
+            -webkit-border-radius: 2px
+            border-radius: 2px
+            background: rgba(184, 184, 184, 0.8)
+          &::-webkit-scrollbar-thumb:window-inactive
+            background: rgba(184, 184, 184, 0.4)
 
 =kal-datepicker($kal-parameters)
   +kal-themed-datepicker(get('datepicker.default', $kal-parameters))
