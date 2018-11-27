@@ -7,8 +7,8 @@ $kal-styles-datepicker: (
     'calendar':(
       'display': flex,
       'flex-flow': column nowrap,
-      'background-color': #ffffff,
-      'border': 1px solid #B8B8B8,
+      'background-color': get("white", $kal-palettes),
+      'border': 1px solid get("grey.wf300", $kal-palettes),
       'padding': 18px,
       'header':(
         'wrapper':(
@@ -16,14 +16,14 @@ $kal-styles-datepicker: (
           'flex-flow': row nowrap,
           'align-items': center,
           'padding': 0 0 10px 0,
-          'child1':(
+          'child2':(
             'flex': 1,
             'text-align': center,
             'hover':(
               'cursor': pointer,
             ),
           ),
-          'child2-3':(
+          'child1-3':(
             'hover':(
               'cursor': pointer,
             ),
@@ -47,7 +47,7 @@ $kal-styles-datepicker: (
             'width': 24px,
             'height': 24px,
             'padding': 2px,
-            'color': #7A7A7A,
+            'color': get("grey.wf500", $kal-palettes),
           ),
         ),
         'number':(
@@ -63,10 +63,10 @@ $kal-styles-datepicker: (
             'padding': 2px,
             'text-align': center,
             'background-color': transparent,
-            'hover':(
+            'selected':(
               'cursor': pointer,
-              'background-color': #1F1F1F,
-              'color': #ffffff,
+              'background-color': get("grey.wf800", $kal-palettes),
+              'color': get("white", $kal-palettes),
             ),
           ),
         ),
@@ -85,8 +85,8 @@ $kal-styles-datepicker: (
             'padding': 5px 8px,
             'selected':(
               'cursor': pointer,
-              'background-color': #1F1F1F,
-              'color': #ffffff,
+              'background-color': get("grey.wf800", $kal-palettes),
+              'color': get("white", $kal-palettes),
             ),
           ),
         ),
@@ -97,25 +97,19 @@ $kal-styles-datepicker: (
           'height': 165px,
           'padding': 0 5px,
           'div':(
-            'border-radius': 4px,
-            'padding': 5px 8px,
-            'selected':(
-              'cursor': pointer,
-              'background-color': #1F1F1F,
-              'color': #ffffff,
-            ),
             'scrollbar':(
               'width': 9px,
-              'background': #F5F5F5,
-              'border': 1px solid #B8B8B8,
+              'background': get("grey.wf300", $kal-palettes),
+              'border': 1px solid get("grey.wf600", $kal-palettes),
+              'border-radius': 2px,
               'track':(
                 'border-radius': 2px,
               ),
               'thumb':(
                 'border-radius': 2px,
-                'background': rgba(184, 184, 184, 0.8),
+                'background': rgba(92, 92, 92, 0.8),
                 'inactive':(
-                  'background': rgba(184, 184, 184, 0.4),
+                  'background': rgba(92, 92, 92, 0.4),
                 ),
               ),
             ),
@@ -124,14 +118,14 @@ $kal-styles-datepicker: (
       ),
     ),
     'reverse':(
-      'background-color': #D6D6D6,
-      'border': 1px solid #B8B8B8,
+      'background-color': get("grey.wf200", $kal-palettes),
+      'border': 1px solid get("grey.wf300", $kal-palettes),
       'multi-view': (
         'wrapper':(
           'year':(
             'scrollbar':(
-              'background': #b8b8b8,
-              'border': 1px solid #b8b8b8,
+              'background': get("grey.wf300", $kal-palettes),
+              'border': 1px solid get("grey.wf300", $kal-palettes),
               'thumb': (
                 'background': rgba(122, 122, 122, 0.8),
                 'inactive':(
