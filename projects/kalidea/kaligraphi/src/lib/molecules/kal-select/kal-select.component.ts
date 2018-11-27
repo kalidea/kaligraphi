@@ -227,8 +227,10 @@ export class KalSelectComponent
    */
   @HostListener('focus')
   focus(): void {
-    this.elementRef.nativeElement.focus();
-    this.isFocused = true;
+    if (!this.disabled) {
+      this.elementRef.nativeElement.focus();
+      this.isFocused = true;
+    }
   }
 
   /**
@@ -445,7 +447,11 @@ export class KalSelectComponent
         this.cleanSubscriptionsList();
         this.subscriptionsList.push(
           merge<KalOptionComponent>(...this.options.map(option => option.selectionChange))
-            .subscribe(event => this.optionSelected(event))
+            .subscribe(event => {
+              this.focus();
+              this.optionSelected(event);
+              this.keyManager.setActiveItem(event);
+            })
         );
       });
 
