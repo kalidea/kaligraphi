@@ -327,7 +327,7 @@ export class KalSelectComponent
   /**
    * Event emitted when several options are selected
    * Set the option as active
-   * @param option KalOptionComponent
+   * @param options KalOptionComponent
    * @param withNotify boolean
    */
   private multipleOptionSelected(options: KalOptionComponent[], withNotify = true) {
@@ -467,5 +467,4 @@ export class KalSelectComponent
 
     this.cleanSubscriptionsList();
   }
-
 }
