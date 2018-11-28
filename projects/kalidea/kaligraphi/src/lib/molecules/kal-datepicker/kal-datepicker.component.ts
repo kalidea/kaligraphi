@@ -180,22 +180,8 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   }
 
   ngOnInit() {
-    this.overlayRef = this.overlay.create({
-      positionStrategy: this.positionStrategy,
-      hasBackdrop: true,
-      width: this.elementRef.nativeElement.getBoundingClientRect().width,
-      backdropClass: 'cdk-overlay-transparent-backdrop'
-    });
-
-    this.backdropClickSubscription = this.overlayRef.backdropClick().subscribe(() => {
-      this.close();
-    });
-
-    this.escapeKeySubscription = this.overlayRef.keydownEvents()
-      .pipe(
-        filter(event => event.keyCode === ESCAPE)
-      )
-      .subscribe(() => this.close());
+    this.createOverlay();
+    this.initSubscriptions();
 
     this.control.valueChanges.pipe(
       map(value => coerceKalDateProperty(value)), // transform as date
@@ -220,5 +206,26 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   ngOnDestroy(): void {
     this.backdropClickSubscription.unsubscribe();
     this.escapeKeySubscription.unsubscribe();
+  }
+
+  private createOverlay(): void {
+    this.overlayRef = this.overlay.create({
+      positionStrategy: this.positionStrategy,
+      hasBackdrop: true,
+      width: this.elementRef.nativeElement.getBoundingClientRect().width,
+      backdropClass: 'cdk-overlay-transparent-backdrop'
+    });
+  }
+
+  private initSubscriptions(): void {
+    this.backdropClickSubscription = this.overlayRef.backdropClick().subscribe(() => {
+      this.close();
+    });
+
+    this.escapeKeySubscription = this.overlayRef.keydownEvents()
+      .pipe(
+        filter(event => event.keyCode === ESCAPE)
+      )
+      .subscribe(() => this.close());
   }
 }
