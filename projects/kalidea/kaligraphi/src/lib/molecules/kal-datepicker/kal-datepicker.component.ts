@@ -104,6 +104,15 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     return parentControl.control.validator;
   }
 
+  private get positionStrategy() {
+    return this.overlay
+      .position()
+      .flexibleConnectedTo(this.elementRef)
+      .withPositions([
+        {originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top'}
+      ]);
+  }
+
   /**
    * Switch between views to display.
    */
@@ -171,15 +180,9 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   }
 
   ngOnInit() {
-    const positionStrategy = this.overlay
-      .position()
-      .flexibleConnectedTo(this.elementRef)
-      .withPositions([
-        {originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top'}
-      ]);
 
     this.overlayRef = this.overlay.create({
-      positionStrategy,
+      positionStrategy: this.positionStrategy,
       hasBackdrop: true,
       width: this.elementRef.nativeElement.getBoundingClientRect().width,
       backdropClass: 'cdk-overlay-transparent-backdrop'
