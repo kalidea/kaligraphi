@@ -10,14 +10,14 @@
     "build:lib": "npm run build",
     "copy:styles": "cpx './projects/kalidea/kaligraphi/src/**/*.{sass,scss,css}' ./dist/kalidea/kaligraphi",
     "compile:styles": "node-sass ./projects/kalidea/kaligraphi/src/styles/styles.sass ./dist/kalidea/kaligraphi/styles/styles.css",
-    "postbuild:lib": "npm run copy:styles && npm run compile:styles",
+    "postbuild": "npm run copy:styles && npm run compile:styles",
     "test:ci": "ng test @kalidea/kaligraphi --karma-config=./projects/kalidea/kaligraphi/karma.test.conf.js --code-coverage",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "serve:playground": "npm run serve",
     "build:playground": "ng build playground --prod",
     "build:all": "npm run build:lib && npm run build:playground",
-    "verify": "ng lint @kalidea/kaligraphi && npm run test && npm run build:all"
+    "verify": "ng lint @kalidea/kaligraphi && npm run test:ci && npm run build:all"
   },
   "private": true,
   "dependencies": {
