@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, Component, forwardRef, Injector, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  forwardRef,
+  Injector,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { ESCAPE } from '@angular/cdk/keycodes';
@@ -68,6 +78,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   private overlayRef: OverlayRef;
 
   constructor(private overlay: Overlay,
+              private elementRef: ElementRef<HTMLElement>,
               private injector: Injector) {
     super();
   }
@@ -82,7 +93,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   }
 
   /**
-   * Wether the current view is the `multi` view.
+   * Whether the current view is the `multi` view.
    */
   get isMultiView(): boolean {
     return this.currentView === 'multi';
@@ -122,8 +133,8 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
    * Update the input value with the given date.
    */
   setInputValue(date: KalDate): void {
-    const isDateValid = (date && date.valid) ? date : '';
-    this.control.setValue(isDateValid ? date.toString() : '', {emitEvent: false});
+    const displayedDate = (date && date.valid) ? date.toString() : '';
+    this.control.setValue(displayedDate);
   }
 
   /**
@@ -160,8 +171,17 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   }
 
   ngOnInit() {
+    const positionStrategy = this.overlay
+      .position()
+      .flexibleConnectedTo(this.elementRef)
+      .withPositions([
+        {originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top'}
+      ]);
+
     this.overlayRef = this.overlay.create({
+      positionStrategy,
       hasBackdrop: true,
+      width: this.elementRef.nativeElement.getBoundingClientRect().width,
       backdropClass: 'cdk-overlay-transparent-backdrop'
     });
 
