@@ -180,7 +180,6 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   }
 
   ngOnInit() {
-
     this.overlayRef = this.overlay.create({
       positionStrategy: this.positionStrategy,
       hasBackdrop: true,
