@@ -1,55 +1,37 @@
 <h1> kal-form-field</h1>
-<hr>
 
-<h2> With input </h2>
-<h3>Default</h3>
+<div style="margin: 20px 0; padding: 10px; display: flex; justify-content: space-evenly" [class.reverse]="reverse">
 
-<kal-form-field>
-  <kal-input label="Input label"
-             required="true"
-             [formControl]="control1">
-  </kal-input>
-</kal-form-field>
-
-<p></p>
-
-<h3>Reverse</h3>
-<div style="padding: 10px 30px; background-color: #1f1f1f">
-  <kal-form-field class="kal-theme--reverse">
-    <kal-input class="kal-theme--reverse"
-               label="Input label"
+  <kal-form-field>
+    <kal-input label="Input label"
                required="true"
+               [kalTheme]="themes"
+               [disabled]="disabled"
                [formControl]="control1">
     </kal-input>
   </kal-form-field>
+
+
+  <kal-form-field>
+    <kal-select tabindex="1"
+                label="Select label"
+                [kalTheme]="themes"
+                [disabled]="disabled"
+                required
+                placeholder="Select items">
+      <kal-option value="1">1</kal-option>
+      <kal-option value="2">2</kal-option>
+      <kal-option value="3">3</kal-option>
+      <kal-option value="4">4</kal-option>
+    </kal-select>
+  </kal-form-field>
 </div>
 
-<hr>
 
-<h2> With select </h2>
-<h3>Default</h3>
-<kal-form-field>
-  <kal-select tabindex="1"
-              label="Select label"
-              required placeholder="Select items">
-    <kal-option value="1">1</kal-option>
-    <kal-option value="2">2</kal-option>
-    <kal-option value="3">3</kal-option>
-    <kal-option value="4">4</kal-option>
-  </kal-select>
-</kal-form-field>
+<div class="configurator">
 
-<p></p>
+  <kal-checkbox [(ngModel)]="disabled" label="disabled"></kal-checkbox>
 
-<h3>reverse</h3>
-<kal-form-field>
-  <kal-select tabindex="2"
-              label="Select label"
-              required placeholder="Select items"
-              kalTheme="reverse">
-    <kal-option value="1">1</kal-option>
-    <kal-option value="2">2</kal-option>
-    <kal-option value="3">3</kal-option>
-    <kal-option value="4">4</kal-option>
-  </kal-select>
-</kal-form-field>
+  <kal-checkbox [(ngModel)]="reverse" label="reverse"></kal-checkbox>
+
+</div>
