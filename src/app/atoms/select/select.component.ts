@@ -61,5 +61,4 @@ export class SelectComponent implements OnInit {
   ngOnInit() {
     this.buildOptions();
   }
-
 }

@@ -11,25 +11,17 @@ import { KalRadioChange } from '@kalidea/kaligraphi';
 })
 export class RadioComponent implements OnInit {
 
+
   /**
    * Value of radio button group
    */
-  value = 'test';
+  value = 'test1';
 
   /**
    * The form control of the radio button group
    */
   control = new FormControl(this.value);
 
-  /**
-   * The name of radio button group by using control
-   */
-  nameRadioButtonWithControl = 'radioButtonWithControl';
-
-  /**
-   * The name of radio button group by using event
-   */
-  nameRadioButtonWithEvent = 'radioButtonWithEvent';
 
   /**
    * Is radio button group disabled
@@ -41,7 +33,21 @@ export class RadioComponent implements OnInit {
    */
   id: string;
 
+  /**
+   * position of the label
+   */
+  labelPosition = 'after';
+
+  /**
+   * list of themes to apply
+   */
+  themes = [];
+
   constructor() {
+  }
+
+  get hasReverseTheme() {
+    return this.themes ? this.themes.find(t => t === 'reverse') !== undefined : false;
   }
 
   /**
@@ -64,24 +70,6 @@ export class RadioComponent implements OnInit {
   displayValue($event: KalRadioChange) {
     this.id = $event.source.id;
     this.value = $event.value;
-  }
-
-  /**
-   * Disabled the radio button group that using control
-   */
-  disableGroupByControl() {
-    if (!this.control.disabled) {
-      this.control.disable();
-    } else {
-      this.control.enable();
-    }
-  }
-
-  /**
-   * Disabled the radio button group that using input
-   */
-  disableGroupByInput() {
-    this.disabled = !this.disabled;
   }
 
   ngOnInit() {

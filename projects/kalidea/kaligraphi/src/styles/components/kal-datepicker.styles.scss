@@ -1,0 +1,141 @@
+/* kal-tabs parameters and alternates */
+$kal-styles-datepicker: (
+  'default': (
+    'input': (
+      'position': relative,
+    ),
+    'calendar':(
+      'display': flex,
+      'flex-flow': column nowrap,
+      'background-color': get("white", $kal-palettes),
+      'border': 1px solid get("grey.wf300", $kal-palettes),
+      'padding': 18px,
+      'header':(
+        'wrapper':(
+          'display': flex,
+          'flex-flow': row nowrap,
+          'align-items': center,
+          'padding': 0 0 10px 0,
+          'child2':(
+            'flex': 1,
+            'text-align': center,
+            'hover':(
+              'cursor': pointer,
+            ),
+          ),
+          'child1-3':(
+            'hover':(
+              'cursor': pointer,
+            ),
+          ),
+        ),
+      ),
+      'month':(
+        'width': 170px,
+        'margin': auto,
+        'letter':(
+          'display': flex,
+          'flex-flow': row wrap,
+          'justify-content': flex-start,
+          'align-items': center,
+          'padding': 0 0 5px 0,
+          'font-size': 80%,
+          'div':(
+            'display': flex,
+            'align-items': center,
+            'justify-content': center,
+            'width': 24px,
+            'height': 24px,
+            'padding': 2px,
+            'color': get("grey.wf500", $kal-palettes),
+          ),
+        ),
+        'number':(
+          'display': flex,
+          'flex-flow': row wrap,
+          'justify-content': flex-start,
+          'align-items': center,
+          'button':(
+            'width': 24px,
+            'height': 24px,
+            'border': none,
+            'border-radius': 50%,
+            'padding': 2px,
+            'text-align': center,
+            'background-color': transparent,
+            'selected':(
+              'cursor': pointer,
+              'background-color': get("grey.wf800", $kal-palettes),
+              'color': get("white", $kal-palettes),
+            ),
+          ),
+        ),
+      ),
+    ),
+    'multi-view':(
+      'wrapper':(
+        'display': flex,
+        'month':(
+          'flex': 2,
+          'column-count': 2,
+          'column-width': .5em,
+          'height': 165px,
+          'div':(
+            'border-radius': 4px,
+            'padding': 5px 8px,
+            'selected':(
+              'cursor': pointer,
+              'background-color': get("grey.wf800", $kal-palettes),
+              'color': get("white", $kal-palettes),
+            ),
+          ),
+        ),
+        'year':(
+          'flex': 1,
+          'overflow-x': hidden,
+          'overflow-y': auto,
+          'height': 165px,
+          'padding': 0 5px,
+          'div':(
+            'scrollbar':(
+              'width': 9px,
+              'background': get("grey.wf300", $kal-palettes),
+              'border': 1px solid get("grey.wf600", $kal-palettes),
+              'border-radius': 2px,
+              'track':(
+                'border-radius': 2px,
+              ),
+              'thumb':(
+                'border-radius': 2px,
+                'background': rgba(92, 92, 92, 0.8),
+                'inactive':(
+                  'background': rgba(92, 92, 92, 0.4),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    ),
+    'reverse':(
+      'background-color': get("grey.wf200", $kal-palettes),
+      'border': 1px solid get("grey.wf300", $kal-palettes),
+      'multi-view': (
+        'wrapper':(
+          'year':(
+            'scrollbar':(
+              'background': get("grey.wf300", $kal-palettes),
+              'border': 1px solid get("grey.wf300", $kal-palettes),
+              'thumb': (
+                'background': rgba(122, 122, 122, 0.8),
+                'inactive':(
+                  'background': rgba(122, 122, 122, 0.8),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    ),
+  ),
+);
