@@ -27,9 +27,9 @@ export let counter = 0;
 
     <!-- footer -->
     <div kalDialogFooter>
-      <kal-button (click)="openDialog()">Open Sub Dialog {{ id + 1 }}</kal-button>
-      <kal-button kalDialogClose>Close Dialog</kal-button>
-      <kal-button (click)="submitDialog()">Submit Dialog</kal-button>
+      <kal-button (click)="openDialog()" class="kal-theme--primary">Sub Dialog {{ id + 1 }}</kal-button>
+      <kal-button kalDialogClose class="kal-theme--secondary">Close</kal-button>
+      <kal-button (click)="submitDialog()" class="kal-theme--secondary">Submit</kal-button>
     </div>
   `,
 })
@@ -157,7 +157,7 @@ export class DialogComponent {
   openDialog() {
 
     const config = new KalDialogConfig<ExampleDialogData>({
-      title: 'Modal to open',
+      title: 'Modal\'s title',
       ...this.config,
       data: {
         user: {

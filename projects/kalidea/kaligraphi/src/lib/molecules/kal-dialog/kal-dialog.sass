@@ -1,0 +1,30 @@
+=kal-themed-dialog($theme-parameters)
+  div.kal-dialog
+    position: get('position', $theme-parameters)
+    background-color: get('background-color', $theme-parameters)
+    border: get('border', $theme-parameters)
+    box-shadow: get('box-shadow', $theme-parameters)
+    padding: get('padding', $theme-parameters)
+    .kal-dialog__header
+      padding: get('header.padding', $theme-parameters)
+      .kal-dialog__title
+        font: get('header.title.font', $theme-parameters)
+        line-height: get('header.title.line-height', $theme-parameters)
+        + kal-icon
+          position: get('header.title.icon.position', $theme-parameters)
+          top: get('header.title.icon.top', $theme-parameters)
+          right: get('header.title.icon.right', $theme-parameters)
+          font-size: get('header.title.icon.font-size', $theme-parameters)
+          cursor: get('header.title.icon.cursor', $theme-parameters)
+    .kal-dialog__content
+      padding: get('content.padding', $theme-parameters)
+    .kal-dialog__footer
+      display: get('footer.display', $theme-parameters)
+      flex-flow: get('footer.flex-flow', $theme-parameters)
+      justify-content: get('footer.justify-content', $theme-parameters)
+      align-items: get('footer.align-items', $theme-parameters)
+      kal-button:not(:only-child):not(:last-child)
+        margin: get('footer.button.margin', $theme-parameters)
+
+=kal-dialog($kal-parameters)
+  +kal-themed-dialog(get('dialog.default', $kal-parameters))
