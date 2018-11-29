@@ -6,6 +6,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
   styleUrls: ['./button.component.sass'],
   encapsulation: ViewEncapsulation.None,
 })
+
 export class ButtonComponent {
 
   disabled = false;
