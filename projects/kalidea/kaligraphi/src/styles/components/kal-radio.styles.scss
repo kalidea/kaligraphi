@@ -1,0 +1,179 @@
+// kal-tabs parameters and alternates
+$kal-styles-radio: (
+  'default': (
+    'label': (
+      'position': relative,
+      'display': flex,
+      'flex-flow': row wrap,
+      'align-items': center,
+      'height': 18px,
+      'padding': 0 0 0 37px,
+      'font-size': 18px,
+      'cursor': pointer,
+      'labelleft': (
+        'padding': 0 37px 0 0,
+        'div': (
+          'right': 0,
+          'left': auto,
+        ),
+        'before':(
+          'right': 0,
+          'left': auto,
+        ),
+        'after':(
+          'right': 5px,
+          'left': auto,
+        ),
+      ),
+      'empty':(
+        'display': inline-flex,
+        'width': 18px,
+        'height': 18px,
+        'padding': 0,
+      ),
+      'before': (
+        'content': '',
+        'position': absolute,
+        'top': 0,
+        'left': 0,
+        'right': auto,
+        'width': 18px,
+        'height': 18px,
+        'border': 1px solid get("grey.wf300", $kal-palettes),
+        'border-radius': 50%,
+        'background-color': get("grey.wf100", $kal-palettes),
+      ),
+      'after': (
+        'content': '',
+        'position': absolute,
+        'top': 5px,
+        'left': 5px,
+        'right': auto,
+        'display': flex,
+        'flex-flow': row wrap,
+        'justify-content': center,
+        'align-items': center,
+        'width': 8px,
+        'height': 8px,
+        'background-color': get("black", $kal-palettes),
+        'border-radius': 50%,
+        'transition': all .2s,
+        'opacity': 0,
+        'transform': scale(0),
+      ),
+      'radiochecked': (
+        'before':(
+          'background-color': get("white", $kal-palettes),
+        ),
+        'after':(
+          'opacity': 1,
+          'transform': scale(1),
+        ),
+      ),
+      'radiodisabled': (
+        'color': get("grey.wf500", $kal-palettes),
+        'cursor': not-allowed,
+        'after':(
+          'background-color': get("grey.wf500", $kal-palettes),
+        ),
+      ),
+    ),
+    'div':(
+      'display': inline-block,
+      'position': absolute,
+      'z-index': -1,
+      'top': 0,
+      'left': 0,
+      'height': 32px,
+      'width': 32px,
+      'border-radius': 50%,
+      'background-color': transparent,
+      'hover':(
+        'background-color': get("grey.wf100", $kal-palettes),
+      ),
+      'active':(
+        'background-color': get("grey.wf200", $kal-palettes),
+      ),
+    ),
+    'reverse' :(
+      'label':(
+        'color': get("white", $kal-palettes),
+        'before': (
+          'border': 1px solid get("grey.wf400", $kal-palettes)
+        ),
+        'radiochecked':(
+          'before':(
+            'background-color': get("white", $kal-palettes),
+            'border-color': get("white", $kal-palettes),
+          ),
+          'after':(
+            'background-color': get("grey.wf800", $kal-palettes),
+          ),
+        ),
+        'radionotchecked':(
+          'before':(
+            'background-color': get("grey.wf500", $kal-palettes),
+           ' border-color': get("grey.wf500", $kal-palettes),
+          ),
+        ),
+        'disabled':(
+          'radiochecked':(
+            'before':(
+              'border-color': get("grey.wf300", $kal-palettes),
+              'background-color': get("grey.wf300", $kal-palettes),
+            ),
+            'after':(
+              'background-color': get("grey.wf600", $kal-palettes),
+            ),
+          ),
+        ),
+      ),
+      'div':(
+        'hover':(
+          'background-color': get("grey.wf700", $kal-palettes),
+        ),
+        'active':(
+          'background-color':get("grey.wf600", $kal-palettes),
+        ),
+      ),
+    ),
+  ),
+  'alternates':(
+    'large':(
+      'label':(
+        'font-size': 24px,
+        'padding': 0 0 0 51px,
+        'height': 24px,
+        'labelleft': (
+          'padding': 0 51px 0 0 ,
+          'before':(
+            'right': 0,
+            'left': auto,
+          ),
+          'after':(
+            'right': 7px,
+            'left': auto,
+          ),
+        ),
+        'empty':(
+          'width': 24px,
+          'height': 24px,
+        ),
+        'before':(
+          'width': 24px,
+          'height': 24px,
+        ),
+        'after':(
+          'width': 10px,
+          'height': 10px,
+          'top': 7px,
+          'left': 7px,
+        ),
+      ),
+      'div':(
+        'height': 38px,
+        'width': 38px,
+      ),
+    ),
+  ),
+);

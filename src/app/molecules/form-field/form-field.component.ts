@@ -10,4 +10,16 @@ import { FormControl, Validator, Validators } from '@angular/forms';
 })
 export class FormFieldComponent {
   control1 = new FormControl('john', Validators.email);
+
+  /**
+   * Is form element disabled
+   */
+  disabled = false;
+
+  reverse = false;
+
+  get themes() {
+    return this.reverse ? 'reverse' : '';
+  }
+
 }
