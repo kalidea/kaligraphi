@@ -18,7 +18,7 @@ import { Subscription } from 'rxjs';
 import { coerceKalDateProperty, KalDate, KalDateType } from './kal-date';
 import { KalMonthCalendarComponent } from './kal-month-calendar/kal-month-calendar.component';
 import { KalDatepickerHeaderComponent } from './kal-datepicker-header/kal-datepicker-header.component';
-import { buildProviders, FormElementComponent } from '../../utils';
+import { buildProviders, FormElementComponent } from '../../utils/index';
 
 /**
  * Possible views for the calendar.
@@ -179,6 +179,27 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     this.currentDate = kalDate;
   }
 
+  private createOverlay(): void {
+    this.overlayRef = this.overlay.create({
+      positionStrategy: this.positionStrategy,
+      hasBackdrop: true,
+      width: this.elementRef.nativeElement.getBoundingClientRect().width,
+      backdropClass: 'cdk-overlay-transparent-backdrop'
+    });
+  }
+
+  private initSubscriptions(): void {
+    this.backdropClickSubscription = this.overlayRef.backdropClick().subscribe(() => {
+      this.close();
+    });
+
+    this.escapeKeySubscription = this.overlayRef.keydownEvents()
+      .pipe(
+        filter(event => event.keyCode === ESCAPE)
+      )
+      .subscribe(() => this.close());
+  }
+
   ngOnInit() {
     this.createOverlay();
     this.initSubscriptions();
@@ -206,26 +227,5 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   ngOnDestroy(): void {
     this.backdropClickSubscription.unsubscribe();
     this.escapeKeySubscription.unsubscribe();
-  }
-
-  private createOverlay(): void {
-    this.overlayRef = this.overlay.create({
-      positionStrategy: this.positionStrategy,
-      hasBackdrop: true,
-      width: this.elementRef.nativeElement.getBoundingClientRect().width,
-      backdropClass: 'cdk-overlay-transparent-backdrop'
-    });
-  }
-
-  private initSubscriptions(): void {
-    this.backdropClickSubscription = this.overlayRef.backdropClick().subscribe(() => {
-      this.close();
-    });
-
-    this.escapeKeySubscription = this.overlayRef.keydownEvents()
-      .pipe(
-        filter(event => event.keyCode === ESCAPE)
-      )
-      .subscribe(() => this.close());
   }
 }
