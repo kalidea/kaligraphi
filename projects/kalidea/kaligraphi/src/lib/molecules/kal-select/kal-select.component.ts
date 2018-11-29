@@ -81,6 +81,9 @@ export class KalSelectComponent
    */
   private isPanelOpen: boolean;
 
+  /**
+   * Store Subscriptions
+   */
   private subscriptionsList: Subscription[] = [];
 
   constructor(private overlay: Overlay,
@@ -101,6 +104,11 @@ export class KalSelectComponent
 
   set multiple(multiple: boolean) {
     this.isMultiple = coerceBooleanProperty(multiple);
+    if (this.selection && !this.isMultiple && this.selection.length > 1) {
+      const keep = this.selection[0];
+      this.reset();
+      this.optionSelected(keep);
+    }
   }
 
   /**
@@ -231,6 +239,7 @@ export class KalSelectComponent
    * Reset selection
    */
   reset(): void {
+    this.selection.map(o => o.active = false);
     this.selection = [];
     this.cdr.markForCheck();
   }
@@ -402,6 +411,10 @@ export class KalSelectComponent
     } else {
       option.active = true;
       this.selection.push(option);
+      // Multiple selection keep the option's order
+      this.selection.sort((x, y) => {
+        return this.options.toArray().indexOf(x) > this.options.toArray().indexOf(y) ? 1 : -1;
+      });
     }
   }
 

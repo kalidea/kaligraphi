@@ -134,7 +134,7 @@ export class KalOptionComponent implements AfterViewInit, Highlightable {
 
   ngAfterViewInit(): void {
     if (this.value === undefined) {
-      this.value = this.viewValue;
+      this.value = this.getLabel();
     }
   }
 
