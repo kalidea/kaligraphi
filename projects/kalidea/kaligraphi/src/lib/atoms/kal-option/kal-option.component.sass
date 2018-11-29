@@ -2,16 +2,21 @@
   kal-option
     display: flex
     flex-flow: column nowrap
+    padding: 0 18px
     .kal-option__selection
       display: flex
       flex-flow: row nowrap
-      justify-content: center
+      justify-content: flex-start
       align-items: center
       padding: 5px 0
-      &:not([disabled]), &:not(.kal-option__selection--disabled)
-        &.kal-option__selection--active, &.kal-option__selection:hover, &.kal-option__selection:active, &.kal-option__selection:focus
+      &:not([disabled]):not(.kal-option__selection--disabled)
+        &.kal-option__selection--highlighted,
+        &.kal-option__selection--active,
+        &:hover,
+        &:active,
+        &:focus
           cursor: pointer
           font-weight: 500
       &--disabled, &[disabled]
         cursor: not-allowed
-        color: get("grey.wf300", $kal-palettes)
+        color: get("palettes.grey.wf300", $kal-parameters)

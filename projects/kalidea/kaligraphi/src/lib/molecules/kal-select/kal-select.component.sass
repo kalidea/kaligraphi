@@ -7,6 +7,7 @@
         border: get('border', $theme-parameters)
         border-radius: get('border-radius', $theme-parameters)
         padding: get('padding', $theme-parameters)
+
         .kal-select__triggervalue, .kal-select__placeholder
           display: inline-block
           font-size: get('label.font-size', $theme-parameters)
@@ -16,6 +17,10 @@
             color: get('icon.color', $theme-parameters)
             padding: get('icon.padding', $theme-parameters)
             font-size: get('icon.font-size', $theme-parameters)
+
+        > div:nth-child(1)
+          flex: 1
+
     &:not([disabled])
       &:focus, &:active
         .kal-select__trigger
