@@ -1,0 +1,36 @@
+// kal-tabs parameters and alternates
+$kal-styles-dialog: (
+  'default': (
+    'position': relative,
+    'background-color': get('white',$kal-palettes),
+    'border': 1px solid get('grey.wf200',$kal-palettes),
+    'box-shadow': 0 0 24px rgba(0, 0, 0, 0.06),
+    'padding': 24px,
+    'header': (
+      'padding': 0 0 18px 0,
+      'title': (
+        'font': 600 22px $kal-base-fontface,
+        'line-height': 1,
+        'icon':(
+          'position': absolute,
+          'top': 12px,
+          'right': 12px,
+          'font-size': $kal-base-fontsize + 7,
+          'cursor': pointer,
+        ),
+      ),
+    ),
+    'content':(
+      'padding': 0 0 24px 0,
+    ),
+    'footer':(
+      'display': flex,
+      'flex-flow': row nowrap,
+      'justify-conten': space-between,
+      'align-items': center,
+      'button':(
+        'margin': 0 5px 0 0,
+      ),
+    ),
+  ),
+);

@@ -39,6 +39,7 @@ $kal-headings: (
 @import 'components/kal-menu.styles';
 @import 'components/kal-datepicker.styles';
 @import 'components/kal-formfield.styles';
+@import 'components/kal-dialog.styles';
 
 // global parameters
 $kal-parameters: (
@@ -47,6 +48,7 @@ $kal-parameters: (
   text: $kal-text,
   nav: $kal-styles-nav,
   tabs: $kal-styles-tabs,
+  dialog: $kal-styles-dialog,
   datepicker: $kal-styles-datepicker,
   form: (
     elements: (

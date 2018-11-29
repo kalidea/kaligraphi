@@ -3,7 +3,7 @@
   <!-- header -->
   <div kalDialogHeader *ngIf="config.title">
     <div class="kal-dialog__title">{{ config.title }}</div>
-    <kal-icon (click)="closeDialog()" *ngIf="!config.disableClose">times</kal-icon>
+    <kal-icon (click)="closeDialog()" *ngIf="!config.disableClose">add</kal-icon>
   </div>
 
   <ng-template cdkPortalOutlet></ng-template>
