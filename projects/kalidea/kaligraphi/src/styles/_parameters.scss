@@ -33,6 +33,7 @@ $kal-headings: (
 @import 'components/kal-button.styles';
 @import 'components/kal-nav.styles';
 @import 'components/kal-tabs.styles';
+@import 'components/kal-radio.styles';
 @import 'components/kal-checkbox.styles';
 @import 'components/kal-select.styles';
 @import 'components/kal-datepicker.styles';
@@ -47,6 +48,7 @@ $kal-parameters: (
   form: (
     elements: (
       'button': $kal-styles-button,
+      'radio': $kal-styles-radio,
       'checkbox': $kal-styles-checkbox,
       'select': $kal-styles-select
     ),
