@@ -8,11 +8,11 @@ import { TabPanelComponent } from 'src/app/molecules/tab-panel/tab-panel.compone
 import { StepperComponent } from 'src/app/molecules/stepper/stepper.component';
 import { AccordionComponent } from 'src/app/molecules/accordion/accordion.component';
 import { ListComponent } from 'src/app/molecules/list/list.component';
-import { MenuComponent } from 'src/app/molecules/menu/menu.component';
+import { NavComponent } from 'src/app/molecules/nav/nav.component';
 import { FormFieldComponent } from 'src/app/molecules/form-field/form-field.component';
 import { DialogComponent } from 'src/app/molecules/dialog/dialog.component';
 import { DatepickerComponent } from 'src/app/molecules/datepicker/datepicker.component';
-import { ButtonComponent } from './button/button.component';
+import { ButtonComponent } from 'src/app/molecules/button/button.component';
 
 @NgModule({
   imports: [
@@ -28,7 +28,7 @@ import { ButtonComponent } from './button/button.component';
     StepperComponent,
     AccordionComponent,
     ListComponent,
-    MenuComponent,
+    NavComponent,
     FormFieldComponent,
     DialogComponent,
     DatepickerComponent,

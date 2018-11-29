@@ -8,11 +8,15 @@ export class KalThemeDirective {
 
   static readonly prefix = 'kal-theme--';
 
-  private classesList: string[] = [];
+  private themes: string[];
 
   public rawThemes: string | string[];
 
   constructor(private renderer: Renderer2, private elementRef: ElementRef) {
+  }
+
+  get kalTheme() {
+    return this.themes;
   }
 
   @Input()
@@ -28,20 +32,15 @@ export class KalThemeDirective {
       themes = (<string>themes || '').split(/[ ,]+/);
     }
 
-    this.classesList = (<string[]>themes)
-      .filter(theme => theme !== '')
-      .map(theme => KalThemeDirective.prefix + theme);
+    this.themes = themes as string[];
 
-    this.classesList.forEach(className => {
+    (<string[]>this.themes)
+      .filter(theme => theme !== '')
+      .map(theme => KalThemeDirective.prefix + theme)
+      .forEach(className => {
         this.renderer.addClass(this.elementRef.nativeElement, className);
       });
-  }
 
-  /**
-   * retrieve themes
-   */
-  get classes(): string[] {
-    return this.classesList;
   }
 
   private removeOldThemes() {

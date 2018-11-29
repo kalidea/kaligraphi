@@ -1,16 +1,16 @@
 import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
-import { KalMenuItem } from '@kalidea/kaligraphi';
+import { KalNavItem } from '@kalidea/kaligraphi';
 
 @Component({
   selector: 'app-menu',
-  templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.sass'],
+  templateUrl: './nav.component.html',
+  styleUrls: ['./nav.component.sass'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MenuComponent implements OnInit {
+export class NavComponent implements OnInit {
 
-  items: KalMenuItem[];
+  items: KalNavItem[];
 
   constructor() { }
 

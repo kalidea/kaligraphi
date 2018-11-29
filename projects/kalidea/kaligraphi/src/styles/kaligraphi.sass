@@ -1,54 +1,50 @@
-
-// functions
+/*  functions */
 @import "functions/index"
-
-// typography
+/* typography */
 @import "global/reset"
 @import "global/typography"
 @import "global/form"
-
-// atoms
+/* atoms */
 @import "../lib/atoms/kal-input/kal-input.component"
 @import "../lib/atoms/kal-checkbox/kal-checkbox.component"
+@import "../lib/atoms/kal-radio/kal-radio.component"
 @import "../lib/atoms/kal-icon/kal-icon.component"
 @import "../lib/atoms/kal-progress-bar/kal-progress-bar.component"
 @import "../lib/atoms/kal-slider/kal-slider.component"
 @import "../lib/atoms/kal-option/kal-option.component"
-
-// molecules
+/* molecules */
 @import "../lib/molecules/kal-button/kal-button.component"
 @import "../lib/molecules/kal-list/kal-list.component"
 @import "../lib/molecules/kal-select/kal-select.component"
 @import "../lib/molecules/kal-textarea/kal-textarea.component"
 @import "../lib/molecules/kal-stepper/kal-stepper.component"
 @import "../lib/molecules/kal-rater/kal-rater.component"
-@import "../lib/molecules/kal-menu/kal-menu.component"
+@import "../lib/molecules/kal-nav/kal-nav.component"
 @import "../lib/molecules/kal-tabs/kal-tab/kal-tab.component"
-
-// CDK
+@import "../lib/molecules/kal-datepicker/kal-datepicker.component"
+/* CDK */
 @import '~@angular/cdk/overlay-prebuilt.css'
 @import '~@angular/cdk/a11y-prebuilt.css'
 
 =kaligraphi($parameters)
-
-  // typography
+  /* typography */
   +kal-reset()
   +kal-typography($parameters)
-
-  // atoms
+  /*  atoms */
   +kal-input($parameters)
   +kal-option($parameters)
   +kal-select($parameters)
   +kal-checkbox($parameters)
+  +kal-radio($parameters)
   +kal-icon($parameters)
   +kal-progress-bar($parameters)
   +kal-slider($parameters)
-
-  // molecules
+  /*  molecules */
   +kal-button($parameters)
   +kal-list($parameters)
   +kal-textarea($parameters)
   +kal-stepper($parameters)
   +kal-rater($parameters)
-  +kal-menu($parameters)
+  +kal-nav($parameters)
   +kal-tabs($parameters)
+  +kal-datepicker($parameters)

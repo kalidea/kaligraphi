@@ -1,0 +1,132 @@
+
+=kal-themed-radio($theme-parameters)
+  kal-radio
+    position: relative
+    display: inline-block
+    padding: 7px
+    z-index: 2
+    [type="radio"]
+      position: absolute
+      left: -9999px
+    label
+      position: get("label.position", $theme-parameters)
+      display: get("label.flex", $theme-parameters)
+      flex-flow: get("label.flex-flow", $theme-parameters)
+      align-items: get("label.align-items", $theme-parameters)
+      padding: get("label.padding", $theme-parameters)
+      font-size: get("label.font-size", $theme-parameters)
+      cursor: get("label.cursor", $theme-parameters)
+      height: get("label.height", $theme-parameters)
+      // cas du label à gauche
+      &.kal-radio__label--left
+        padding: get("label.labelleft.padding", $theme-parameters)
+        + div
+          right: get("label.labelleft.div.right", $theme-parameters)
+          left: get("label.labelleft.div.left", $theme-parameters)
+      &.kal-radio__label--left::before
+        right: get("label.labelleft.before.right", $theme-parameters)
+        left: get("label.labelleft.before.left", $theme-parameters)
+      &.kal-radio__label--left::after
+        right: get("label.labelleft.after.right", $theme-parameters)
+        left: get("label.labelleft.after.left", $theme-parameters)
+      &:empty
+        display:  get("label.empty.display", $theme-parameters)
+        width: get("label.empty.width", $theme-parameters)
+        height: get("label.empty.height", $theme-parameters)
+        padding: get("label.empty.padding", $theme-parameters)
+      // le before represente la case
+      &::before
+        content: get("label.before.content", $theme-parameters)
+        position: get("label.before.position", $theme-parameters)
+        top:  get("label.before.top", $theme-parameters)
+        left:  get("label.before.left", $theme-parameters)
+        right:  get("label.before.right", $theme-parameters)
+        width:  get("label.before.width", $theme-parameters)
+        height:  get("label.before.height", $theme-parameters)
+        border:  get("label.before.border", $theme-parameters)
+        border-radius:  get("label.before.border-radius", $theme-parameters)
+        background-color:  get("label.before.background-color", $theme-parameters)
+      &::after
+        content: get("label.after.content", $theme-parameters)
+        position: get("label.after.position", $theme-parameters)
+        top: get("label.after.top", $theme-parameters)
+        left: get("label.after.left", $theme-parameters)
+        right: get("label.after.right", $theme-parameters)
+        display: get("label.after.display", $theme-parameters)
+        flex-flow: get("label.after.flex-flow", $theme-parameters)
+        justify-content: get("label.after.justify-content", $theme-parameters)
+        align-items: get("label.after.align-items", $theme-parameters)
+        width: get("label.after.width", $theme-parameters)
+        height: get("label.after.height", $theme-parameters)
+        background-color: get("label.after.background-color", $theme-parameters)
+        border-radius: get("label.after.border-radius", $theme-parameters)
+        transition: get("label.after.transition", $theme-parameters)
+        opacity: get("label.after.opacity", $theme-parameters)
+        transform: get("label.after.transform", $theme-parameters)
+    [type="radio"]:checked + label
+      &::before
+        background-color: get("label.radiochecked.before.background-color", $theme-parameters)
+      &::after
+        opacity: get("label.radiochecked.after.opacity", $theme-parameters)
+        transform: get("label.radiochecked.after.transform", $theme-parameters)
+    // Aspect after si "disabled"
+    [type="radio"]:disabled + label
+      color: get("label.radiodisabled.color", $theme-parameters)
+      cursor: get("label.radiodisabled.cursor", $theme-parameters)
+      &::after
+        background-color: get("label.radiodisabled.after.background-color", $theme-parameters)
+    div
+      display: get("div.display", $theme-parameters)
+      position: get("div.position", $theme-parameters)
+      z-index: get("div.z-index", $theme-parameters)
+      top: get("div.top", $theme-parameters)
+      left: get("div.left", $theme-parameters)
+      height: get("div.height", $theme-parameters)
+      width: get("div.width", $theme-parameters)
+      border-radius: get("div.border-radius", $theme-parameters)
+      background-color: get("div.background-color", $theme-parameters)
+    &:hover [type="radio"]:not(:disabled) ~ div
+      background-color: get("div.hover.background-color", $theme-parameters)
+    [type="radio"]:focus:not(:disabled) ~ div,
+    [type="radio"]:active:not(:disabled) ~ div
+      background-color: get("div.active.background-color", $theme-parameters)
+    &.kal-theme--reverse
+      label
+        color: get("reverse.label.color", $theme-parameters)
+        height: get("reverse.label.height", $theme-parameters)
+        &::before
+          border:  get("reverse.label.before.border", $theme-parameters)
+      [type="radio"]:checked + label
+        &::before
+          background-color: get("reverse.label.radiochecked.before.background-color", $theme-parameters)
+          border-color: get("reverse.label.radiochecked.before.border-color", $theme-parameters)
+        &::after
+          background-color: get("reverse.label.radiochecked.after.background-color", $theme-parameters)
+      [type="radio"]:not(:disabled):not(:checked) + label
+        &::before
+          background-color: get("reverse.label.radionotchecked.before.background-color", $theme-parameters)
+          border-color: get("reverse.label.radionotchecked.before.border-color", $theme-parameters)
+      // Cas disabled
+      [type="radio"]:checked:disabled + label
+        &::before
+          border-color: get("reverse.label.disabled.radiochecked.before.border-color", $theme-parameters)
+          background-color: get("reverse.label.disabled.radiochecked.before.background-color", $theme-parameters)
+        &::after
+          background-color: get("reverse.label.disabled.radiochecked.after.background-color", $theme-parameters)
+      &:not(:disabled):hover div
+        background-color: get("reverse.div.hover.background-color", $theme-parameters)
+      [type="radio"]:focus:not(:disabled) ~ div,
+      [type="radio"]:active:not(:disabled) ~ div
+        background-color: get("reverse.div.active.background-color", $theme-parameters)
+
+=kal-radio($kal-parameters)
+  kal-radio-group
+    display: inline-block
+    background-color: #ffffff
+    &.kal-theme--reverse
+      background-color: #1f1f1f
+
+    +kal-themed-radio(get('form.elements.radio.default', $kal-parameters))
+    @each $key, $params in get('form.elements.radio.alternates', $kal-parameters)
+      &.kal-theme--#{$key}
+        +kal-themed-radio($params)

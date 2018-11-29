@@ -1,14 +1,11 @@
-// colors
+
 @import "palettes";
 @import "functions/index";
 
-
 $kal-colors: (default: #1F1F1F, reverse: #FFF) !default;
 
-// fontfaces
 $kal-base-fontface: 'Arial' !default;
 
-// default values for font
 $kal-base-fontfamily: $kal-base-fontface, sans-serif !default;
 $kal-base-fontcolor: map-get($kal-colors, default) !default;
 $kal-base-fontsize: 17px !default;
@@ -18,13 +15,12 @@ $kal-base-borderwidth: 1px !default;
 $kal-base-borderstyle: solid !default;
 $kal-base-bordercolor: $kal-base-fontcolor !default;
 
-// kal-text
 $kal-text: (
   font-family: $kal-base-fontfamily,
   font-size: $kal-base-fontsize,
   color: $kal-base-fontcolor
 );
-// headings
+
 $kal-headings: (
   1: ( "font-family": $kal-base-fontface,  "font-size": $kal-base-fontsize + 25, "line-height": 54px, "font-weight": 500),
   2: ( "font-family": $kal-base-fontface,  "font-size": $kal-base-fontsize + 19, "line-height": 45px, "font-weight": 600),
@@ -34,23 +30,25 @@ $kal-headings: (
   6: ( "font-family": $kal-base-fontface,  "font-size": $kal-base-fontsize + 3, "line-height": 28px, "font-weight": 600)
 ) !default;
 
-// Components configurations imports
 @import 'components/kal-button.styles';
-@import 'components/kal-menu.styles';
+@import 'components/kal-nav.styles';
 @import 'components/kal-tabs.styles';
+@import 'components/kal-radio.styles';
 @import 'components/kal-checkbox.styles';
 @import 'components/kal-select.styles';
+@import 'components/kal-datepicker.styles';
 
-// global parameters
 $kal-parameters: (
   palettes: $kal-palettes,
   headings: $kal-headings,
   text: $kal-text,
-  menu: $kal-styles-menu,
+  nav: $kal-styles-nav,
   tabs: $kal-styles-tabs,
+  datepicker: $kal-styles-datepicker,
   form: (
     elements: (
       'button': $kal-styles-button,
+      'radio': $kal-styles-radio,
       'checkbox': $kal-styles-checkbox,
       'select': $kal-styles-select
     ),

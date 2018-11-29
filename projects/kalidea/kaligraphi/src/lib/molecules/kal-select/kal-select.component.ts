@@ -22,7 +22,8 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
 import { DOWN_ARROW, ENTER, ESCAPE, SPACE, UP_ARROW } from '@angular/cdk/keycodes';
 import { NgControl } from '@angular/forms';
-import { filter } from 'rxjs/operators';
+import { filter, startWith } from 'rxjs/operators';
+import { merge, Subscription } from 'rxjs';
 
 import { buildProviders, FormElementComponent } from '../../utils/index';
 import { KalOptionComponent } from '../../atoms/kal-option/kal-option.component';
@@ -79,6 +80,8 @@ export class KalSelectComponent
    * Whether or not the overlay panel is open
    */
   private isPanelOpen: boolean;
+
+  private subscriptionsList: Subscription[] = [];
 
   constructor(private overlay: Overlay,
               private elementRef: ElementRef<HTMLElement>,
@@ -183,7 +186,12 @@ export class KalSelectComponent
     }
 
     this.focus();
-    this.getOverlayRef().attach(this.optionsPortal);
+
+    if (!this.overlayRef) {
+      this.createOverlay();
+    }
+
+    this.overlayRef.attach(this.optionsPortal);
     this.isPanelOpen = true;
   }
 
@@ -202,10 +210,15 @@ export class KalSelectComponent
    * Select an option by his value
    */
   select(value: any, withNotify = false): void {
-    const optionSelect = this.options.find((item) => item.value === value);
-    if (optionSelect) {
-      this.keyManager.setActiveItem(optionSelect);
-      this.optionSelected(this.keyManager.activeItem, withNotify);
+    if (this.isMultiple && value instanceof Array) {
+      const multipleOptions = this.options.filter((item) => value.indexOf(item.value) >= 0);
+      this.multipleOptionSelected(multipleOptions, withNotify);
+    } else {
+      const optionSelect = this.options.find((item) => item.value === value);
+      if (optionSelect) {
+        this.keyManager.setActiveItem(optionSelect);
+        this.optionSelected(this.keyManager.activeItem, withNotify);
+      }
     }
   }
 
@@ -234,32 +247,21 @@ export class KalSelectComponent
    */
   @HostListener('keydown', ['$event'])
   handleKeydown(event: KeyboardEvent): void {
-    const {keyCode} = event;
-
-    const isOpenKey = keyCode === ENTER || keyCode === SPACE;
-    const isArrowKey = keyCode === DOWN_ARROW || keyCode === UP_ARROW;
-
     if (!this.focused) {
       return;
     }
 
-    if (isOpenKey) {
-      if (!this.panelOpen) {
-        event.preventDefault();
-        this.open();
-      } else if (this.keyManager.activeItem) {
-        event.preventDefault();
-        this.optionSelected(this.keyManager.activeItem);
-      }
-
+    const {keyCode} = event;
+    if (keyCode === ENTER || keyCode === SPACE) {
+      this.handleSelectKeyEvent();
       return;
     }
 
     this.keyManager.onKeydown(event);
 
     // If panel is closed and is not the multiple mode ,the arrows change the selection
+    const isArrowKey = keyCode === DOWN_ARROW || keyCode === UP_ARROW;
     if (!this.multiple && !this.panelOpen && isArrowKey && this.keyManager.activeItem) {
-      event.preventDefault();
       this.optionSelected(this.keyManager.activeItem);
     }
   }
@@ -274,9 +276,15 @@ export class KalSelectComponent
     });
   }
 
-  private getHostWidth() {
-    const size = this.elementRef.nativeElement.getBoundingClientRect();
-    return size.width;
+  /**
+   * Handles enter ans space keydown events on the select
+   */
+  private handleSelectKeyEvent() {
+    if (!this.panelOpen) {
+      this.open();
+    } else if (this.keyManager.activeItem) {
+      this.optionSelected(this.keyManager.activeItem);
+    }
   }
 
   /**
@@ -289,10 +297,11 @@ export class KalSelectComponent
       .withPositions([
         {originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top'}
       ]);
+
     this.overlayRef = this.overlay.create({
       positionStrategy,
       hasBackdrop: true,
-      width: this.getHostWidth(),
+      width: this.elementRef.nativeElement.getBoundingClientRect().width,
       scrollStrategy: this.overlay.scrollStrategies.reposition()
     });
 
@@ -307,13 +316,26 @@ export class KalSelectComponent
   }
 
   /**
-   * get overlayRef and create it if doesn't exists
+   * Event emitted when several options are selected
+   * Set the option as active
+   * @param option KalOptionComponent
+   * @param withNotify boolean
    */
-  private getOverlayRef() {
-    if (!this.overlayRef) {
-      this.createOverlay();
+  private multipleOptionSelected(options: KalOptionComponent[], withNotify = true) {
+    if (!this.isMultiple) {
+      return;
     }
-    return this.overlayRef;
+
+    options.map((option) => {
+      this.optionSelectedOnMultipleMode(option);
+    });
+
+    if (withNotify) {
+      super.notifyUpdate(this.selectedValue);
+      this.valueChange.emit(this.selectedValue);
+    }
+
+    this.cdr.markForCheck();
   }
 
   /**
@@ -384,25 +406,41 @@ export class KalSelectComponent
     }
   }
 
+  /**
+   * Disposes the resources
+   */
+  private cleanSubscriptionsList(): void {
+    this.subscriptionsList.forEach(
+      subscription => {
+        if (subscription) {
+          subscription.unsubscribe();
+        }
+      });
+
+    this.subscriptionsList = [];
+  }
+
   ngOnInit() {
     this.ngControl = this.injector.get(NgControl, null);
-
     this.selection = [];
-
-
   }
 
   ngAfterContentInit() {
-
     this.initKeyManager();
 
-    this.options.map(o => {
-      o.selectionChange.subscribe(event => this.optionSelected(event));
-    });
+    this.options.changes
+      .pipe(startWith(0))
+      .subscribe(() => {
+        if (this.ngControl) {
+          this.select(this.ngControl.value);
+        }
 
-    this.options.changes.subscribe(() => {
-      this.select(this.ngControl.value);
-    });
+        this.cleanSubscriptionsList();
+        this.subscriptionsList.push(
+          merge<KalOptionComponent>(...this.options.map(option => option.selectionChange))
+            .subscribe(event => this.optionSelected(event))
+        );
+      });
 
     if (this.options.length === 1) {
       this.optionSelected(this.options.first);
@@ -410,7 +448,11 @@ export class KalSelectComponent
   }
 
   ngOnDestroy() {
-    this.overlayRef.dispose();
+    if (this.overlayRef) {
+      this.overlayRef.dispose();
+    }
+
+    this.cleanSubscriptionsList();
   }
 
 }
