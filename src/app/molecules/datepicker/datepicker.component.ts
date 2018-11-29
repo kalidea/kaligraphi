@@ -11,7 +11,7 @@ import { KalDate } from '@kalidea/kaligraphi';
 })
 export class DatepickerComponent {
 
-  control = new FormControl(new KalDate('08/11/2018'), [minDateValidator(new KalDate()), maxDateValidator(new KalDate('15/12/2018'))]);
+  control = new FormControl(new KalDate('27/11/2018'), [minDateValidator(new KalDate()), maxDateValidator(new KalDate('15/12/2018'))]);
 
   constructor() {
     this.control.valueChanges.subscribe(value => console.log(value));

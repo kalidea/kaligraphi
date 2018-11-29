@@ -1,4 +1,4 @@
-// gray
+/* gray */
 $kal-palette-grey: (
   wf800: #1F1F1F,
   wf700: #3D3D3D,
@@ -10,8 +10,7 @@ $kal-palette-grey: (
   wf200: #D6D6D6,
   wf100: #F5F5F5,
 );
-
-// yellow
+/* yellow */
 $kal-palette-yellow: (
   darker: darken(#E2C135, 40%),
   dark: darken(#E2C135, 20%),
@@ -19,8 +18,7 @@ $kal-palette-yellow: (
   light: lighten(#E2C135, 20%),
   lighter: lighten(#E2C135, 40%)
 );
-
-// orange
+/*orange */
 $kal-palette-orange: (
   darker: #BE7A2D,
   dark: #D38832,
@@ -28,8 +26,7 @@ $kal-palette-orange: (
   light: lighten(#E89536, 20%),
   lighter: lighten(#E89536, 40%)
 );
-
-// red
+/* red */
 $kal-palette-red: (
   darker: darken(#D45F3C, 40%),
   dark: darken(#D45F3C, 20%),
@@ -37,8 +34,7 @@ $kal-palette-red: (
   light: lighten(#D45F3C, 20%),
   lighter: lighten(#D45F3C, 40%)
 );
-
-// blue
+/* blue */
 $kal-palette-blue: (
   darker: darken(#21C0D9, 40%),
   dark: darken(#21C0D9, 20%),
@@ -46,8 +42,7 @@ $kal-palette-blue: (
   light: lighten(#21C0D9, 20%),
   lighter: lighten(#21C0D9, 40%)
 );
-
-// green
+/* green */
 $kal-palette-green: (
   darker: darken(#1FD29D, 40%),
   dark: darken(#1FD29D, 20%),
@@ -55,8 +50,7 @@ $kal-palette-green: (
   light: lighten(#1FD29D, 20%),
   lighter: lighten(#1FD29D, 40%)
 );
-
-// global palettes
+/* global palettes */
 $kal-palettes: (
   'black': #000000,
   'white': #ffffff,
