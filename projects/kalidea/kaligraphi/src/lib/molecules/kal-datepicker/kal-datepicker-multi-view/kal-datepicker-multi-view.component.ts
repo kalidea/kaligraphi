@@ -9,6 +9,7 @@ import { KalDate } from '../kal-date';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
+
 export class KalDatepickerMultiViewComponent {
 
   /**

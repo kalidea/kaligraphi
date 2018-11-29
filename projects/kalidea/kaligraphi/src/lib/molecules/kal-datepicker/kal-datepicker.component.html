@@ -1,15 +1,13 @@
-<div>
+<div class="kal-datepicker__input">
 
-  <kal-input icon="calendar_today"
+  <kal-input icon="event_note"
              [placeholder]="placeholder"
              [formControl]="control"
              (iconClicked)="open()">
   </kal-input>
 
-</div>
-
 <ng-template cdkPortal #datepickerCalendar="cdkPortal">
-
+<div class="kal-datepicker__calendar">
   <kal-datepicker-header (updatedMonth)="updateView($event)">
 
     <p (click)="changeCurrentView()">
@@ -29,5 +27,6 @@
     [displayedDate]="monthCalendar.displayedDate"
     (selectedDate)="monthCalendar.updateDate($event)">
   </kal-datepicker-multi-view>
-
+</div>
 </ng-template>
+</div>

@@ -14,7 +14,7 @@ $kal-styles-tabs: (
         'color': get("black", $kal-palettes),
         'border-bottom-color': get("white", $kal-palettes)
       ),
-      'selected' :(
+      'selected': (
         'background-color': get("white", $kal-palettes),
         'color': get("black", $kal-palettes),
         'border-bottom-color': get("white", $kal-palettes)
