@@ -22,6 +22,34 @@ import { KalListItemSelectionDirective } from './kal-list-item-selection.directi
 import { CollectionViewer, DataSource, ListRange } from '@angular/cdk/collections';
 import { AutoUnsubscribe } from '../../utils';
 
+export class KalListSelection<T extends { id: string }> {
+
+  constructor(public selected: T[], public all: boolean, public excluded: T[]) {
+  }
+
+  reset() {
+    this.selected = [];
+    this.excluded = [];
+  }
+
+  add(item: T, store: 'selected' | 'excluded' = 'selected') {
+    (store === 'selected' ? this.selected : this.excluded).push(item);
+  }
+
+  remove(item: T, store: 'selected' | 'excluded' = 'selected') {
+    (store === 'selected' ? this.selected : this.excluded).splice(this.indexOf(item, store), 1);
+  }
+
+  indexOf(item: T, store: 'selected' | 'excluded' = 'selected'): number {
+    return (store === 'selected' ? this.selected : this.excluded).findIndex(element => element.id === item.id);
+  }
+
+  contains(item: T, store: 'selected' | 'excluded' = 'selected') {
+    return this.indexOf(item, store) !== -1 || (this.all && this.excluded.findIndex(element => element.id === item.id) === -1);
+  }
+
+}
+
 @Component({
   selector: 'kal-list',
   templateUrl: './kal-list.component.html',
@@ -29,78 +57,7 @@ import { AutoUnsubscribe } from '../../utils';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewInit, OnDestroy {
-
-  /**
-   * Results list
-   */
-  results: T[];
-
-  /**
-   * Datasource to give items list to the component
-   */
-  @Input() dataSource: DataSource<T> | Observable<T[]> | T[];
-
-  /**
-   * Triggered when selection has changed
-   */
-  @Output() selectionChange = new EventEmitter<T[] | T>();
-
-  /**
-   * Row template
-   */
-  @ContentChild(KalListItemDirective) row: KalListItemDirective;
-
-  /**
-   * The reference to the element thats contains the kal list item directive
-   */
-  @ViewChildren(KalListItemSelectionDirective) children: QueryList<KalListItemSelectionDirective>;
-
-  /**
-   * @inheritDoc
-   */
-  viewChange: Observable<ListRange>;
-
-  /**
-   * Selectable items (none, single, multiple)
-   */
-  itemsSelectable: 'multiple' | 'none' = null;
-
-  /**
-   * The selected items list
-   */
-  private selectedItems = [];
-
-  /**
-   * The config is use to group all items
-   */
-  private groupByConfig: (item: T) => string = null;
-
-  /**
-   * Manages keyboard events for options in the panel
-   */
-  private keyManager: ActiveDescendantKeyManager<KalListItemSelectionDirective>;
-
-  /**
-   * Whether or not the select is focus
-   */
-  private isFocused: boolean;
-
-  /**
-   * The selected item index
-   */
-  private selectedItemIndex: number;
-
-  /**
-   * The subscription
-   */
-  @AutoUnsubscribe()
-  private subscription: Subscription = Subscription.EMPTY;
-
-  /**
-   * Is the row disabled
-   */
-  private isDisabled: (item: T) => boolean = (item: T) => false;
+export class KalListComponent<T extends { id: string }> implements CollectionViewer, OnInit, AfterViewInit, OnDestroy {
 
   constructor(private cdr: ChangeDetectorRef) {
   }
@@ -114,16 +71,29 @@ export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewI
     if (value === 'multiple') {
       this.itemsSelectable = 'multiple';
     } else if (value === 'none') {
-      this.selectedItems = [];
+      this.listSelection.selected = [];
+      this.listSelection.excluded = [];
       this.itemsSelectable = 'none';
     } else {
-      this.selectedItems = [];
+      this.listSelection.selected = [];
+      this.listSelection.excluded = [];
       this.itemsSelectable = null;
     }
 
     this.cdr.markForCheck();
 
   }
+
+  @Input()
+  get selection(): KalListSelection<T> {
+    return this.listSelection;
+  }
+
+  set selection(value: KalListSelection<T>) {
+    this.listSelection = value;
+    this.cdr.markForCheck();
+  }
+
 
   /**
    * Function that group items in listing
@@ -157,6 +127,76 @@ export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewI
   get countElements(): number {
     return this.results.length;
   }
+
+  /**
+   * Results list
+   */
+  results: T[];
+
+  /**
+   * Datasource to give items list to the component
+   */
+  @Input() dataSource: DataSource<T> | Observable<T[]> | T[];
+
+  /**
+   * Triggered when selection has changed
+   */
+  @Output() selectionChange = new EventEmitter<KalListSelection<T>>();
+
+  /**
+   * Row template
+   */
+  @ContentChild(KalListItemDirective) row: KalListItemDirective;
+
+  /**
+   * The reference to the element thats contains the kal list item directive
+   */
+  @ViewChildren(KalListItemSelectionDirective) children: QueryList<KalListItemSelectionDirective>;
+
+  /**
+   * @inheritDoc
+   */
+  viewChange: Observable<ListRange>;
+
+  /**
+   * Selectable items (none, single, multiple)
+   */
+  itemsSelectable: 'multiple' | 'none' = null;
+
+  /**
+   * The config is use to group all items
+   */
+  private groupByConfig: (item: T) => string = null;
+
+  /**
+   * Manages keyboard events for options in the panel
+   */
+  private keyManager: ActiveDescendantKeyManager<KalListItemSelectionDirective>;
+
+  /**
+   * Whether or not the select is focus
+   */
+  private isFocused: boolean;
+
+  /**
+   * The selected item index
+   */
+  private selectedItemIndex: number;
+
+  private selectedAll = false;
+
+  /**
+   * The subscription
+   */
+  @AutoUnsubscribe()
+  private subscription: Subscription = Subscription.EMPTY;
+
+  private listSelection: KalListSelection<T> = new KalListSelection([], false, []);
+
+  /**
+   * Is the row disabled
+   */
+  private isDisabled: (item: T) => boolean = (item: T) => false;
 
   /**
    * Focus the tab element
@@ -200,9 +240,16 @@ export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewI
 
   selectAll() {
     if (this.itemsSelectable === 'multiple') {
-      this.selectedItems = [];
-      this.selectedItems.push(...this.results);
-      this.selectionChange.emit(this.selectedItems);
+      this.listSelection.all = !this.listSelection.all;
+      this.listSelection.reset();
+
+      if (this.listSelection.all) {
+        this.listSelection.selected.push(...this.results);
+      }
+
+      this.cdr.markForCheck();
+
+      this.selectionChange.emit(this.listSelection);
     }
   }
 
@@ -217,7 +264,7 @@ export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewI
 
       this.updateSelectedItem(item);
 
-      this.selectionChange.emit(this.itemsSelectable === 'multiple' ? this.selectedItems : item);
+      this.selectionChange.emit(this.listSelection);
     }
   }
 
@@ -225,14 +272,15 @@ export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewI
    * Is the item selected
    */
   isSelected(item): boolean {
-    return this.selectedItems.indexOf(item) !== -1;
+    return this.listSelection.contains(item);
   }
 
   /**
    * Reset the selected item
    */
   reset() {
-    this.selectedItems = [];
+    this.listSelection.selected = [];
+    this.listSelection.excluded = [];
     this.cdr.markForCheck();
   }
 
@@ -249,17 +297,29 @@ export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewI
   private updateSelectedItem(item: T) {
 
     if (this.itemsSelectable !== 'multiple') {
-      this.selectedItems = [];
-      this.selectedItems.push(item);
-    } else {
+      this.listSelection.selected = [];
+      this.listSelection.add(item);
+    } else if (this.listSelection.all) {
 
-      const index = this.selectedItems.findIndex(row => row === item);
+      const position = this.listSelection.indexOf(item, 'excluded');
 
-      if (index !== -1) {
-        this.selectedItems.splice(index, 1);
+      if (position === -1) {
+        this.listSelection.remove(item);
+        this.listSelection.add(item, 'excluded');
       } else {
-        this.selectedItems.push(item);
+        this.listSelection.remove(item, 'excluded');
+
       }
+    } else {
+      this.toggleItem(item);
+    }
+  }
+
+  toggleItem(item: T) {
+    if (this.listSelection.indexOf(item) !== -1) {
+      this.listSelection.add(item);
+    } else {
+      this.listSelection.remove(item);
     }
   }
 
@@ -284,6 +344,7 @@ export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewI
       this.results = this.dataSource;
       this.cdr.markForCheck();
     }
+
   }
 
   ngAfterViewInit() {
