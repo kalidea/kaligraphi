@@ -54,6 +54,7 @@ export class RadioComponent implements OnInit {
    * Change radio button group value by using control
    */
   changeRadioValueWithControl(value: string) {
+    console.log(value);
     this.control.patchValue(value);
   }
 

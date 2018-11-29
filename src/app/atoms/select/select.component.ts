@@ -10,32 +10,20 @@ import { FormControl } from '@angular/forms';
 })
 export class SelectComponent implements OnInit {
 
+
+  themes = [];
+
   selection;
 
   hasCheckbox = false;
 
   isMultiple = false;
 
-  themeReverse = false;
-
-  themeSecondary = false;
-
   options: { value: number, disabled: boolean }[] = [];
 
   toggleOptionStateControl = new FormControl();
 
   constructor() {
-  }
-
-  get themes() {
-    const themes = [];
-    if (this.themeReverse) {
-      themes.push('reverse');
-    }
-    if (this.themeSecondary) {
-      themes.push('secondary');
-    }
-    return themes;
   }
 
   buildOptions(count = 5) {

@@ -1,16 +1,31 @@
-<kal-progress-bar [value]="progressBarValue"
-                  [color]="progressBarColor">
-</kal-progress-bar>
+<h1>Progress bar</h1>
 
-<label for="progressBarValue">Progress bar value :</label>
-<input id="progressBarValue"
-       type="number"
-       value="25"
-       min="0"
-       max="100"
-       (keyup)="setValue($event)">
+<div class="example">
+  <article style="width: 100%">
+    <kal-progress-bar
+      [value]="progressBarValue"
+      [color]="progressBarColor">
+    </kal-progress-bar>
+  </article>
+</div>
 
-<label for="progressBarColor">Progress bar color :</label>
-<input id="progressBarColor"
-       type="color"
-       (change)="setColor($event)">
+<div class="configurator">
+  <kal-form-field>
+    <kal-input
+      label="select value"
+      type="number"
+      icon="%"
+      value="25"
+      [(ngModel)]="progressBarValue"></kal-input>
+  </kal-form-field>
+
+  <kal-form-field>
+    <kal-input
+      icon="format_color_fill"
+      label="select color"
+      [(ngModel)]="progressBarColor">
+    </kal-input>
+  </kal-form-field>
+
+
+</div>

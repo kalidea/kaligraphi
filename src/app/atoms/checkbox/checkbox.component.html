@@ -1,28 +1,21 @@
-<h5>Checkbox by using control</h5>
+<h1>Checkbox</h1>
 
-<div style="padding: 50px" [class.darkBg]="reverse">
+<div class="example" [class.darkBg]="reverse">
 
   <kal-checkbox
-    [kalTheme]="themesList"
+    [kalTheme]="themes"
     [label]="label"
   ></kal-checkbox>
 
 </div>
 
-<hr/>
 <section class="configurator">
-  <kal-select [(ngModel)]="theme">
-    <kal-option value="">Default</kal-option>
-    <kal-option value="switch">Switch</kal-option>
-  </kal-select>
-
-  <kal-checkbox
-    label="Reverse"
-    [(ngModel)]="reverse">
-  </kal-checkbox>
-
-  <kal-checkbox
-    label="Large"
-    [(ngModel)]="large">
-  </kal-checkbox>
+  <kal-form-field>
+    <kal-select [(ngModel)]="themes" [multiple]="true" label="Themes">
+      <kal-option value="">Default</kal-option>
+      <kal-option value="switch">Switch</kal-option>
+      <kal-option value="reverse">Reverse</kal-option>
+      <kal-option value="large">Large</kal-option>
+    </kal-select>
+  </kal-form-field>
 </section>

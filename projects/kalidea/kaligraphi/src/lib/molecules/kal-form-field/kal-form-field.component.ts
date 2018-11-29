@@ -11,6 +11,7 @@ import {
 import { Subscription } from 'rxjs';
 
 import { AutoUnsubscribe, FormElementComponent } from '../../utils/index';
+import { KalCheckboxComponent } from '../../atoms/kal-checkbox/kal-checkbox.component';
 
 @Component({
   selector: 'kal-form-field',
@@ -52,7 +53,9 @@ export class KalFormFieldComponent implements AfterContentInit, OnDestroy {
 
   ngAfterContentInit(): void {
     if (this.formElement) {
-      this.label = this.formElement.label;
+      if (!(this.formElement instanceof KalCheckboxComponent)) {
+        this.label = this.formElement.label;
+      }
       this.required = this.formElement.required;
       this.for = this.formElement.id;
       this.hasError = this.formElement.hasError;

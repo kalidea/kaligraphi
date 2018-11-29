@@ -1,1 +1,9 @@
-<kal-datepicker [formControl]="control"></kal-datepicker>
+<h1>Datepicker</h1>
+
+<div class="example" [class.reverse]="reverse">
+  <kal-datepicker [formControl]="control" [kalTheme]="themes" name="datepicker"></kal-datepicker>
+</div>
+
+<div class="configurator">
+  <kal-checkbox [(ngModel)]="reverse" label="reverse"></kal-checkbox>
+</div>

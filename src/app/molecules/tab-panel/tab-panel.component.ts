@@ -12,10 +12,11 @@ export class TabPanelComponent implements OnInit {
 
   formControl = new FormControl(2);
 
-  constructor() { }
+  constructor() {
+  }
 
   changeTab() {
-    this.formControl.patchValue(0);
+    this.formControl.patchValue((this.formControl.value + 1) % 3);
   }
 
   ngOnInit() {
