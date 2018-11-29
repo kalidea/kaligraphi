@@ -227,8 +227,10 @@ export class KalSelectComponent
    */
   @HostListener('focus')
   focus(): void {
-    this.elementRef.nativeElement.focus();
-    this.isFocused = true;
+    if (!this.disabled) {
+      this.elementRef.nativeElement.focus();
+      this.isFocused = true;
+    }
   }
 
   /**
@@ -277,6 +279,13 @@ export class KalSelectComponent
   }
 
   /**
+   * @inheritDoc
+   */
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled = isDisabled;
+  }
+
+  /**
    * Handles enter ans space keydown events on the select
    */
   private handleSelectKeyEvent() {
@@ -318,7 +327,7 @@ export class KalSelectComponent
   /**
    * Event emitted when several options are selected
    * Set the option as active
-   * @param option KalOptionComponent
+   * @param options KalOptionComponent
    * @param withNotify boolean
    */
   private multipleOptionSelected(options: KalOptionComponent[], withNotify = true) {
@@ -438,7 +447,11 @@ export class KalSelectComponent
         this.cleanSubscriptionsList();
         this.subscriptionsList.push(
           merge<KalOptionComponent>(...this.options.map(option => option.selectionChange))
-            .subscribe(event => this.optionSelected(event))
+            .subscribe(event => {
+              this.focus();
+              this.optionSelected(event);
+              this.keyManager.setActiveItem(event);
+            })
         );
       });
 
@@ -454,5 +467,4 @@ export class KalSelectComponent
 
     this.cleanSubscriptionsList();
   }
-
 }
