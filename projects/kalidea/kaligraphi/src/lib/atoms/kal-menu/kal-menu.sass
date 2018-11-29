@@ -1,2 +1,19 @@
-kal-menu
-  display: none
+=kal-themed-menu($theme-parameters)
+
+    border: get('border', $theme-parameters)
+    background-color: get('background-color', $theme-parameters)
+    border-radius: get('border-radius', $theme-parameters)
+    color: get('color', $theme-parameters)
+    margin: get('margin', $theme-parameters)
+    padding: get('padding', $theme-parameters)
+    &.kal-theme--reverse
+      border: get('reverse.border', $theme-parameters)
+      background-color: get('reverse.background-color', $theme-parameters)
+      color: get('reverse.color', $theme-parameters)
+
+=kal-menu($kal-parameters)
+  .kal-menu__content
+    +kal-themed-menu(get('form.elements.menu.default', $kal-parameters))
+    @each $key, $params in get('form.elements.menu.alternates', $kal-parameters)
+      &.kal-theme--#{$key}
+        +kal-themed-menu($params)

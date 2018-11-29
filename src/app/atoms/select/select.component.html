@@ -1,30 +1,59 @@
-<kal-select  tabindex="1" placeholder="Select an item" class="">
-  <kal-option [value]="i" *ngFor="let i of [1,2,3,4,5]">
-    OPTION {{i}}
+<kal-select
+  [kalTheme]="themes"
+  [multiple]="isMultiple"
+  [(ngModel)]="selection"
+  tabindex="1"
+  placeholder="Select an item">
+  <kal-option
+    #optionRef
+    *ngFor="let option of options"
+    [disabled]="option.disabled">
+
+    <kal-checkbox
+      [formControl]="optionRef.formControl"
+      *ngIf="hasCheckbox"></kal-checkbox>
+
+    OPTION {{ option.value }}
   </kal-option>
+
 </kal-select>
 
-<hr>
+selection {{ selection | json}}
 
-<kal-select  tabindex="1" placeholder="Select an item" kalTheme="reverse">
-  <kal-option *ngFor="let i of [1,2,3,4,5]">
-    OPTION {{i}}
-  </kal-option>
-</kal-select>
 
-<hr>
+<div class="configurator">
 
-<kal-select  tabindex="1" placeholder="Select an item" kalTheme="secondary">
-  <kal-option *ngFor="let i of [1,2,3,4,5]">
-    OPTION {{i}}
-  </kal-option>
-</kal-select>
+  <kal-form-field>
+    <kal-checkbox [(ngModel)]="hasCheckbox" label="checkbox"></kal-checkbox>
+  </kal-form-field>
 
-<hr>
+  <kal-form-field>
+    <kal-checkbox [(ngModel)]="isMultiple" label="multiple selection"></kal-checkbox>
+  </kal-form-field>
 
-<kal-select tabindex="3" multiple placeholder="Select multiple items">
-  <kal-option #option *ngFor="let i of [1,2,3,4,5]">
-    <kal-checkbox [formControl]="option.formControl"></kal-checkbox>
-    OPTION {{i}}
-  </kal-option>
-</kal-select>
+  <kal-form-field>
+    <kal-checkbox [(ngModel)]="themeSecondary" label="Theme secondary"></kal-checkbox>
+  </kal-form-field>
+
+  <kal-form-field>
+    <kal-checkbox [(ngModel)]="themeReverse" label="Theme reverse"></kal-checkbox>
+  </kal-form-field>
+
+  <kal-form-field>
+    <kal-select
+      tabindex="1"
+      label="toggle disabled state"
+      placeholder="select option to toggle"
+      [formControl]="toggleOptionStateControl">
+      <kal-option
+        (selectionChange)="toggleOptionByValue($event.value)"
+        [value]="option.value"
+        *ngFor="let option of options">
+        OPTION {{ option.value }}
+      </kal-option>
+
+    </kal-select>
+  </kal-form-field>
+
+
+</div>

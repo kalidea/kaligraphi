@@ -310,6 +310,7 @@ export class KalSelectComponent
     this.overlayRef = this.overlay.create({
       positionStrategy,
       hasBackdrop: true,
+      backdropClass: 'kal-overlay__transparent',
       width: this.elementRef.nativeElement.getBoundingClientRect().width,
       scrollStrategy: this.overlay.scrollStrategies.reposition()
     });
