@@ -5,7 +5,7 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChildren,
-  EventEmitter,
+  EventEmitter, forwardRef,
   HostListener,
   Output,
   QueryList,
@@ -38,7 +38,8 @@ export class KalTabGroupComponent extends FormElementComponent<number> implement
   /**
    * List of kal tab component
    */
-  @ContentChildren(KalTabComponent) tabs: QueryList<KalTabComponent>;
+  @ContentChildren(forwardRef(() => KalTabComponent), {descendants: true}) tabs: QueryList<KalTabComponent>;
+
 
   /**
    * List of kal tab header component
@@ -76,6 +77,16 @@ export class KalTabGroupComponent extends FormElementComponent<number> implement
     return this.selectedTabIndex;
   }
 
+  /**
+   * Mark for check on tab group
+   */
+  markForTabGroupCheck() {
+    this.cdr.markForCheck();
+  }
+
+  /**
+   * @inheritDoc
+   */
   writeValue(value: number = null) {
 
     this.tabToSelect = value;
