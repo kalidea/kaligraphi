@@ -9,6 +9,10 @@ import { FormControl } from '@angular/forms';
 })
 export class RaterComponent implements OnInit {
 
+  iconName = 'star';
+
+  maxRate = 5;
+
   control: FormControl;
 
   constructor() {

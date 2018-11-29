@@ -1,1 +1,21 @@
-<kal-icon>thumb_up</kal-icon>
+<h1>Icon</h1>
+
+<div class="example">
+  <article>
+    <kal-icon>{{ iconName }}</kal-icon>
+  </article>
+</div>
+
+
+<div class="configurator">
+
+  <kal-form-field>
+    <kal-select label="icon" [(ngModel)]="iconName">
+      <kal-option value="">none</kal-option>
+      <kal-option value="thumb_up" ><kal-icon>thumb_up</kal-icon></kal-option>
+      <kal-option value="loupe" ><kal-icon>loupe</kal-icon></kal-option>
+      <kal-option value="star" ><kal-icon>star</kal-icon></kal-option>
+    </kal-select>
+  </kal-form-field>
+
+</div>

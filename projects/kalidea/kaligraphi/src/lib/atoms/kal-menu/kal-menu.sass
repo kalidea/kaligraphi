@@ -15,5 +15,5 @@
   .kal-menu__content
     +kal-themed-menu(get('form.elements.menu.default', $kal-parameters))
     @each $key, $params in get('form.elements.menu.alternates', $kal-parameters)
-      &.kal-theme--#{$key}
+      .kal-theme--#{$key}
         +kal-themed-menu($params)

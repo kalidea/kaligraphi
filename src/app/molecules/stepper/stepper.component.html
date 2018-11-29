@@ -1,4 +1,7 @@
-<kal-stepper [linear]="true" orientation="horizontal" (selectionChange)="selectionUpdated($event)" #stepper>
+<h1>Stepper</h1>
+
+<div class="example">
+<kal-stepper [linear]="linear" orientation="horizontal" (selectionChange)="selectionUpdated($event)" #stepper>
 
   <kal-step [stepControl]="firstFormGroup">
 
@@ -42,3 +45,14 @@
 
   </kal-step>
 </kal-stepper>
+</div>
+
+<div class="configurator">
+
+  <kal-form-field>
+    <kal-checkbox
+      [(ngModel)]="linear"
+      label="linear"
+    ></kal-checkbox>
+  </kal-form-field>
+</div>

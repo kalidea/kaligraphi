@@ -11,9 +11,7 @@ import { FormControl } from '@angular/forms';
 export class CheckboxComponent implements OnInit {
 
 
-  theme = '';
-
-  reverse = false;
+  themes = [];
 
   large = false;
 
@@ -37,15 +35,8 @@ export class CheckboxComponent implements OnInit {
   constructor() {
   }
 
-  get themesList() {
-    const themes = [this.theme];
-    if (this.reverse) {
-      themes.push('reverse');
-    }
-    if (this.large) {
-      themes.push('large');
-    }
-    return themes;
+  get reverse() {
+    return this.themes.some(t => t === 'reverse');
   }
 
   /**

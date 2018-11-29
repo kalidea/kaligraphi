@@ -9,11 +9,16 @@ import { FormControl } from '@angular/forms';
 })
 export class InputComponent implements OnInit {
 
+
+  themes = [];
+
   type = 'text';
 
   placeholder = '';
 
   clearable = false;
+
+  icon = '';
 
   content = '';
 
@@ -21,7 +26,14 @@ export class InputComponent implements OnInit {
 
   controlBlur = new FormControl('', {updateOn: 'blur'});
 
+  lastIconClicked;
+
   constructor() {
+  }
+
+  iconClicked($event) {
+    console.log($event);
+    this.lastIconClicked = $event;
   }
 
   ngOnInit() {
