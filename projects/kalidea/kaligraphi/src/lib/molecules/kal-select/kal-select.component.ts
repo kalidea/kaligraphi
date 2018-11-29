@@ -210,6 +210,11 @@ export class KalSelectComponent
    * Select an option by his value
    */
   select(value: any, withNotify = false): void {
+    if (value === null) {
+      this.reset();
+      return;
+    }
+
     if (this.isMultiple && value instanceof Array) {
       const multipleOptions = this.options.filter((item) => value.indexOf(item.value) >= 0);
       this.multipleOptionSelected(multipleOptions, withNotify);
@@ -220,6 +225,14 @@ export class KalSelectComponent
         this.optionSelected(this.keyManager.activeItem, withNotify);
       }
     }
+  }
+
+  /**
+   * Reset selection
+   */
+  reset(): void {
+    this.selection = [];
+    this.cdr.markForCheck();
   }
 
   /**
@@ -328,8 +341,6 @@ export class KalSelectComponent
   /**
    * Event emitted when several options are selected
    * Set the option as active
-   * @param options KalOptionComponent
-   * @param withNotify boolean
    */
   private multipleOptionSelected(options: KalOptionComponent[], withNotify = true) {
     if (!this.isMultiple) {
@@ -351,8 +362,6 @@ export class KalSelectComponent
   /**
    * Event emitted when an option is selected
    * Set the option as active
-   * @param option KalOptionComponent
-   * @param withNotify boolean
    */
   private optionSelected(option: KalOptionComponent, withNotify = true) {
     if (this.multiple) {

@@ -96,6 +96,13 @@ describe('TestSelectComponent', () => {
       expect(component.select.panelOpen).toBeFalsy();
     });
 
+    it('should reset the select', () => {
+      component.select.select('Option 2');
+      expect(component.select.selectedValue).toEqual('Option 2');
+      component.select.select(null);
+      expect(component.select.selectedValue).toBeNull();
+    });
+
     // todo @frank repare for angular 7
     // it('should reset active item on close', () => {
     //   component.select.select('Option 2');
