@@ -1,6 +1,12 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, Inject, Input, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  forwardRef,
+  Inject,
+  ViewEncapsulation
+} from '@angular/core';
 import { KalDatepickerComponent } from '../kal-datepicker.component';
-import { coerceKalDateProperty, KalDate } from '../kal-date';
 
 @Component({
   selector: 'kal-datepicker-header',
