@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
-import { DateObjectUnits, DateTime, Info } from 'luxon';
+import { DateObjectUnits, Info } from 'luxon';
 import { KalDate } from '../kal-date';
 
 @Component({
@@ -32,7 +32,7 @@ export class KalDatepickerMultiViewComponent {
   get years(): number[] {
     const years = [];
 
-    for (let i = DateTime.local().year; i >= 1940; i--) {
+    for (let i = 2030; i >= 1940; i--) {
       years.push(i);
     }
 

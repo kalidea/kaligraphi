@@ -9,8 +9,8 @@ import {
   Output,
   ViewEncapsulation
 } from '@angular/core';
-import { DateObjectUnits, Info } from 'luxon';
 import { AbstractControl } from '@angular/forms';
+import { DateObjectUnits, Info } from 'luxon';
 import { KalDatepickerComponent } from '../kal-datepicker.component';
 import { KalDate } from '../kal-date';
 

@@ -1,17 +1,20 @@
-<h5>Radio button by using control</h5>
-<div style="margin: 20px 0; padding: 10px;" [class.reverse]="hasReverseTheme">
-  <kal-radio-group [formControl]="control"
-                   [labelPosition]="labelPosition"
-                   [kalTheme]="themes"
-                   [disabled]="disabled"
-                   (valueChange)="displayValue($event)">
-    <kal-radio value="test1" [kalTheme]="themes">test1</kal-radio>
-    <kal-radio value="test2" [kalTheme]="themes">test2</kal-radio>
-    <kal-radio value="test3" [kalTheme]="themes">test3</kal-radio>
-    <kal-radio value="test4" [kalTheme]="themes">test4</kal-radio>
-  </kal-radio-group>
-  <p>The value of the form control : {{ control.value }}</p>
-  <p>The id of the selected radio button : {{ id }}</p>
+<h1>Radio</h1>
+
+<div class="example" [class.reverse]="hasReverseTheme">
+  <article>
+    <kal-radio-group [formControl]="control"
+                     [labelPosition]="labelPosition"
+                     [kalTheme]="themes"
+                     [disabled]="disabled"
+                     (valueChange)="displayValue($event)">
+      <kal-radio value="test1" [kalTheme]="themes">test1</kal-radio>
+      <kal-radio value="test2" [kalTheme]="themes">test2</kal-radio>
+      <kal-radio value="test3" [kalTheme]="themes">test3</kal-radio>
+      <kal-radio value="test4" [kalTheme]="themes">test4</kal-radio>
+    </kal-radio-group>
+    <p>The value of the form control : {{ control.value }}</p>
+    <p>The id of the selected radio button : {{ id }}</p>
+  </article>
 </div>
 
 <div class="configurator">
@@ -30,11 +33,16 @@
     </kal-select>
   </kal-form-field>
 
-  <kal-checkbox [(ngModel)]="disabled" label="disabled"></kal-checkbox>
+  <kal-form-field>
+    <kal-checkbox [(ngModel)]="disabled" label="disabled"></kal-checkbox>
+  </kal-form-field>
 
-    <kal-input
-      placeholder="edit value"
-      #inputElementWithControl
-      (change)="changeRadioValueWithControl(inputElementWithControl.value)"
-      kalTheme="primary"></kal-input>
+  <kal-form-field>
+    <kal-select label="edit value" (valueChange)="changeRadioValueWithControl($event)">
+      <kal-option value="test1">test1</kal-option>
+      <kal-option value="test2">test2</kal-option>
+      <kal-option value="test3">test3</kal-option>
+      <kal-option value="test4">test4</kal-option>
+    </kal-select>
+  </kal-form-field>
 </div>

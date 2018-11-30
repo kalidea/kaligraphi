@@ -115,7 +115,7 @@ export class DialogComponent {
   /**
    * is this modal dismissable
    */
-  disableClose = true;
+  disableClose = false;
 
   /**
    * is this modal dismissable

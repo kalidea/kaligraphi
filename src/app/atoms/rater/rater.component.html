@@ -1,5 +1,37 @@
-<kal-rater icon="thumb_up"
-           [formControl]="control">
-</kal-rater>
+<h1> Rater </h1>
+<div class="example">
+  <article>
+    <kal-rater [icon]="iconName"
+               [maxRate]="maxRate"
+               [formControl]="control">
+    </kal-rater>
 
-<p>Current rating : {{ displayRating() }}</p>
+    <p>Current rating : {{ displayRating() }}</p>
+  </article>
+</div>
+
+<div class="configurator">
+
+  <kal-form-field>
+    <kal-select label="icon" [(ngModel)]="iconName">
+      <kal-option value="">none</kal-option>
+      <kal-option value="thumb_up">
+        <kal-icon>thumb_up</kal-icon>
+      </kal-option>
+      <kal-option value="loupe">
+        <kal-icon>loupe</kal-icon>
+      </kal-option>
+      <kal-option value="star">
+        <kal-icon>star</kal-icon>
+      </kal-option>
+    </kal-select>
+  </kal-form-field>
+
+  <kal-form-field>
+    <kal-input
+      label="max rate"
+      [(ngModel)]="maxRate"
+    ></kal-input>
+  </kal-form-field>
+
+</div>

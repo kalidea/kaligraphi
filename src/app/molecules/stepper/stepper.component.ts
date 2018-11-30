@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
-import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-stepper',
@@ -13,6 +13,8 @@ export class StepperComponent implements OnInit {
   firstFormGroup: FormGroup;
 
   secondFormGroup: FormGroup;
+
+  linear = true;
 
   constructor(private formBuilder: FormBuilder) {
   }

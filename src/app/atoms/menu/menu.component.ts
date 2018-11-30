@@ -9,8 +9,14 @@ import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@
 })
 export class MenuComponent implements OnInit {
 
+  themes = [];
+
   constructor() { }
 
+
+  get reverse() {
+    return this.themes.some(t => t === 'reverse');
+  }
 
   selected($event) {
     console.log('selected', $event);

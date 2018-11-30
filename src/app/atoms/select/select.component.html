@@ -1,27 +1,43 @@
-<kal-select
-  [kalTheme]="themes"
-  [multiple]="isMultiple"
-  [(ngModel)]="selection"
-  tabindex="1"
-  placeholder="Select an item">
-  <kal-option
-    #optionRef
-    *ngFor="let option of options"
-    [disabled]="option.disabled">
+<h1>Select</h1>
 
-    <kal-checkbox
-      [formControl]="optionRef.formControl"
-      *ngIf="hasCheckbox"></kal-checkbox>
+<div class="example">
+  <article>
 
-    OPTION {{ option.value }}
-  </kal-option>
+    <kal-select
+      [kalTheme]="themes"
+      [multiple]="isMultiple"
+      [(ngModel)]="selection"
+      tabindex="1"
+      placeholder="Select an item">
+      <kal-option
+        #optionRef
+        *ngFor="let option of options"
+        [disabled]="option.disabled">
 
-</kal-select>
+        <kal-checkbox
+          [formControl]="optionRef.formControl"
+          *ngIf="hasCheckbox"></kal-checkbox>
 
-selection {{ selection | json}}
+        OPTION {{ option.value }}
+      </kal-option>
+
+    </kal-select>
+
+    selection {{ selection | json}}
+  </article>
+
+</div>
 
 
 <div class="configurator">
+
+  <kal-form-field>
+    <kal-select label="themes" [multiple]="true" [(ngModel)]="themes">
+      <kal-option value="">default</kal-option>
+      <kal-option value="secondary">secondary</kal-option>
+      <kal-option value="reverse">reverse</kal-option>
+    </kal-select>
+  </kal-form-field>
 
   <kal-form-field>
     <kal-checkbox [(ngModel)]="hasCheckbox" label="checkbox"></kal-checkbox>
@@ -29,14 +45,6 @@ selection {{ selection | json}}
 
   <kal-form-field>
     <kal-checkbox [(ngModel)]="isMultiple" label="multiple selection"></kal-checkbox>
-  </kal-form-field>
-
-  <kal-form-field>
-    <kal-checkbox [(ngModel)]="themeSecondary" label="Theme secondary"></kal-checkbox>
-  </kal-form-field>
-
-  <kal-form-field>
-    <kal-checkbox [(ngModel)]="themeReverse" label="Theme reverse"></kal-checkbox>
   </kal-form-field>
 
   <kal-form-field>
