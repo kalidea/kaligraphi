@@ -158,7 +158,7 @@ describe('TestListItemComponent', () => {
     expect(listItems[2].nativeElement.innerText.trim()).toEqual('Item 3');
   });
 
-  fit('should select an item', () => {
+  it('should select an item', () => {
     spyOn(listInstances.selectionChange, 'emit');
 
     listItems[0].nativeElement.click();
