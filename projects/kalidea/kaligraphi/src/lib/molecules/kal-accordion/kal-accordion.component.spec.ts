@@ -115,7 +115,7 @@ describe('KalAccordionComponent', () => {
 
 @Component({
   template: `
-    <kal-accordion [multi]="multi">
+    <kal-accordion [multiple]="multi">
       <kal-expansion-panel *ngFor="let i of [0, 1, 2, 3]">
         <kal-expansion-panel-header>Summary {{i}}</kal-expansion-panel-header>
         <p>Content</p>

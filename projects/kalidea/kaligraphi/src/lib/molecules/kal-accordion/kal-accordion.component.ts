@@ -27,11 +27,6 @@ export class KalAccordionComponent extends CdkAccordion implements KalAccordionB
   panelsHeaders: QueryList<KalExpansionPanelHeaderComponent>;
 
   /**
-   * Allow to have multiple panels opened at the same time.
-   */
-  private allowMultiple = false;
-
-  /**
    * Allows us to manage navigation between headers.
    */
   private keyManager: FocusKeyManager<KalExpansionPanelHeaderComponent>;
@@ -45,11 +40,12 @@ export class KalAccordionComponent extends CdkAccordion implements KalAccordionB
    * Allow to have multiple panels opened at the same time.
    */
   @Input()
-  get multi() {
-    return this.allowMultiple;
+  get multiple() {
+    return this.multi;
   }
-  set multi(allowMultiple: boolean) {
-    this.allowMultiple = coerceBooleanProperty(allowMultiple);
+
+  set multiple(allowMultiple: boolean) {
+    this.multi = coerceBooleanProperty(allowMultiple);
   }
 
   /**
@@ -59,6 +55,7 @@ export class KalAccordionComponent extends CdkAccordion implements KalAccordionB
   get hideToggle(): boolean {
     return this.shouldHideToggle;
   }
+
   set hideToggle(show: boolean) {
     this.shouldHideToggle = coerceBooleanProperty(show);
   }
