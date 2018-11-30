@@ -104,10 +104,11 @@ export class KalSelectComponent
 
   set multiple(multiple: boolean) {
     this.isMultiple = coerceBooleanProperty(multiple);
+    // If mode change multiple to simple, we keep only one option
     if (this.selection && !this.isMultiple && this.selection.length > 1) {
-      const keep = this.selection[0];
+      const keepOption = this.selection[0];
       this.reset();
-      this.optionSelected(keep);
+      this.optionSelected(keepOption);
     }
   }
 
