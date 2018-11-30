@@ -128,8 +128,8 @@ export class KalSelectComponent
     }
 
     return (this.multiple) ?
-      this.selection.map(option => option.viewValue).join(', ') :
-      this.selection[0].viewValue;
+      this.selection.map(option => option.getLabel()).join(', ') :
+      this.selection[0].getLabel();
   }
 
   /**
