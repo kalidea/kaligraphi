@@ -416,6 +416,8 @@ export class KalSelectComponent
         return this.options.toArray().indexOf(x) > this.options.toArray().indexOf(y) ? 1 : -1;
       });
     }
+
+    this.checkResetActiveItem();
   }
 
   /**
@@ -434,7 +436,7 @@ export class KalSelectComponent
    */
   private checkResetActiveItem(): void {
     if (this.selection.indexOf(this.keyManager.activeItem) < 0) {
-      this.keyManager.setActiveItem(this.selection[0]);
+      this.keyManager.setActiveItem(this.selection[this.selection.length - 1]);
     }
   }
 
@@ -473,7 +475,6 @@ export class KalSelectComponent
             .subscribe(event => {
               this.focus();
               this.optionSelected(event);
-              this.keyManager.setActiveItem(event);
             })
         );
       });
