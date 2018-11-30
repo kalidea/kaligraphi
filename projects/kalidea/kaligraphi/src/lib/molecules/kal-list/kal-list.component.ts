@@ -90,8 +90,10 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   }
 
   set selection(value: KalListSelection<T>) {
-    this.listSelection = value;
-    this.cdr.markForCheck();
+    if (value) {
+      this.listSelection = value;
+      this.cdr.markForCheck();
+    }
   }
 
 
@@ -182,8 +184,6 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
    * The selected item index
    */
   private selectedItemIndex: number;
-
-  private selectedAll = false;
 
   /**
    * The subscription
@@ -308,7 +308,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
         this.listSelection.add(item, 'excluded');
       } else {
         this.listSelection.remove(item, 'excluded');
-
+        this.listSelection.add(item);
       }
     } else {
       this.toggleItem(item);
@@ -316,7 +316,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   }
 
   toggleItem(item: T) {
-    if (this.listSelection.indexOf(item) !== -1) {
+    if (this.listSelection.indexOf(item) === -1) {
       this.listSelection.add(item);
     } else {
       this.listSelection.remove(item);
