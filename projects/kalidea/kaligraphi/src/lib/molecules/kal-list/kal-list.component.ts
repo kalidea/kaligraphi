@@ -22,7 +22,7 @@ import { KalListItemDirective } from './kal-list-item.directive';
 import { KalListItemSelectionDirective } from './kal-list-item-selection.directive';
 import { AutoUnsubscribe } from '../../utils';
 
-enum KalSelectionMode {
+enum KalListSelectionMode {
   None = 'none',
   Single = 'single',
   Multiple = 'multiple'
@@ -100,7 +100,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   /**
    * Selectable items (none, single, multiple)
    */
-  _selectionMode: KalSelectionMode = KalSelectionMode.Single;
+  _selectionMode: KalListSelectionMode = KalListSelectionMode.Single;
 
   /**
    * The config is use to group all items
@@ -153,14 +153,14 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
    * Selectable items (none, single, multiple)
    */
   @Input()
-  set selectionMode(value: KalSelectionMode) {
+  set selectionMode(value: KalListSelectionMode) {
 
     switch (value) {
-      case KalSelectionMode.Multiple:
+      case KalListSelectionMode.Multiple:
         this._selectionMode = value;
         break;
 
-      case KalSelectionMode.None:
+      case KalListSelectionMode.None:
         this._selection.selected = [];
         this._selection.excluded = [];
         this._selectionMode = value;
@@ -169,7 +169,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
       default:
         this._selection.selected = [];
         this._selection.excluded = [];
-        this._selectionMode = KalSelectionMode.Single;
+        this._selectionMode = KalListSelectionMode.Single;
         break;
     }
 
@@ -251,7 +251,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   }
 
   selectAll() {
-    if (this._selectionMode === KalSelectionMode.Multiple) {
+    if (this._selectionMode === KalListSelectionMode.Multiple) {
       this._selection.all = !this._selection.all;
       this._selection.reset();
 
@@ -269,7 +269,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
    * Select an item in list and emit an event with the selected item value
    */
   selectItem(item: T) {
-    if (!this.disableRowsFunction(item) && this._selectionMode !== KalSelectionMode.None) {
+    if (!this.disableRowsFunction(item) && this._selectionMode !== KalListSelectionMode.None) {
 
       this.selectedItemIndex = this.results.findIndex(row => row === item);
       this.keyManager.setActiveItem(this.selectedItemIndex);
@@ -316,7 +316,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
 
   private updateSelectedItem(item: T) {
 
-    if (this._selectionMode !== KalSelectionMode.Multiple) {
+    if (this._selectionMode !== KalListSelectionMode.Multiple) {
       this._selection.selected = [];
       this._selection.add(item);
     } else if (this._selection.all) {
