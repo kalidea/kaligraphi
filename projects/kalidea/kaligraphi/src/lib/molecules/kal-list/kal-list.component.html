@@ -22,7 +22,7 @@
         <ng-container *ngTemplateOutlet="row.view; context: {item: item}"></ng-container>
       </span>
 
-      <span class="kal-list__icon" *ngIf="itemsSelectable === 'single'">
+      <span class="kal-list__icon" *ngIf="_selectionMode === 'single'">
         <kal-icon>keyboard_arrow_right</kal-icon>
       </span>
 

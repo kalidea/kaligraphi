@@ -32,9 +32,9 @@ export class ListComponent implements OnInit {
   selectedValue;
 
   /**
-   * items selectable
+   * items selectionMode
    */
-  itemsSelectable = null;
+  selectionMode = 'single';
 
   constructor() {
   }
@@ -54,15 +54,15 @@ export class ListComponent implements OnInit {
   }
 
   selectMultipleRows() {
-    this.itemsSelectable = 'multiple';
+    this.selectionMode = 'multiple';
   }
 
   unselectRows() {
-    this.itemsSelectable = 'none';
+    this.selectionMode = 'none';
   }
 
   selectSingleRow() {
-    this.itemsSelectable = null;
+    this.selectionMode = null;
   }
 
   ngOnInit() {

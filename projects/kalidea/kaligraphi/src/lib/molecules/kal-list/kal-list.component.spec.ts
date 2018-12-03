@@ -13,7 +13,7 @@ import { KalIconModule } from '../../atoms/kal-icon/kal-icon.module';
     <kal-list [dataSource]="dataSource"
               [groupByFunction]="groupByFunction"
               [disableRowsFunction]="disableRowsFunction"
-              [selectable]="selectable"
+              [selectionMode]="selectable"
               (selectionChange)="selectRow($event)">
 
       <ng-template kalListItem let-item="item">
