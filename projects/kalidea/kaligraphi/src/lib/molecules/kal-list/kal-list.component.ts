@@ -22,9 +22,17 @@ import { KalListItemSelectionDirective } from './kal-list-item-selection.directi
 import { CollectionViewer, DataSource, ListRange } from '@angular/cdk/collections';
 import { AutoUnsubscribe } from '../../utils';
 
+enum ItemSelectable {
+  None,
+  Single,
+  Multiple
+}
+
+type ListItemSelectionType = 'selected' | 'excluded';
+
 export class KalListSelection<T extends { id: string }> {
 
-  constructor(public selected: T[], public all: boolean, public excluded: T[]) {
+  constructor(public selected: T[] = [], public all: boolean = false, public excluded: T[] = []) {
   }
 
   reset() {
@@ -32,19 +40,19 @@ export class KalListSelection<T extends { id: string }> {
     this.excluded = [];
   }
 
-  add(item: T, store: 'selected' | 'excluded' = 'selected') {
+  add(item: T, store: ListItemSelectionType = 'selected') {
     (store === 'selected' ? this.selected : this.excluded).push(item);
   }
 
-  remove(item: T, store: 'selected' | 'excluded' = 'selected') {
+  remove(item: T, store: ListItemSelectionType = 'selected') {
     (store === 'selected' ? this.selected : this.excluded).splice(this.indexOf(item, store), 1);
   }
 
-  indexOf(item: T, store: 'selected' | 'excluded' = 'selected'): number {
+  indexOf(item: T, store: ListItemSelectionType = 'selected'): number {
     return (store === 'selected' ? this.selected : this.excluded).findIndex(element => element.id === item.id);
   }
 
-  contains(item: T, store: 'selected' | 'excluded' = 'selected') {
+  contains(item: T, store: ListItemSelectionType = 'selected') {
     return this.indexOf(item, store) !== -1 || (this.all && this.excluded.findIndex(element => element.id === item.id) === -1);
   }
 
@@ -69,15 +77,15 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   set selectable(value: string) {
 
     if (value === 'multiple') {
-      this.itemsSelectable = 'multiple';
+      this.itemsSelectable = ItemSelectable.Multiple;
     } else if (value === 'none') {
       this.listSelection.selected = [];
       this.listSelection.excluded = [];
-      this.itemsSelectable = 'none';
+      this.itemsSelectable = ItemSelectable.None;
     } else {
       this.listSelection.selected = [];
       this.listSelection.excluded = [];
-      this.itemsSelectable = null;
+      this.itemsSelectable = ItemSelectable.Single;
     }
 
     this.cdr.markForCheck();
@@ -163,7 +171,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   /**
    * Selectable items (none, single, multiple)
    */
-  itemsSelectable: 'multiple' | 'none' = null;
+  itemsSelectable: ItemSelectable = ItemSelectable.Single;
 
   /**
    * The config is use to group all items
@@ -191,7 +199,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   @AutoUnsubscribe()
   private subscription: Subscription = Subscription.EMPTY;
 
-  private listSelection: KalListSelection<T> = new KalListSelection([], false, []);
+  private listSelection: KalListSelection<T> = new KalListSelection<T>();
 
   /**
    * Is the row disabled
@@ -239,7 +247,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   }
 
   selectAll() {
-    if (this.itemsSelectable === 'multiple') {
+    if (this.itemsSelectable === ItemSelectable.Multiple) {
       this.listSelection.all = !this.listSelection.all;
       this.listSelection.reset();
 
@@ -257,7 +265,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
    * Select an item in list and emit an event with the selected item value
    */
   selectItem(item: T) {
-    if (!this.disableRowsFunction(item) && this.itemsSelectable !== 'none') {
+    if (!this.disableRowsFunction(item) && this.itemsSelectable !== ItemSelectable.None) {
 
       this.selectedItemIndex = this.results.findIndex(row => row === item);
       this.keyManager.setActiveItem(this.selectedItemIndex);
@@ -296,7 +304,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
 
   private updateSelectedItem(item: T) {
 
-    if (this.itemsSelectable !== 'multiple') {
+    if (this.itemsSelectable !== ItemSelectable.Multiple) {
       this.listSelection.selected = [];
       this.listSelection.add(item);
     } else if (this.listSelection.all) {
