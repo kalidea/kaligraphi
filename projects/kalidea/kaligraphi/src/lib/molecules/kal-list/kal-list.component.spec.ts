@@ -3,7 +3,7 @@ import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { DataSource } from '@angular/cdk/collections';
 import { Observable, of } from 'rxjs';
-import { KalListModule } from './kal-list.module';
+import { KalListModule, KalListSelection } from './kal-list.module';
 import { KalListComponent, } from './kal-list.component';
 import { KalIconComponent } from '../../atoms/kal-icon/kal-icon.component';
 import { KalIconModule } from '../../atoms/kal-icon/kal-icon.module';
@@ -13,6 +13,7 @@ import { KalIconModule } from '../../atoms/kal-icon/kal-icon.module';
     <kal-list [dataSource]="dataSource"
               [groupByFunction]="groupByFunction"
               [disableRowsFunction]="disableRowsFunction"
+              [selectionMode]="selectable"
               (selectionChange)="selectRow($event)">
 
       <ng-template kalListItem let-item="item">
@@ -30,26 +31,28 @@ class TestListItemComponent {
 
   disableRowsFunction = null;
 
+  selectable = 'single';
+
   selectRow($event) {
   }
 
 }
 
-class TestDataSource implements DataSource<{ code: string, name: string }> {
+class TestDataSource implements DataSource<{ id: string, name: string }> {
 
   listItem = [
     {
-      code: '1',
+      id: '1',
       name: 'Item 1',
       disabled: true,
     },
     {
-      code: '2',
+      id: '2',
       name: 'Item 2',
       disabled: false,
     },
     {
-      code: '3',
+      id: '3',
       name: 'Item 3',
       disabled: false,
     },
@@ -79,17 +82,17 @@ class TestListItemWithObservableComponent {
 
   dataSource = of([
     {
-      code: '1',
+      id: '1',
       name: 'Item 1',
       disabled: true,
     },
     {
-      code: '2',
+      id: '2',
       name: 'Item 2',
       disabled: false,
     },
     {
-      code: '3',
+      id: '3',
       name: 'Item 3',
       disabled: false,
     },
@@ -159,19 +162,48 @@ describe('TestListItemComponent', () => {
     spyOn(listInstances.selectionChange, 'emit');
 
     listItems[0].nativeElement.click();
-
     expect(listInstances.isSelected(component.dataSource.listItem[0])).toBeTruthy();
-    expect(listInstances.selectionChange.emit).toHaveBeenCalledWith(component.dataSource.listItem[0]);
+    expect(listInstances.selectionChange.emit).toHaveBeenCalledWith(new KalListSelection(
+      [component.dataSource.listItem[0]],
+      false,
+      []
+    ));
 
     listItems[1].nativeElement.click();
-
-    expect(listInstances.isSelected(component.dataSource.listItem[1])).toBeTruthy();
-    expect(listInstances.selectionChange.emit).toHaveBeenCalledWith(component.dataSource.listItem[1]);
+    expect(listInstances.selectionChange.emit).toHaveBeenCalledWith(new KalListSelection(
+      [component.dataSource.listItem[1]],
+      false,
+      []
+    ));
 
     listItems[2].nativeElement.click();
 
     expect(listInstances.isSelected(component.dataSource.listItem[2])).toBeTruthy();
-    expect(listInstances.selectionChange.emit).toHaveBeenCalledWith(component.dataSource.listItem[2]);
+    expect(listInstances.selectionChange.emit).toHaveBeenCalledWith(new KalListSelection(
+      [component.dataSource.listItem[2]],
+      false,
+      []
+    ));
+
+    component.selectable = 'multiple';
+    listInstances.reset();
+    fixture.detectChanges();
+
+    listItems[0].nativeElement.click();
+    listItems[1].nativeElement.click();
+    listItems[2].nativeElement.click();
+
+    expect(listInstances.isSelected(component.dataSource.listItem[0])).toBeTruthy();
+    expect(listInstances.isSelected(component.dataSource.listItem[1])).toBeTruthy();
+    expect(listInstances.isSelected(component.dataSource.listItem[2])).toBeTruthy();
+
+    expect(listInstances.selectionChange.emit).toHaveBeenCalledWith(new KalListSelection(
+      [component.dataSource.listItem[0],
+        component.dataSource.listItem[1],
+        component.dataSource.listItem[2]],
+      false,
+      []
+    ));
   });
 
   it('should reset selected item', () => {
