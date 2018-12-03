@@ -7,21 +7,23 @@ import { KAL_DIALOG_DATA } from './kal-dialog.injector';
 import { KalDialogRef } from './kal-dialog-ref';
 import { KalDialogConfig } from './kal-dialog-config';
 import { KalDialogContainerComponent } from './dialog-container/kal-dialog-container.component';
+import { KalOverlayManager } from '../../utils/classes/kal-overlay-manager';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class KalDialogService {
+export class KalDialogService extends KalOverlayManager {
 
   /**
    * list of opened dialogs
    */
   private dialogsList: KalDialogRef<any, any>[] = [];
 
-  constructor(private overlay: Overlay,
+  constructor(protected overlay: Overlay,
               private injector: Injector,
               @Optional() private location?: Location) {
+    super(overlay);
   }
 
   /**
@@ -31,15 +33,16 @@ export class KalDialogService {
     return this.dialogsList;
   }
 
+
   /**
    * open Dialog
    */
   open<T, D>(component: ComponentType<T>,
              config?: KalDialogConfig<D>) {
 
-    config = this.applyConfig(config);
+    const overlayConfig = this.applyConfig(KalDialogConfig, config, this.positionStrategy.centerVertically().centerHorizontally());
 
-    const overlayRef = this.createOverlay(config);
+    const overlayRef = this.createOverlay(overlayConfig);
     const dialogContainer = this.attachDialogContainer(overlayRef, config);
     const dialogRef = this.attachDialogContent<T, D>(component,
       dialogContainer,
@@ -62,7 +65,6 @@ export class KalDialogService {
     return this.dialogsList.find(dialog => dialog.id === id);
   }
 
-
   /**
    * retrieve dialog by ID
    */
@@ -70,28 +72,6 @@ export class KalDialogService {
     dialogRef.overlayRef.detach();
   }
 
-  detachOverlay(overlayRef: OverlayRef) {
-    overlayRef.detach();
-  }
-
-  /**
-   * set default config
-   */
-  private applyConfig(config) {
-    // default config
-    const positionStrategy = this.overlay.position().global().centerVertically().centerHorizontally();
-    const scrollStrategy = this.overlay.scrollStrategies.block();
-
-    return Object.assign(new KalDialogConfig(), {positionStrategy, scrollStrategy}, config);
-  }
-
-  /**
-   * create overlay for dialog
-   */
-  private createOverlay(config) {
-
-    return this.overlay.create(config);
-  }
 
   /**
    * Attach dialogContainer to overlay

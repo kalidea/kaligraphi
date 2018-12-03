@@ -6,19 +6,21 @@ import { ComponentPortal, PortalInjector } from '@angular/cdk/portal';
 import { KalSnackbarConfig } from './kal-snackbar-config';
 import { KalSnackbarComponent } from './kal-snackbar.component';
 import { KAL_SNACKBAR_CONFIG } from './kal-snackbar.injector';
+import { KalOverlayManager } from '../../utils/classes/kal-overlay-manager';
 
 @Injectable({
   providedIn: 'root'
 })
-export class KalSnackbarService {
+export class KalSnackbarService extends KalOverlayManager {
 
   private snackbarsList: ComponentRef<KalSnackbarComponent>[] = [];
 
   private waitingSnackbarsList: KalSnackbarConfig[] = [];
 
-  constructor(private overlay: Overlay,
+  constructor(protected overlay: Overlay,
               private injector: Injector,
               @Optional() private location?: Location) {
+    super(overlay);
   }
 
   /**
@@ -27,9 +29,9 @@ export class KalSnackbarService {
   open<D>(config?: KalSnackbarConfig<D>) {
     if (this.snackbarsList.length === 0) {
 
-      config = this.applyConfig(config);
+      const overlayConfig = this.applyConfig(KalSnackbarConfig, config, this.positionStrategy.bottom().centerHorizontally());
 
-      const overlayRef = this.createOverlay(config);
+      const overlayRef = this.createOverlay(overlayConfig);
       config.overlayRef = overlayRef;
       config.active = true;
 
@@ -93,24 +95,5 @@ export class KalSnackbarService {
     return new PortalInjector(userInjector || this.injector, injectionTokens);
   }
 
-  /**
-   * set default config
-   */
-  private applyConfig(config) {
-    // default config
-    const positionStrategy = this.overlay.position().global().bottom().centerHorizontally();
-    const scrollStrategy = this.overlay.scrollStrategies.reposition();
-
-    return Object.assign(new KalSnackbarConfig(), {positionStrategy, scrollStrategy}, config);
-  }
-
-
-  /**
-   * create overlay for dialog
-   */
-  private createOverlay(config) {
-
-    return this.overlay.create(config);
-  }
 
 }

@@ -21,7 +21,7 @@ export let counter = 0;
 
     <!-- content -->
     <div kalDialogContent>
-      Example Dialog for {{ data.user.firstname }} {{ data.user.lastname }} N°{{ id }}
+      Example Dialog for {{ data?.user.firstname }} {{ data?.user.lastname }} N°{{ id }}
       <blockquote *ngIf="result"> closed {{ result }}</blockquote>
     </div>
 

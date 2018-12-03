@@ -1,15 +1,11 @@
-
 import { ViewContainerRef } from '@angular/core';
 import { OverlayRef } from '@angular/cdk/overlay';
+import { KalOverlayConfig } from '../../utils/classes/kal-overlay-config';
 
-// Counter for unique snackbar ids.
-let kalUniqSnackbarId = 0;
 
-export class KalSnackbarConfig<D = any> {
+export class KalSnackbarConfig<D = any> extends KalOverlayConfig {
 
-  active ?= false;
-
-  id ?: string;
+  active ? = false;
 
   title ?: string;
 
@@ -22,20 +18,14 @@ export class KalSnackbarConfig<D = any> {
 
   data ?: D;
 
-  duration ?= 4;
+  duration ? = 4;
 
   viewContainerRef ?: ViewContainerRef;
 
-  constructor(config?: KalSnackbarConfig<D>) {
-    if (config) {
-      Object.keys(config)
-        .filter(key => typeof config[key] !== 'undefined')
-        .forEach(key => this[key] = config[key]);
-    }
+  protected configName ? = 'snackbar';
 
-    // generate id of dialog here for consistency
-    if (!this.id) {
-      this.id = `kal-snackbar-${kalUniqSnackbarId++}`;
-    }
+  constructor(config?: KalSnackbarConfig) {
+    super(config);
   }
+
 }
