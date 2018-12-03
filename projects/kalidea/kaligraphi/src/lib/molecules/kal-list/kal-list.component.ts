@@ -100,7 +100,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   /**
    * Selectable items (none, single, multiple)
    */
-  _selectionMode: KalListSelectionMode = KalListSelectionMode.Single;
+  private _selectionMode: KalListSelectionMode = KalListSelectionMode.Single;
 
   /**
    * The config is use to group all items
@@ -175,6 +175,10 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
 
     this.cdr.markForCheck();
 
+  }
+
+  get selectionMode() {
+    return this._selectionMode;
   }
 
   /**
