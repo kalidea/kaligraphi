@@ -302,13 +302,6 @@ export class KalSelectComponent
   }
 
   /**
-   * @inheritDoc
-   */
-  setDisabledState(isDisabled: boolean): void {
-    this.disabled = isDisabled;
-  }
-
-  /**
    * Handles enter ans space keydown events on the select
    */
   private handleSelectKeyEvent() {
