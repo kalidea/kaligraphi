@@ -1,0 +1,80 @@
+$kal-styles-progress-bar: (
+  'default': (
+    'display': block,
+    'background-color': get("grey.wf300", $kal-palettes),
+    'width': 100%,
+    'height': 12px,
+    'jauge':(
+      'background-color': get("black", $kal-palettes),
+      'height': 12px,
+    ),
+    'reverse':(
+      'background-color': get("grey.wf300", $kal-palettes),
+      'jauge':(
+        'background-color': get("white", $kal-palettes),
+      ),
+    ),
+  ),
+  'alternates': (
+    'orange':(
+      'background-color': get("orange.lighter", $kal-palettes),
+      'jauge':(
+        'background-color': get("orange.normal", $kal-palettes),
+      ),
+      'reverse':(
+        'background-color': get("grey.wf700", $kal-palettes),
+        'jauge':(
+          'background-color': get("orange.normal", $kal-palettes),
+        ),
+      ),
+    ),
+    'red':(
+      'background-color': get("red.lighter", $kal-palettes),
+      'jauge':(
+        'background-color': get("red.normal", $kal-palettes),
+      ),
+      'reverse':(
+        'background-color': get("grey.wf700", $kal-palettes),
+        'jauge':(
+          'background-color': get("red.normal", $kal-palettes),
+        ),
+      ),
+    ),
+    'blue':(
+      'background-color': get("blue.lighter", $kal-palettes),
+      'jauge':(
+        'background-color': get("blue.normal", $kal-palettes),
+      ),
+      'reverse':(
+        'background-color': get("grey.wf700", $kal-palettes),
+        'jauge':(
+          'background-color': get("blue.normal", $kal-palettes),
+        ),
+      ),
+    ),
+    'green':(
+      'background-color': get("green.lighter", $kal-palettes),
+      'jauge':(
+        'background-color': get("green.normal", $kal-palettes),
+      ),
+      'reverse':(
+        'background-color': get("grey.wf700", $kal-palettes),
+        'jauge':(
+          'background-color': get("green.normal", $kal-palettes),
+        ),
+      ),
+    ),
+    'yellow':(
+      'background-color': get("yellow.lighter", $kal-palettes),
+      'jauge':(
+        'background-color': get("yellow.normal", $kal-palettes),
+      ),
+      'reverse':(
+        'background-color': get("grey.wf700", $kal-palettes),
+        'jauge':(
+          'background-color': get("yellow.normal", $kal-palettes),
+        ),
+      ),
+    ),
+  ),
+);

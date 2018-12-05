@@ -40,6 +40,7 @@ $kal-headings: (
 @import 'components/kal-datepicker.styles';
 @import 'components/kal-formfield.styles';
 @import 'components/kal-dialog.styles';
+@import 'components/kal-progress-bar.styles';
 
 // global parameters
 $kal-parameters: (
@@ -50,6 +51,7 @@ $kal-parameters: (
   tabs: $kal-styles-tabs,
   dialog: $kal-styles-dialog,
   datepicker: $kal-styles-datepicker,
+  progress-bar: $kal-styles-progress-bar,
   form: (
     elements: (
       'button': $kal-styles-button,
