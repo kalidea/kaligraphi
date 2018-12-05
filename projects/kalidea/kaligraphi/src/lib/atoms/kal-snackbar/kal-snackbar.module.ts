@@ -16,7 +16,11 @@ const exports = [
 
 @NgModule({
   declarations: exports,
-  exports: [...exports, OverlayModule, PortalModule],
+  exports: [
+    ...exports,
+    OverlayModule,
+    PortalModule
+  ],
   imports: [
     CommonModule
   ],
