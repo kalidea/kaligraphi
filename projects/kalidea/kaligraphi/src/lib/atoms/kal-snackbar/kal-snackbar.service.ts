@@ -13,8 +13,14 @@ import { KalOverlayManager } from '../../utils/classes/kal-overlay-manager';
 })
 export class KalSnackbarService extends KalOverlayManager {
 
-  private snackbarsList: ComponentRef<KalSnackbarComponent>[] = [];
+  /**
+   * active snackbar
+   */
+  private activeSnackbar: ComponentRef<KalSnackbarComponent>;
 
+  /**
+   * snackbars list waiting for display
+   */
   private waitingSnackbarsList: KalSnackbarConfig[] = [];
 
   constructor(protected overlay: Overlay,
@@ -24,11 +30,11 @@ export class KalSnackbarService extends KalOverlayManager {
   }
 
   /**
-   * open Dialog
+   * open Snackbar
    */
   open<D>(config?: KalSnackbarConfig<D>) {
-    if (this.snackbarsList.length === 0) {
 
+    if (!this.activeSnackbar) {
       const overlayConfig = this.applyConfig(KalSnackbarConfig, config, this.positionStrategy.bottom().centerHorizontally());
 
       const overlayRef = this.createOverlay(overlayConfig);
@@ -37,18 +43,16 @@ export class KalSnackbarService extends KalOverlayManager {
 
       const snackbarRef = this.attachSnackbar<D>(overlayRef, config);
 
-      // // register dialog
-      this.snackbarsList.push(snackbarRef);
-
-      return snackbarRef;
+      // // register snackbarRef
+      this.activeSnackbar = snackbarRef;
     } else {
       this.waitingSnackbarsList.push(config);
     }
   }
 
   close(config: KalSnackbarConfig) {
-    const activeSnackbar = this.snackbarsList.find(s => s.instance.config.id === config.id).instance;
-    this.snackbarsList = this.snackbarsList.filter(s => s.instance.config.id !== config.id);
+
+    this.activeSnackbar = null;
 
     config.overlayRef.dispose();
 
@@ -58,20 +62,16 @@ export class KalSnackbarService extends KalOverlayManager {
     }
   }
 
-  isASnackbarActive() {
-    return this.snackbarsList.length > 0;
-  }
-
   /**
-   * get dialogs list
+   * get active snackbar list
    */
-  getSnackbarsList() {
-    return this.snackbarsList;
+  getActiveSnackBar(): ComponentRef<KalSnackbarComponent> {
+    return this.activeSnackbar;
   }
 
 
   /**
-   * attach dialog content to container
+   * attach snackbar content to container
    */
   private attachSnackbar<D>(overlayRef: OverlayRef, config: KalSnackbarConfig<D>): ComponentRef<KalSnackbarComponent> {
 
@@ -82,7 +82,7 @@ export class KalSnackbarService extends KalOverlayManager {
   }
 
   /**
-   * create injector to share data between dialog and dialog's opener component
+   * create injector to share data between snackbar and dialog's opener component
    */
   private createInjector<D>(config: KalSnackbarConfig<D>): PortalInjector {
 
