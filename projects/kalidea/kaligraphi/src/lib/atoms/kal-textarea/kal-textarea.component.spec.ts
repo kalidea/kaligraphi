@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { KalTextareaComponent } from './kal-textarea.component';
-import { ReactiveFormsModule } from '@angular/forms';
 
 describe('KalTextareaComponent', () => {
   let component: KalTextareaComponent;
