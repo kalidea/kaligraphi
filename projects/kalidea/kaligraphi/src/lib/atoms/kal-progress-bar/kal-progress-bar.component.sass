@@ -1,5 +1,20 @@
-=kal-progress-bar($parameters)
+=kal-themed-progress-bar($theme-parameters)
+    display: get("display", $theme-parameters)
+    background-color: get("background-color", $theme-parameters)
+    width: get("width", $theme-parameters)
+    height: get("height", $theme-parameters)
+    .kal-progress-bar__progress
+      background-color: get("progress.background-color", $theme-parameters)
+      height: get("progress.height", $theme-parameters)
+
+    &.kal-theme--reverse
+      background-color: get("reverse.background-color", $theme-parameters)
+      .kal-progress-bar__progress
+        background-color: get("reverse.progress.background-color", $theme-parameters)
+
+=kal-progress-bar($kal-parameters)
   kal-progress-bar
-    div
-      background-color: black
-      height: 5px
+    +kal-themed-progress-bar(get('progress-bar.default', $kal-parameters))
+    @each $key, $params in get('progress-bar.alternates', $kal-parameters)
+      &.kal-theme--#{$key}
+        +kal-themed-progress-bar($params)
