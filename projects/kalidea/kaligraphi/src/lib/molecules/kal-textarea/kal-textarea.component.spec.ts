@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { KalTextareaComponent } from './kal-textarea.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 describe('KalTextareaComponent', () => {
   let component: KalTextareaComponent;
@@ -8,7 +9,12 @@ describe('KalTextareaComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ KalTextareaComponent ]
+      imports: [
+        ReactiveFormsModule
+      ],
+      declarations: [
+        KalTextareaComponent
+      ]
     })
     .compileComponents();
   }));

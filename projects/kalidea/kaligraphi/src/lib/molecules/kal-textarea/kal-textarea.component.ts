@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { buildProviders, FormElementComponent } from '../../utils/index';
+import { AutoUnsubscribe, buildProviders, FormElementComponent } from '../../utils/index';
 
 @Component({
   selector: 'kal-textarea',
@@ -28,6 +28,7 @@ export class KalTextareaComponent extends FormElementComponent<string> implement
   /**
    * Subscription of formControl
    */
+  @AutoUnsubscribe()
   private subscription: Subscription = Subscription.EMPTY;
 
   constructor(private cdr: ChangeDetectorRef) {
