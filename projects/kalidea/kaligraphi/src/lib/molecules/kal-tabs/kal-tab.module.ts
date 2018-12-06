@@ -9,6 +9,7 @@ import { KalTabBodyComponent } from './kal-tab-body/kal-tab-body.component';
 import { KalTabLabelDirective } from './kal-tab-label.directive';
 
 export * from './kal-tab/kal-tab.component';
+export * from './kal-tab-change';
 export * from './kal-tab-group/kal-tab-group.component';
 export * from './kal-tab-header/kal-tab-header.component';
 export * from './kal-tab-body/kal-tab-body.component';
@@ -19,7 +20,7 @@ const exports = [
   KalTabHeaderComponent,
   KalTabBodyComponent,
   KalTabComponent,
-  KalTabLabelDirective
+  KalTabLabelDirective,
 ];
 
 @NgModule({

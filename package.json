@@ -17,7 +17,8 @@
     "serve:playground": "npm run serve",
     "build:playground": "ng build playground --prod",
     "build:all": "npm run build:lib && npm run build:playground",
-    "verify": "ng lint @kalidea/kaligraphi && npm run test:ci && npm run build:all"
+    "verify": "ng lint @kalidea/kaligraphi && npm run test:ci && npm run build:all",
+    "verify:windows": "ng lint @kalidea/kaligraphi && npm run build:all && npm run test"
   },
   "private": true,
   "dependencies": {

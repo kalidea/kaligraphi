@@ -7,6 +7,7 @@
 ```html
 <kal-list [datasource]="datasource"
           [groupByFunction]="groupByFunction"
+          [selectionMode]="multiple"
           (selectionChange)="selectRow($event)">
 
           <ng-template kalListItem let-item="item">
@@ -23,6 +24,8 @@ class Test {
   
   groupByFunction: (item: {name: string}) => string;
   
+  listSelection = new KalListSelection<{id: string}>([{id: '1'}, {id: '2'}]);
+  
   selectRow($event) {
   }
   
@@ -38,7 +41,7 @@ class DataSource {
   }
   
   connect(): {item: {name: string}}[] {
-    return of([{item: {name: 'test'}}]);
+    return of([{id: '1', name: 'test 1'}, {id: '2', name: 'test 2'}]);
   }
   
   disconnect() {
@@ -64,7 +67,7 @@ class DataSource {
 ```typescript
 class Test {
 
-  datasource = of([{item: {name: 'test'}}]);
+  datasource = of([{id: '1', name: 'test 1'}, {id: '2', name: 'test 2'}]);
   
   constructor() {
   }
