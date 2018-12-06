@@ -9,6 +9,10 @@ import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@
 })
 export class AccordionComponent implements OnInit {
 
+  disabled = false;
+
+  multiple = false;
+
   constructor() {
   }
 

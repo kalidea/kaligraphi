@@ -158,6 +158,13 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
     }
   }
 
+  /**
+   * @inheritDoc
+   */
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled = isDisabled;
+  }
+
 }
 
 

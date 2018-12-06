@@ -9,7 +9,10 @@ import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@
 })
 export class IconComponent implements OnInit {
 
-  constructor() { }
+  iconName = 'star';
+
+  constructor() {
+  }
 
   ngOnInit() {
   }

@@ -34,14 +34,8 @@ export class KalCheckboxComponent extends FormElementComponent<boolean> implemen
    */
   controlSubscription: Subscription;
 
-  /**
-   * Contains label
-   */
-  readonly containsLabel;
-
-  constructor(@Optional() formField: KalFormFieldComponent) {
+  constructor() {
     super();
-    this.containsLabel = !formField;
   }
 
   /**

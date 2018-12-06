@@ -1,25 +1,33 @@
-<kal-list
-  #kalListItem
-  tabindex="1"
-  (selectionChange)="selectedValue = $event"
-  [dataSource]="dataSource"
-  [groupByFunction]="groupByFunction"
-  [disableRowsFunction]="disableRowsFunction"
-  [selectable]="itemsSelectable">
+<h1>List</h1>
 
-  <ng-template kalListItem let-item="item">
-    {{ item.name }}
-  </ng-template>
+<div class="example">
+  <article>
+    <kal-list
+      #kalListItem
+      tabindex="1"
+      (selectionChange)="selectedValue = $event"
+      [dataSource]="dataSource"
+      [groupByFunction]="groupByFunction"
+      [disableRowsFunction]="disableRowsFunction"
+      [selectionMode]="selectionMode">
 
-</kal-list>
+      <ng-template kalListItem let-item="item">
+        {{ item.name }}
+      </ng-template>
 
-<div >
-  {{ selectedValue | json }}
+    </kal-list>
+    <div>
+      {{ selectedValue | json }}
+    </div>
+  </article>
 </div>
 
-<kal-button type="button" kalTheme="secondary" (click)="addGroupByFunction()">Group items</kal-button>
-<kal-button type="button" kalTheme="secondary" (click)="disableRow()">Disable rows</kal-button>
-<kal-button type="button" kalTheme="secondary" (click)="unselectRows()">Unselectable rows</kal-button>
-<kal-button type="button" kalTheme="secondary" (click)="selectSingleRow()">Single selectable row</kal-button>
-<kal-button type="button" kalTheme="secondary" (click)="selectMultipleRows()">Multiple selectable rows</kal-button>
-<kal-button type="button" kalTheme="secondary" (click)="kalListItem.selectAll()">Select All rows</kal-button>
+<div class="configurator">
+
+  <kal-button type="button" kalTheme="secondary" (click)="addGroupByFunction()">Group items</kal-button>
+  <kal-button type="button" kalTheme="secondary" (click)="disableRow()">Disable rows</kal-button>
+  <kal-button type="button" kalTheme="secondary" (click)="unselectRows()">Unselectable rows</kal-button>
+  <kal-button type="button" kalTheme="secondary" (click)="selectSingleRow()">Single selectable row</kal-button>
+  <kal-button type="button" kalTheme="secondary" (click)="selectMultipleRows()">Multiple selectable rows</kal-button>
+  <kal-button type="button" kalTheme="secondary" (click)="kalListItem.selectAll()">Select All rows</kal-button>
+</div>

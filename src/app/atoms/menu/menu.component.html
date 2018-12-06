@@ -1,10 +1,31 @@
-<kal-button [kalMenuTriggerFor]="menu">
-  toggle
-</kal-button>
+<h1>Menu</h1>
 
-<kal-menu #menu kalTheme="primary">
-  <kal-option (selectionChange)="selected($event)">Option 1</kal-option>
-  <kal-option (selectionChange)="selected($event)">Option 2</kal-option>
-  <kal-option (selectionChange)="selected($event)">Option 3</kal-option>
-</kal-menu>
+<div class="example" [class.darkBg]="reverse">
+  <article>
+    <kal-button [kalMenuTriggerFor]="menu" [kalTheme]="themes">
+      <kal-icon>add</kal-icon>
+      Toggle button primary
+    </kal-button>
 
+    <kal-menu #menu [kalTheme]="themes">
+      <kal-option (selectionChange)="selected($event)">Option 1</kal-option>
+      <kal-option (selectionChange)="selected($event)">Option 2</kal-option>
+      <kal-option (selectionChange)="selected($event)">Option 3</kal-option>
+    </kal-menu>
+
+  </article>
+
+</div>
+
+<div class="configurator">
+
+  <kal-form-field>
+    <kal-select label="themes" placeholder="pick themes" multiple="true" [(ngModel)]="themes">
+      <kal-option value="">none</kal-option>
+      <kal-option value="primary">primary</kal-option>
+      <kal-option value="secondary">secondary</kal-option>
+      <kal-option value="tertiary">tertiary</kal-option>
+      <kal-option value="reverse">reverse</kal-option>
+    </kal-select>
+  </kal-form-field>
+</div>

@@ -1,4 +1,14 @@
-import { ChangeDetectionStrategy, Component, forwardRef, Injector, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  forwardRef,
+  Injector,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { ESCAPE } from '@angular/cdk/keycodes';
@@ -8,7 +18,7 @@ import { Subscription } from 'rxjs';
 import { coerceKalDateProperty, KalDate, KalDateType } from './kal-date';
 import { KalMonthCalendarComponent } from './kal-month-calendar/kal-month-calendar.component';
 import { KalDatepickerHeaderComponent } from './kal-datepicker-header/kal-datepicker-header.component';
-import { buildProviders, FormElementComponent } from '../../utils';
+import { buildProviders, FormElementComponent } from '../../utils/index';
 
 /**
  * Possible views for the calendar.
@@ -68,6 +78,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   private overlayRef: OverlayRef;
 
   constructor(private overlay: Overlay,
+              private elementRef: ElementRef<HTMLElement>,
               private injector: Injector) {
     super();
   }
@@ -82,7 +93,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   }
 
   /**
-   * Wether the current view is the `multi` view.
+   * Whether the current view is the `multi` view.
    */
   get isMultiView(): boolean {
     return this.currentView === 'multi';
@@ -91,6 +102,15 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   get parentControlValidator() {
     const parentControl = this.injector.get(NgControl, null);
     return parentControl.control.validator;
+  }
+
+  private get positionStrategy() {
+    return this.overlay
+      .position()
+      .flexibleConnectedTo(this.elementRef)
+      .withPositions([
+        {originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top'}
+      ]);
   }
 
   /**
@@ -122,8 +142,8 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
    * Update the input value with the given date.
    */
   setInputValue(date: KalDate): void {
-    const isDateValid = (date && date.valid) ? date : '';
-    this.control.setValue(isDateValid ? date.toString() : '', {emitEvent: false});
+    const displayedDate = (date && date.valid) ? date.toString() : '';
+    this.control.setValue(displayedDate);
   }
 
   /**
@@ -159,12 +179,16 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     this.currentDate = kalDate;
   }
 
-  ngOnInit() {
+  private createOverlay(): void {
     this.overlayRef = this.overlay.create({
+      positionStrategy: this.positionStrategy,
       hasBackdrop: true,
+      width: this.elementRef.nativeElement.getBoundingClientRect().width,
       backdropClass: 'cdk-overlay-transparent-backdrop'
     });
+  }
 
+  private initSubscriptions(): void {
     this.backdropClickSubscription = this.overlayRef.backdropClick().subscribe(() => {
       this.close();
     });
@@ -174,6 +198,11 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
         filter(event => event.keyCode === ESCAPE)
       )
       .subscribe(() => this.close());
+  }
+
+  ngOnInit() {
+    this.createOverlay();
+    this.initSubscriptions();
 
     this.control.valueChanges.pipe(
       map(value => coerceKalDateProperty(value)), // transform as date

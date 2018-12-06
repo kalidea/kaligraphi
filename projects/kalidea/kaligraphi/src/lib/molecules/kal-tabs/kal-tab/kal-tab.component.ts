@@ -1,7 +1,18 @@
-import { ChangeDetectionStrategy, Component, ContentChild, Input, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ContentChild,
+  forwardRef,
+  Inject,
+  Input,
+  Optional,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { KalTabLabelDirective } from '../kal-tab-label.directive';
+import { KalTabGroupComponent } from '../kal-tab-group/kal-tab-group.component';
 
 @Component({
   selector: 'kal-tab',
@@ -15,7 +26,17 @@ export class KalTabComponent {
   /**
    * Label of the header
    */
-  @Input() label = '';
+  @Input()
+  get label(): string {
+    return this.tabLabel;
+  }
+
+  set label(value: string) {
+    this.tabLabel = value;
+    if (this.tabGroup) {
+      this.tabGroup.markForTabGroupCheck();
+    }
+  }
 
   /**
    * Template label of the header
@@ -37,7 +58,12 @@ export class KalTabComponent {
    */
   private isDisabled = false;
 
-  constructor() {
+  /**
+   * Label of the header
+   */
+  private tabLabel = '';
+
+  constructor(@Optional() @Inject(forwardRef(() => KalTabGroupComponent)) public tabGroup: KalTabGroupComponent) {
   }
 
   /**

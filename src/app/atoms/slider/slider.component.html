@@ -1,45 +1,35 @@
-<kal-slider [step]="step"
-            [thumbLabel]="thumbLabel"
-            [tickInterval]="tickInterval"
-            [limit]="limit"
-            [disabled]="isDisabled">
-</kal-slider>
+<h1>Slider</h1>
 
-<p>
-  <label for="stepValue">Step :</label>
-  <input id="stepValue"
-         value="1"
-         type="number"
-         (keyup)="updateStep($event)">
-</p>
+<div class="example">
+  <article>
+    <kal-slider [step]="step"
+                [thumbLabel]="thumbLabel"
+                [tickInterval]="tickInterval"
+                [limit]="limit"
+                [disabled]="isDisabled">
+    </kal-slider>
+  </article>
+</div>
 
-<p>
-  <label for="tickInterval">Tick interval :</label>
-  <input id="tickInterval"
-         value="25"
-         type="number"
-         (keyup)="updateTickInterval($event)">
-</p>
+<div class="configurator">
+    <kal-form-field>
+      <kal-input label="Step" [(ngModel)]="step" type="number"></kal-input>
+    </kal-form-field>
 
-<p>
-  <label for="limit">Limit :</label>
-  <input id="limit"
-         value="30"
-         type="number"
-         (keyup)="updateLimit($event)">
-</p>
+  <kal-form-field>
+    <kal-input label="Tick interval" [(ngModel)]="tickInterval" type="number"></kal-input>
+  </kal-form-field>
 
-<p>
-  <kal-checkbox
-    label="Disable"
-    (valueChange)="toggle($event)">
-  </kal-checkbox>
-</p>
+  <kal-form-field>
+    <kal-input label="Limit" [(ngModel)]="limit" type="number"></kal-input>
+  </kal-form-field>
 
-<p>
-  <kal-checkbox
-    label="Show thumb label"
-    [value]="true"
-    (valueChange)="toggleThumbLabel($event)">
-  </kal-checkbox>
-</p>
+  <kal-form-field>
+    <kal-checkbox label="Disable" [(ngModel)]="isDisabled"></kal-checkbox>
+  </kal-form-field>
+
+  <kal-form-field>
+    <kal-checkbox label="Show thumb label" [(ngModel)]="thumbLabel"></kal-checkbox>
+  </kal-form-field>
+
+</div>

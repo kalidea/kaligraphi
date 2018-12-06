@@ -1,25 +1,39 @@
+<h1>Dialog</h1>
 
-<blockquote *ngIf="result">{{ result | json }}</blockquote>
+<div class="example">
 
-<div>
-  <input type="checkbox"
-         [(ngModel)]="hasBackdrop"
-         id="hasBackdrop"/>
-  <label for="hasBackdrop">hasBackdrop</label>
+  <div>
+    <p>
+      <kal-button kalTheme="secondary" (click)="openDialog()">Open Dialog</kal-button>
+    </p>
+    <blockquote *ngIf="result">
+      result: {{ result | json }}
+    </blockquote>
+  </div>
+
+  <div>
+    <p>
+      <kal-button kalTheme="secondary" (click)="openConfirmDialog()">Open confirm Dialog</kal-button>
+    </p>
+    <blockquote *ngIf="resultConfirm">
+      result: {{ resultConfirm | json }}
+    </blockquote>
+  </div>
 </div>
 
-<div>
-  <input type="checkbox"
-         [(ngModel)]="disableClose"
-         id="disableClose"/>
-  <label for="disableClose">disableClose</label>
+<div class="configurator">
+  <kal-form-field>
+    <kal-checkbox
+      label="hasBackdrop"
+      [(ngModel)]="hasBackdrop">
+    </kal-checkbox>
+  </kal-form-field>
+
+  <kal-form-field>
+    <kal-checkbox
+      label="disableClose"
+      [(ngModel)]="disableClose">
+    </kal-checkbox>
+  </kal-form-field>
 </div>
-<p>
-  <button (click)="openDialog()">Open Dialog</button>
-</p>
 
-
-<blockquote *ngIf="resultConfirm">{{ resultConfirm | json }}</blockquote>
-<p>
-  <button (click)="openConfirmDialog()">Open confirm Dialog</button>
-</p>

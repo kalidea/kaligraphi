@@ -1,10 +1,10 @@
-<div class="kal-form-field"
-     [class.kal-form-field-error]="hasError">
+<div class="kal-form-field__wrapper"
+     [class.kal-form-field--error]="hasError">
 
-  <label class="kal-form-field-label"
+  <label class="kal-form-field__label"
          [attr.for]="for"
-         [class.kal-form-field-required]="required">
-    {{ label }}
+         [class.kal-form-field--required]="required">
+    {{ label }}&nbsp;
   </label>
 
   <ng-content></ng-content>

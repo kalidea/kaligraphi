@@ -1,21 +1,37 @@
-<h1> kal-form-field</h1>
+<h1> form-field</h1>
+
+<div class="example" [class.reverse]="reverse">
+
+  <kal-form-field>
+    <kal-input label="Input label"
+               required="true"
+               [kalTheme]="themes"
+               [disabled]="disabled"
+               [formControl]="control1">
+    </kal-input>
+  </kal-form-field>
 
 
-<h2> With input </h2>
-<kal-form-field >
+  <kal-form-field>
+    <kal-select tabindex="1"
+                label="Select label"
+                [kalTheme]="themes"
+                [disabled]="disabled"
+                required
+                placeholder="Select items">
+      <kal-option value="1">1</kal-option>
+      <kal-option value="2">2</kal-option>
+      <kal-option value="3">3</kal-option>
+      <kal-option value="4">4</kal-option>
+    </kal-select>
+  </kal-form-field>
+</div>
 
-  <kal-input label="firstname" required="true" [formControl]="control1"></kal-input>
 
-</kal-form-field>
+<div class="configurator">
 
-<h2> With select </h2>
-<kal-form-field>
+  <kal-checkbox [(ngModel)]="disabled" label="disabled"></kal-checkbox>
 
-  <kal-select tabindex="1" label="Site" required placeholder="Select items">
-    <kal-option value="1">1</kal-option>
-    <kal-option value="2">2</kal-option>
-    <kal-option value="3">3</kal-option>
-    <kal-option value="4">4</kal-option>
-  </kal-select>
+  <kal-checkbox [(ngModel)]="reverse" label="reverse"></kal-checkbox>
 
-</kal-form-field>
+</div>

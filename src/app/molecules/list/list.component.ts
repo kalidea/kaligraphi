@@ -32,9 +32,9 @@ export class ListComponent implements OnInit {
   selectedValue;
 
   /**
-   * items selectable
+   * items selectionMode
    */
-  itemsSelectable = null;
+  selectionMode = 'single';
 
   constructor() {
   }
@@ -54,15 +54,15 @@ export class ListComponent implements OnInit {
   }
 
   selectMultipleRows() {
-    this.itemsSelectable = 'multiple';
+    this.selectionMode = 'multiple';
   }
 
   unselectRows() {
-    this.itemsSelectable = 'none';
+    this.selectionMode = 'none';
   }
 
   selectSingleRow() {
-    this.itemsSelectable = null;
+    this.selectionMode = null;
   }
 
   ngOnInit() {
@@ -70,48 +70,48 @@ export class ListComponent implements OnInit {
 
 }
 
-class TestDataSource implements DataSource<{code: string, name: string}> {
+class TestDataSource implements DataSource<{id: string, name: string}> {
 
   /**
    * The list of items
    */
   listItem = [
     {
-      code: '1',
+      id: '1',
       name: 'aTest',
       disabled: true
     },
     {
-      code: '2',
+      id: '2',
       name: 'aTest2',
       disabled: false
     },
     {
-      code: '3',
+      id: '3',
       name: 'aTest3',
       disabled: false
     },    {
-      code: '4',
+      id: '4',
       name: 'bTest4',
       disabled: false
     },
     {
-      code: '5',
+      id: '5',
       name: 'cTest5',
       disabled: false
     },
     {
-      code: '6',
+      id: '6',
       name: 'eTest6',
       disabled: false
     },
     {
-      code: '7',
+      id: '7',
       name: 'rTest7',
       disabled: false
     },
     {
-      code: '8',
+      id: '8',
       name: 'rTest8',
       disabled: false
     },

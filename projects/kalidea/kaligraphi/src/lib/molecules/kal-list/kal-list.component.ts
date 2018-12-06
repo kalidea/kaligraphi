@@ -16,11 +16,47 @@ import {
 } from '@angular/core';
 import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
 import { ENTER, SPACE } from '@angular/cdk/keycodes';
+import { CollectionViewer, DataSource, ListRange } from '@angular/cdk/collections';
 import { Observable, Subscription } from 'rxjs';
 import { KalListItemDirective } from './kal-list-item.directive';
 import { KalListItemSelectionDirective } from './kal-list-item-selection.directive';
-import { CollectionViewer, DataSource, ListRange } from '@angular/cdk/collections';
 import { AutoUnsubscribe } from '../../utils';
+
+enum KalListSelectionMode {
+  None = 'none',
+  Single = 'single',
+  Multiple = 'multiple'
+}
+
+type KalListSelectionStore = 'selected' | 'excluded';
+
+export class KalListSelection<T extends { id: string }> {
+
+  constructor(public selected: T[] = [], public all: boolean = false, public excluded: T[] = []) {
+  }
+
+  reset() {
+    this.selected = [];
+    this.excluded = [];
+  }
+
+  add(item: T, store: KalListSelectionStore = 'selected') {
+    (store === 'selected' ? this.selected : this.excluded).push(item);
+  }
+
+  remove(item: T, store: KalListSelectionStore = 'selected') {
+    (store === 'selected' ? this.selected : this.excluded).splice(this.indexOf(item, store), 1);
+  }
+
+  indexOf(item: T, store: KalListSelectionStore = 'selected'): number {
+    return (store === 'selected' ? this.selected : this.excluded).findIndex(element => element.id === item.id);
+  }
+
+  contains(item: T, store: KalListSelectionStore = 'selected') {
+    return this.indexOf(item, store) !== -1 || (this.all && this.excluded.findIndex(element => element.id === item.id) === -1);
+  }
+
+}
 
 @Component({
   selector: 'kal-list',
@@ -29,7 +65,7 @@ import { AutoUnsubscribe } from '../../utils';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewInit, OnDestroy {
+export class KalListComponent<T extends { id: string }> implements CollectionViewer, OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Results list
@@ -44,7 +80,7 @@ export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewI
   /**
    * Triggered when selection has changed
    */
-  @Output() selectionChange = new EventEmitter<T[] | T>();
+  @Output() selectionChange: EventEmitter<KalListSelection<T>> = new EventEmitter<KalListSelection<T>>();
 
   /**
    * Row template
@@ -64,12 +100,7 @@ export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewI
   /**
    * Selectable items (none, single, multiple)
    */
-  itemsSelectable: 'multiple' | 'none' = null;
-
-  /**
-   * The selected items list
-   */
-  private selectedItems = [];
+  private _selectionMode: KalListSelectionMode = KalListSelectionMode.Single;
 
   /**
    * The config is use to group all items
@@ -91,12 +122,13 @@ export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewI
    */
   private selectedItemIndex: number;
 
+  private _selection: KalListSelection<T> = new KalListSelection<T>();
+
   /**
    * The subscription
    */
   @AutoUnsubscribe()
   private subscription: Subscription = Subscription.EMPTY;
-
   /**
    * Is the row disabled
    */
@@ -105,24 +137,48 @@ export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewI
   constructor(private cdr: ChangeDetectorRef) {
   }
 
+  @Input()
+  get selection(): KalListSelection<T> {
+    return this._selection;
+  }
+
+  set selection(value: KalListSelection<T>) {
+    if (value) {
+      this._selection = value;
+      this.cdr.markForCheck();
+    }
+  }
+
   /**
    * Selectable items (none, single, multiple)
    */
   @Input()
-  set selectable(value: string) {
+  set selectionMode(value: KalListSelectionMode) {
 
-    if (value === 'multiple') {
-      this.itemsSelectable = 'multiple';
-    } else if (value === 'none') {
-      this.selectedItems = [];
-      this.itemsSelectable = 'none';
-    } else {
-      this.selectedItems = [];
-      this.itemsSelectable = null;
+    switch (value) {
+      case KalListSelectionMode.Multiple:
+        this._selectionMode = value;
+        break;
+
+      case KalListSelectionMode.None:
+        this._selection.selected = [];
+        this._selection.excluded = [];
+        this._selectionMode = value;
+        break;
+
+      default:
+        this._selection.selected = [];
+        this._selection.excluded = [];
+        this._selectionMode = KalListSelectionMode.Single;
+        break;
     }
 
     this.cdr.markForCheck();
 
+  }
+
+  get selectionMode() {
+    return this._selectionMode;
   }
 
   /**
@@ -199,10 +255,17 @@ export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewI
   }
 
   selectAll() {
-    if (this.itemsSelectable === 'multiple') {
-      this.selectedItems = [];
-      this.selectedItems.push(...this.results);
-      this.selectionChange.emit(this.selectedItems);
+    if (this._selectionMode === KalListSelectionMode.Multiple) {
+      this._selection.all = !this._selection.all;
+      this._selection.reset();
+
+      if (this._selection.all) {
+        this._selection.selected.push(...this.results);
+      }
+
+      this.cdr.markForCheck();
+
+      this.selectionChange.emit(this._selection);
     }
   }
 
@@ -210,14 +273,14 @@ export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewI
    * Select an item in list and emit an event with the selected item value
    */
   selectItem(item: T) {
-    if (!this.disableRowsFunction(item) && this.itemsSelectable !== 'none') {
+    if (!this.disableRowsFunction(item) && this._selectionMode !== KalListSelectionMode.None) {
 
       this.selectedItemIndex = this.results.findIndex(row => row === item);
       this.keyManager.setActiveItem(this.selectedItemIndex);
 
       this.updateSelectedItem(item);
 
-      this.selectionChange.emit(this.itemsSelectable === 'multiple' ? this.selectedItems : item);
+      this.selectionChange.emit(this._selection);
     }
   }
 
@@ -225,14 +288,15 @@ export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewI
    * Is the item selected
    */
   isSelected(item): boolean {
-    return this.selectedItems.indexOf(item) !== -1;
+    return this._selection.contains(item);
   }
 
   /**
    * Reset the selected item
    */
   reset() {
-    this.selectedItems = [];
+    this._selection.selected = [];
+    this._selection.excluded = [];
     this.cdr.markForCheck();
   }
 
@@ -246,20 +310,32 @@ export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewI
       && (!previousItem || this.groupByFunction(previousItem) !== this.groupByFunction(item));
   }
 
+  toggleItem(item: T) {
+    if (this._selection.indexOf(item) === -1) {
+      this._selection.add(item);
+    } else {
+      this._selection.remove(item);
+    }
+  }
+
   private updateSelectedItem(item: T) {
 
-    if (this.itemsSelectable !== 'multiple') {
-      this.selectedItems = [];
-      this.selectedItems.push(item);
-    } else {
+    if (this._selectionMode !== KalListSelectionMode.Multiple) {
+      this._selection.selected = [];
+      this._selection.add(item);
+    } else if (this._selection.all) {
 
-      const index = this.selectedItems.findIndex(row => row === item);
+      const position = this._selection.indexOf(item, 'excluded');
 
-      if (index !== -1) {
-        this.selectedItems.splice(index, 1);
+      if (position === -1) {
+        this._selection.remove(item);
+        this._selection.add(item, 'excluded');
       } else {
-        this.selectedItems.push(item);
+        this._selection.remove(item, 'excluded');
+        this._selection.add(item);
       }
+    } else {
+      this.toggleItem(item);
     }
   }
 
@@ -284,6 +360,7 @@ export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewI
       this.results = this.dataSource;
       this.cdr.markForCheck();
     }
+
   }
 
   ngAfterViewInit() {

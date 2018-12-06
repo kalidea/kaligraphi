@@ -1,51 +1,71 @@
-<h1>
-  Kal-input
-</h1>
+<h1>Input</h1>
 
-<section>
+<section class="example">
   <article>
     <kal-form-field>
-
       <kal-input
         label="update on change"
+        (iconClicked)="iconClicked('first')"
+        [kalTheme]="themes"
+        [icon]="icon"
         [formControl]="controlChange"
         [type]="type"
         [clearable]="clearable"
         [placeholder]="placeholder"></kal-input>
-      {{ controlChange.value}}
+      value: {{ controlChange.value}}<br/>
+      icon clicked: {{ lastIconClicked }}
     </kal-form-field>
   </article>
+
   <article>
     <kal-form-field>
       <kal-input
         label="update on blur"
+        (iconClicked)="iconClicked('second')"
+        [kalTheme]="themes"
+        [icon]="icon"
         [formControl]="controlBlur"
         [type]="type"
         [clearable]="clearable"
         [placeholder]="placeholder"></kal-input>
-      {{ controlBlur.value}}
+      value: {{ controlBlur.value}}<br/>
+      icon clicked: {{ lastIconClicked }}
     </kal-form-field>
   </article>
 </section>
-<hr/>
 
+<div class="configurator">
 
-<kal-form-field>
-  <kal-select [(ngModel)]="type" label="Type">
-    <kal-option value="text">text</kal-option>
-    <kal-option value="password">password</kal-option>
-    <kal-option value="number">number</kal-option>
-    <kal-option value="currency">currency</kal-option>
-    <kal-option value="phone">phone</kal-option>
-    <kal-option value="text">text</kal-option>
-  </kal-select>
-</kal-form-field>
+  <kal-form-field>
+    <kal-select placeholder="themes" multiple="true" [(ngModel)]="themes" label="themes">
+      <kal-option value="">none</kal-option>
+      <kal-option value="reverse">reverse</kal-option>
+    </kal-select>
+  </kal-form-field>
 
-<kal-form-field>
-  <kal-input [(ngModel)]="placeholder" label="Placeholder"></kal-input>
-</kal-form-field>
+  <kal-form-field>
+    <kal-select [(ngModel)]="type" label="Type">
+      <kal-option value="text">text</kal-option>
+      <kal-option value="password">password</kal-option>
+      <kal-option value="number">number</kal-option>
+      <kal-option value="currency">currency</kal-option>
+      <kal-option value="phone">phone</kal-option>
+      <kal-option value="text">text</kal-option>
+    </kal-select>
+  </kal-form-field>
 
-<label>
-  Clearable
-  <input type="checkbox" [(ngModel)]="clearable">
-</label>
+  <kal-form-field>
+    <kal-input [(ngModel)]="placeholder" label="Placeholder"></kal-input>
+  </kal-form-field>
+
+  <kal-form-field>
+    <kal-checkbox [(ngModel)]="clearable" label="clearable"></kal-checkbox>
+  </kal-form-field>
+
+  <kal-form-field>
+    <kal-input
+      label="Icon"
+      [(ngModel)]="icon"
+    ></kal-input>
+  </kal-form-field>
+</div>

@@ -19,7 +19,34 @@ $kal-base-fontsize: 17px
 
 +kaligraphi($kal-parameters)
 
-.configurator
+.example
+  &::before
+    content: "Example"
+    display: block
+    flex: 0 0 100%
+    margin-bottom: 30px
+    font-weight: bold
+  padding: 10px 40px 40px 40px
+  border: 1px solid #CCC
+  margin: 5px 0
   display: flex
+  flex-wrap: wrap
+  > *
+    flex: 1 1 auto
+.darkBg, .reverse
+  background-color: #1f1f1f
+
+
+.configurator
+  &::before
+    content: "Configure"
+    display: block
+    flex: 0 0 100%
+    margin-bottom: 30px
+    font-weight: bold
+  padding: 10px 40px 40px 40px
+  background-color: get('palettes.grey.wf200', $kal-parameters)
+  display: flex
+  flex-wrap: wrap
   > *
     flex: 1 1 auto

@@ -1,12 +1,10 @@
 import { ViewContainerRef } from '@angular/core';
-
-// Counter for unique dialog ids.
-let uniqueId = 0;
+import { KalOverlayConfig } from '../../utils/classes/kal-overlay-config';
 
 /**
  * @see https://github.com/angular/material2/blob/master/src/lib/dialog/dialog-config.ts
  */
-export class KalDialogConfig<D = any> {
+export class KalDialogConfig<D = any> extends KalOverlayConfig {
 
   /**
    * Where the attached component should live in Angular's *logical* component tree.
@@ -21,10 +19,6 @@ export class KalDialogConfig<D = any> {
    */
   title ?: string;
 
-  /**
-   * ID for the dialog. If omitted, a unique one will be generated.
-   */
-  id ?: string;
 
   /**
    * Whether the dialog has a backdrop.
@@ -74,23 +68,17 @@ export class KalDialogConfig<D = any> {
   /**
    * Data being injected into the child component.
    */
-  data ?: D | null = null;
+  data ?: D | null;
 
   /**
    * Whether the dialog should closeDialog when the user goes backwards/forwards in history.
    */
   closeOnNavigation ? = true;
 
-  constructor(config?: KalDialogConfig<D>) {
-    if (config) {
-      Object.keys(config)
-        .filter(key => typeof config[key] !== 'undefined')
-        .forEach(key => this[key] = config[key]);
-    }
+  protected configName ? = 'dialog';
 
-    // generate id of dialog here for consistency
-    if (!this.id) {
-      this.id = `kal-dialog-${uniqueId++}`;
-    }
+  constructor(config?: KalDialogConfig) {
+    super(config);
   }
+
 }

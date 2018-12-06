@@ -22,6 +22,7 @@ export class AppComponent {
     {label: 'Slider', route: '/atoms/slider'},
     {label: 'Menu', route: '/atoms/menu'},
     {label: 'Card', route: '/atoms/card'},
+    {label: 'Snackbar', route: '/atoms/snackbar'},
     {label: '---', route: ''},
     {label: 'Button', route: '/molecules/button'},
     {label: 'List', route: '/molecules/list'},

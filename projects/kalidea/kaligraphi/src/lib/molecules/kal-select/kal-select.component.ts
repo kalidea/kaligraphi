@@ -81,6 +81,9 @@ export class KalSelectComponent
    */
   private isPanelOpen: boolean;
 
+  /**
+   * Store Subscriptions
+   */
   private subscriptionsList: Subscription[] = [];
 
   constructor(private overlay: Overlay,
@@ -101,6 +104,12 @@ export class KalSelectComponent
 
   set multiple(multiple: boolean) {
     this.isMultiple = coerceBooleanProperty(multiple);
+    // If mode change multiple to simple, we keep only one option
+    if (this.selection && !this.isMultiple && this.selection.length > 1) {
+      const keepOption = this.selection[0];
+      this.reset();
+      this.optionSelected(keepOption);
+    }
   }
 
   /**
@@ -119,8 +128,8 @@ export class KalSelectComponent
     }
 
     return (this.multiple) ?
-      this.selection.map(option => option.viewValue).join(', ') :
-      this.selection[0].viewValue;
+      this.selection.map(option => option.getLabel()).join(', ') :
+      this.selection[0].getLabel();
   }
 
   /**
@@ -210,6 +219,11 @@ export class KalSelectComponent
    * Select an option by his value
    */
   select(value: any, withNotify = false): void {
+    if (value === null) {
+      this.reset();
+      return;
+    }
+
     if (this.isMultiple && value instanceof Array) {
       const multipleOptions = this.options.filter((item) => value.indexOf(item.value) >= 0);
       this.multipleOptionSelected(multipleOptions, withNotify);
@@ -223,12 +237,23 @@ export class KalSelectComponent
   }
 
   /**
+   * Reset selection
+   */
+  reset(): void {
+    this.selection.map(o => o.active = false);
+    this.selection = [];
+    this.cdr.markForCheck();
+  }
+
+  /**
    * Focus the select element
    */
   @HostListener('focus')
   focus(): void {
-    this.elementRef.nativeElement.focus();
-    this.isFocused = true;
+    if (!this.disabled) {
+      this.elementRef.nativeElement.focus();
+      this.isFocused = true;
+    }
   }
 
   /**
@@ -301,6 +326,7 @@ export class KalSelectComponent
     this.overlayRef = this.overlay.create({
       positionStrategy,
       hasBackdrop: true,
+      backdropClass: 'kal-overlay__transparent',
       width: this.elementRef.nativeElement.getBoundingClientRect().width,
       scrollStrategy: this.overlay.scrollStrategies.reposition()
     });
@@ -318,8 +344,6 @@ export class KalSelectComponent
   /**
    * Event emitted when several options are selected
    * Set the option as active
-   * @param option KalOptionComponent
-   * @param withNotify boolean
    */
   private multipleOptionSelected(options: KalOptionComponent[], withNotify = true) {
     if (!this.isMultiple) {
@@ -341,8 +365,6 @@ export class KalSelectComponent
   /**
    * Event emitted when an option is selected
    * Set the option as active
-   * @param option KalOptionComponent
-   * @param withNotify boolean
    */
   private optionSelected(option: KalOptionComponent, withNotify = true) {
     if (this.multiple) {
@@ -383,7 +405,13 @@ export class KalSelectComponent
     } else {
       option.active = true;
       this.selection.push(option);
+      // Multiple selection keep the option's order
+      this.selection.sort((x, y) => {
+        return this.options.toArray().indexOf(x) > this.options.toArray().indexOf(y) ? 1 : -1;
+      });
     }
+
+    this.checkResetActiveItem();
   }
 
   /**
@@ -402,7 +430,7 @@ export class KalSelectComponent
    */
   private checkResetActiveItem(): void {
     if (this.selection.indexOf(this.keyManager.activeItem) < 0) {
-      this.keyManager.setActiveItem(this.selection[0]);
+      this.keyManager.setActiveItem(this.selection[this.selection.length - 1]);
     }
   }
 
@@ -438,7 +466,10 @@ export class KalSelectComponent
         this.cleanSubscriptionsList();
         this.subscriptionsList.push(
           merge<KalOptionComponent>(...this.options.map(option => option.selectionChange))
-            .subscribe(event => this.optionSelected(event))
+            .subscribe(event => {
+              this.focus();
+              this.optionSelected(event);
+            })
         );
       });
 
@@ -454,5 +485,4 @@ export class KalSelectComponent
 
     this.cleanSubscriptionsList();
   }
-
 }
