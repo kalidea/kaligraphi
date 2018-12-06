@@ -1,0 +1,23 @@
+<cdk-tree [dataSource]="dataSource" [treeControl]="treeControl">
+
+  <cdk-nested-tree-node *cdkTreeNodeDef="let node" class="example-tree-node">
+    <ng-container *ngTemplateOutlet="nodeTemplate; context: {$implicit: node}"></ng-container>
+  </cdk-nested-tree-node>
+
+  <cdk-nested-tree-node *cdkTreeNodeDef="let node; when: hasNestedChild" class="example-tree-node">
+
+
+    <ng-container *ngTemplateOutlet="nodeTemplate"></ng-container>
+
+    <button mat-icon-button [attr.aria-label]="'toggle ' + node.filename" cdkTreeNodeToggle>
+      <kal-icon class="mat-icon-rtl-mirror">
+      {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+      </kal-icon>
+    </button>
+
+    <ng-container *ngTemplateOutlet="nodeTemplate; context: {$implicit: node}"></ng-container>
+    <div [class.kal-tree-invisible]="!treeControl.isExpanded(node)" class="kal-tree-children">
+      <ng-container cdkTreeNodeOutlet></ng-container>
+    </div>
+  </cdk-nested-tree-node>
+</cdk-tree>
