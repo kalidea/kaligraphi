@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { Observable, of } from 'rxjs';
+import { KalListSelection } from 'projects/kalidea/kaligraphi/src/lib/molecules/kal-list/kal-list.component';
 
 @Component({
   selector: 'app-list',
@@ -36,6 +37,11 @@ export class ListComponent implements OnInit {
    */
   selectionMode = 'single';
 
+  /**
+   * The list selection
+   */
+  listSelection = null;
+
   constructor() {
   }
 
@@ -63,6 +69,10 @@ export class ListComponent implements OnInit {
 
   selectSingleRow() {
     this.selectionMode = null;
+  }
+
+  changeSelection() {
+    this.listSelection = new KalListSelection<{id: string}>([{id: '1'}], false, []);
   }
 
   ngOnInit() {
