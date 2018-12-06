@@ -10,6 +10,7 @@ import { RaterComponent } from 'src/app/atoms/rater/rater.component';
 import { ProgressBarComponent } from 'src/app/atoms/progress-bar/progress-bar.component';
 import { SliderComponent } from 'src/app/atoms/slider/slider.component';
 import { MenuComponent } from 'src/app/atoms/menu/menu.component';
+import { CardComponent } from 'src/app/atoms/card/card.component';
 import { SnackbarComponent } from 'src/app/atoms/snackbar/snackbar.component';
 
 const routes: Routes = [
@@ -22,6 +23,7 @@ const routes: Routes = [
   {path: 'progress-bar', component: ProgressBarComponent},
   {path: 'slider', component: SliderComponent},
   {path: 'menu', component: MenuComponent},
+  {path: 'card', component: CardComponent },
   {path: 'snackbar', component: SnackbarComponent},
 ];
 

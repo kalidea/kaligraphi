@@ -13,6 +13,7 @@ import { RaterComponent } from 'src/app/atoms/rater/rater.component';
 import { ProgressBarComponent } from 'src/app/atoms/progress-bar/progress-bar.component';
 import { SliderComponent } from 'src/app/atoms/slider/slider.component';
 import { MenuComponent } from 'src/app/atoms/menu/menu.component';
+import { CardComponent } from 'src/app/atoms/card/card.component';
 import { SnackbarComponent } from './snackbar/snackbar.component';
 
 @NgModule({
@@ -33,7 +34,8 @@ import { SnackbarComponent } from './snackbar/snackbar.component';
     ProgressBarComponent,
     SliderComponent,
     MenuComponent,
-    SnackbarComponent
+    SnackbarComponent,
+    CardComponent
   ]
 })
 export class AtomsModule { }
