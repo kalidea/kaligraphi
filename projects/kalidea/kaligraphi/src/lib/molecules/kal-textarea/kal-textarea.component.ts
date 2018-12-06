@@ -1,4 +1,13 @@
-import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewEncapsulation
+} from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { buildProviders, FormElementComponent } from '../../utils/index';
 
 @Component({
@@ -9,13 +18,39 @@ import { buildProviders, FormElementComponent } from '../../utils/index';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: buildProviders(KalTextareaComponent)
 })
-export class KalTextareaComponent extends FormElementComponent<string> implements OnInit {
+export class KalTextareaComponent extends FormElementComponent<string> implements OnInit, OnDestroy {
 
-  constructor() {
+  /**
+   * Form control
+   */
+  formControl = new FormControl('');
+
+  /**
+   * Subscription of formControl
+   */
+  private subscription: Subscription = Subscription.EMPTY;
+
+  constructor(private cdr: ChangeDetectorRef) {
     super();
   }
 
+  /**
+   * @inheritDoc
+   */
+  writeValue(value: string) {
+    this.formControl.patchValue(value, {emitEvent: false});
+    this.cdr.markForCheck();
+  }
+
   ngOnInit() {
+    this.subscription = this.formControl.valueChanges.subscribe(
+      value => {
+        this.notifyUpdate(value);
+      }
+    );
+  }
+
+  ngOnDestroy() {
   }
 
 }
