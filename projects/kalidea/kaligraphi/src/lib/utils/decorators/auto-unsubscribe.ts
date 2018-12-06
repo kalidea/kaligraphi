@@ -39,7 +39,9 @@ export function AutoUnsubscribe() {
 
         });
 
-        original.apply(this, arguments);
+        if (original) {
+          original.apply(this, arguments);
+        }
       };
 
 
