@@ -1,38 +1,41 @@
-=kal-card($kal-parameters)
-  $kal-card-padding: 24px
-  kal-card
-    padding: $kal-card-padding
-    border: 1px solid #{get("palettes.grey.wf200", $kal-parameters)}
-    box-shadow: 0 0 $kal-card-padding rgba(0, 0, 0, 0.06)
-    display: flex
-    flex-direction: column
+=kal-themed-card($theme-parameters)
+    padding: get("padding", $theme-parameters)
+    border: get("border", $theme-parameters)
+    box-shadow: get("box-shadow", $theme-parameters)
+    display: get("display", $theme-parameters)
+    flex-direction: get("flex-direction", $theme-parameters)
+    background-color: get("background-color", $theme-parameters)
     > *
       flex: 1 1 auto
-
     kal-card-header
-      display: flex
-      flex-direction: column
+      display: get("header.display", $theme-parameters)
+      flex-direction: get("header.flex-diretion", $theme-parameters)
     kal-card-on-title
-      font-style: normal
-      font-weight: 600
-      line-height: 18px
-      font-size: 13px
-      color: #7A7A7A
-      margin-bottom: 10px
+      font-style: get("ontitle.font-style", $theme-parameters)
+      font-weight: get("ontitle.font-weight", $theme-parameters)
+      line-height: get("ontitle.line-height", $theme-parameters)
+      font-size: get("ontitle.font-size", $theme-parameters)
+      color: get("ontitle.color", $theme-parameters)
+      margin-bottom: get("ontitle.margin-bottom", $theme-parameters)
     kal-card-title
-      display: flex
-      justify-content: space-between
-      font-style: normal
-      font-weight: 600
-      line-height: 36px
-      font-size: 27px
-      color: #1F1F1F
+      display: get("title.display", $theme-parameters)
+      justify-content:  get("title.justify-content", $theme-parameters)
+      font-style:  get("title.font-style", $theme-parameters)
+      font-weight:  get("title.font-weight", $theme-parameters)
+      line-height:  get("title.line-height", $theme-parameters)
+      font-size:  get("title.font-size", $theme-parameters)
+      color:  get("title.color", $theme-parameters)
       .kal-card-title-close
         kal-icon
-          font-size: $kal-card-padding
-
-
+          font-size: get("title.close.icon.font-size", $theme-parameters)
     kal-card-actions
-      padding-top: $kal-card-padding
+      padding-top: get("actions.padding-top", $theme-parameters)
       > *
-        margin-right: $kal-card-padding
+        margin-right: 24px
+
+=kal-card($kal-parameters)
+  kal-card
+    +kal-themed-card(get('card.default', $kal-parameters))
+    @each $key, $params in get('card.alternates', $kal-parameters)
+      &.kal-theme--#{$key}
+        +kal-themed-card($params)
