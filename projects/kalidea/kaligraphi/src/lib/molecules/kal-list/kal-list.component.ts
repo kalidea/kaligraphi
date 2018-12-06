@@ -230,7 +230,8 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
       this._selection.reset();
 
       if (this._selection.all) {
-        this._selection.selected.push(...this.results);
+        this._selection.selected.push(...this.results.filter(element => !this.disableRowsFunction(element)));
+        this._selection.excluded.push(...this.results.filter(element => this.disableRowsFunction(element)));
       }
 
       this.cdr.markForCheck();
