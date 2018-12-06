@@ -153,8 +153,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
 
       default:
         this._selection.selected = this._selection.selected.length > 0 ? [this._selection.selected[0]] as T[] : [];
-        this._selection.excluded = [];
-        this._selectionMode = KalListSelectionMode.Single;
+        this._selection.excluded = [];this._selectionMode = KalListSelectionMode.Single;
         break;
     }
 
