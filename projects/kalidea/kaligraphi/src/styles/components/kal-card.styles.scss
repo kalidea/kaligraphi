@@ -6,6 +6,7 @@ $kal-styles-card: (
     'display': flex,
     'flex-direction': column,
     'background-color': get("white", $kal-palettes),
+    'position': relative,
     'header':(
       'display': flex,
       'flex-direction': column,
@@ -27,7 +28,11 @@ $kal-styles-card: (
       'font-size': 27px,
       'color': get("grey.wf800", $kal-palettes),
       'close':(
+        'position': absolute,
+        'top': 24px,
+        'right': 24px,
         'icon':(
+          'margin': 0,
           'font-size': 24px,
         ),
       ),

@@ -5,6 +5,7 @@
     display: get("display", $theme-parameters)
     flex-direction: get("flex-direction", $theme-parameters)
     background-color: get("background-color", $theme-parameters)
+    position: get("position", $theme-parameters)
     > *
       flex: 1 1 auto
     kal-card-header
@@ -26,7 +27,11 @@
       font-size:  get("title.font-size", $theme-parameters)
       color:  get("title.color", $theme-parameters)
       .kal-card-title-close
+        position: get("title.close.position", $theme-parameters)
+        top: get("title.close.top", $theme-parameters)
+        right: get("title.close.right", $theme-parameters)
         kal-icon
+          margin: get("title.close.icon.margin", $theme-parameters)
           font-size: get("title.close.icon.font-size", $theme-parameters)
     kal-card-actions
       padding-top: get("actions.padding-top", $theme-parameters)
