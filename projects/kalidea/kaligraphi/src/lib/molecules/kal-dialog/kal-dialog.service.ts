@@ -132,7 +132,7 @@ export class KalDialogService extends KalOverlayManager {
     // added to the injection tokens.
     const injectionTokens = new WeakMap<any, any>([
       [KalDialogContainerComponent, dialogContainer],
-      [KAL_DIALOG_DATA, config.data],
+      [KAL_DIALOG_DATA, config.data || {}],
       [KalDialogRef, dialogRef]
     ]);
 

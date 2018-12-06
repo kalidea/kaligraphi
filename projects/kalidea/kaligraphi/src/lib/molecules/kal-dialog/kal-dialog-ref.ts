@@ -74,9 +74,13 @@ export class KalDialogRef<T, D = any> {
   /**
    * triggered when dialog is closed
    */
-  close(result?) {
+  close(result?: D) {
     // store last result
-    this.lastResult = result;
+    if (result) {
+      this.lastResult = result;
+    }
+
+    this.afterClosedSubject.next(result);
 
     this.completeDialogClose();
   }

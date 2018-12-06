@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { KaligraphiModule } from '@kalidea/kaligraphi';
+
 import { MoleculesRoutingModule } from 'src/app/molecules/molecules-routing.module';
 
 import { TabPanelComponent } from 'src/app/molecules/tab-panel/tab-panel.component';
