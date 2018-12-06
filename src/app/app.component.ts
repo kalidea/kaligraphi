@@ -21,6 +21,7 @@ export class AppComponent {
     {label: 'Progress Bar', route: '/atoms/progress-bar'},
     {label: 'Slider', route: '/atoms/slider'},
     {label: 'Menu', route: '/atoms/menu'},
+    {label: 'Card', route: '/atoms/card'},
     {label: '---', route: ''},
     {label: 'Button', route: '/molecules/button'},
     {label: 'List', route: '/molecules/list'},
