@@ -96,34 +96,22 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
    * @inheritDoc
    */
   viewChange: Observable<ListRange>;
-
-  /**
-   * Selectable items (none, single, multiple)
-   */
-  private _selectionMode: KalListSelectionMode = KalListSelectionMode.Single;
-
   /**
    * The config is use to group all items
    */
   private groupByConfig: (item: T) => string = null;
-
   /**
    * Manages keyboard events for options in the panel
    */
   private keyManager: ActiveDescendantKeyManager<KalListItemSelectionDirective>;
-
   /**
    * Whether or not the select is focus
    */
   private isFocused: boolean;
-
   /**
    * The selected item index
    */
   private selectedItemIndex: number;
-
-  private _selection: KalListSelection<T> = new KalListSelection<T>();
-
   /**
    * The subscription
    */
@@ -137,16 +125,13 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   constructor(private cdr: ChangeDetectorRef) {
   }
 
-  @Input()
-  get selection(): KalListSelection<T> {
-    return this._selection;
-  }
+  /**
+   * Selectable items (none, single, multiple)
+   */
+  private _selectionMode: KalListSelectionMode = KalListSelectionMode.Single;
 
-  set selection(value: KalListSelection<T>) {
-    if (value) {
-      this._selection = value;
-      this.cdr.markForCheck();
-    }
+  get selectionMode() {
+    return this._selectionMode;
   }
 
   /**
@@ -177,8 +162,16 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
 
   }
 
-  get selectionMode() {
-    return this._selectionMode;
+  private _selection: KalListSelection<T> = new KalListSelection<T>();
+
+  @Input()
+  get selection(): KalListSelection<T> {
+    return this._selection;
+  }
+
+  set selection(value: KalListSelection<T>) {
+    this._selection = value && (value.constructor.name === 'KalListSelection') ? value : new KalListSelection<T>();
+    this.cdr.markForCheck();
   }
 
   /**
@@ -295,8 +288,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
    * Reset the selected item
    */
   reset() {
-    this._selection.selected = [];
-    this._selection.excluded = [];
+    this._selection = new KalListSelection<T>();
     this.cdr.markForCheck();
   }
 

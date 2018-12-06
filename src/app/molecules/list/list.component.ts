@@ -40,7 +40,7 @@ export class ListComponent implements OnInit {
   /**
    * The list selection
    */
-  listSelection = null;
+  listSelection = new KalListSelection<{id: string}>([{id: '1'}], false, []);
 
   constructor() {
   }
