@@ -3,14 +3,14 @@
     background-color: get("background-color", $theme-parameters)
     width: get("width", $theme-parameters)
     height: get("height", $theme-parameters)
-    .kal-progress-bar__jauge
-      background-color: get("jauge.background-color", $theme-parameters)
-      height: get("jauge.height", $theme-parameters)
+    .kal-progress-bar__progress
+      background-color: get("progress.background-color", $theme-parameters)
+      height: get("progress.height", $theme-parameters)
 
     &.kal-theme--reverse
       background-color: get("reverse.background-color", $theme-parameters)
-      .kal-progress-bar__jauge
-        background-color: get("reverse.jauge.background-color", $theme-parameters)
+      .kal-progress-bar__progress
+        background-color: get("reverse.progress.background-color", $theme-parameters)
 
 =kal-progress-bar($kal-parameters)
   kal-progress-bar
