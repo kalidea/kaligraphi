@@ -1,12 +1,10 @@
 import { AfterContentInit, ChangeDetectionStrategy, Component, ContentChild, ViewEncapsulation } from '@angular/core';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-
 import { Subscription } from 'rxjs';
 
 import { KalCardTitleComponent } from './components/kal-card-title.component';
 import { KalCardDismissable } from './components/kal-card-dismissable.class';
 import { AutoUnsubscribe } from '../../utils';
-
 
 @Component({
   selector: 'kal-card',

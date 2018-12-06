@@ -22,11 +22,6 @@ export function AutoUnsubscribe() {
 
   return function (target: any, key: string) {
 
-    // does the interface has method ngOnDestroy
-    // if (!Reflect.has(target, 'ngOnDestroy')) {
-    //   throw new Error(`${target.constructor.name} should implements interface OnDestroy`);
-    // }
-
     // init : add property to store subscriptions
     if (!target[decoratorSubscriptionsListKey]) {
       const original = target.constructor.prototype.ngOnDestroy;
