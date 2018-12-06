@@ -8,8 +8,8 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
-import { buildProviders, FormControlAccessComponent } from '../../utils/index';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
+import { buildProviders, FormControlAccessComponent } from '../../utils/index';
 
 @Component({
   selector: 'kal-rater',
@@ -52,8 +52,15 @@ export class KalRaterComponent extends FormControlAccessComponent<number> implem
   get maxRate(): number {
     return this.maxRateValue;
   }
+
   set maxRate(rate: number) {
     this.maxRateValue = coerceNumberProperty(rate);
+
+    if (this.rateValue > this.maxRate) {
+      this.notifyUpdate(this.maxRate);
+    }
+
+    this.calculateRateValues();
   }
 
   /**
@@ -63,6 +70,7 @@ export class KalRaterComponent extends FormControlAccessComponent<number> implem
   get icon(): string {
     return this.iconName;
   }
+
   set icon(icon: string) {
     this.iconName = icon;
   }
@@ -73,6 +81,14 @@ export class KalRaterComponent extends FormControlAccessComponent<number> implem
   writeValue(value) {
     super.writeValue(value);
     this.rateValue = value;
+  }
+
+  /**
+   * @inheritDoc
+   */
+  notifyUpdate(newValue: number): void {
+    super.notifyUpdate(newValue);
+    this.rateValue = newValue;
   }
 
   /**
@@ -88,14 +104,19 @@ export class KalRaterComponent extends FormControlAccessComponent<number> implem
   rate(rateValue: number): void {
     // increase rateValue by 1 because we are passing the current array index and it's 0 indexed whereas our rating starts from 1
     rateValue += 1;
+    this.notifyUpdate(rateValue);
+  }
 
-    this.rateValue = rateValue;
-    super.notifyUpdate(rateValue);
+  /**
+   * Create an array of empty elements because we
+   * can't iterate on numbers in the template
+   */
+  private calculateRateValues(): void {
+    this.rateValues = Array(this.maxRate);
   }
 
   ngOnInit() {
-    // create an array because we can't iterate on numbers in the template
-    this.rateValues = Array(this.maxRate);
+    this.calculateRateValues();
   }
 
   ngOnChanges(changes: SimpleChanges): void {

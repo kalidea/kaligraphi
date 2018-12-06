@@ -65,6 +65,25 @@ describe('KalRaterComponent', () => {
     expect(fixture.debugElement.queryAll(By.css('.active')).length).toBe(4);
   });
 
+  it('should set the rate value to max rate value', () => {
+    spyOn(component, 'rate').and.callThrough();
+    const spy = spyOn(FormControlAccessComponent.prototype, 'notifyUpdate');
+
+    component.maxRate = 10;
+    fixture.detectChanges();
+
+    const tenthIcon = fixture.debugElement.queryAll(By.directive(KalIconComponent))[9];
+    tenthIcon.nativeElement.click();
+
+    expect(component.rate).toHaveBeenCalledWith(9); // 1 = array index
+    expect(spy).toHaveBeenCalledWith(10);
+
+    component.maxRate = 5;
+    fixture.detectChanges();
+
+    expect(spy).toHaveBeenCalledWith(5);
+  });
+
   it('should emit the new rate value', () => {
     spyOn(component, 'rate').and.callThrough();
     const spy = spyOn(FormControlAccessComponent.prototype, 'notifyUpdate');
