@@ -1,98 +1,8 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, ViewEncapsulation } from '@angular/core';
-import { KAL_DIALOG_DATA, KalDialogConfig, KalDialogRef, KalDialogService } from '@kalidea/kaligraphi';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewEncapsulation } from '@angular/core';
+import { KalDialogConfig, KalDialogService } from '@kalidea/kaligraphi';
 
+import { ExampleDialogData, OverviewExampleDialogComponent } from 'src/app/dialogs/overview-example-dialog.components';
 
-/**
- * type of data
- */
-export interface ExampleDialogData {
-  user: {
-    firstname,
-    lastname
-  };
-  closed?: number;
-}
-
-
-export let counter = 0;
-
-@Component({
-  template: `
-
-    <!-- content -->
-    <div kalDialogContent>
-      Example Dialog for {{ data.user.firstname }} {{ data.user.lastname }} N°{{ id }}
-      <blockquote *ngIf="result"> closed {{ result }}</blockquote>
-    </div>
-
-    <!-- footer -->
-    <div kalDialogFooter>
-      <kal-button (click)="openDialog()" class="kal-theme--primary">Sub Dialog {{ id + 1 }}</kal-button>
-      <kal-button kalDialogClose class="kal-theme--secondary">Close</kal-button>
-      <kal-button (click)="submitDialog()" class="kal-theme--secondary">Submit</kal-button>
-    </div>
-  `,
-})
-
-export class OverviewExampleDialogComponent {
-
-  /**
-   * id of dialog
-   */
-  id = counter++;
-
-  /**
-   * result of the closed dialog
-   */
-  result: number;
-
-  constructor(
-    private dialogRef: KalDialogRef<OverviewExampleDialogComponent>,
-    private dialogService: KalDialogService,
-    @Inject(KAL_DIALOG_DATA) public data: ExampleDialogData) {
-  }
-
-  /**
-   * close dialog
-   */
-  submitDialog() {
-    this.data.closed = this.id;
-    this.dialogRef.close(this.data);
-  }
-
-  /**
-   * Open Dialog
-   */
-  openDialog() {
-
-    const config = new KalDialogConfig<ExampleDialogData>({
-      id: 'test',
-      hasBackdrop: true,
-      data: {
-        user: {
-          firstname: 'john',
-          lastname: 'doe'
-        }
-      }
-    });
-
-    const dialogRef = this.dialogService.open(OverviewExampleDialogComponent, config);
-
-    dialogRef.afterClosed.subscribe(result => {
-      if (result) {
-        this.result = result.closed;
-      }
-    });
-  }
-
-  /**
-   * trigger for no click
-   */
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
-}
 
 @Component({
   selector: 'app-dialog',
@@ -141,7 +51,10 @@ export class DialogComponent {
   openConfirmDialog() {
     const config = new KalDialogConfig<ExampleDialogData>({
       title: 'Confirm deletion',
-      ...this.config
+      ...this.config,
+      data: {
+        confirm: true
+      }
     });
     const dialogRef = this.dialogService.open(OverviewExampleDialogComponent, config);
 

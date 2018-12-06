@@ -1,0 +1,9 @@
+
+<section>
+  <article>
+    {{ config.title }}
+  </article>
+  <aside *ngIf="config.action as action" (click)="actionClicked()">
+    {{ action.label }}
+  </aside>
+</section>
