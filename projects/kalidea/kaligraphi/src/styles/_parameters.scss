@@ -41,7 +41,7 @@ $kal-headings: (
 @import 'components/kal-formfield.styles';
 @import 'components/kal-dialog.styles';
 @import 'components/kal-progress-bar.styles';
-
+@import 'components/kal-card.styles';
 // global parameters
 $kal-parameters: (
   palettes: $kal-palettes,
@@ -52,6 +52,7 @@ $kal-parameters: (
   dialog: $kal-styles-dialog,
   datepicker: $kal-styles-datepicker,
   progress-bar: $kal-styles-progress-bar,
+  card: $kal-styles-card,
   form: (
     elements: (
       'button': $kal-styles-button,
