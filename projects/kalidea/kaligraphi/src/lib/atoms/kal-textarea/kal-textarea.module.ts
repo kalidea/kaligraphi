@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { KalTextareaComponent } from './kal-textarea.component';
 export { KalTextareaComponent } from './kal-textarea.component';
@@ -10,7 +11,8 @@ const exports = [
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    ReactiveFormsModule
   ],
   exports: exports,
   declarations: exports

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { KalTextareaModule } from './kal-textarea/kal-textarea.module';
 import { KalSelectModule } from './kal-select/kal-select.module';
 import { KalTabModule } from './kal-tabs/kal-tab.module';
 import { KalStepperModule } from './kal-stepper/kal-stepper.module';
@@ -14,7 +13,6 @@ import { KalFormFieldModule } from './kal-form-field/kal-form-field.module';
 import { KalDialogModule } from './kal-dialog/kal-dialog.module';
 import { KalDatepickerModule } from './kal-datepicker/kal-datepicker.module';
 
-export * from './kal-textarea/kal-textarea.module';
 export * from './kal-select/kal-select.module';
 export * from './kal-tabs/kal-tab.module';
 export * from './kal-stepper/kal-stepper.module';
@@ -28,7 +26,6 @@ export * from './kal-dialog/kal-dialog.module';
 export * from './kal-datepicker/kal-datepicker.module';
 
 const exports = [
-  KalTextareaModule,
   KalSelectModule,
   KalTabModule,
   KalStepperModule,
