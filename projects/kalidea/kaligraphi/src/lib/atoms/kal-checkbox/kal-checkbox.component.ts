@@ -4,7 +4,6 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
@@ -12,7 +11,6 @@ import { FormControl } from '@angular/forms';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Subscription } from 'rxjs';
 import { buildProviders, FormElementComponent } from '../../utils/index';
-import { KalFormFieldComponent } from '../../molecules/kal-form-field/kal-form-field.component';
 
 @Component({
   selector: 'kal-checkbox',

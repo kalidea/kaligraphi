@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
+import { KalListSelection } from '@kalidea/kaligraphi';
 import { Observable, of } from 'rxjs';
-import { KalListSelection } from 'projects/kalidea/kaligraphi/src/lib/molecules/kal-list/kal-list.component';
 
 @Component({
   selector: 'app-list',

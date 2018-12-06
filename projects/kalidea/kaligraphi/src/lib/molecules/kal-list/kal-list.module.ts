@@ -7,6 +7,7 @@ import { KalListItemDirective } from './kal-list-item.directive';
 import { KalListItemSelectionDirective } from './kal-list-item-selection.directive';
 
 export * from './kal-list.component';
+export * from './kal-list-selection';
 export * from './kal-list-item.directive';
 export * from './kal-list-item-selection.directive';
 
