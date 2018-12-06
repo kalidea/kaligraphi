@@ -99,7 +99,7 @@ describe('TestSelectComponent', () => {
     it('should reset the select', () => {
       component.select.select('Option 2');
       expect(component.select.selectedValue).toEqual('Option 2');
-      component.select.select(null);
+      component.select.reset();
       expect(component.select.selectedValue).toBeNull();
     });
 
