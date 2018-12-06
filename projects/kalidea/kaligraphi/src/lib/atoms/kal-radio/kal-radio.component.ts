@@ -182,13 +182,6 @@ export class KalRadioGroupComponent extends FormElementComponent<any> implements
   }
 
   /**
-   * Set the disabled state of the radio button group
-   */
-  setDisabledState(disabled: boolean) {
-    this.disabled = disabled;
-  }
-
-  /**
    * @inheritDoc
    */
   writeValue(value: string) {
