@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 import { KalCardDismissable } from './kal-card-dismissable.class';
 
 @Component({
@@ -12,13 +12,10 @@ import { KalCardDismissable } from './kal-card-dismissable.class';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalCardTitleComponent extends KalCardDismissable implements OnInit {
+export class KalCardTitleComponent extends KalCardDismissable {
 
   iconClicked() {
     this.dismissed.emit();
-  }
-
-  ngOnInit() {
   }
 
 }
