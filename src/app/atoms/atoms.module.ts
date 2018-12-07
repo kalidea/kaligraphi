@@ -15,6 +15,7 @@ import { SliderComponent } from 'src/app/atoms/slider/slider.component';
 import { MenuComponent } from 'src/app/atoms/menu/menu.component';
 import { CardComponent } from 'src/app/atoms/card/card.component';
 import { SnackbarComponent } from './snackbar/snackbar.component';
+import { TreeComponent } from './tree/tree.component';
 
 @NgModule({
   imports: [
@@ -35,7 +36,8 @@ import { SnackbarComponent } from './snackbar/snackbar.component';
     SliderComponent,
     MenuComponent,
     SnackbarComponent,
-    CardComponent
+    CardComponent,
+    TreeComponent
   ]
 })
 export class AtomsModule { }

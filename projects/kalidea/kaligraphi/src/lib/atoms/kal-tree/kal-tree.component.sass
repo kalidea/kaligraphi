@@ -1,14 +1,17 @@
+
 kal-tree
   display: flex
   flex-direction: column
 
-  cdk-tree
+  kal-tree-node
     display: flex
     flex-direction: column
-    .kal-tree-children
-      display: flex
-      flex-direction: column
-      padding-left: 20px;
-
-      &.kal-tree-invisible
-        display: none
+    justify-content: space-between
+    background-color: #FFF
+    min-height: 17px
+    padding: 10px 0
+    cursor: pointer
+    transition: background-color .1s ease
+    border-bottom: 1px solid #CCC
+    &:last-child
+      border: none

@@ -1,9 +1,6 @@
-import { ChangeDetectionStrategy, Component, ContentChild, Input, OnInit, TemplateRef, ViewEncapsulation } from '@angular/core';
-import { NestedTreeControl } from '@angular/cdk/tree';
-import { of } from 'rxjs';
+import { ChangeDetectionStrategy, Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { KalTreeDataSource } from './kal-tree-data-source';
-import { KalTreeNodeDirective } from './kal-tree-node.directive';
 
 @Component({
   selector: 'kal-tree',
@@ -12,22 +9,32 @@ import { KalTreeNodeDirective } from './kal-tree-node.directive';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalTreeComponent<T extends { children?: T[] }> implements OnInit {
+export class KalTreeComponent<T extends { children?: T[], title: string, level?: number }> implements OnInit {
   @Input() dataSource: KalTreeDataSource<T>;
 
-  @ContentChild(KalTreeNodeDirective, {read: TemplateRef}) nodeTemplate;
-
-  treeControl: NestedTreeControl<T>;
-
-  constructor() {
-    this.treeControl = new NestedTreeControl<T>(this._getChildren);
+  get nodesList() {
+    return this.flatten(this.dataSource.data);
   }
 
-  hasNestedChild = (_: number, nodeData: T) => nodeData.children;
+  drop($event) {
+    console.log($event);
+  }
 
-  private _getChildren = (node: T) => of(node.children);
+  private flatten(itemsList: T[], level = 0): T[] {
+
+    const list: T[] = [];
+
+    for (const item of itemsList) {
+      item.level = level;
+      list.push(item);
+      if (item.children && item.children.length > 0) {
+        list.push(...this.flatten(item.children, level + 1));
+      }
+    }
+
+    return list;
+  }
 
   ngOnInit(): void {
-    this.treeControl = new NestedTreeControl<T>(this._getChildren);
   }
 }

@@ -12,6 +12,7 @@ import { SliderComponent } from 'src/app/atoms/slider/slider.component';
 import { MenuComponent } from 'src/app/atoms/menu/menu.component';
 import { CardComponent } from 'src/app/atoms/card/card.component';
 import { SnackbarComponent } from 'src/app/atoms/snackbar/snackbar.component';
+import { TreeComponent } from 'src/app/atoms/tree/tree.component';
 
 const routes: Routes = [
   {path: 'input', component: InputComponent},
@@ -25,6 +26,7 @@ const routes: Routes = [
   {path: 'menu', component: MenuComponent},
   {path: 'card', component: CardComponent },
   {path: 'snackbar', component: SnackbarComponent},
+  {path: 'tree', component: TreeComponent},
 ];
 
 @NgModule({
