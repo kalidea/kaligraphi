@@ -40,7 +40,10 @@ export class KalDialogService extends KalOverlayManager {
   open<T, D>(component: ComponentType<T>,
              config?: KalDialogConfig<D>) {
 
+    console.log('serv config', config.disableClose);
     const overlayConfig = this.applyConfig(KalDialogConfig, config, this.positionStrategy.centerVertically().centerHorizontally());
+
+    console.log('serv overlayConfig', overlayConfig.disableClose);
 
     const overlayRef = this.createOverlay(overlayConfig);
     const dialogContainer = this.attachDialogContainer(overlayRef, overlayConfig);
