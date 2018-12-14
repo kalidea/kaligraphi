@@ -22,15 +22,17 @@ export class KalSnackbarConfig<D = any> extends KalOverlayConfig {
   protected configName ? = 'snackbar';
 
   constructor(config?: KalSnackbarConfig) {
-    super(config);
+    super();
 
-    this.active = config.active;
-    this.title = config.title;
-    this.overlayRef = config.overlayRef;
-    this.action = config.action;
-    this.data = config.data;
-    this.duration = config.duration;
-    this.viewContainerRef = config.viewContainerRef;
+    if (config) {
+      this.active = config.active;
+      this.title = config.title;
+      this.overlayRef = config.overlayRef;
+      this.action = config.action;
+      this.data = config.data;
+      this.duration = config.duration;
+      this.viewContainerRef = config.viewContainerRef;
+    }
   }
 
 }

@@ -70,19 +70,21 @@ export class KalDialogConfig<D = any> extends KalOverlayConfig {
   constructor(config?: KalDialogConfig) {
     super();
 
-    this.viewContainerRef = config.viewContainerRef;
-    this.title = config.title;
-    this.hasBackdrop = config.hasBackdrop;
-    this.backdropClass = config.backdropClass;
-    this.disableClose = config.disableClose;
-    this.width = config.width;
-    this.height = config.height;
-    this.minHeight = config.minHeight;
-    this.minWidth = config.minWidth;
-    this.maxWidth = config.maxWidth;
-    this.maxHeight = config.maxHeight;
-    this.data = config.data;
-    this.closeOnNavigation = config.closeOnNavigation;
+    if (config) {
+      this.viewContainerRef = config.viewContainerRef;
+      this.title = config.title;
+      this.hasBackdrop = config.hasBackdrop;
+      this.backdropClass = config.backdropClass;
+      this.disableClose = config.disableClose;
+      this.width = config.width;
+      this.height = config.height;
+      this.minHeight = config.minHeight;
+      this.minWidth = config.minWidth;
+      this.maxWidth = config.maxWidth;
+      this.maxHeight = config.maxHeight;
+      this.data = config.data;
+      this.closeOnNavigation = config.closeOnNavigation;
+    }
   }
 
 }
