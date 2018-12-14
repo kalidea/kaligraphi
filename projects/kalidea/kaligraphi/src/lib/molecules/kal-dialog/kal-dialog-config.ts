@@ -71,6 +71,7 @@ export class KalDialogConfig<D = any> extends KalOverlayConfig {
     super();
 
     if (config) {
+      config = Object.assign(new KalDialogConfig(), config);
       this.viewContainerRef = config.viewContainerRef;
       this.title = config.title;
       this.hasBackdrop = config.hasBackdrop;

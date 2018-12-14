@@ -25,6 +25,7 @@ export class KalSnackbarConfig<D = any> extends KalOverlayConfig {
     super();
 
     if (config) {
+      config = Object.assign(new KalSnackbarConfig(), config);
       this.active = config.active;
       this.title = config.title;
       this.overlayRef = config.overlayRef;

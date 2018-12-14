@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
-import { KalSnackbarService, KalSnackbarConfig } from '@kalidea/kaligraphi';
+import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { KalSnackbarConfig, KalSnackbarService } from '@kalidea/kaligraphi';
 
 @Component({
   selector: 'app-snackbar',
@@ -14,12 +14,15 @@ export class SnackbarComponent implements OnInit {
 
   actionLabel = 'cancel';
 
+  duration = 4;
+
   constructor(private snackbarService: KalSnackbarService) {
   }
 
   addSnackbar() {
     const config = new KalSnackbarConfig({
       title: this.title,
+      duration: this.duration
     });
     if (this.actionLabel) {
       config.action = {

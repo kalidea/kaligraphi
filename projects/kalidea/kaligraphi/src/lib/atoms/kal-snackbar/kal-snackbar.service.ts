@@ -35,7 +35,7 @@ export class KalSnackbarService extends KalOverlayManager {
   open<D>(config?: KalSnackbarConfig<D>) {
 
     if (!this.activeSnackbar) {
-      const overlayConfig = this.applyConfig(KalSnackbarConfig, config, this.positionStrategy.bottom().centerHorizontally());
+      const overlayConfig = this.applyConfig(config, this.positionStrategy.bottom().centerHorizontally());
 
       const overlayRef = this.createOverlay(overlayConfig);
       config.overlayRef = overlayRef;
