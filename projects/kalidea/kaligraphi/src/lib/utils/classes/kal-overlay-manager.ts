@@ -27,7 +27,7 @@ export abstract class KalOverlayManager {
   /**
    * set default config
    */
-  protected applyConfig(Type, config, positionStrategy: PositionStrategy): OverlayConfig {
+  protected applyConfig(Type, config, positionStrategy: PositionStrategy) {
     const scrollStrategy = this.scrollStrategies.block();
     return Object.assign(new Type(), {positionStrategy, scrollStrategy}, config);
   }

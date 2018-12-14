@@ -1,4 +1,3 @@
-import { ViewContainerRef } from '@angular/core';
 import { KalOverlayConfig } from '../../utils/classes/kal-overlay-config';
 
 /**
@@ -7,18 +6,9 @@ import { KalOverlayConfig } from '../../utils/classes/kal-overlay-config';
 export class KalDialogConfig<D = any> extends KalOverlayConfig {
 
   /**
-   * Where the attached component should live in Angular's *logical* component tree.
-   * This affects what is available for injection and the change detection order for the
-   * component instantiated inside of the dialog. This does not affect where the dialog
-   * content will be rendered.
-   */
-  viewContainerRef ?: ViewContainerRef;
-
-  /**
    * title for this Dialog
    */
   title ?: string;
-
 
   /**
    * Whether the dialog has a backdrop.
@@ -78,7 +68,21 @@ export class KalDialogConfig<D = any> extends KalOverlayConfig {
   protected configName ? = 'dialog';
 
   constructor(config?: KalDialogConfig) {
-    super(config);
+    super();
+
+    this.viewContainerRef = config.viewContainerRef;
+    this.title = config.title;
+    this.hasBackdrop = config.hasBackdrop;
+    this.backdropClass = config.backdropClass;
+    this.disableClose = config.disableClose;
+    this.width = config.width;
+    this.height = config.height;
+    this.minHeight = config.minHeight;
+    this.minWidth = config.minWidth;
+    this.maxWidth = config.maxWidth;
+    this.maxHeight = config.maxHeight;
+    this.data = config.data;
+    this.closeOnNavigation = config.closeOnNavigation;
   }
 
 }

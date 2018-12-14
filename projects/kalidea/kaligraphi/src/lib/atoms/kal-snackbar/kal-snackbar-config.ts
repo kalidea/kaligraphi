@@ -1,4 +1,3 @@
-import { ViewContainerRef } from '@angular/core';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { KalOverlayConfig } from '../../utils/classes/kal-overlay-config';
 
@@ -20,12 +19,18 @@ export class KalSnackbarConfig<D = any> extends KalOverlayConfig {
 
   duration ? = 4;
 
-  viewContainerRef ?: ViewContainerRef;
-
   protected configName ? = 'snackbar';
 
   constructor(config?: KalSnackbarConfig) {
     super(config);
+
+    this.active = config.active;
+    this.title = config.title;
+    this.overlayRef = config.overlayRef;
+    this.action = config.action;
+    this.data = config.data;
+    this.duration = config.duration;
+    this.viewContainerRef = config.viewContainerRef;
   }
 
 }

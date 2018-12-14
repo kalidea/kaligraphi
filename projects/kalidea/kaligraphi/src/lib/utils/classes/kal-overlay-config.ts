@@ -1,26 +1,24 @@
 // Counter for unique snackbar ids.
+import { OverlayConfig } from '@angular/cdk/overlay';
+import { ViewContainerRef } from '@angular/core';
+
 let kalOverlayManagerConfigUniqObjectId = 0;
 
-export abstract class KalOverlayConfig {
+export abstract class KalOverlayConfig extends OverlayConfig {
 
-  protected configName ?= 'overlayConfig';
+  protected configName ? = 'overlayConfig';
+
+  /**
+   * Where the attached component should live in Angular's *logical* component tree.
+   * This affects what is available for injection and the change detection order for the
+   * component instantiated inside of the attached component. This does not affect where the component
+   * content will be rendered.
+   */
+  viewContainerRef ?: ViewContainerRef;
 
   /**
    * uniq id
    */
-  id ?: string;
-
-  constructor(config) {
-    if (config) {
-      Object.keys(config)
-        .filter(key => typeof config[key] !== 'undefined')
-        .forEach(key => this[key] = config[key]);
-    }
-
-    // generate id of dialog here for consistency
-    if (!this.id) {
-      this.id = `kal-${this.configName}-config-${kalOverlayManagerConfigUniqObjectId++}`;
-    }
-  }
+  id ? = `kal-${this.configName}-config-${kalOverlayManagerConfigUniqObjectId++}`;
 
 }

@@ -43,11 +43,11 @@ export class KalDialogService extends KalOverlayManager {
     const overlayConfig = this.applyConfig(KalDialogConfig, config, this.positionStrategy.centerVertically().centerHorizontally());
 
     const overlayRef = this.createOverlay(overlayConfig);
-    const dialogContainer = this.attachDialogContainer(overlayRef, config);
+    const dialogContainer = this.attachDialogContainer(overlayRef, overlayConfig);
     const dialogRef = this.attachDialogContent<T, D>(component,
       dialogContainer,
       overlayRef,
-      config);
+      overlayConfig);
 
     dialogContainer.setDialogRef(dialogRef);
 
