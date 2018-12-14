@@ -25,7 +25,13 @@ export class KalSnackbarConfig<D = any> extends KalOverlayConfig {
   protected configName ? = 'snackbar';
 
   constructor(config?: KalSnackbarConfig) {
-    super(config);
+    super();
+
+    if (config) {
+      Object.keys(config)
+        .filter(key => typeof config[key] !== 'undefined')
+        .forEach(key => this[key] = config[key]);
+    }
   }
 
 }

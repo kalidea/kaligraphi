@@ -78,7 +78,13 @@ export class KalDialogConfig<D = any> extends KalOverlayConfig {
   protected configName ? = 'dialog';
 
   constructor(config?: KalDialogConfig) {
-    super(config);
+    super();
+
+    if (config) {
+      Object.keys(config)
+        .filter(key => typeof config[key] !== 'undefined')
+        .forEach(key => this[key] = config[key]);
+    }
   }
 
 }
