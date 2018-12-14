@@ -40,7 +40,6 @@ export class KalTreeNodeComponent<T> extends CdkNestedTreeNode<T> implements Aft
   // This is a workaround for https://github.com/angular/angular/issues/23091
   // In aot mode, the lifecycle hooks from parent class are not called.
 
-  // TODO(tinayuangao): Remove when the angular issue #23091 is fixed
   ngAfterContentInit() {
     super.ngAfterContentInit();
   }

@@ -7,14 +7,14 @@ export class KalDragDirective {
 
   @HostBinding('draggable') draggable = true;
 
-  @Input('kalDrag') dragData;
+  @Input() kalDrag;
 
   constructor() {
   }
 
   @HostListener('dragstart', ['$event'])
   dragStart($event) {
-    $event.dataTransfer.setData('text/plain', JSON.stringify(this.dragData));
+    $event.dataTransfer.setData('text/plain', JSON.stringify(this.kalDrag));
   }
 
 }
