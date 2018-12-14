@@ -1,7 +1,0 @@
-
-<div cdkDropList (cdkDropListDropped)="drop($event)">
-  <kal-tree-node cdkDrag
-    [style.padding-left.px]="node.level * 20"
-    *ngFor="let node of nodesList"
-    [node]="node"></kal-tree-node>
-</div>

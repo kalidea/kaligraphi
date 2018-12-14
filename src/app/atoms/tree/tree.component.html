@@ -1,6 +1,23 @@
 <h1>Treeview</h1>
 
 <div class="example">
-  <kal-tree [dataSource]="dataSource"></kal-tree>
+
+  <kal-tree [dataSource]="data" [treeControl]="treeControl">
+
+    <kal-tree-node *kalTreeNodeDef="let node">
+      {{node.title}}
+    </kal-tree-node>
+
+    <kal-tree-node *kalTreeNodeDef="let node; when: hasNestedChild" [kalDrag]="node" (kalDrop)="drop($event)">
+      <kal-icon class="mat-icon-rtl-mirror" kalTreeNodeToggle>
+        {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+      </kal-icon>
+      {{node.title}}
+      <div [class.kal-tree-node-invisible]="!treeControl.isExpanded(node)" class="kal-tree-nested-node">
+        <ng-container kalTreeNodeOutlet></ng-container>
+      </div>
+    </kal-tree-node>
+
+  </kal-tree>
 
 </div>

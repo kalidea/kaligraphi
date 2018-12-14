@@ -13,6 +13,7 @@ import { KalMenuModule } from './kal-menu/kal-menu.module';
 import { KalCardModule } from './kal-card/kal-card.module';
 import { KalSnackbarModule } from './kal-snackbar/kal-snackbar.module';
 import { KalTreeModule } from './kal-tree/kal-tree.module';
+import { KalDragDropModule } from './kal-drag-drop/kal-drag-drop.module';
 
 export * from './kal-input/kal-input.module';
 export * from './kal-textarea/kal-textarea.module';
@@ -26,6 +27,7 @@ export * from './kal-menu/kal-menu.module';
 export * from './kal-snackbar/kal-snackbar.module';
 export * from './kal-card/kal-card.module';
 export * from './kal-tree/kal-tree.module';
+export * from './kal-drag-drop/kal-drag-drop.module';
 
 const exports = [
   KalInputModule,
@@ -39,7 +41,8 @@ const exports = [
   KalMenuModule,
   KalCardModule,
   KalSnackbarModule,
-  KalTreeModule
+  KalTreeModule,
+  KalDragDropModule
 ];
 
 @NgModule({
