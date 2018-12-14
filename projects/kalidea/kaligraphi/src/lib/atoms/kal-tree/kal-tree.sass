@@ -1,0 +1,38 @@
+
+kal-tree
+  display: flex
+  flex-direction: column
+  kal-tree-node
+    min-height: 48px
+    justify-self: center
+    font-weight: 600
+    padding: 12px 18px
+    position: relative
+    &:not(:last-child)
+      border-bottom: 1px solid #D6D6D6
+    > div
+      display: flex
+      flex-direction: column
+      min-height: 40px
+      position: relative
+      border-radius: 3px
+      &[aria-level="0"]
+        font-weight: 600
+      &[aria-level="1"]
+        font-weight: normal
+      &[aria-level="2"]
+        font-weight: normal
+        font-size: 15px
+      kal-tree-node:first-child
+        border-top: 1px solid #D6D6D6
+    kal-icon
+      cursor: pointer
+      position: absolute
+      right: 0
+      color: #B8B8B8
+
+.cdk-drag-animating
+  transition: transform 150ms cubic-bezier(0, 0, 0.2, 1)
+
+.kal-tree-node-invisible
+  display: none
