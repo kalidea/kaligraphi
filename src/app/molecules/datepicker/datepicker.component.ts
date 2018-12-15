@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
-import { AbstractControl, FormControl, ValidationErrors } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { KalDate } from '@kalidea/kaligraphi';
 
 @Component({
@@ -9,18 +9,49 @@ import { KalDate } from '@kalidea/kaligraphi';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DatepickerComponent {
+export class DatepickerComponent implements OnInit {
 
   reverse = false;
 
-  control = new FormControl(new KalDate('27/11/2018'), [minDateValidator(new KalDate()), maxDateValidator(new KalDate('15/12/2018'))]);
+  control = new FormControl(new KalDate());
 
-  constructor() {
-    this.control.valueChanges.subscribe(value => console.log(value));
+  dateValidatorForm: FormGroup;
+
+  constructor(private fb: FormBuilder) {
   }
 
   get themes() {
     return this.reverse ? 'reverse' : '';
+  }
+
+  clearValidators(): void {
+    this.dateValidatorForm.patchValue({
+      minDate: null,
+      maxDate: null
+    });
+  }
+
+  ngOnInit(): void {
+    this.dateValidatorForm = this.fb.group({
+      minDate: [],
+      maxDate: []
+    });
+
+    this.dateValidatorForm.valueChanges.subscribe(
+      formValues => {
+        this.control.clearValidators();
+
+        if (formValues.minDate !== null && formValues.maxDate !== null) {
+          this.control.setValidators([minDateValidator(formValues.minDate), maxDateValidator(formValues.maxDate)]);
+        } else if (formValues.minDate !== null) {
+          this.control.setValidators([minDateValidator(formValues.minDate)]);
+        } else if (formValues.minDate !== null) {
+          this.control.setValidators([maxDateValidator(formValues.maxDate)]);
+        }
+
+        this.control.updateValueAndValidity();
+      }
+    );
   }
 
 }

@@ -169,11 +169,9 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
 
     super.writeValue(kalDate);
 
-    // we should check the value because we can have a `null` from the parent
-    // and we don't want to display any date in the input
-    if (value) {
-      this.setInputValue(kalDate);
-    }
+    // if we get a `null` from the parent we should empty the input
+    // and not display the current date
+    this.setInputValue(value ? kalDate : null);
 
     // store the date
     this.currentDate = kalDate;
