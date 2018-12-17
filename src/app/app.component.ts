@@ -24,6 +24,7 @@ export class AppComponent {
     {label: 'Card', route: '/atoms/card'},
     {label: 'Snackbar', route: '/atoms/snackbar'},
     {label: 'Tree', route: '/atoms/tree'},
+    {label: 'Chips', route: '/atoms/chips'},
     {label: '---', route: ''},
     {label: 'Button', route: '/molecules/button'},
     {label: 'List', route: '/molecules/list'},
