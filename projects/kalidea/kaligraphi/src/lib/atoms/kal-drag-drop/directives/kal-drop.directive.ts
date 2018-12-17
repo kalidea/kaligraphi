@@ -19,7 +19,7 @@ export class KalDropDirective {
   /**
    * event emitted when user drop element
    */
-  @Output() kalDropped: EventEmitter<KalDroppedEvent> = new EventEmitter<KalDroppedEvent>();
+  @Output() kalDrop: EventEmitter<KalDroppedEvent> = new EventEmitter<KalDroppedEvent>();
 
   /**
    * Allowed position to drop on
@@ -66,7 +66,7 @@ export class KalDropDirective {
     const data = JSON.parse($event.dataTransfer.getData('text/plain'));
     const position = this.dropPosition;
 
-    this.kalDropped.emit({data, position});
+    this.kalDrop.emit({data, position});
     this.resetDropPosition();
   }
 

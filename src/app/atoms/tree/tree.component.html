@@ -9,7 +9,7 @@
     </kal-tree-node>
 
     <kal-tree-node *kalTreeNodeDef="let node; when: hasNestedChild" [kalDrag]="node" (kalDrop)="drop($event)">
-      <kal-icon class="mat-icon-rtl-mirror" kalTreeNodeToggle>
+      <kal-icon kalTreeNodeToggle>
         {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
       </kal-icon>
       {{node.title}}
