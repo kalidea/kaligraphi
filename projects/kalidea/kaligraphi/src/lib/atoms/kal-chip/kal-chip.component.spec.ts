@@ -1,14 +1,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component } from '@angular/core';
 
-import { KalChipsComponent } from './kal-chips.component';
+import { KalChipComponent } from './kal-chip.component';
 import { KalIconModule } from '../kal-icon/kal-icon.module';
-import { KalChipsModule } from './kal-chips.module';
+import { KalChipModule } from './kal-chip.module';
 
 @Component({
   selector: 'kal-test',
   template: `
-    <kal-chips (dismiss)="dismiss()">{{ label }}</kal-chips>
+    <kal-chip (dismiss)="dismiss()">{{ label }}</kal-chip>
   `
 })
 class TestComponent {
@@ -19,14 +19,14 @@ class TestComponent {
   }
 }
 
-describe('KalChipsComponent', () => {
+describe('KalChipComponent', () => {
   let component: TestComponent;
   let fixture: ComponentFixture<TestComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [TestComponent],
-      imports: [KalIconModule, KalChipsModule]
+      imports: [KalIconModule, KalChipModule]
     })
       .compileComponents();
   }));
@@ -44,12 +44,12 @@ describe('KalChipsComponent', () => {
   it('should display content provided', () => {
     component.label = 'plop';
     fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('kal-chips div').textContent).toEqual(component.label);
+    expect(fixture.nativeElement.querySelector('kal-chip div').textContent).toEqual(component.label);
   });
 
   it('should emit event when click on kal-icon', () => {
     const spy = spyOn(component, 'dismiss');
-    fixture.nativeElement.querySelector('kal-chips kal-icon').click();
+    fixture.nativeElement.querySelector('kal-chip kal-icon').click();
     expect(spy).toHaveBeenCalled();
   });
 });

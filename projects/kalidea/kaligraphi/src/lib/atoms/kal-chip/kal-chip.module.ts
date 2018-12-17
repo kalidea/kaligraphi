@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { KalChipsComponent } from './kal-chips.component';
+import { KalChipComponent } from './kal-chip.component';
 import { KalIconModule } from '../kal-icon/kal-icon.module';
 
-export * from './kal-chips.component';
+export * from './kal-chip.component';
 
 const exports = [
-  KalChipsComponent
+  KalChipComponent
 ];
 
 @NgModule({
@@ -18,4 +18,4 @@ const exports = [
   ],
   exports
 })
-export class KalChipsModule { }
+export class KalChipModule { }

@@ -16,7 +16,7 @@ import { MenuComponent } from 'src/app/atoms/menu/menu.component';
 import { CardComponent } from 'src/app/atoms/card/card.component';
 import { SnackbarComponent } from './snackbar/snackbar.component';
 import { TreeComponent } from './tree/tree.component';
-import { ChipsComponent } from './chips/chips.component';
+import { ChipComponent } from './chips/chip.component';
 
 @NgModule({
   imports: [
@@ -39,7 +39,7 @@ import { ChipsComponent } from './chips/chips.component';
     SnackbarComponent,
     CardComponent,
     TreeComponent,
-    ChipsComponent
+    ChipComponent
   ]
 })
 export class AtomsModule { }

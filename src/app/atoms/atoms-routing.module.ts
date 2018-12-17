@@ -13,7 +13,7 @@ import { MenuComponent } from 'src/app/atoms/menu/menu.component';
 import { CardComponent } from 'src/app/atoms/card/card.component';
 import { SnackbarComponent } from 'src/app/atoms/snackbar/snackbar.component';
 import { TreeComponent } from 'src/app/atoms/tree/tree.component';
-import { ChipsComponent } from 'src/app/atoms/chips/chips.component';
+import { ChipComponent } from 'src/app/atoms/chips/chip.component';
 
 const routes: Routes = [
   {path: 'input', component: InputComponent},
@@ -28,7 +28,7 @@ const routes: Routes = [
   {path: 'card', component: CardComponent },
   {path: 'snackbar', component: SnackbarComponent},
   {path: 'tree', component: TreeComponent},
-  {path: 'chips', component: ChipsComponent},
+  {path: 'chips', component: ChipComponent},
 ];
 
 @NgModule({
