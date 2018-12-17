@@ -1,5 +1,5 @@
 import { CdkTree } from '@angular/cdk/tree';
-import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { SelectionChange, SelectionModel } from '@angular/cdk/collections';
 
 import { KalTreeNodeOutletDirective } from '../directives/kal-tree-node-outlet.directive';
@@ -17,11 +17,11 @@ import { KalTreeNode } from '../classes/kal-tree-node';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [{provide: CdkTree, useExisting: KalTreeComponent}]
 })
-export class KalTreeComponent extends CdkTree<KalTreeNode> implements OnInit {
+export class KalTreeComponent extends CdkTree<KalTreeNode> implements OnInit, OnDestroy {
   // Outlets within the tree's template where the dataNodes will be inserted.
   @ViewChild(KalTreeNodeOutletDirective) _nodeOutlet: KalTreeNodeOutletDirective;
 
-  @Output() selectionChanged: EventEmitter<SelectionChange<KalTreeNode>> = new EventEmitter();
+  @Output() readonly selectionChanged: EventEmitter<SelectionChange<KalTreeNode>> = new EventEmitter();
 
   private selection = new SelectionModel(false);
 
@@ -40,5 +40,10 @@ export class KalTreeComponent extends CdkTree<KalTreeNode> implements OnInit {
         this.selectionChanged.emit(value);
       }
     );
+  }
+
+  ngOnDestroy(): void {
+    super.ngOnDestroy();
+    this.selectionChanged.complete();
   }
 }

@@ -1,4 +1,4 @@
-import { Directive, EventEmitter, HostBinding, HostListener, Input, Output } from '@angular/core';
+import { Directive, EventEmitter, HostBinding, HostListener, Input, OnDestroy, Output } from '@angular/core';
 
 export enum KalDropPosition {
   Top = 'top',
@@ -14,12 +14,12 @@ export interface KalDroppedEvent {
 @Directive({
   selector: '[kalDrop]'
 })
-export class KalDropDirective {
+export class KalDropDirective implements OnDestroy {
 
   /**
    * event emitted when user drop element
    */
-  @Output() kalDrop: EventEmitter<KalDroppedEvent> = new EventEmitter<KalDroppedEvent>();
+  @Output() readonly kalDrop: EventEmitter<KalDroppedEvent> = new EventEmitter<KalDroppedEvent>();
 
   /**
    * Allowed position to drop on
@@ -92,6 +92,10 @@ export class KalDropDirective {
     } else {
       this.dropPosition = null;
     }
+  }
+
+  ngOnDestroy(): void {
+    this.kalDrop.complete();
   }
 
 }
