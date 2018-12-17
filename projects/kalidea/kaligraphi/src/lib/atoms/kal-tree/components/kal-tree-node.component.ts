@@ -22,7 +22,7 @@ import {
 } from '@angular/core';
 import { KalTreeNodeOutletDirective } from '../directives/kal-tree-node-outlet.directive';
 import { KalTreeComponent } from './kal-tree.component';
-import { KalTreeNode } from 'src/lib/atoms/kal-tree/classes/kal-tree-node';
+import { KalTreeNode } from '../classes/kal-tree-node';
 
 /**
  * Wrapper for the CdkTree nested node with kalerial design styles.
