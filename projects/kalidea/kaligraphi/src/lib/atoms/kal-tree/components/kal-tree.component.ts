@@ -1,9 +1,25 @@
 import { CdkTree } from '@angular/cdk/tree';
-import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
-import { SelectionChange, SelectionModel } from '@angular/cdk/collections';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  IterableDiffers,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
+import { SelectionChange } from '@angular/cdk/collections';
+import { takeUntil } from 'rxjs/operators';
+import { cloneDeep } from 'lodash';
 
 import { KalTreeNodeOutletDirective } from '../directives/kal-tree-node-outlet.directive';
 import { KalTreeNode } from '../classes/kal-tree-node';
+import { KalTreeControl } from '../classes/kal-tree-control';
+import { KalTreeDataSource } from '../classes/kal-tree-data-source';
 
 /**
  * Wrapper for the CdkTable with Kaligraphi design styles.
@@ -23,23 +39,22 @@ export class KalTreeComponent extends CdkTree<KalTreeNode> implements OnInit, On
 
   @Output() readonly selectionChanged: EventEmitter<SelectionChange<KalTreeNode>> = new EventEmitter();
 
-  private selection = new SelectionModel(false);
+  @Input() treeControl: KalTreeControl;
 
-  isSelected(node: KalTreeNode) {
-    return this.selection.isSelected(node);
+  constructor(differs: IterableDiffers,
+              changeDetectorRef: ChangeDetectorRef) {
+    super(differs, changeDetectorRef);
   }
 
-  select(node: KalTreeNode) {
-    this.selection.select(node);
+  get selection() {
+    return this.treeControl.selectionModel;
   }
 
   ngOnInit() {
     super.ngOnInit();
-    this.selection.changed.subscribe(
-      value => {
-        this.selectionChanged.emit(value);
-      }
-    );
+    this.treeControl.selectionModel.changed
+      .pipe(takeUntil(this.selectionChanged))
+      .subscribe(value => this.selectionChanged.emit(value));
   }
 
   ngOnDestroy(): void {
