@@ -147,6 +147,7 @@ export class KalInputComponent extends FormElementComponent<string> implements O
   }
 
   ngOnDestroy(): void {
+    this.cdr.detach();
     this.controlChangedSubscription.unsubscribe();
   }
 
