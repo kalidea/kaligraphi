@@ -8,7 +8,7 @@
 
 import { CdkNestedTreeNode, CdkTree, CdkTreeNode } from '@angular/cdk/tree';
 import {
-  AfterContentInit,
+  Attribute,
   ChangeDetectionStrategy,
   Component,
   ContentChildren,
@@ -16,7 +16,6 @@ import {
   HostBinding,
   HostListener,
   Input,
-  IterableDiffers,
   OnDestroy,
   QueryList,
 } from '@angular/core';
@@ -37,11 +36,11 @@ import { KalTreeNode } from '../classes/kal-tree-node';
     {provide: CdkTreeNode, useExisting: KalTreeNodeComponent}
   ]
 })
-export class KalTreeNodeComponent extends CdkNestedTreeNode<KalTreeNode> implements AfterContentInit, OnDestroy {
+export class KalTreeNodeComponent extends CdkTreeNode<KalTreeNode> implements OnDestroy {
 
   @Input() disabled;
 
-  @Input() tabIndex = 0;
+  tabIndex;
 
   node: KalTreeNode;
 
@@ -49,17 +48,18 @@ export class KalTreeNodeComponent extends CdkNestedTreeNode<KalTreeNode> impleme
 
   constructor(protected elementRef: ElementRef<HTMLElement>,
               protected tree: KalTreeComponent,
-              protected differs: IterableDiffers) {
-    super(elementRef, tree as CdkTree<KalTreeNode>, differs);
+              @Attribute('tabindex') tabIndex: string) {
+    super(elementRef, tree as CdkTree<KalTreeNode>);
+    this.tabIndex = Number(tabIndex) || 0;
   }
 
   @HostBinding('class.kal-selected')
   get selected() {
-    return this.tree.isSelected(this.data);
+    return this.tree.selection.isSelected(this.data);
   }
 
   @Input()
-  set kalNestedTreeNode(node) {
+  set kalTreeNode(node) {
     this.node = node;
   }
 
@@ -67,15 +67,8 @@ export class KalTreeNodeComponent extends CdkNestedTreeNode<KalTreeNode> impleme
   select($event) {
     $event.stopPropagation();
     if (this.data) {
-      this.tree.select(this.data);
+      this.tree.selection.select(this.node);
     }
-  }
-
-  // This is a workaround for https://github.com/angular/angular/issues/23091
-  // In aot mode, the lifecycle hooks from parent class are not called.
-
-  ngAfterContentInit() {
-    super.ngAfterContentInit();
   }
 
   ngOnDestroy() {
