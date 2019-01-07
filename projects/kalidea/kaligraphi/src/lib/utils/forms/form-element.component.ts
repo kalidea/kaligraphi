@@ -1,4 +1,4 @@
-import { EventEmitter, forwardRef, Input, Output } from '@angular/core';
+import { EventEmitter, forwardRef, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { NG_ASYNC_VALIDATORS, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -7,7 +7,7 @@ import { distinctUntilChanged } from 'rxjs/operators';
 import { FormControlAccessComponent } from './form-control-access.component';
 import { uniqid } from '../helpers/uniq';
 
-export class FormElementComponent<T = string> extends FormControlAccessComponent<T> {
+export class FormElementComponent<T = string> extends FormControlAccessComponent<T> implements OnChanges, OnDestroy {
 
   /**
    * label for this form element
@@ -53,6 +53,11 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
    * output for value change
    */
   @Output() valueChange: EventEmitter<T> = new EventEmitter<T>();
+
+  /**
+   * output for value change
+   */
+  @Output() inputChange: EventEmitter<SimpleChanges> = new EventEmitter<SimpleChanges>();
 
   /**
    * ngControl of this form element
@@ -163,6 +168,21 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
    */
   setDisabledState(isDisabled: boolean): void {
     this.disabled = isDisabled;
+  }
+
+  /**
+   * @inheritDoc
+   */
+  ngOnChanges(changes: SimpleChanges): void {
+    this.inputChange.emit(changes);
+  }
+
+  /**
+   * @inheritDoc
+   */
+  ngOnDestroy(): void {
+    this.valueChange.complete();
+    this.inputChange.complete();
   }
 
 }

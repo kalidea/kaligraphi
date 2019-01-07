@@ -6,7 +6,13 @@ import { CdkTreeNodeDef } from '@angular/cdk/tree';
   providers: [{provide: CdkTreeNodeDef, useExisting: KalTreeNodeDefDirective}]
 })
 export class KalTreeNodeDefDirective<T> extends CdkTreeNodeDef<T> {
-  @Input() kalTreeNode: T;
+
+  data: T;
+
+  @Input()
+  set kalTreeNode(data: T) {
+    this.data = data;
+  }
 
   @Input()
   set kalTreeNodeDefWhen(when) {

@@ -2,22 +2,42 @@
 
 <div class="example">
 
-  <kal-tree [dataSource]="data" [treeControl]="treeControl">
+  <kal-tree [dataSource]="dataSource" [treeControl]="treeControl" (selectionChanged)="changed($event);">
 
-    <kal-tree-node *kalTreeNodeDef="let node">
+    <kal-tree-node *kalTreeNodeDef="let node" [kalDrag]="node" (kalDrop)="drop($event)" kalTreeNodePadding>
       {{node.title}}
     </kal-tree-node>
 
-    <kal-tree-node *kalTreeNodeDef="let node; when: hasNestedChild" [kalDrag]="node" (kalDrop)="drop($event)">
-      <kal-icon kalTreeNodeToggle>
+    <kal-tree-node
+      kalTreeNodePadding
+      *kalTreeNodeDef="let node; when: hasNestedChild"
+      [kalDrag]="node"
+      (kalDrop)="drop($event)"
+      [kalTreeNode]="node">
+      <kal-icon class="mat-icon-rtl-mirror" kalTreeNodeToggle>
         {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
       </kal-icon>
       {{node.title}}
-      <div [class.kal-tree-node-invisible]="!treeControl.isExpanded(node)" class="kal-tree-nested-node">
-        <ng-container kalTreeNodeOutlet></ng-container>
-      </div>
     </kal-tree-node>
 
   </kal-tree>
+</div>
 
+
+<div class="configurator">
+  <kal-form-field>
+    <kal-select label="select node" (valueChange)="select($event)" tabIndex="1">
+      <kal-option [value]="node.id" *ngFor="let node of dataSource._flattenedData.value">
+        {{ node.title }}
+      </kal-option>
+    </kal-select>
+  </kal-form-field>
+
+  <kal-form-field>
+    <kal-button (click)="collapseAll()" kalTheme="primary">collapseAll</kal-button>
+  </kal-form-field>
+
+    <kal-form-field>
+    <kal-button (click)="expandAll()" kalTheme="primary">expandAll</kal-button>
+    </kal-form-field>
 </div>
