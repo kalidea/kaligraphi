@@ -11,6 +11,7 @@ import { KalDatepickerHeaderComponent } from './kal-datepicker-header/kal-datepi
 import { KalMonthCalendarComponent } from './kal-month-calendar/kal-month-calendar.component';
 import { KalDatepickerMultiViewComponent } from './kal-datepicker-multi-view/kal-datepicker-multi-view.component';
 import { KalUtilityModule } from '../../utility/kal-utility.module';
+import { KalDate } from 'projects/kalidea/kaligraphi/src/lib/molecules/kal-datepicker/kal-date';
 
 describe('KalDatepickerComponent', () => {
   let component: KalDatepickerComponent;
@@ -46,5 +47,17 @@ describe('KalDatepickerComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should not emit a KalDate when a writeValue occurs', () => {
+    spyOn(component.control, 'valueChanges');
+    spyOn(component.control, 'setValue').and.callThrough();
+
+    const date = new Date();
+
+    component.writeValue(date);
+
+    expect(component.control.setValue).toHaveBeenCalledWith(new KalDate(date).toString(), {emitEvent: false});
+    expect(component.control.valueChanges).not.toHaveBeenCalled();
   });
 });

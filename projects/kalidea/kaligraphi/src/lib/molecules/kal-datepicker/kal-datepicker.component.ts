@@ -143,7 +143,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
    */
   setInputValue(date: KalDate): void {
     const displayedDate = (date && date.valid) ? date.toString() : '';
-    this.control.setValue(displayedDate);
+    this.control.setValue(displayedDate, {emitEvent: false});
   }
 
   /**
