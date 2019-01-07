@@ -5,7 +5,7 @@
   <kal-tree [dataSource]="dataSource" [treeControl]="treeControl" (selectionChanged)="changed($event);">
 
     <kal-tree-node *kalTreeNodeDef="let node" [kalDrag]="node" (kalDrop)="drop($event)" kalTreeNodePadding>
-      {{node.title}} qsqsd
+      {{node.title}}
     </kal-tree-node>
 
     <kal-tree-node

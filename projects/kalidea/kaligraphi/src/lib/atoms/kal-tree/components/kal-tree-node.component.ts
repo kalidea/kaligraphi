@@ -28,7 +28,7 @@ import { KalTreeNode } from '../classes/kal-tree-node';
  */
 @Component({
   selector: 'kal-tree-node',
-  template: '<ng-content ></ng-content>',
+  template: '<ng-content></ng-content>',
   exportAs: 'kalTreeNode',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [

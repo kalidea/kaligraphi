@@ -19,7 +19,6 @@ import { cloneDeep } from 'lodash';
 import { KalTreeNodeOutletDirective } from '../directives/kal-tree-node-outlet.directive';
 import { KalTreeNode } from '../classes/kal-tree-node';
 import { KalTreeControl } from '../classes/kal-tree-control';
-import { KalTreeDataSource } from '../classes/kal-tree-data-source';
 
 /**
  * Wrapper for the CdkTable with Kaligraphi design styles.
