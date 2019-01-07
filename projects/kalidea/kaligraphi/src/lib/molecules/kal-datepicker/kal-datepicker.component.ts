@@ -141,9 +141,9 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   /**
    * Update the input value with the given date.
    */
-  setInputValue(date: KalDate): void {
+  setInputValue(date: KalDate, event = {emitEvent: true}): void {
     const displayedDate = (date && date.valid) ? date.toString() : '';
-    this.control.setValue(displayedDate, {emitEvent: false});
+    this.control.setValue(displayedDate, event);
   }
 
   /**
@@ -171,7 +171,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
 
     // if we get a `null` from the parent we should empty the input
     // and not display the current date
-    this.setInputValue(value ? kalDate : null);
+    this.setInputValue(value ? kalDate : null, {emitEvent: false});
 
     // store the date
     this.currentDate = kalDate;
