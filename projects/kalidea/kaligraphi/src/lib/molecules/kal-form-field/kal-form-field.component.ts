@@ -42,7 +42,7 @@ export class KalFormFieldComponent implements AfterContentInit, OnDestroy {
    */
   for: string;
 
-  @ContentChild(forwardRef( () => FormElementComponent))
+  @ContentChild(forwardRef(() => FormElementComponent))
   formElement: FormElementComponent;
 
   @AutoUnsubscribe()
@@ -51,14 +51,23 @@ export class KalFormFieldComponent implements AfterContentInit, OnDestroy {
   constructor(private cdr: ChangeDetectorRef) {
   }
 
+  private configureFormField() {
+    if (!(this.formElement instanceof KalCheckboxComponent)) {
+      this.label = this.formElement.label;
+    }
+    this.required = this.formElement.required;
+    this.for = this.formElement.id;
+    this.hasError = this.formElement.hasError;
+    this.cdr.markForCheck();
+  }
+
   ngAfterContentInit(): void {
     if (this.formElement) {
-      if (!(this.formElement instanceof KalCheckboxComponent)) {
-        this.label = this.formElement.label;
-      }
-      this.required = this.formElement.required;
-      this.for = this.formElement.id;
-      this.hasError = this.formElement.hasError;
+
+      this.configureFormField();
+
+      // watch input change
+      this.formElement.inputChange.subscribe(() => this.configureFormField());
 
       this.statusChange = this.formElement.statusChange.subscribe(data => {
         this.hasError = this.formElement.hasError;
