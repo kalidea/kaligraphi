@@ -20,7 +20,7 @@ export class TestComponent {
   for = 'best_id_ever';
 }
 
-fdescribe('KalFormFieldComponent', () => {
+describe('KalFormFieldComponent', () => {
   let component: TestComponent;
   let fixture: ComponentFixture<TestComponent>;
 
