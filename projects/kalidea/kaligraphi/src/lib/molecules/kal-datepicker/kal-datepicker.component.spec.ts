@@ -12,6 +12,7 @@ import { KalMonthCalendarComponent } from './kal-month-calendar/kal-month-calend
 import { KalDatepickerMultiViewComponent } from './kal-datepicker-multi-view/kal-datepicker-multi-view.component';
 import { KalUtilityModule } from '../../utility/kal-utility.module';
 import { KalDate } from 'projects/kalidea/kaligraphi/src/lib/molecules/kal-datepicker/kal-date';
+import { FormElementComponent } from 'projects/kalidea/kaligraphi/src/lib/utils';
 
 describe('KalDatepickerComponent', () => {
   let component: KalDatepickerComponent;
@@ -50,14 +51,20 @@ describe('KalDatepickerComponent', () => {
   });
 
   it('should not emit a KalDate when a writeValue occurs', () => {
-    spyOn(component.control, 'valueChanges');
+    const spyNotif = spyOn(FormElementComponent.prototype, 'notifyUpdate');
     spyOn(component.control, 'setValue').and.callThrough();
 
     const date = new Date();
+    const kalDate = new KalDate(date);
 
+    // should not emit event when getting a value
     component.writeValue(date);
+    expect(component.control.setValue).toHaveBeenCalledWith(kalDate.toString(), {emitEvent: false});
+    expect(spyNotif).not.toHaveBeenCalled();
 
-    expect(component.control.setValue).toHaveBeenCalledWith(new KalDate(date).toString(), {emitEvent: false});
-    expect(component.control.valueChanges).not.toHaveBeenCalled();
+    // should emit event when a date is picked
+    component.setInputValue(new KalDate(date));
+    expect(component.control.setValue).toHaveBeenCalledWith(kalDate.toString(), {emitEvent: true});
+    expect(spyNotif).toHaveBeenCalled();
   });
 });
