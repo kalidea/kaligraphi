@@ -209,8 +209,6 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
         // notify parent for validation
         super.notifyUpdate(date);
 
-        console.log('notify');
-
         // emit value
         this.valueChange.emit(date);
 
