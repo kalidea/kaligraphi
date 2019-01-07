@@ -5,7 +5,6 @@ import {
   Component,
   ContentChild,
   forwardRef,
-  OnDestroy,
   ViewEncapsulation
 } from '@angular/core';
 import { Subscription } from 'rxjs';
@@ -20,7 +19,7 @@ import { KalCheckboxComponent } from '../../atoms/kal-checkbox/kal-checkbox.comp
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalFormFieldComponent implements AfterContentInit, OnDestroy {
+export class KalFormFieldComponent implements AfterContentInit {
 
   /**
    * Does the field has an error
@@ -42,32 +41,42 @@ export class KalFormFieldComponent implements AfterContentInit, OnDestroy {
    */
   for: string;
 
-  @ContentChild(forwardRef( () => FormElementComponent))
+  @ContentChild(forwardRef(() => FormElementComponent))
   formElement: FormElementComponent;
 
   @AutoUnsubscribe()
   private statusChange: Subscription;
 
+  @AutoUnsubscribe()
+  private inputChange: Subscription;
+
   constructor(private cdr: ChangeDetectorRef) {
+  }
+
+  private configureFormField() {
+    if (!(this.formElement instanceof KalCheckboxComponent)) {
+      this.label = this.formElement.label;
+    }
+    this.required = this.formElement.required;
+    this.for = this.formElement.id;
+    this.hasError = this.formElement.hasError;
+    this.cdr.markForCheck();
   }
 
   ngAfterContentInit(): void {
     if (this.formElement) {
-      if (!(this.formElement instanceof KalCheckboxComponent)) {
-        this.label = this.formElement.label;
-      }
-      this.required = this.formElement.required;
-      this.for = this.formElement.id;
-      this.hasError = this.formElement.hasError;
+
+      this.configureFormField();
+
+      // watch input change
+      this.inputChange = this.formElement.inputChange
+        .subscribe(() => this.configureFormField());
 
       this.statusChange = this.formElement.statusChange.subscribe(data => {
         this.hasError = this.formElement.hasError;
         this.cdr.markForCheck();
       });
     }
-  }
-
-  ngOnDestroy(): void {
   }
 
 }
