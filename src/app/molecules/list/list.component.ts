@@ -15,7 +15,7 @@ export class ListComponent implements OnInit {
   /**
    * dataSource
    */
-  dataSource = new TestDataSource();
+  dataSource: any = new TestDataSource();
 
   /**
    * groupBy function
@@ -43,6 +43,30 @@ export class ListComponent implements OnInit {
   listSelection = null;
 
   constructor() {
+  }
+
+  changeDataSource() {
+    this.dataSource = [
+      {
+        id: '1',
+        name: 'aTest',
+        disabled: true
+      },
+      {
+        id: '2',
+        name: 'aTest2',
+        disabled: false
+      },
+      {
+        id: '3',
+        name: 'aTest3',
+        disabled: false
+      },    {
+        id: '4',
+        name: 'bTest4',
+        disabled: false
+      },
+    ];
   }
 
   /**

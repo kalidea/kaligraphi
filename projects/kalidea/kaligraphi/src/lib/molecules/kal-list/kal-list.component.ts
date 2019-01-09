@@ -8,7 +8,6 @@ import {
   HostListener,
   Input,
   OnDestroy,
-  OnInit,
   Output,
   QueryList,
   ViewChildren,
@@ -29,6 +28,8 @@ enum KalListSelectionMode {
   Multiple = 'multiple'
 }
 
+type KalListDataSource<T> = DataSource<T> | Observable<T[]> | T[];
+
 @Component({
   selector: 'kal-list',
   templateUrl: './kal-list.component.html',
@@ -36,17 +37,33 @@ enum KalListSelectionMode {
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalListComponent<T extends { id: string }> implements CollectionViewer, OnInit, AfterViewInit, OnDestroy {
+export class KalListComponent<T extends { id: string }> implements CollectionViewer, AfterViewInit, OnDestroy {
 
   /**
    * Results list
    */
-  results: T[];
+  results: T[] = [];
 
   /**
    * Datasource to give items list to the component
    */
-  @Input() dataSource: DataSource<T> | Observable<T[]> | T[];
+  @Input()
+  get dataSource(): KalListDataSource<T> {
+    return this._dataSource;
+  }
+  set dataSource(dataSource: KalListDataSource<T>) {
+    if (dataSource !== this._dataSource) {
+      this.destroySubscription();
+      this._dataSource = dataSource;
+
+      if (dataSource) {
+        this.observeDataSource();
+      } else {
+        this.results = [];
+        this.cdr.markForCheck();
+      }
+    }
+  }
 
   /**
    * Triggered when selection has changed
@@ -87,6 +104,8 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
    * The selected item index
    */
   private selectedItemIndex: number;
+
+  private _dataSource: KalListDataSource<T> = null;
 
   private _selection: KalListSelection<T> = new KalListSelection<T>();
 
@@ -259,7 +278,8 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
    * Is the item selected
    */
   isSelected(item): boolean {
-    return this._selection.contains(item);
+    return this.selectionMode === KalListSelectionMode.Single
+      ? this._selection.selected.some(element => element === item) : this._selection.contains(item);
   }
 
   /**
@@ -309,9 +329,15 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
     }
   }
 
-  ngOnInit() {
-    this.results = [];
+  private destroySubscription() {
+    this.subscription.unsubscribe();
 
+    if (this.dataSource && (this.dataSource as DataSource<T>).connect instanceof Function) {
+      (this.dataSource as DataSource<T>).disconnect(this);
+    }
+  }
+
+  private observeDataSource() {
     if ((this.dataSource as DataSource<T>).connect instanceof Function) {
       this.subscription = (this.dataSource as DataSource<T>).connect(this).subscribe(
         (items: T[]) => {
@@ -320,17 +346,16 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
         }
       );
     } else if (this.dataSource instanceof Observable) {
-      this.subscription = this.dataSource.subscribe(
+      this.subscription = (this.dataSource as Observable<T[]>).subscribe(
         (items: T[]) => {
           this.results = items;
           this.cdr.markForCheck();
         }
       );
     } else if (Array.isArray(this.dataSource)) {
-      this.results = this.dataSource;
+      this.results = this.dataSource as T[];
       this.cdr.markForCheck();
     }
-
   }
 
   ngAfterViewInit() {
@@ -338,8 +363,6 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   }
 
   ngOnDestroy() {
-    if ((this.dataSource as DataSource<T>).connect instanceof Function) {
-      (this.dataSource as DataSource<T>).disconnect(this);
-    }
+    this.destroySubscription();
   }
 }
