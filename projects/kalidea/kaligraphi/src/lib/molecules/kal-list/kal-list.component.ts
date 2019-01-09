@@ -8,7 +8,6 @@ import {
   HostListener,
   Input,
   OnDestroy,
-  OnInit,
   Output,
   QueryList,
   ViewChildren,
@@ -66,8 +65,6 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
     }
   }
 
-  private _dataSource: KalListDataSource<T> = null;
-
   /**
    * Triggered when selection has changed
    */
@@ -88,6 +85,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
    */
   viewChange: Observable<ListRange>;
 
+
   /**
    * The config is use to group all items
    */
@@ -107,6 +105,8 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
    * The selected item index
    */
   private selectedItemIndex: number;
+
+  private _dataSource: KalListDataSource<T> = null;
 
   private _selection: KalListSelection<T> = new KalListSelection<T>();
 
@@ -330,13 +330,11 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
     }
   }
 
-  destroySubscription() {
+  private destroySubscription() {
     this.subscription.unsubscribe();
 
-    if (this.dataSource) {
-      if ((this.dataSource as DataSource<T>).connect instanceof Function) {
-        (this.dataSource as DataSource<T>).disconnect(this);
-      }
+    if (this.dataSource && (this.dataSource as DataSource<T>).connect instanceof Function) {
+      (this.dataSource as DataSource<T>).disconnect(this);
     }
   }
 
