@@ -1,4 +1,5 @@
 import { Directive, EventEmitter, HostBinding, HostListener, Input, OnDestroy, Output } from '@angular/core';
+import { draggingElement } from './kal-drag.directive';
 
 export enum KalDropPosition {
   Top = 'top',
@@ -27,6 +28,11 @@ export class KalDropDirective implements OnDestroy {
   @Input() kalDropPositions: KalDropPosition[] = [KalDropPosition.Top, KalDropPosition.Bot, KalDropPosition.Middle];
 
   /**
+   * callback to detect if element could be dropped on the current item
+   */
+  @Input() kalDropAllowed;
+
+  /**
    * current position for drop
    */
   private dropPosition: KalDropPosition = null;
@@ -53,6 +59,7 @@ export class KalDropDirective implements OnDestroy {
 
   @HostListener('dragover', ['$event'])
   dragOver($event: DragEvent) {
+    // dragover DOES NOT HAVE THE RIGHTS to see the data in the drag event.
     this.getZoneHovered($event);
     // https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API#Define_a_drop_zone
     $event.stopPropagation();
@@ -83,7 +90,9 @@ export class KalDropDirective implements OnDestroy {
     const top = targetHeight * threshold;
     const bot = targetHeight * (1 - threshold);
 
-    if (this.isPositionAvailable(KalDropPosition.Top) && position < top) {
+    if (this.kalDropAllowed && !this.kalDropAllowed(draggingElement)) {
+      this.dropPosition = null;
+    } else if (this.isPositionAvailable(KalDropPosition.Top) && position < top) {
       this.dropPosition = KalDropPosition.Top;
     } else if (this.isPositionAvailable(KalDropPosition.Bot) && position > bot) {
       this.dropPosition = KalDropPosition.Bot;
