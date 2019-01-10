@@ -155,6 +155,15 @@ class TestDataSource implements DataSource<{id: string, name: string}> {
    * Return an observable that contains the items list
    */
   connect(): Observable<any> {
+    for (let i = 9; i < 10000; i++) {
+      this.listItem.push(
+        {
+          id: '' + i,
+          name: 'rTest' + i,
+          disabled: false
+        },
+      );
+    }
     return of(this.listItem);
   }
 

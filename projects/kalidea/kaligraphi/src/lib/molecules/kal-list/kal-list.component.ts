@@ -21,6 +21,7 @@ import { KalListItemDirective } from './kal-list-item.directive';
 import { KalListItemSelectionDirective } from './kal-list-item-selection.directive';
 import { KalListSelection } from './kal-list-selection';
 import { AutoUnsubscribe } from '../../utils';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 enum KalListSelectionMode {
   None = 'none',
@@ -141,6 +142,28 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   get selectionMode() {
     return this._selectionMode;
   }
+
+  @Input()
+  get containsVirtualScroll() {
+    return this._containsVirtualScroll && this.itemSize;
+  }
+  set containsVirtualScroll(value) {
+    this._containsVirtualScroll = coerceBooleanProperty(value);
+    this.cdr.markForCheck();
+  }
+
+  private _containsVirtualScroll = false;
+
+  @Input()
+  get itemSize() {
+    return this._itemSize;
+  }
+  set itemSize(value) {
+    this._itemSize = value;
+    this.cdr.markForCheck();
+  }
+
+  private _itemSize = null;
 
   /**
    * Selectable items (none, single, multiple)
@@ -306,6 +329,10 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
     } else {
       this._selection.remove(item);
     }
+  }
+
+  isDataSourceArray() {
+
   }
 
   private updateSelectedItem(item: T) {

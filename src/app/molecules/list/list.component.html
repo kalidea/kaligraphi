@@ -1,6 +1,6 @@
 <h1>List</h1>
 
-<div class="example">
+<!--<div class="example">-->
 
   <article>
 
@@ -12,6 +12,8 @@
       [groupByFunction]="groupByFunction"
       [disableRowsFunction]="disableRowsFunction"
       [selectionMode]="selectionMode"
+      itemSize="48"
+      [containsVirtualScroll]="true"
       (selectionChange)="selectedValue = $event">
 
       <ng-template kalListItem let-item="item">
@@ -26,7 +28,7 @@
 
   </article>
 
-</div>
+<!--</div>-->
 
 <div class="configurator">
 

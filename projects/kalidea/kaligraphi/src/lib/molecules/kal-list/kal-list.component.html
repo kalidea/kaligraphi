@@ -1,6 +1,30 @@
 <ng-container *ngIf="row">
 
-  <div *ngFor="let item of results; index as i" class="kal-list__row">
+  <ng-container *ngIf="containsVirtualScroll; else noVirtualScroll">
+
+    <cdk-virtual-scroll-viewport style="height: 500px" [itemSize]="itemSize">
+
+      <div *cdkVirtualFor="let item of results; index as i">
+
+        <ng-container *ngTemplateOutlet="rowTemplate; context: {item: item, i: i}"></ng-container>
+
+      </div>
+
+    </cdk-virtual-scroll-viewport>
+
+  </ng-container>
+
+  <ng-template #noVirtualScroll>
+
+    <div *ngFor="let item of results; index as i" class="kal-list__row">
+
+      <ng-container *ngTemplateOutlet="rowTemplate; context: {item: item, i: i}"></ng-container>
+
+    </div>
+
+  </ng-template>
+
+  <ng-template #rowTemplate let-item="item" let-i="i">
 
     <div *ngIf="containsGroupByFunction(item, i); else separator"
          class="kal-list__group">
@@ -28,7 +52,6 @@
 
     </div>
 
-
-  </div>
+  </ng-template>
 
 </ng-container>

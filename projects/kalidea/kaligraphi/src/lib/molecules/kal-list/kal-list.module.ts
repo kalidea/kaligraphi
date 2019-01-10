@@ -5,6 +5,7 @@ import { KalIconModule } from '../../atoms/kal-icon/kal-icon.module';
 import { KalListComponent } from './kal-list.component';
 import { KalListItemDirective } from './kal-list-item.directive';
 import { KalListItemSelectionDirective } from './kal-list-item-selection.directive';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 export * from './kal-list.component';
 export * from './kal-list-selection';
@@ -21,6 +22,7 @@ const exports = [
   imports: [
     CommonModule,
     KalIconModule,
+    ScrollingModule
   ],
   declarations: exports,
   exports: exports
