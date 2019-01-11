@@ -10,7 +10,7 @@ import { Observable, of } from 'rxjs';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ListComponent implements OnInit {
+export class ListComponent {
 
   /**
    * dataSource
@@ -108,9 +108,6 @@ export class ListComponent implements OnInit {
   changeSelection() {
     this.listSelection = new KalListSelection<{ id: string }>([{id: '1'}], false, []);
     this.selectedValue = new KalListSelection<{ id: string }>([{id: '1'}], false, []);
-  }
-
-  ngOnInit() {
   }
 
 }
