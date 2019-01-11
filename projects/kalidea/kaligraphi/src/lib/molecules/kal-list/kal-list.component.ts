@@ -16,7 +16,6 @@ import {
 import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
 import { ENTER, SPACE } from '@angular/cdk/keycodes';
 import { CollectionViewer, DataSource, ListRange } from '@angular/cdk/collections';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Observable, Subscription } from 'rxjs';
 import { KalListItemDirective } from './kal-list-item.directive';
 import { KalListItemSelectionDirective } from './kal-list-item-selection.directive';
@@ -237,7 +236,9 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   @HostListener('focus')
   focus(): void {
     this.isFocused = true;
-    this.keyManager.setActiveItem(this.selectedItemIndex);
+    if (this._selectionMode !== KalListSelectionMode.None) {
+      this.keyManager.setActiveItem(this.selectedItemIndex);
+    }
   }
 
   /**
@@ -246,7 +247,9 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   @HostListener('blur')
   blur() {
     this.isFocused = false;
-    this.keyManager.setActiveItem(this.selectedItemIndex);
+    if (this._selectionMode !== KalListSelectionMode.None) {
+      this.keyManager.setActiveItem(this.selectedItemIndex);
+    }
   }
 
   /**

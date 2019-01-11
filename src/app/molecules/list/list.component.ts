@@ -130,6 +130,7 @@ class TestDataSource implements DataSource<{ id: string, name: string }> {
         },
       );
     }
+
     return of(listItem);
   }
 
