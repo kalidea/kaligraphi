@@ -318,9 +318,11 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
    */
   reset() {
     this._selection = new KalListSelection<T>();
+
     if (this.keyManager) {
       this.keyManager.setActiveItem(null);
     }
+
     this.cdr.markForCheck();
   }
 
