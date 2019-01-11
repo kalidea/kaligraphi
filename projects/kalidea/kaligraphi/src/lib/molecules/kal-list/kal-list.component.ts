@@ -30,6 +30,11 @@ enum KalListSelectionMode {
 
 type KalListDataSource<T> = DataSource<T> | Observable<T[]> | T[];
 
+export interface VirtualScrollConfig {
+  itemSize: number;
+  height: number;
+}
+
 @Component({
   selector: 'kal-list',
   templateUrl: './kal-list.component.html',
@@ -38,11 +43,6 @@ type KalListDataSource<T> = DataSource<T> | Observable<T[]> | T[];
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class KalListComponent<T extends { id: string }> implements CollectionViewer, AfterViewInit, OnDestroy {
-
-  /**
-   * Results list
-   */
-  results: T[] = [];
 
   /**
    * Datasource to give items list to the component
@@ -65,66 +65,6 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
     }
   }
 
-  /**
-   * Triggered when selection has changed
-   */
-  @Output() selectionChange: EventEmitter<KalListSelection<T>> = new EventEmitter<KalListSelection<T>>();
-
-  /**
-   * Row template
-   */
-  @ContentChild(KalListItemDirective) row: KalListItemDirective;
-
-  /**
-   * The reference to the element thats contains the kal list item directive
-   */
-  @ViewChildren(KalListItemSelectionDirective) children: QueryList<KalListItemSelectionDirective>;
-
-  /**
-   * @inheritDoc
-   */
-  viewChange: Observable<ListRange>;
-
-  /**
-   * The config is use to group all items
-   */
-  private groupByConfig: (item: T) => string = null;
-
-  /**
-   * Manages keyboard events for options in the panel
-   */
-  private keyManager: ActiveDescendantKeyManager<KalListItemSelectionDirective>;
-
-  /**
-   * Whether or not the select is focus
-   */
-  private isFocused: boolean;
-
-  /**
-   * The selected item index
-   */
-  private selectedItemIndex: number;
-
-  private _dataSource: KalListDataSource<T> = null;
-
-  private _selection: KalListSelection<T> = new KalListSelection<T>();
-
-  /**
-   * Selectable items (none, single, multiple)
-   */
-  private _selectionMode: KalListSelectionMode = KalListSelectionMode.Single;
-
-  /**
-   * The subscription
-   */
-  @AutoUnsubscribe()
-  private subscription: Subscription = Subscription.EMPTY;
-
-  /**
-   * Is the row disabled
-   */
-  private isDisabled: (item: T) => boolean = (item: T) => false;
-
   constructor(private cdr: ChangeDetectorRef) {
   }
 
@@ -140,6 +80,22 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
 
   get selectionMode() {
     return this._selectionMode;
+  }
+
+  @Input()
+  get virtualScrollConfig(): VirtualScrollConfig {
+    return this._virtualScrollConfig;
+  }
+  set virtualScrollConfig(value: VirtualScrollConfig) {
+    if (value) {
+      this._virtualScrollConfig = {
+        height: value.height || 500,
+        itemSize: value.itemSize || null
+      };
+    } else {
+      this._virtualScrollConfig = null;
+    }
+    this.cdr.markForCheck();
   }
 
   /**
@@ -164,6 +120,10 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
         this._selection.excluded = [];
         this._selectionMode = KalListSelectionMode.Single;
         break;
+    }
+
+    if (this.keyManager) {
+      this.keyManager.setActiveItem(null);
     }
 
     this.cdr.markForCheck();
@@ -204,12 +164,81 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   }
 
   /**
+   * Results list
+   */
+  results: T[] = [];
+
+  /**
+   * @inheritDoc
+   */
+  viewChange: Observable<ListRange>;
+
+  /**
+   * Triggered when selection has changed
+   */
+  @Output() selectionChange: EventEmitter<KalListSelection<T>> = new EventEmitter<KalListSelection<T>>();
+
+  /**
+   * Row template
+   */
+  @ContentChild(KalListItemDirective) row: KalListItemDirective;
+
+  /**
+   * The reference to the element thats contains the kal list item directive
+   */
+  @ViewChildren(KalListItemSelectionDirective) children: QueryList<KalListItemSelectionDirective>;
+
+  /**
+   * The config is use to group all items
+   */
+  private groupByConfig: (item: T) => string = null;
+
+  /**
+   * Manages keyboard events for options in the panel
+   */
+  private keyManager: ActiveDescendantKeyManager<KalListItemSelectionDirective>;
+
+  /**
+   * Whether or not the select is focus
+   */
+  private isFocused: boolean;
+
+  /**
+   * The selected item index
+   */
+  private selectedItemIndex: number;
+
+  private _dataSource: KalListDataSource<T> = null;
+
+  private _selection: KalListSelection<T> = new KalListSelection<T>();
+
+  /**
+   * Selectable items (none, single, multiple)
+   */
+  private _selectionMode: KalListSelectionMode = KalListSelectionMode.Single;
+
+  /**
+   * The subscription
+   */
+  @AutoUnsubscribe()
+  private subscription: Subscription = Subscription.EMPTY;
+
+  private _virtualScrollConfig: VirtualScrollConfig = null;
+
+  /**
+   * Is the row disabled
+   */
+  private isDisabled: (item: T) => boolean = (item: T) => false;
+
+  /**
    * Focus the tab element
    */
   @HostListener('focus')
   focus(): void {
     this.isFocused = true;
-    this.keyManager.setActiveItem(this.selectedItemIndex);
+    if (this._selectionMode !== KalListSelectionMode.None) {
+      this.keyManager.setActiveItem(this.selectedItemIndex);
+    }
   }
 
   /**
@@ -218,7 +247,9 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   @HostListener('blur')
   blur() {
     this.isFocused = false;
-    this.keyManager.setActiveItem(this.selectedItemIndex);
+    if (this._selectionMode !== KalListSelectionMode.None) {
+      this.keyManager.setActiveItem(this.selectedItemIndex);
+    }
   }
 
   /**
@@ -287,6 +318,11 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
    */
   reset() {
     this._selection = new KalListSelection<T>();
+
+    if (this.keyManager) {
+      this.keyManager.setActiveItem(null);
+    }
+
     this.cdr.markForCheck();
   }
 
@@ -330,6 +366,9 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   }
 
   private destroySubscription() {
+    if (this.keyManager) {
+      this.keyManager.setActiveItem(null);
+    }
     this.subscription.unsubscribe();
 
     if (this.dataSource && (this.dataSource as DataSource<T>).connect instanceof Function) {
