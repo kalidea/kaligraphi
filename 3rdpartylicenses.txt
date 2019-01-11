@@ -425,13 +425,15 @@ MIT
 @angular/animations
 MIT
 
-@kalidea/kaligraphi
-
 @angular/router
 MIT
 
 @angular/core
 MIT
+
+@kalidea/kaligraphi
+
+@angular/cdk/scrolling
 
 @angular/forms
 MIT
