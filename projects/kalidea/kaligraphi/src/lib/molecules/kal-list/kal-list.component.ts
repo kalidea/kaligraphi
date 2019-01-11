@@ -41,11 +41,6 @@ type KalListDataSource<T> = DataSource<T> | Observable<T[]> | T[];
 export class KalListComponent<T extends { id: string }> implements CollectionViewer, AfterViewInit, OnDestroy {
 
   /**
-   * Results list
-   */
-  results: T[] = [];
-
-  /**
    * Datasource to give items list to the component
    */
   @Input()
@@ -66,66 +61,6 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
     }
   }
 
-  /**
-   * Triggered when selection has changed
-   */
-  @Output() selectionChange: EventEmitter<KalListSelection<T>> = new EventEmitter<KalListSelection<T>>();
-
-  /**
-   * Row template
-   */
-  @ContentChild(KalListItemDirective) row: KalListItemDirective;
-
-  /**
-   * The reference to the element thats contains the kal list item directive
-   */
-  @ViewChildren(KalListItemSelectionDirective) children: QueryList<KalListItemSelectionDirective>;
-
-  /**
-   * @inheritDoc
-   */
-  viewChange: Observable<ListRange>;
-
-  /**
-   * The config is use to group all items
-   */
-  private groupByConfig: (item: T) => string = null;
-
-  /**
-   * Manages keyboard events for options in the panel
-   */
-  private keyManager: ActiveDescendantKeyManager<KalListItemSelectionDirective>;
-
-  /**
-   * Whether or not the select is focus
-   */
-  private isFocused: boolean;
-
-  /**
-   * The selected item index
-   */
-  private selectedItemIndex: number;
-
-  private _dataSource: KalListDataSource<T> = null;
-
-  private _selection: KalListSelection<T> = new KalListSelection<T>();
-
-  /**
-   * Selectable items (none, single, multiple)
-   */
-  private _selectionMode: KalListSelectionMode = KalListSelectionMode.Single;
-
-  /**
-   * The subscription
-   */
-  @AutoUnsubscribe()
-  private subscription: Subscription = Subscription.EMPTY;
-
-  /**
-   * Is the row disabled
-   */
-  private isDisabled: (item: T) => boolean = (item: T) => false;
-
   constructor(private cdr: ChangeDetectorRef) {
   }
 
@@ -144,26 +79,31 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   }
 
   @Input()
-  get containsVirtualScroll() {
-    return this._containsVirtualScroll && this.itemSize;
+  get useVirtualScroll() {
+    return this._useVirtualScroll && !!this.itemSize;
   }
-  set containsVirtualScroll(value) {
-    this._containsVirtualScroll = coerceBooleanProperty(value);
+  set useVirtualScroll(value: boolean) {
+    this._useVirtualScroll = coerceBooleanProperty(value);
     this.cdr.markForCheck();
   }
-
-  private _containsVirtualScroll = false;
 
   @Input()
   get itemSize() {
     return this._itemSize;
   }
-  set itemSize(value) {
+  set itemSize(value: number) {
     this._itemSize = value;
     this.cdr.markForCheck();
   }
 
-  private _itemSize = null;
+  @Input()
+  get height() {
+    return this._height;
+  }
+  set height(value: number) {
+    this._height = value || 500;
+    this.cdr.markForCheck();
+  }
 
   /**
    * Selectable items (none, single, multiple)
@@ -225,6 +165,77 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   get countElements(): number {
     return this.results.length;
   }
+
+  /**
+   * Results list
+   */
+  results: T[] = [];
+
+  /**
+   * @inheritDoc
+   */
+  viewChange: Observable<ListRange>;
+
+  /**
+   * Triggered when selection has changed
+   */
+  @Output() selectionChange: EventEmitter<KalListSelection<T>> = new EventEmitter<KalListSelection<T>>();
+
+  /**
+   * Row template
+   */
+  @ContentChild(KalListItemDirective) row: KalListItemDirective;
+
+  /**
+   * The reference to the element thats contains the kal list item directive
+   */
+  @ViewChildren(KalListItemSelectionDirective) children: QueryList<KalListItemSelectionDirective>;
+
+  /**
+   * The config is use to group all items
+   */
+  private groupByConfig: (item: T) => string = null;
+
+  /**
+   * Manages keyboard events for options in the panel
+   */
+  private keyManager: ActiveDescendantKeyManager<KalListItemSelectionDirective>;
+
+  /**
+   * Whether or not the select is focus
+   */
+  private isFocused: boolean;
+
+  /**
+   * The selected item index
+   */
+  private selectedItemIndex: number;
+
+  private _dataSource: KalListDataSource<T> = null;
+
+  private _selection: KalListSelection<T> = new KalListSelection<T>();
+
+  /**
+   * Selectable items (none, single, multiple)
+   */
+  private _selectionMode: KalListSelectionMode = KalListSelectionMode.Single;
+
+  /**
+   * The subscription
+   */
+  @AutoUnsubscribe()
+  private subscription: Subscription = Subscription.EMPTY;
+
+  private _useVirtualScroll = false;
+
+  private _itemSize = null;
+
+  private _height = 500;
+
+  /**
+   * Is the row disabled
+   */
+  private isDisabled: (item: T) => boolean = (item: T) => false;
 
   /**
    * Focus the tab element

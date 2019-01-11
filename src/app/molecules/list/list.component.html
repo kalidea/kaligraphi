@@ -13,7 +13,8 @@
       [disableRowsFunction]="disableRowsFunction"
       [selectionMode]="selectionMode"
       itemSize="48"
-      [containsVirtualScroll]="true"
+      height="500"
+      [useVirtualScroll]="useVirtualScroll"
       (selectionChange)="selectedValue = $event">
 
       <ng-template kalListItem let-item="item">

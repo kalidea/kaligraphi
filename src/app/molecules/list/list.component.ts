@@ -42,10 +42,16 @@ export class ListComponent implements OnInit {
    */
   listSelection = null;
 
+  /**
+   * Use the virtual scroll
+   */
+  useVirtualScroll = true;
+
   constructor() {
   }
 
   changeDataSource() {
+    this.useVirtualScroll = false;
     this.dataSource = [
       {
         id: '1',
@@ -107,56 +113,12 @@ export class ListComponent implements OnInit {
 class TestDataSource implements DataSource<{id: string, name: string}> {
 
   /**
-   * The list of items
-   */
-  listItem = [
-    {
-      id: '1',
-      name: 'aTest',
-      disabled: true
-    },
-    {
-      id: '2',
-      name: 'aTest2',
-      disabled: false
-    },
-    {
-      id: '3',
-      name: 'aTest3',
-      disabled: false
-    },    {
-      id: '4',
-      name: 'bTest4',
-      disabled: false
-    },
-    {
-      id: '5',
-      name: 'cTest5',
-      disabled: false
-    },
-    {
-      id: '6',
-      name: 'eTest6',
-      disabled: false
-    },
-    {
-      id: '7',
-      name: 'rTest7',
-      disabled: false
-    },
-    {
-      id: '8',
-      name: 'rTest8',
-      disabled: false
-    },
-  ];
-
-  /**
    * Return an observable that contains the items list
    */
   connect(): Observable<any> {
-    for (let i = 9; i < 10000; i++) {
-      this.listItem.push(
+    const listItem = [];
+    for (let i = 1; i <= 500; i++) {
+      listItem.push(
         {
           id: '' + i,
           name: 'rTest' + i,
@@ -164,7 +126,7 @@ class TestDataSource implements DataSource<{id: string, name: string}> {
         },
       );
     }
-    return of(this.listItem);
+    return of(listItem);
   }
 
   disconnect() {
