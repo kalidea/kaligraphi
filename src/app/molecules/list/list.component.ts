@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { KalListSelection } from '@kalidea/kaligraphi';
 import { Observable, of } from 'rxjs';
@@ -43,15 +43,19 @@ export class ListComponent implements OnInit {
   listSelection = null;
 
   /**
-   * Use the virtual scroll
+   * The virtual scroll config
    */
-  useVirtualScroll = true;
+  virtualScrollConfig = {
+    height: 500,
+    itemSize: 48
+  };
 
   constructor() {
   }
 
   changeDataSource() {
-    this.useVirtualScroll = false;
+    this.virtualScrollConfig = null;
+
     this.dataSource = [
       {
         id: '1',
@@ -67,7 +71,7 @@ export class ListComponent implements OnInit {
         id: '3',
         name: 'aTest3',
         disabled: false
-      },    {
+      }, {
         id: '4',
         name: 'bTest4',
         disabled: false
@@ -102,7 +106,7 @@ export class ListComponent implements OnInit {
   }
 
   changeSelection() {
-    this.listSelection = new KalListSelection<{id: string}>([{id: '1'}], false, []);
+    this.listSelection = new KalListSelection<{ id: string }>([{id: '1'}], false, []);
   }
 
   ngOnInit() {
@@ -110,7 +114,7 @@ export class ListComponent implements OnInit {
 
 }
 
-class TestDataSource implements DataSource<{id: string, name: string}> {
+class TestDataSource implements DataSource<{ id: string, name: string }> {
 
   /**
    * Return an observable that contains the items list

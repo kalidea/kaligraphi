@@ -1,8 +1,8 @@
 <ng-container *ngIf="row">
 
-  <ng-container *ngIf="useVirtualScroll; else noVirtualScroll">
+  <ng-container *ngIf="virtualScrollConfig; else noVirtualScroll">
 
-    <cdk-virtual-scroll-viewport [style.height.px]="height" [itemSize]="itemSize">
+    <cdk-virtual-scroll-viewport [style.height.px]="virtualScrollConfig.height" [itemSize]="virtualScrollConfig.itemSize">
 
       <div *cdkVirtualFor="let item of results; index as i">
 

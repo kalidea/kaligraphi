@@ -16,12 +16,12 @@ import {
 import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
 import { ENTER, SPACE } from '@angular/cdk/keycodes';
 import { CollectionViewer, DataSource, ListRange } from '@angular/cdk/collections';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Observable, Subscription } from 'rxjs';
 import { KalListItemDirective } from './kal-list-item.directive';
 import { KalListItemSelectionDirective } from './kal-list-item-selection.directive';
 import { KalListSelection } from './kal-list-selection';
 import { AutoUnsubscribe } from '../../utils';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 enum KalListSelectionMode {
   None = 'none',
@@ -30,6 +30,11 @@ enum KalListSelectionMode {
 }
 
 type KalListDataSource<T> = DataSource<T> | Observable<T[]> | T[];
+
+export interface VirtualScrollConfig {
+  itemSize: number;
+  height: number;
+}
 
 @Component({
   selector: 'kal-list',
@@ -79,29 +84,18 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   }
 
   @Input()
-  get useVirtualScroll() {
-    return this._useVirtualScroll && !!this.itemSize;
+  get virtualScrollConfig(): VirtualScrollConfig {
+    return this._virtualScrollConfig;
   }
-  set useVirtualScroll(value: boolean) {
-    this._useVirtualScroll = coerceBooleanProperty(value);
-    this.cdr.markForCheck();
-  }
-
-  @Input()
-  get itemSize() {
-    return this._itemSize;
-  }
-  set itemSize(value: number) {
-    this._itemSize = value;
-    this.cdr.markForCheck();
-  }
-
-  @Input()
-  get height() {
-    return this._height;
-  }
-  set height(value: number) {
-    this._height = value || 500;
+  set virtualScrollConfig(value: VirtualScrollConfig) {
+    if (value) {
+      this._virtualScrollConfig = {
+        height: value.height || 500,
+        itemSize: value.itemSize || null
+      };
+    } else {
+      this._virtualScrollConfig = null;
+    }
     this.cdr.markForCheck();
   }
 
@@ -228,9 +222,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
 
   private _useVirtualScroll = false;
 
-  private _itemSize = null;
-
-  private _height = 500;
+  private _virtualScrollConfig: VirtualScrollConfig = null;
 
   /**
    * Is the row disabled
