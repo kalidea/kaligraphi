@@ -1,5 +1,5 @@
 import { Directive, EventEmitter, HostBinding, HostListener, Input, OnDestroy, Output } from '@angular/core';
-import { draggingElement } from './kal-drag.directive';
+import { KalDraggingService } from '../services/kal-dragging.service';
 
 export enum KalDropPosition {
   Top = 'top',
@@ -36,6 +36,9 @@ export class KalDropDirective implements OnDestroy {
    * current position for drop
    */
   private dropPosition: KalDropPosition = null;
+
+  constructor(private draggingService: KalDraggingService) {
+  }
 
   @HostBinding('class.kal-drop-hovered-bot')
   get botHovered() {
@@ -89,6 +92,8 @@ export class KalDropDirective implements OnDestroy {
 
     const top = targetHeight * threshold;
     const bot = targetHeight * (1 - threshold);
+
+    const draggingElement = this.draggingService.dragging;
 
     if (this.kalDropAllowed && !this.kalDropAllowed(draggingElement)) {
       this.dropPosition = null;

@@ -22,8 +22,8 @@ export class KalDragDirective {
     $event.dataTransfer.setData('text/plain', JSON.stringify(this.kalDrag));
   }
 
-  @HostListener('dragend', ['$event'])
-  dragEnd($event) {
+  @HostListener('dragend')
+  dragEnd() {
     this.draggingService.dragging = null;
     this.dragging = false;
   }
