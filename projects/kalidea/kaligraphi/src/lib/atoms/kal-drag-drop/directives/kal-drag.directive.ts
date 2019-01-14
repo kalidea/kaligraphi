@@ -1,35 +1,30 @@
 import { Directive, HostBinding, HostListener, Input } from '@angular/core';
-
-/**
- * store current dragging element
- */
-export let draggingElement;
+import { KalDraggingService } from '../services/kal-dragging.service';
 
 @Directive({
   selector: '[kalDrag]'
 })
 export class KalDragDirective {
 
-  @HostBinding('draggable') draggable = true;
-
   @Input() kalDrag;
 
-  @HostBinding('class.kal-drag-dragging')
-  dragging = false;
+  @HostBinding('draggable') draggable = true;
 
-  constructor() {
+  @HostBinding('class.kal-drag-dragging') dragging = false;
+
+  constructor(private draggingService: KalDraggingService) {
   }
 
   @HostListener('dragstart', ['$event'])
   dragStart($event) {
-    draggingElement = this.kalDrag;
+    this.draggingService.dragging = this.kalDrag;
     this.dragging = true;
     $event.dataTransfer.setData('text/plain', JSON.stringify(this.kalDrag));
   }
 
   @HostListener('dragend', ['$event'])
   dragEnd($event) {
-    draggingElement = null;
+    this.draggingService.dragging = null;
     this.dragging = false;
   }
 
