@@ -26,7 +26,7 @@ export class KalDraggingService {
    * get dragging element
    */
   get dragging() {
-    return this.draggingSubject$.value();
+    return this.draggingSubject$.value;
   }
 
   /**
