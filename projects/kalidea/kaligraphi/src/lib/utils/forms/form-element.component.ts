@@ -1,4 +1,4 @@
-import { EventEmitter, forwardRef, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
+import { EventEmitter, forwardRef, HostBinding, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { NG_ASYNC_VALIDATORS, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -131,6 +131,7 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
    * setter for disabled property
    */
   @Input()
+  @HostBinding('attr.disabled')
   set disabled(value) {
     this.isDisabled = coerceBooleanProperty(value);
   }
