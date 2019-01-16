@@ -21,9 +21,9 @@ import { CollectionViewer, DataSource, ListRange } from '@angular/cdk/collection
 import { Observable, Subscription } from 'rxjs';
 import { KalListItemDirective } from './kal-list-item.directive';
 import { KalListItemSelectionDirective } from './kal-list-item-selection.directive';
+import { KalVirtualScrollDirective } from '../../utility/directives/kal-virtual-scroll/kal-virtual-scroll.directive';
 import { KalListSelection } from './kal-list-selection';
 import { AutoUnsubscribe } from '../../utils';
-import { KalVirtualScrollDirective } from '../../utility/directives/kal-virtual-scroll/kal-virtual-scroll.directive';
 
 enum KalListSelectionMode {
   None = 'none',
