@@ -42,20 +42,10 @@ export class ListComponent {
    */
   listSelection = null;
 
-  /**
-   * The virtual scroll config
-   */
-  virtualScrollConfig = {
-    height: 500,
-    itemSize: 48
-  };
-
   constructor() {
   }
 
   changeDataSource() {
-    this.virtualScrollConfig = null;
-
     this.dataSource = [
       {
         id: '1',

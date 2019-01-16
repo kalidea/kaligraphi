@@ -4,10 +4,10 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChild,
-  EventEmitter,
+  EventEmitter, Host,
   HostListener,
   Input,
-  OnDestroy,
+  OnDestroy, Optional,
   Output,
   QueryList,
   ViewChildren,
@@ -21,6 +21,7 @@ import { KalListItemDirective } from './kal-list-item.directive';
 import { KalListItemSelectionDirective } from './kal-list-item-selection.directive';
 import { KalListSelection } from './kal-list-selection';
 import { AutoUnsubscribe } from '../../utils';
+import { KalVirtualScrollDirective } from '../../utility/directives/kal-virtual-scroll/kal-virtual-scroll.directive';
 
 enum KalListSelectionMode {
   None = 'none',
@@ -65,7 +66,12 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
     }
   }
 
-  constructor(private cdr: ChangeDetectorRef) {
+  constructor(private cdr: ChangeDetectorRef,
+              @Optional() @Host() public kalVirtualScrollDirective: KalVirtualScrollDirective) {
+  }
+
+  get kalVirtualScroll(): KalVirtualScrollDirective {
+    return this.kalVirtualScrollDirective;
   }
 
   @Input()
@@ -80,22 +86,6 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
 
   get selectionMode() {
     return this._selectionMode;
-  }
-
-  @Input()
-  get virtualScrollConfig(): VirtualScrollConfig {
-    return this._virtualScrollConfig;
-  }
-  set virtualScrollConfig(value: VirtualScrollConfig) {
-    if (value) {
-      this._virtualScrollConfig = {
-        height: value.height || 500,
-        itemSize: value.itemSize || null
-      };
-    } else {
-      this._virtualScrollConfig = null;
-    }
-    this.cdr.markForCheck();
   }
 
   /**

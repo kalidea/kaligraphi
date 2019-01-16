@@ -5,6 +5,9 @@
   <article>
 
     <kal-list
+      kalVirtualScroll
+      height="500"
+      itemSize="48"
       #kalListItem
       tabindex="1"
       [selection]="listSelection"
@@ -12,7 +15,6 @@
       [groupByFunction]="groupByFunction"
       [disableRowsFunction]="disableRowsFunction"
       [selectionMode]="selectionMode"
-      [virtualScrollConfig]="virtualScrollConfig"
       (selectionChange)="selectedValue = $event">
 
       <ng-template kalListItem let-item="item">
