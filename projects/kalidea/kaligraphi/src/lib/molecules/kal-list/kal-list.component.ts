@@ -69,7 +69,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   }
 
   constructor(private cdr: ChangeDetectorRef,
-              @Optional() @Host() public kalVirtualScrollDirective: KalVirtualScrollDirective) {
+              @Optional() @Host() private kalVirtualScrollDirective: KalVirtualScrollDirective) {
   }
 
   get kalVirtualScroll(): KalVirtualScrollDirective {
