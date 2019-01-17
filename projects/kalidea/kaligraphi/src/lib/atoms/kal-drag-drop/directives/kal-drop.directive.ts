@@ -40,6 +40,8 @@ export class KalDropDirective implements OnDestroy {
   constructor(private draggingService: KalDraggingService) {
   }
 
+  @HostBinding('class.kal-dropable') dropable = true;
+
   @HostBinding('class.kal-drop-hovered-bot')
   get botHovered() {
     return this.dropPosition === KalDropPosition.Bot;
@@ -76,8 +78,11 @@ export class KalDropDirective implements OnDestroy {
     const data = JSON.parse($event.dataTransfer.getData('text/plain'));
     const position = this.dropPosition;
 
-    this.kalDrop.emit({data, position});
-    this.resetDropPosition();
+    // we can drop only if position has been successfully calculated
+    if (position) {
+      this.kalDrop.emit({data, position});
+      this.resetDropPosition();
+    }
   }
 
   private isPositionAvailable(position: KalDropPosition) {

@@ -104,7 +104,12 @@ export class KalTreeDataSource extends DataSource<KalTreeNode> {
 
     this._data = new BehaviorSubject<KalTreeNode[]>(initialData);
     this.treeFlattener = new KalTreeFlattener(
-      (node, level) => new KalFlatTreeNode({...node, expandable: !!node.children, level}),
+      (node, level) => {
+        console.log({node});
+        const flattened =  new KalFlatTreeNode({...node, expandable: !!node.children, level});
+        console.log({node, flattened});
+        return flattened;
+      },
       node => node.level,
       node => node.expandable,
       node => node.children
