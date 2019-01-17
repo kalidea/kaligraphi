@@ -42,10 +42,13 @@ export class ListComponent {
    */
   listSelection = null;
 
+  height = 500;
+
   constructor() {
   }
 
   changeDataSource() {
+    this.height = 200;
     this.dataSource = [
       {
         id: '1',

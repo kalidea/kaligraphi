@@ -1,15 +1,35 @@
-import { Directive, Input } from '@angular/core';
+import { ChangeDetectorRef, Directive, Input } from '@angular/core';
 
 @Directive({
   selector: '[kalVirtualScroll]'
 })
 export class KalVirtualScrollDirective {
 
-  @Input() height = 500;
+  @Input()
+  get height() {
+    return this._height;
+  }
 
-  @Input() itemSize = 50;
+  set height(value) {
+    this._height = value;
+    this.cdr.markForCheck();
+  }
 
-  constructor() {
+  @Input()
+  get itemSize() {
+    return this._itemSize;
+  }
+
+  set itemSize(value) {
+    this._itemSize = value;
+    this.cdr.markForCheck();
+  }
+
+  private _height = 500;
+
+  private _itemSize = 50;
+
+  constructor(private cdr: ChangeDetectorRef) {
   }
 
 }
