@@ -5,9 +5,11 @@ import {
   Component,
   ContentChild,
   EventEmitter,
+  Host,
   HostListener,
   Input,
   OnDestroy,
+  Optional,
   Output,
   QueryList,
   ViewChildren,
@@ -19,6 +21,7 @@ import { CollectionViewer, DataSource, ListRange } from '@angular/cdk/collection
 import { Observable, Subscription } from 'rxjs';
 import { KalListItemDirective } from './kal-list-item.directive';
 import { KalListItemSelectionDirective } from './kal-list-item-selection.directive';
+import { KalVirtualScrollDirective } from '../../utility/directives/kal-virtual-scroll/kal-virtual-scroll.directive';
 import { KalListSelection } from './kal-list-selection';
 import { AutoUnsubscribe } from '../../utils';
 
@@ -65,7 +68,8 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
     }
   }
 
-  constructor(private cdr: ChangeDetectorRef) {
+  constructor(private cdr: ChangeDetectorRef,
+              @Optional() @Host() public readonly kalVirtualScroll: KalVirtualScrollDirective) {
   }
 
   @Input()
@@ -80,22 +84,6 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
 
   get selectionMode() {
     return this._selectionMode;
-  }
-
-  @Input()
-  get virtualScrollConfig(): VirtualScrollConfig {
-    return this._virtualScrollConfig;
-  }
-  set virtualScrollConfig(value: VirtualScrollConfig) {
-    if (value) {
-      this._virtualScrollConfig = {
-        height: value.height || 500,
-        itemSize: value.itemSize || null
-      };
-    } else {
-      this._virtualScrollConfig = null;
-    }
-    this.cdr.markForCheck();
   }
 
   /**
@@ -267,7 +255,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
 
     if (isOpenKey && this.keyManager.activeItem) {
       event.preventDefault();
-      const itemToSelect = this.results.find((item, i) => i === this.keyManager.activeItemIndex);
+      const itemToSelect = this.results.find((item, i) => !!(i === this.keyManager.activeItemIndex));
       this.selectItem(itemToSelect);
     } else {
       this.keyManager.onKeydown(event);
@@ -309,8 +297,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
    * Is the item selected
    */
   isSelected(item): boolean {
-    return this.selectionMode === KalListSelectionMode.Single
-      ? this._selection.selected.some(element => element === item) : this._selection.contains(item);
+    return !item.id ? this._selection.selected.some(element => element === item) : this._selection.contains(item);
   }
 
   /**

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { KalListSelection } from '@kalidea/kaligraphi';
 import { Observable, of } from 'rxjs';
@@ -42,20 +42,13 @@ export class ListComponent {
    */
   listSelection = null;
 
-  /**
-   * The virtual scroll config
-   */
-  virtualScrollConfig = {
-    height: 500,
-    itemSize: 48
-  };
+  height = 500;
 
   constructor() {
   }
 
   changeDataSource() {
-    this.virtualScrollConfig = null;
-
+    this.height = 200;
     this.dataSource = [
       {
         id: '1',

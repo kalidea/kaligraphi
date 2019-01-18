@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { KalIconModule } from '../../atoms/kal-icon/kal-icon.module';
+import { KalUtilityModule } from '../..//utility/kal-utility.module';
 
 import { KalListComponent } from './kal-list.component';
 import { KalListItemDirective } from './kal-list-item.directive';
@@ -22,7 +23,8 @@ const exports = [
   imports: [
     CommonModule,
     KalIconModule,
-    ScrollingModule
+    ScrollingModule,
+    KalUtilityModule
   ],
   declarations: exports,
   exports: exports
