@@ -214,6 +214,9 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   @AutoUnsubscribe()
   private subscription: Subscription = Subscription.EMPTY;
 
+  /**
+   * The virtual scroll config
+   */
   private _virtualScrollConfig: KalVirtualScrollConfig = null;
 
   /**
@@ -337,7 +340,6 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   }
 
   private updateSelectedItem(item: T) {
-
     if (this._selectionMode !== KalListSelectionMode.Multiple) {
       this._selection.selected = [];
       this._selection.add(item);
@@ -385,9 +387,6 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
       this.results = this.dataSource as T[];
       this.cdr.markForCheck();
     }
-  }
-
-  private setKeyManager() {
   }
 
   ngAfterViewInit() {
