@@ -30,7 +30,7 @@ enum KalListSelectionMode {
 
 type KalListDataSource<T> = DataSource<T> | Observable<T[]> | T[];
 
-export interface VirtualScrollConfig {
+export interface KalVirtualScrollConfig {
   itemSize: number;
   height: number;
 }
@@ -83,10 +83,10 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   }
 
   @Input()
-  get virtualScrollConfig(): VirtualScrollConfig {
+  get virtualScrollConfig(): KalVirtualScrollConfig {
     return this._virtualScrollConfig;
   }
-  set virtualScrollConfig(value: VirtualScrollConfig) {
+  set virtualScrollConfig(value: KalVirtualScrollConfig) {
     if (value) {
       this._virtualScrollConfig = {
         height: value.height || 500,
@@ -122,9 +122,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
         break;
     }
 
-    if (this.keyManager) {
-      this.keyManager.setActiveItem(null);
-    }
+    this.activeItem(null);
 
     this.cdr.markForCheck();
 
@@ -154,13 +152,6 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   set disableRowsFunction(value: (item: T) => boolean) {
     this.isDisabled = value;
     this.cdr.markForCheck();
-  }
-
-  /**
-   * Return the number of elements in list
-   */
-  get countElements(): number {
-    return this.results.length;
   }
 
   /**
@@ -196,7 +187,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   /**
    * Manages keyboard events for options in the panel
    */
-  private keyManager: ActiveDescendantKeyManager<KalListItemSelectionDirective>;
+  private keyManager: ActiveDescendantKeyManager<KalListItemSelectionDirective> = null;
 
   /**
    * Whether or not the select is focus
@@ -223,7 +214,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   @AutoUnsubscribe()
   private subscription: Subscription = Subscription.EMPTY;
 
-  private _virtualScrollConfig: VirtualScrollConfig = null;
+  private _virtualScrollConfig: KalVirtualScrollConfig = null;
 
   /**
    * Is the row disabled
@@ -237,7 +228,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   focus(): void {
     this.isFocused = true;
     if (this._selectionMode !== KalListSelectionMode.None) {
-      this.keyManager.setActiveItem(this.selectedItemIndex);
+      this.activeItem(this.selectedItemIndex);
     }
   }
 
@@ -248,7 +239,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   blur() {
     this.isFocused = false;
     if (this._selectionMode !== KalListSelectionMode.None) {
-      this.keyManager.setActiveItem(this.selectedItemIndex);
+      this.activeItem(this.selectedItemIndex);
     }
   }
 
@@ -261,13 +252,13 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
 
     const isOpenKey = keyCode === ENTER || keyCode === SPACE;
 
-    if (!this.isFocused) {
+    if (!this.isFocused || !this.keyManager) {
       return;
     }
 
     if (isOpenKey && this.keyManager.activeItem) {
       event.preventDefault();
-      const itemToSelect = this.results.find((item, i) => i === this.keyManager.activeItemIndex);
+      const itemToSelect = this.results.find((item, i) => !!(i === this.keyManager.activeItemIndex));
       this.selectItem(itemToSelect);
     } else {
       this.keyManager.onKeydown(event);
@@ -297,7 +288,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
     if (!this.disableRowsFunction(item) && this._selectionMode !== KalListSelectionMode.None) {
 
       this.selectedItemIndex = this.results.findIndex(row => row === item);
-      this.keyManager.setActiveItem(this.selectedItemIndex);
+      this.activeItem(this.selectedItemIndex);
 
       this.updateSelectedItem(item);
 
@@ -309,8 +300,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
    * Is the item selected
    */
   isSelected(item): boolean {
-    return this.selectionMode === KalListSelectionMode.Single
-      ? this._selection.selected.some(element => element === item) : this._selection.contains(item);
+    return !item.id ? this._selection.selected.some(element => element === item) : this._selection.contains(item);
   }
 
   /**
@@ -318,11 +308,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
    */
   reset() {
     this._selection = new KalListSelection<T>();
-
-    if (this.keyManager) {
-      this.keyManager.setActiveItem(null);
-    }
-
+    this.activeItem(null);
     this.cdr.markForCheck();
   }
 
@@ -341,6 +327,12 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
       this._selection.add(item);
     } else {
       this._selection.remove(item);
+    }
+  }
+
+  private activeItem(index: number) {
+    if (this.keyManager) {
+      this.keyManager.setActiveItem(index);
     }
   }
 
@@ -366,9 +358,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   }
 
   private destroySubscription() {
-    if (this.keyManager) {
-      this.keyManager.setActiveItem(null);
-    }
+    this.activeItem(null);
     this.subscription.unsubscribe();
 
     if (this.dataSource && (this.dataSource as DataSource<T>).connect instanceof Function) {
@@ -397,8 +387,13 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
     }
   }
 
+  private setKeyManager() {
+  }
+
   ngAfterViewInit() {
-    this.keyManager = new ActiveDescendantKeyManager<KalListItemSelectionDirective>(this.children).withVerticalOrientation();
+    if (!this.virtualScrollConfig) {
+      this.keyManager = new ActiveDescendantKeyManager<KalListItemSelectionDirective>(this.children).withVerticalOrientation();
+    }
   }
 
   ngOnDestroy() {
