@@ -69,11 +69,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   }
 
   constructor(private cdr: ChangeDetectorRef,
-              @Optional() @Host() private kalVirtualScrollDirective: KalVirtualScrollDirective) {
-  }
-
-  get kalVirtualScroll(): KalVirtualScrollDirective {
-    return this.kalVirtualScrollDirective;
+              @Optional() @Host() public readonly kalVirtualScroll: KalVirtualScrollDirective) {
   }
 
   @Input()
@@ -259,7 +255,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
 
     if (isOpenKey && this.keyManager.activeItem) {
       event.preventDefault();
-      const itemToSelect = this.results.find((item, i) => i === this.keyManager.activeItemIndex);
+      const itemToSelect = this.results.find((item, i) => !!(i === this.keyManager.activeItemIndex));
       this.selectItem(itemToSelect);
     } else {
       this.keyManager.onKeydown(event);
