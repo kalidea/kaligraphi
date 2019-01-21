@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { KalIconModule } from '../../atoms/kal-icon/kal-icon.module';
 
 import { KalListComponent } from './kal-list.component';
@@ -21,6 +22,7 @@ const exports = [
   imports: [
     CommonModule,
     KalIconModule,
+    ScrollingModule
   ],
   declarations: exports,
   exports: exports
