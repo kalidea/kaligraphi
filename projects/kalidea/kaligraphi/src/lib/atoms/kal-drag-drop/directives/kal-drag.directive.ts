@@ -1,5 +1,5 @@
 import { Directive, HostBinding, HostListener, Input } from '@angular/core';
-import { KalDraggingService } from '../services/kal-dragging.service';
+import { KalDragService } from '../services/kal-drag.service';
 
 @Directive({
   selector: '[kalDrag]'
@@ -12,7 +12,7 @@ export class KalDragDirective {
 
   @HostBinding('class.kal-drag-dragging') dragging = false;
 
-  constructor(private draggingService: KalDraggingService) {
+  constructor(private draggingService: KalDragService) {
   }
 
   @HostListener('dragstart', ['$event'])

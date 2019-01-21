@@ -8,7 +8,7 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class KalDraggingService {
+export class KalDragService {
 
   private draggingSubject$ = new BehaviorSubject(null);
 

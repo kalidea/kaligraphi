@@ -1,5 +1,5 @@
 import { Directive, EventEmitter, HostBinding, HostListener, Input, OnDestroy, Output } from '@angular/core';
-import { KalDraggingService } from '../services/kal-dragging.service';
+import { KalDragService } from '../services/kal-drag.service';
 
 export enum KalDropPosition {
   Top = 'top',
@@ -23,24 +23,29 @@ export class KalDropDirective implements OnDestroy {
   @Output() readonly kalDrop: EventEmitter<KalDroppedEvent> = new EventEmitter<KalDroppedEvent>();
 
   /**
-   * Allowed position to drop on
-   */
-  @Input() kalDropPositions: KalDropPosition[] = [KalDropPosition.Top, KalDropPosition.Bot, KalDropPosition.Middle];
-
-  /**
    * callback to detect if element could be dropped on the current item
    */
-  @Input() kalDropAllowed;
+  @Input() kalDropAllowed = undefined;
+
+  @HostBinding('class.kal-dropable') dropable = true;
 
   /**
    * current position for drop
    */
   private dropPosition: KalDropPosition = null;
 
-  constructor(private draggingService: KalDraggingService) {
+  constructor(private draggingService: KalDragService) {
   }
 
-  @HostBinding('class.kal-dropable') dropable = true;
+  private _kalDropPositions = [KalDropPosition.Top, KalDropPosition.Bot, KalDropPosition.Middle];
+
+  /**
+   * Allowed position to drop on
+   */
+  @Input()
+  set kalDropPositions(positions: KalDropPosition[]) {
+    this._kalDropPositions = positions;
+  }
 
   @HostBinding('class.kal-drop-hovered-bot')
   get botHovered() {
@@ -86,7 +91,7 @@ export class KalDropDirective implements OnDestroy {
   }
 
   private isPositionAvailable(position: KalDropPosition) {
-    return this.kalDropPositions.indexOf(position) > -1;
+    return position && Array.isArray(this._kalDropPositions) && this._kalDropPositions.indexOf(position) > -1;
   }
 
   private getZoneHovered($event: DragEvent) {
