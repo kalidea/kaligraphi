@@ -29,13 +29,15 @@ export class KalFlatTreeNode {
   expandable ? = false;
 
   constructor(options?: KalFlatTreeNode) {
+
     if (options) {
-      options = Object.assign(new KalFlatTreeNode(), options);
-      this.id = options.id;
-      this.children = options.children;
-      this.title = options.title;
-      this.level = options.level;
-      this.expandable = options.expandable === true;
+      Object.keys(options).forEach(k => {
+        const key = k as keyof KalFlatTreeNode;
+
+        if (typeof options[key] !== 'undefined') {
+          this[key] = options[key];
+        }
+      });
     }
   }
 }
