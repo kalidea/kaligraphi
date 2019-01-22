@@ -9,7 +9,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
-import { buildProviders, FormControlAccessComponent } from '../../utils/index';
+import { buildProviders, FormElementComponent } from '../../utils/index';
 
 @Component({
   selector: 'kal-rater',
@@ -19,7 +19,7 @@ import { buildProviders, FormControlAccessComponent } from '../../utils/index';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [buildProviders(KalRaterComponent)]
 })
-export class KalRaterComponent extends FormControlAccessComponent<number> implements OnInit, OnChanges {
+export class KalRaterComponent extends FormElementComponent<number> implements OnInit, OnChanges {
 
   /**
    * List of rate values
@@ -43,6 +43,16 @@ export class KalRaterComponent extends FormControlAccessComponent<number> implem
 
   constructor(private cdr: ChangeDetectorRef) {
     super();
+  }
+
+  @Input()
+  get value(): number {
+    return this.rateValue;
+  }
+
+  set value(value: number) {
+    this.rateValue = value;
+    this.cdr.markForCheck();
   }
 
   /**
@@ -88,6 +98,7 @@ export class KalRaterComponent extends FormControlAccessComponent<number> implem
    */
   notifyUpdate(newValue: number): void {
     super.notifyUpdate(newValue);
+    this.valueChange.emit(newValue);
     this.rateValue = newValue;
   }
 
