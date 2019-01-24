@@ -43,6 +43,8 @@ describe('KalSliderComponent', () => {
       expect(sliderInstance.step).toBe(1);
       expect(sliderInstance.thumbLabel).toBeFalsy();
       expect(sliderInstance.tickInterval).toBe(0);
+      expect(sliderInstance.min).toBe(0);
+      expect(sliderInstance.max).toBe(100);
     });
 
     it('should display the thumb label', () => {
@@ -59,6 +61,24 @@ describe('KalSliderComponent', () => {
 
       const spans = fixture.debugElement.queryAll(By.css('span'));
       expect(spans.length).toEqual(4);
+    });
+
+    it('should handle min and max values correctly', () => {
+      sliderInstance.value = 30;
+      fixture.detectChanges();
+
+      sliderInstance.min = 40;
+      fixture.detectChanges();
+
+      expect(sliderInstance.value).toEqual(40);
+
+      sliderInstance.value = 200;
+      fixture.detectChanges();
+
+      sliderInstance.max = 100;
+      fixture.detectChanges();
+
+      expect(sliderInstance.value).toEqual(100);
     });
   });
 

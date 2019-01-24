@@ -3,6 +3,8 @@
 <div class="example">
   <article>
     <kal-slider [step]="step"
+                [min]="min"
+                [max]="max"
                 [thumbLabel]="thumbLabel"
                 [tickInterval]="tickInterval"
                 [limit]="limit"
@@ -12,9 +14,18 @@
 </div>
 
 <div class="configurator">
-    <kal-form-field>
-      <kal-input label="Step" [(ngModel)]="step" type="number"></kal-input>
-    </kal-form-field>
+
+  <kal-form-field>
+    <kal-input label="Min" [(ngModel)]="min" type="number"></kal-input>
+  </kal-form-field>
+
+  <kal-form-field>
+    <kal-input label="Max" [(ngModel)]="max" type="number"></kal-input>
+  </kal-form-field>
+
+  <kal-form-field>
+    <kal-input label="Step" [(ngModel)]="step" type="number"></kal-input>
+  </kal-form-field>
 
   <kal-form-field>
     <kal-input label="Tick interval" [(ngModel)]="tickInterval" type="number"></kal-input>
@@ -31,5 +42,6 @@
   <kal-form-field>
     <kal-checkbox label="Show thumb label" [(ngModel)]="thumbLabel"></kal-checkbox>
   </kal-form-field>
+
 
 </div>

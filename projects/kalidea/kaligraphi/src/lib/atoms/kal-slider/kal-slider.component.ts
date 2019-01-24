@@ -46,10 +46,44 @@ export class KalSliderComponent extends FormControlAccessComponent<number> imple
 
   private tickIntervalValue = 0;
 
+  private minSliderValue = 0;
+
+  private maxSliderValue = 100;
+
   private valueChangeSubscription = Subscription.EMPTY;
 
   constructor(private cdr: ChangeDetectorRef) {
     super();
+  }
+
+  @Input()
+  get min(): number {
+    return this.minSliderValue;
+  }
+  set min(minValue: number) {
+    this.minSliderValue = coerceNumberProperty(minValue);
+
+    if (this.value < this.min) {
+      this.value = minValue;
+      this.writeValue(this.value);
+    }
+
+    this.cdr.markForCheck();
+  }
+
+  @Input()
+  get max(): number {
+    return this.maxSliderValue;
+  }
+  set max(maxValue: number) {
+    this.maxSliderValue = coerceNumberProperty(maxValue);
+
+    if (this.value > this.max) {
+      this.value = maxValue;
+      this.writeValue(this.value);
+    }
+
+    this.cdr.markForCheck();
   }
 
   /**

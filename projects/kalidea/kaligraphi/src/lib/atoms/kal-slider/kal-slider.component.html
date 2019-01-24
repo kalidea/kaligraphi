@@ -1,8 +1,8 @@
 <div class="kal-slider-thumb-label" *ngIf="thumbLabel">{{ value }}</div>
 
 <input type="range"
-       min="0"
-       max="100"
+       [min]="min"
+       [max]="max"
        [step]="step"
        [formControl]="control">
 
