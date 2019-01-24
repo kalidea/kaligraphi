@@ -13,12 +13,13 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { SelectionChange } from '@angular/cdk/collections';
-import { takeUntil } from 'rxjs/operators';
 import { cloneDeep } from 'lodash';
+import { Subscription } from 'rxjs';
 
 import { KalTreeNodeOutletDirective } from '../directives/kal-tree-node-outlet.directive';
 import { KalTreeNode } from '../classes/kal-tree-node';
 import { KalTreeControl } from '../classes/kal-tree-control';
+import { AutoUnsubscribe } from '../../../utils/decorators/auto-unsubscribe';
 
 /**
  * Wrapper for the CdkTable with Kaligraphi design styles.
@@ -40,6 +41,9 @@ export class KalTreeComponent extends CdkTree<KalTreeNode> implements OnInit, On
 
   @Input() treeControl: KalTreeControl;
 
+  @AutoUnsubscribe()
+  private subscriptions: Subscription = Subscription.EMPTY;
+
   constructor(differs: IterableDiffers,
               changeDetectorRef: ChangeDetectorRef) {
     super(differs, changeDetectorRef);
@@ -52,7 +56,6 @@ export class KalTreeComponent extends CdkTree<KalTreeNode> implements OnInit, On
   ngOnInit() {
     super.ngOnInit();
     this.treeControl.selectionModel.changed
-      .pipe(takeUntil(this.selectionChanged))
       .subscribe(value => this.selectionChanged.emit(value));
   }
 

@@ -1,6 +1,7 @@
 import { Directive, EventEmitter, HostBinding, HostListener, Input, OnDestroy, Output } from '@angular/core';
 import { KalDragService } from '../services/kal-drag.service';
 import { Memoize } from '../../../utils/decorators/memoize';
+import { coerceArray } from '@angular/cdk/coercion';
 
 export enum KalDropPosition {
   Top = 'top',
@@ -33,7 +34,7 @@ export class KalDropDirective implements OnDestroy {
   /**
    * callback to detect if element could be dropped on the current item
    */
-  @Input() kalDropAllowed = undefined;
+  @Input() kalDropAllowed;
 
   /**
    * threshold to calculate top and bot interval
@@ -60,14 +61,14 @@ export class KalDropDirective implements OnDestroy {
    */
   @Input('kalDropPositions')
   get positions() {
-    return Array.isArray(this._kalDropPositions) ? this._kalDropPositions : [];
+    return coerceArray(this._kalDropPositions);
   }
 
   /**
    * Allowed position to drop on
    */
   set positions(positions: KalDropPosition[]) {
-    this._kalDropPositions = positions;
+    this._kalDropPositions = coerceArray(positions);
   }
 
   @HostBinding('class.kal-drop-hovered-bot')
@@ -155,14 +156,17 @@ export class KalDropDirective implements OnDestroy {
       positions[0].min = 0;
       positions[0].max = targetHeight;
     } else if (positions.length === 2) {
+
+      const getPosition = (position: KalDropPosition) => positions.find(config => config.position === position);
+
       // if we have two drop positions available, distribute remaining space
       if (!this.isPositionAvailable(KalDropPosition.Top)) {
-        positions.find(config => config.position === KalDropPosition.Middle).min = 0;
+        getPosition(KalDropPosition.Middle).min = 0;
       } else if (!this.isPositionAvailable(KalDropPosition.Middle)) {
-        positions.find(config => config.position === KalDropPosition.Top).max = targetHeight / 2;
-        positions.find(config => config.position === KalDropPosition.Bot).min = targetHeight / 2;
+        getPosition(KalDropPosition.Top).max = targetHeight / 2;
+        getPosition(KalDropPosition.Bot).min = targetHeight / 2;
       } else if (!this.isPositionAvailable(KalDropPosition.Bot)) {
-        positions.find(config => config.position === KalDropPosition.Middle).max = targetHeight;
+        getPosition(KalDropPosition.Middle).max = targetHeight;
       }
     }
 
@@ -187,11 +191,7 @@ export class KalDropDirective implements OnDestroy {
         .buildPositionsConfig(targetHeight, positionsList)
         .find(config => position < config.max && position > config.min);
 
-      if (positionFound) {
-        dropPosition = positionFound.position;
-      } else {
-        dropPosition = null;
-      }
+      dropPosition = positionFound ? positionFound.position : null;
     }
 
     return dropPosition;
