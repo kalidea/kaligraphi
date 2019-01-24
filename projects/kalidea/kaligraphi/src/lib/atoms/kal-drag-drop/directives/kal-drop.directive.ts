@@ -147,29 +147,23 @@ export class KalDropDirective implements OnDestroy {
     };
 
     // build positions list
-    positionsList.forEach(position => {
-      positions.push({...positionsConfig[position], position});
-    });
+    positionsList.forEach(position => positions.push({...positionsConfig[position], position}));
 
     // update config if we have less than 3 positions
-    switch (positions.length) {
+    if (positions.length === 1) {
       // if we have only one drop position available, set it as default on hover
-      case 1:
-        positions[0].min = 0;
-        positions[0].max = targetHeight;
-        break;
-      case 2:
-        // if we have two drop positions available, distribute remaining space
-        if (!this.isPositionAvailable(KalDropPosition.Top)) {
-          positions.find(config => config.position === KalDropPosition.Middle).min = 0;
-        } else if (!this.isPositionAvailable(KalDropPosition.Middle)) {
-          positions.find(config => config.position === KalDropPosition.Top).max = targetHeight / 2;
-          positions.find(config => config.position === KalDropPosition.Bot).min = targetHeight / 2;
-        } else if (!this.isPositionAvailable(KalDropPosition.Bot)) {
-          positions.find(config => config.position === KalDropPosition.Middle).max = targetHeight;
-        }
-
-        break;
+      positions[0].min = 0;
+      positions[0].max = targetHeight;
+    } else if (positions.length === 2) {
+      // if we have two drop positions available, distribute remaining space
+      if (!this.isPositionAvailable(KalDropPosition.Top)) {
+        positions.find(config => config.position === KalDropPosition.Middle).min = 0;
+      } else if (!this.isPositionAvailable(KalDropPosition.Middle)) {
+        positions.find(config => config.position === KalDropPosition.Top).max = targetHeight / 2;
+        positions.find(config => config.position === KalDropPosition.Bot).min = targetHeight / 2;
+      } else if (!this.isPositionAvailable(KalDropPosition.Bot)) {
+        positions.find(config => config.position === KalDropPosition.Middle).max = targetHeight;
+      }
     }
 
     return positions;
