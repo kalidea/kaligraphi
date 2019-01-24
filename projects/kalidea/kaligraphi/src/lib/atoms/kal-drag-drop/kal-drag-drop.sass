@@ -1,11 +1,16 @@
 
-.kal-drop-hovered-top
-  border: 1px solid rgba(255, 0, 0, 0.14)
-  box-shadow: inset 0em 1em 0.5em rgba(255, 0, 0, 0.14)
-.kal-drop-hovered-bot
-  border: 1px solid rgba(255, 0, 0, 0.14)
-  box-shadow: inset 0em -1em 0.5em rgba(255, 0, 0, 0.14)
-.kal-drop-hovered-middle
-  border: 1px solid rgba(255, 0, 0, 0.14)
-  background-color: rgba(255, 0, 0, 0.28)
+$kal-drop-color: #d9d9d9
 
+.kal-drop-hovered
+  &-top
+    box-shadow: inset 0 1em 0.5em $kal-drop-color
+  &-bot
+    box-shadow: inset 0 -1em 0.5em $kal-drop-color
+  &-middle
+    background-color: $kal-drop-color
+
+.kal-drag-dragging
+  opacity: 0.3
+
+.kal-dropable *:not(button):not(a):not([kalTreeNodeToggle])
+  pointer-events: none

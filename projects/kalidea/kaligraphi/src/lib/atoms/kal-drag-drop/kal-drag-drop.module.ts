@@ -5,6 +5,7 @@ import { KalDragDirective } from './directives/kal-drag.directive';
 
 export * from './directives/kal-drop.directive';
 export * from './directives/kal-drag.directive';
+export * from './services/kal-drag.service';
 
 const exports = [
   KalDropDirective,

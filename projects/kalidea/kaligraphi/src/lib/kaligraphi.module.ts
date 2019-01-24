@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { KalAtomsModule, KalSnackbarComponent } from './atoms/kal-atoms.module';
+import { KalAtomsModule } from './atoms/kal-atoms.module';
 import { KalMoleculesModule } from './molecules/kal-molecules.module';
 import { KalUtilityModule } from './utility/kal-utility.module';
 

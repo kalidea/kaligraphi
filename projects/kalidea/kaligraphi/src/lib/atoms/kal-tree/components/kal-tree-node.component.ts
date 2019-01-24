@@ -67,7 +67,7 @@ export class KalTreeNodeComponent extends CdkTreeNode<KalTreeNode> implements On
   select($event) {
     $event.stopPropagation();
     if (this.data) {
-      this.tree.selection.select(this.node);
+      this.tree.selection.select(this.data);
     }
   }
 
