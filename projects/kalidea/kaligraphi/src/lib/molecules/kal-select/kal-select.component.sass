@@ -21,14 +21,14 @@
         > div:nth-child(1)
           flex: 1
 
-    &:not([disabled])
+    &:not([disabled="true"])
       &:focus, &:active
         .kal-select__trigger
           > div
             border-color:  get('active.border-color', $theme-parameters)
       &:hover
         cursor: pointer
-    &[disabled]
+    &[disabled="true"]
       cursor: not-allowed
       .kal-select__trigger
         > div
@@ -51,11 +51,11 @@
             color:  get('reverse.label.color', $theme-parameters)
             + kal-icon
               color: get('reverse.icon.color', $theme-parameters)
-      &:not([disabled])
+      &:not([disabled="true"])
         &:focus, &:active
           .kal-select__trigger
             border-color:  get('reverse.active.border-color', $theme-parameters)
-      &[disabled]
+      &[disabled="true"]
         .kal-select__trigger
           > div
             .kal-select__triggervalue, .kal-select__placeholder
@@ -72,7 +72,7 @@
     width: get('overlay.width', $theme-parameters)
     .kal-option .kal-option__selection
       color: get('overlay.option.color', $theme-parameters)
-      &[disabled]
+      &[disabled="true"]
         color: get('overlay.option.disabled.color', $theme-parameters)
 
     &.kal-theme--reverse
@@ -81,10 +81,10 @@
       border: get('reverse.overlay.border', $theme-parameters)
       kal-option .kal-option__selection
         color:  get('reverse.overlay.option.color', $theme-parameters)
-        &:not([disbaled]), &:not(.kal-option__selection--disabled)
+        &:not([disabled="true"]), &:not(.kal-option__selection--disabled)
           &:hover, &:focus, &:active, &.kal-option__selection--active
             color: get('reverse.overlay.option.active.color', $theme-parameters)
-        &[disabled], &--disabled
+        &[disabled="true"], &--disabled
           cursor: not-allowed
           color: get('overlay.option.disabled.color', $theme-parameters)
 
