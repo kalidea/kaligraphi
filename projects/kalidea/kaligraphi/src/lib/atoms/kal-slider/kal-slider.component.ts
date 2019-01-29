@@ -175,6 +175,10 @@ export class KalSliderComponent extends FormElementComponent<number> {
   private getClosestValue(current) {
     // manage min / max
     current = this.clamp(current, this.minValue, this.maxValue);
+    if (current === this.minValue || current === this.maxValue) {
+      return current;
+    }
+
     const before = Math.floor(current / this.tick) * this.tick;
     let closest = before;
     if (before + (this.tick / 2) < current) {

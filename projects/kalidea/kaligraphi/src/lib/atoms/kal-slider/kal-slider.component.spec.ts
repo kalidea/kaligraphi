@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { KalSliderComponent } from './kal-slider.component';
-import { HammerInput } from 'projects/kalidea/kaligraphi/src/lib/utils/gestures/gesture-annotations';
 
 describe('KalSliderComponent', () => {
   let component: KalSliderComponent;
@@ -20,14 +19,6 @@ describe('KalSliderComponent', () => {
     fixture.detectChanges();
   });
 
-  const slideToPosition = (position) => {
-    const width = component.sliderDimensions;
-    const x = component.sliderDimensions.left + position;
-    const preventDefault = () => {
-    };
-    component.slide({center: {x, y: 10}, preventDefault} as HammerInput);
-  };
-
   it('should create', () => {
     expect(component).toBeTruthy();
   });
@@ -39,22 +30,52 @@ describe('KalSliderComponent', () => {
     component.tick = 100;
 
     const positionsList = [
-      {x: 10, expected: 0},
-      {x: 49, expected: 0},
-      {x: 51, expected: 100},
-      {x: 99, expected: 100},
-      {x: 101, expected: 100},
-      {x: 149, expected: 100},
-      {x: 151, expected: 200},
-      {x: 249, expected: 200},
-      {x: 251, expected: 300},
-      {x: 349, expected: 300},
-      {x: 351, expected: 400},
+      {position: 10, expected: 0},
+      {position: 49, expected: 0},
+      {position: 51, expected: 100},
+      {position: 99, expected: 100},
+      {position: 101, expected: 100},
+      {position: 149, expected: 100},
+      {position: 151, expected: 200},
+      {position: 249, expected: 200},
+      {position: 251, expected: 300},
+      {position: 349, expected: 300},
+      {position: 351, expected: 400},
     ];
 
     positionsList.forEach(event => {
-      component.value = event.x;
+      component.value = event.position;
       expect(component.value).toEqual(event.expected);
+    });
+  });
+
+  it('should manage min and max', () => {
+
+    const min = 150;
+    const max = 750;
+
+    component.from = 0;
+    component.to = 900;
+    component.tick = 100;
+    component.min = min;
+    component.max = max;
+
+    const positionsList = [
+      {position: 50, expected: min},
+      {position: 101, expected: min},
+      {position: 149, expected: min},
+      {position: 151, expected: 200},
+      {position: 249, expected: 200},
+      {position: 251, expected: 300},
+      {position: 701, expected: 700},
+      {position: 751, expected: max},
+      {position: 800, expected: max},
+      {position: 850, expected: max},
+    ];
+
+    positionsList.forEach(event => {
+      component.value = event.position;
+      expect(component.value).toBe(event.expected, `${event.position} should be transform to ${event.expected} (got ${component.value})`);
     });
   });
 
