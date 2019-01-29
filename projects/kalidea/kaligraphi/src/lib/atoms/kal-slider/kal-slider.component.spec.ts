@@ -1,171 +1,77 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Component, DebugElement, Type } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { By } from '@angular/platform-browser';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { KalSliderComponent } from './kal-slider.component';
-import { KalSliderModule } from './kal-slider.module';
+import { HammerInput } from 'projects/kalidea/kaligraphi/src/lib/utils/gestures/gesture-annotations';
 
 describe('KalSliderComponent', () => {
-  let sliderDebugElement: DebugElement;
-  let sliderNativeElement: HTMLElement;
-  let sliderInstance: KalSliderComponent;
+  let component: KalSliderComponent;
+  let fixture: ComponentFixture<KalSliderComponent>;
 
-  function createComponent<T>(component: Type<T>): ComponentFixture<T> {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        KalSliderModule,
-        ReactiveFormsModule
-      ],
-      declarations: [component]
+      declarations: [KalSliderComponent]
     })
       .compileComponents();
+  }));
 
-    return TestBed.createComponent<T>(component);
-  }
+  beforeEach(() => {
+    fixture = TestBed.createComponent(KalSliderComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-  describe('basic slider', () => {
-    let fixture: ComponentFixture<BasicSliderComponent>;
+  const slideToPosition = (position) => {
+    const width = component.sliderDimensions;
+    const x = component.sliderDimensions.left + position;
+    const preventDefault = () => {
+    };
+    component.slide({center: {x, y: 10}, preventDefault} as HammerInput);
+  };
 
-    beforeEach(() => {
-      fixture = createComponent(BasicSliderComponent);
-      fixture.detectChanges();
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 
-      sliderDebugElement = fixture.debugElement.query(By.directive(KalSliderComponent));
-      sliderNativeElement = sliderDebugElement.nativeElement;
-      sliderInstance = sliderDebugElement.componentInstance;
-    });
+  it('should get closest value', () => {
 
-    it('should set the default values', () => {
-      expect(sliderInstance.limit).toBe(0);
-      expect(sliderInstance.value).toBe(0);
-      expect(sliderInstance.disabled).toBeFalsy();
-      expect(sliderInstance.step).toBe(1);
-      expect(sliderInstance.thumbLabel).toBeFalsy();
-      expect(sliderInstance.tickInterval).toBe(0);
-    });
+    component.from = 0;
+    component.to = 900;
+    component.tick = 100;
 
-    it('should display the thumb label', () => {
-      sliderInstance.thumbLabel = true;
-      fixture.detectChanges();
+    const positionsList = [
+      {x: 10, expected: 0},
+      {x: 49, expected: 0},
+      {x: 51, expected: 100},
+      {x: 99, expected: 100},
+      {x: 101, expected: 100},
+      {x: 149, expected: 100},
+      {x: 151, expected: 200},
+      {x: 249, expected: 200},
+      {x: 251, expected: 300},
+      {x: 349, expected: 300},
+      {x: 351, expected: 400},
+    ];
 
-      const thumbLabelDiv = fixture.debugElement.query(By.css('.kal-slider-thumb-label'));
-      expect(thumbLabelDiv).toBeTruthy();
-    });
-
-    it('should display the ticks interval', () => {
-      sliderInstance.tickInterval = 25;
-      fixture.detectChanges();
-
-      const spans = fixture.debugElement.queryAll(By.css('span'));
-      expect(spans.length).toEqual(4);
+    positionsList.forEach(event => {
+      component.value = event.x;
+      expect(component.value).toEqual(event.expected);
     });
   });
 
-  describe('slider with reactive form', () => {
-    let fixture: ComponentFixture<SliderReactiveFormComponent>;
-    let sliderElement: DebugElement;
-
-    beforeEach(() => {
-      fixture = createComponent(SliderReactiveFormComponent);
-      fixture.detectChanges();
-
-      sliderDebugElement = fixture.debugElement.query(By.directive(KalSliderComponent));
-      sliderNativeElement = sliderDebugElement.nativeElement;
-      sliderInstance = sliderDebugElement.componentInstance;
-      sliderElement = fixture.debugElement.query(By.css('input[type=range]'));
-    });
-
-    it('should set a default value with reactive form', () => {
-      expect(sliderInstance.value).toEqual(75);
-      expect(sliderElement.properties.value).toEqual(75);
-
-      fixture.componentInstance.control.patchValue(41);
-      fixture.detectChanges();
-
-      expect(sliderInstance.value).toEqual(41);
-      expect(sliderElement.properties.value).toEqual(41);
-    });
-
-    it('should be disabled with reactive form', () => {
-      expect(sliderInstance.disabled).toBeTruthy();
-      expect(sliderElement.properties.disabled).toBeTruthy();
-
-      fixture.componentInstance.control.enable();
-      fixture.detectChanges();
-
-      expect(sliderInstance.disabled).toBeFalsy();
-      expect(sliderElement.properties.disabled).toBeFalsy();
-    });
-
-    it('should work with a limit value and a reactive form', () => {
-      sliderInstance.limit = 35;
-      fixture.componentInstance.control.patchValue(68);
-      fixture.detectChanges();
-
-      expect(sliderInstance.value).toEqual(35);
-    });
-
+  it('should build styles for max container', () => {
+    component.from = 0;
+    component.to = 1000;
+    expect(component.maxContainerStyles()['width.%']).toEqual(0);
+    component.max = 900;
+    expect(component.maxContainerStyles()['width.%']).toEqual(90);
   });
 
-  describe('basic slider with events', () => {
-    let fixture: ComponentFixture<SliderWithEventComponent>;
-    let sliderElement: DebugElement;
-
-    beforeEach(() => {
-      fixture = createComponent(SliderWithEventComponent);
-      fixture.detectChanges();
-
-      sliderDebugElement = fixture.debugElement.query(By.directive(KalSliderComponent));
-      sliderNativeElement = sliderDebugElement.nativeElement;
-      sliderInstance = sliderDebugElement.componentInstance;
-      sliderElement = fixture.debugElement.query(By.css('input[type=range]'));
-    });
-
-    it('should set a default value with @Input', () => {
-      expect(sliderInstance.value).toEqual(24);
-      expect(sliderElement.properties.value).toEqual(24);
-
-      sliderInstance.value = 52;
-      fixture.detectChanges();
-      expect(sliderInstance.value).toEqual(52);
-      expect(sliderElement.properties.value).toEqual(52);
-    });
-
-    it('should be disabled with  @Input', () => {
-      expect(sliderInstance.disabled).toBeFalsy();
-      expect(sliderElement.properties.disabled).toBeFalsy();
-
-      sliderInstance.disabled = true;
-      fixture.detectChanges();
-
-      expect(sliderInstance.disabled).toBeTruthy();
-      expect(sliderElement.properties.disabled).toBeTruthy();
-    });
+  it('should build styles for selection container', () => {
+    component.from = 0;
+    component.to = 1000;
+    component.value = 800;
+    expect(component.selectionContainerStyles()['width.%']).toEqual(80);
+    component.value = 900;
+    expect(component.selectionContainerStyles()['width.%']).toEqual(90);
   });
 });
-
-@Component({
-  template: `
-    <kal-slider></kal-slider>
-  `
-})
-export class BasicSliderComponent {
-}
-
-@Component({
-  template: `
-    <kal-slider [formControl]="control"></kal-slider>
-  `
-})
-export class SliderReactiveFormComponent {
-  control = new FormControl({value: 75, disabled: true});
-}
-
-@Component({
-  template: `
-    <kal-slider [value]="24"></kal-slider>
-  `
-})
-export class SliderWithEventComponent {
-}

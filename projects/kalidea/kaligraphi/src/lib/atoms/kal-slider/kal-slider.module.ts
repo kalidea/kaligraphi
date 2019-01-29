@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 
 import { KalSliderComponent } from './kal-slider.component';
 export { KalSliderComponent } from './kal-slider.component';
+
+import { GestureConfig } from '../../utils/gestures/gesture-config';
 
 const exports = [
   KalSliderComponent
@@ -11,8 +13,13 @@ const exports = [
 
 @NgModule({
   imports: [
-    CommonModule,
-    ReactiveFormsModule
+    CommonModule
+  ],
+  providers: [
+    {
+      provide: HAMMER_GESTURE_CONFIG,
+      useClass: GestureConfig
+    }
   ],
   exports: exports,
   declarations: exports

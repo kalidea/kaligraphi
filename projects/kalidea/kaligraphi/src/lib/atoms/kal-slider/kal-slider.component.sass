@@ -1,2 +1,39 @@
+
+$kal-slider-height: 24px
+$kal-slider-bar-height: 12px
+$kal-slider-margin-top: calc((24px - 12px) / 2)
+$kal-slider-animation-delay: 200ms
+
+=kal-slider-bar($backgroundColor)
+  position: absolute
+  height: $kal-slider-bar-height
+  margin-top: $kal-slider-margin-top
+  background: $backgroundColor
+
 =kal-slider($parameters)
+
   kal-slider
+    .kal-slider-wrapper
+      position: relative
+      height: $kal-slider-height
+
+      .kal-slider-limit-container
+        +kal-slider-bar(#5C5C5C)
+        width: 100%
+
+      .kal-slider-max-container
+        +kal-slider-bar(#7A7A7A)
+      .kal-slider-min-container
+        +kal-slider-bar(#5C5C5C)
+
+      .kal-slider-selection-container
+        transition: width $kal-slider-animation-delay
+        +kal-slider-bar(#21C0D9)
+
+      .kal-slider-pointer
+        transition: left $kal-slider-animation-delay
+        position: absolute
+        width: 6px
+        height: $kal-slider-height
+        background: #FFFFFF
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.48)
