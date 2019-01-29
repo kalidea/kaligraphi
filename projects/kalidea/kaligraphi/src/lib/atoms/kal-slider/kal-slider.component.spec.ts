@@ -95,4 +95,20 @@ describe('KalSliderComponent', () => {
     component.value = 900;
     expect(component.selectionContainerStyles()['width.%']).toEqual(90);
   });
+
+  it('should update value on writeValue', () => {
+    component.from = 0;
+    component.to = 10;
+    component.tick = 1;
+    component.writeValue(6);
+    expect(component.value).toBe(6, 'component should store current value when sette with form control');
+  });
+
+  it('should manage `from` input', () => {
+    component.from = 1;
+    component.to = 11;
+    component.tick = 1;
+    expect(component.valueToPercent(6)).toEqual(50);
+    expect(component.valueToPercent(11)).toEqual(100);
+  });
 });

@@ -13,6 +13,7 @@ import { END, HOME, LEFT_ARROW, RIGHT_ARROW, } from '@angular/cdk/keycodes';
 import { buildProviders, FormElementComponent } from '../../utils/index';
 import { HammerInput } from '../../utils/gestures/gesture-annotations';
 import { clamp } from '../../utils/helpers/numbers';
+import { Coerce } from '../../utils/decorators/coerce';
 
 @Component({
   selector: 'kal-slider',
@@ -26,20 +27,25 @@ export class KalSliderComponent extends FormElementComponent<number> {
 
   // global expected required
   @Input()
+  @Coerce('number')
   from = 0;
 
   @Input()
-  to = 1200;
+  @Coerce('number')
+  to = 100;
 
   // range min max
   @Input()
+  @Coerce('number')
   min: number;
 
   @Input()
+  @Coerce('number')
   max: number;
 
   @Input()
-  tick = 100;
+  @Coerce('number')
+  tick = 1;
 
   @Input()
   color: string;
@@ -52,6 +58,7 @@ export class KalSliderComponent extends FormElementComponent<number> {
   private _value = 0;
 
   @Input()
+  @Coerce('number')
   get value() {
     return this._value;
   }
@@ -159,7 +166,19 @@ export class KalSliderComponent extends FormElementComponent<number> {
 
   writeValue(value) {
     value = this.getClosestValue(value);
+    this.value = value;
     super.writeValue(value);
+  }
+
+  valueToPercent(value: number): number {
+    return ((value - this.from) / this.getSliderInterval()) * 100;
+  }
+
+  /**
+   * get interval of this slider
+   */
+  getSliderInterval(): number {
+    return this.to - this.from;
   }
 
   /**
@@ -169,12 +188,12 @@ export class KalSliderComponent extends FormElementComponent<number> {
    * a slide event with x=300px should be a value of 900
    * a slide event with x=400px should be a value of 1200
    **/
-  private positionInSliderToValue(position: number) {
+  private positionInSliderToValue(position: number): number {
     const percent = clamp(position, 0, this.sliderDimensions.width) / this.sliderDimensions.width;
-    return percent * this.to;
+    return percent * this.getSliderInterval() + this.from;
   }
 
-  private getClosestValue(current: number) {
+  private getClosestValue(current: number): number {
     // manage min / max
     current = clamp(current, this.minValue, this.maxValue);
     if (current === this.minValue || current === this.maxValue) {
@@ -189,12 +208,8 @@ export class KalSliderComponent extends FormElementComponent<number> {
     return closest;
   }
 
-  private increment(numSteps: number) {
+  private increment(numSteps: number): void {
     this.value += numSteps * this.tick;
-  }
-
-  private valueToPercent(value: number) {
-    return (value / this.to) * 100;
   }
 
 }
