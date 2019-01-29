@@ -4,7 +4,7 @@
 
 
 # Gesture Support
-kal-slider rely on HammerJS for gestures. 
+kal-slider relies on HammerJS for gestures. 
 In order to get the full feature-set of these components, HammerJS must be loaded into the application.
 
 You can add HammerJS to your application via npm, a CDN (such as the Google CDN), or served directly from your app.

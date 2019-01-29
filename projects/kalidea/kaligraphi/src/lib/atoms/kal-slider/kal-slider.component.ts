@@ -12,6 +12,7 @@ import {
 import { END, HOME, LEFT_ARROW, RIGHT_ARROW, } from '@angular/cdk/keycodes';
 import { buildProviders, FormElementComponent } from '../../utils/index';
 import { HammerInput } from '../../utils/gestures/gesture-annotations';
+import { clamp } from '../../utils/helpers/numbers';
 
 @Component({
   selector: 'kal-slider',
@@ -50,6 +51,7 @@ export class KalSliderComponent extends FormElementComponent<number> {
 
   private _value = 0;
 
+  @Input()
   get value() {
     return this._value;
   }
@@ -167,14 +169,14 @@ export class KalSliderComponent extends FormElementComponent<number> {
    * a slide event with x=300px should be a value of 900
    * a slide event with x=400px should be a value of 1200
    **/
-  private positionInSliderToValue(position) {
-    const percent = this.clamp(position, 0, this.sliderDimensions.width) / this.sliderDimensions.width;
+  private positionInSliderToValue(position: number) {
+    const percent = clamp(position, 0, this.sliderDimensions.width) / this.sliderDimensions.width;
     return percent * this.to;
   }
 
-  private getClosestValue(current) {
+  private getClosestValue(current: number) {
     // manage min / max
-    current = this.clamp(current, this.minValue, this.maxValue);
+    current = clamp(current, this.minValue, this.maxValue);
     if (current === this.minValue || current === this.maxValue) {
       return current;
     }
@@ -188,16 +190,11 @@ export class KalSliderComponent extends FormElementComponent<number> {
   }
 
   private increment(numSteps: number) {
-    this.value = this.value + numSteps * this.tick;
+    this.value += numSteps * this.tick;
   }
 
   private valueToPercent(value: number) {
     return (value / this.to) * 100;
-  }
-
-  /** Return a number between two numbers. */
-  private clamp(value: number, min = 0, max = 1) {
-    return Math.max(min, Math.min(value, max));
   }
 
 }
