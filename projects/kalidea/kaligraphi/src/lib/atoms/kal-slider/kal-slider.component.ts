@@ -1,18 +1,18 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
+  HostListener,
   Input,
-  OnDestroy,
-  OnInit,
   Output,
+  ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { coerceBooleanProperty, coerceNumberProperty } from '@angular/cdk/coercion';
-import { FormControl } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { buildProviders, FormControlAccessComponent } from '../../utils/index';
+import { END, HOME, LEFT_ARROW, RIGHT_ARROW, } from '@angular/cdk/keycodes';
+import { buildProviders, FormElementComponent } from '../../utils/index';
+import { HammerInput } from '../../utils/gestures/gesture-annotations';
+import { clamp } from '../../utils/helpers/numbers';
 
 @Component({
   selector: 'kal-slider',
@@ -22,192 +22,179 @@ import { buildProviders, FormControlAccessComponent } from '../../utils/index';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: buildProviders(KalSliderComponent)
 })
-export class KalSliderComponent extends FormControlAccessComponent<number> implements OnInit, OnDestroy {
+export class KalSliderComponent extends FormElementComponent<number> {
 
-  /**
-   * Emits when the value of the slider changes.
-   */
-  @Output() readonly valueChange: EventEmitter<number> = new EventEmitter<number>();
-
-  /**
-   * Control related to the `input`
-   */
-  control = new FormControl(0);
-
-  private sliderValue = 0;
-
-  private limitSliderValue = 0;
-
-  private isDisabled = false;
-
-  private sliderStep = 1;
-
-  private displayThumbLabel = false;
-
-  private tickIntervalValue = 0;
-
-  private valueChangeSubscription = Subscription.EMPTY;
-
-  constructor(private cdr: ChangeDetectorRef) {
-    super();
-  }
-
-  /**
-   * Limit value for the slider.
-   * If the limit is less than the current value, set the current value to the limited value.
-   */
+  // global expected required
   @Input()
-  get limit(): number {
-    return this.limitSliderValue;
-  }
-  set limit(value: number) {
-    this.limitSliderValue = coerceNumberProperty(value);
+  from = 0;
 
-    if (this.limit !== 0 && this.limit < this.value) {
-      this.writeValue(this.limit);
-    }
-  }
-
-  /**
-   * Slider value.
-   * If a limit value has been defined and is less than the given value, sets the value to the limit.
-   */
   @Input()
-  get value(): number {
-    return this.sliderValue;
-  }
-  set value(sliderValue: number) {
-    this.sliderValue = this.getLimitValue(coerceNumberProperty(sliderValue));
-    this.control.patchValue(this.sliderValue, {emitEvent: false});
-    this.cdr.markForCheck();
-  }
+  to = 1200;
 
-  /**
-   * Whether the slider should be disabled.
-   */
+  // range min max
   @Input()
-  get disabled(): boolean {
-    return this.isDisabled;
-  }
-  set disabled(isDisabled: boolean) {
-    this.isDisabled = isDisabled;
-    this.toggle();
-  }
+  min: number;
 
-  /**
-   * Whether the slider should be disabled.
-   */
   @Input()
-  get step(): number {
-    return this.sliderStep;
-  }
-  set step(step: number) {
-    this.sliderStep = step;
-    this.cdr.markForCheck();
-  }
+  max: number;
 
-  /** Whether or not to show the thumb label. */
   @Input()
-  get thumbLabel(): boolean {
-    return this.displayThumbLabel;
-  }
-  set thumbLabel(value: boolean) {
-    this.displayThumbLabel = coerceBooleanProperty(value);
-    this.cdr.markForCheck();
-  }
+  tick = 100;
 
-  /**
-   * How often to show ticks. Relative to the step so that a tick always appears on a step.
-   * Ex: Tick interval of 4 with a step of 3 will draw a tick every 4 steps (every 12 values).
-   */
   @Input()
-  get tickInterval(): number {
-    return this.tickIntervalValue;
-  }
-  set tickInterval(value: number) {
-    this.tickIntervalValue = coerceNumberProperty(value);
-    this.cdr.markForCheck();
-  }
+  color: string;
 
-  /**
-   * @inheritDoc
-   */
-  writeValue(newValue: number): void {
-    if (newValue !== this.value) {
-      // get the limit value
-      this.value = this.getLimitValue(newValue);
-      this.control.patchValue(this.value, {emitEvent: false});
+  @Output()
+  readonly valueChange: EventEmitter<number | null> = new EventEmitter<number | null>();
 
-      // notify parent
-      super.writeValue(this.value);
+  @ViewChild('sliderWrapper') private sliderWrapper: ElementRef;
 
-      // update the view when we get a new value from parent component
-      this.cdr.markForCheck();
-    }
+  private _value = 0;
+
+  @Input()
+  get value() {
+    return this._value;
   }
 
-  /**
-   * @inheritDoc
-   */
-  setDisabledState(isDisabled: boolean): void {
-    this.isDisabled = isDisabled;
-
-    this.toggle();
-
-    // update the view when `disabled` property change
-    this.cdr.markForCheck();
-  }
-
-  /**
-   * Defines the value to use (given vale or limit value) then send it to parent form
-   */
-  notifyUpdate(value: number): void {
-    this.value = this.getLimitValue(value);
+  set value(value: number) {
+    this._value = this.getClosestValue(value);
+    this.valueChange.emit(this.value);
     super.notifyUpdate(this.value);
   }
 
+  get maxValue(): number {
+    return this.max > 0 ? this.max : this.to;
+  }
+
+  get minValue(): number {
+    return this.min > 0 ? this.min : this.from;
+  }
+
   /**
-   * Toggle `disabled` state of the input.
+   * Get the bounding client rect of the slider track element.
+   * The track is used rather than the native element to ignore the extra space that the thumb can
+   * take up.
    */
-  toggle(): void {
+  get sliderDimensions(): ClientRect | null {
+    return this.sliderWrapper ? this.sliderWrapper.nativeElement.getBoundingClientRect() : null;
+  }
+
+  @HostListener('mousedown', ['$event'])
+  mouseDown($event: MouseEvent) {
     if (this.disabled) {
-      this.control.disable({emitEvent: false});
-    } else {
-      this.control.enable({emitEvent: false});
+      return;
+    }
+    const offset = this.sliderDimensions.left;
+    const position = $event.clientX - offset;
+    this.value = this.positionInSliderToValue(position);
+  }
+
+  @HostListener('keydown', ['$event'])
+  keyDown($event: KeyboardEvent) {
+    if (this.disabled) {
+      return;
+    }
+    const numSteps = $event.ctrlKey ? 10 : 1;
+    switch ($event.keyCode) {
+      case HOME:
+        this.value = this.minValue;
+        break;
+      case END:
+        this.value = this.maxValue;
+        break;
+      case LEFT_ARROW:
+        this.increment(-numSteps);
+        break;
+      case RIGHT_ARROW:
+        this.increment(numSteps);
+        break;
     }
   }
 
-  /**
-   * Count the ticks interval to display.
-   * We're returning an array because we can't iterate over numbers in template.
-   */
-  countTicksInterval(): any[] {
-    return Array(100 / this.tickInterval);
+  @HostListener('slide', ['$event'])
+  slide($event: HammerInput) {
+
+    if (this.disabled) {
+      return;
+    }
+
+    // Prevent the slide from selecting anything else.
+    $event.preventDefault();
+
+    const offset = this.sliderDimensions.left;
+    const position = $event.center.x - offset;
+
+    this.value = this.positionInSliderToValue(position);
+  }
+
+  selectionContainerStyles(): { 'width.%': number, backgroundColor?: string } {
+    const styles: { 'width.%': number, backgroundColor?: string } = {
+      'width.%': this.valueToPercent(this.value),
+    };
+
+    if (this.color) {
+      styles.backgroundColor = this.color;
+    }
+
+    return styles;
+  }
+
+  pointerStyles(): { 'left.%': number } {
+    return {
+      'left.%': this.valueToPercent(this.value),
+    };
+  }
+
+  maxContainerStyles(): { 'width.%': number } {
+    return {
+      'width.%': this.max > 0 ? this.valueToPercent(this.max) : 0,
+    };
+  }
+
+  minContainerStyles(): { 'width.%': number } {
+    return {
+      'width.%': this.min > 0 ? this.valueToPercent(this.min) : 0,
+    };
+  }
+
+  writeValue(value) {
+    value = this.getClosestValue(value);
+    super.writeValue(value);
   }
 
   /**
-   * Get the value to use.
-   * It's the limit if the limit is defined and greater than the given value.
-   */
-  getLimitValue(value: number): number {
-    return this.limit !== 0 ? Math.min(this.limit, value) : value;
+   * convert slide position x to percent of the slider container width
+   * if slider is 400px width, and @input to = 1200,
+   * a slide event with x=200px should be a value of 600
+   * a slide event with x=300px should be a value of 900
+   * a slide event with x=400px should be a value of 1200
+   **/
+  private positionInSliderToValue(position: number) {
+    const percent = clamp(position, 0, this.sliderDimensions.width) / this.sliderDimensions.width;
+    return percent * this.to;
   }
 
-  ngOnInit() {
-    this.valueChangeSubscription = this.control.valueChanges.subscribe(
-      value => {
-        if (this.disabled) {
-          return;
-        }
+  private getClosestValue(current: number) {
+    // manage min / max
+    current = clamp(current, this.minValue, this.maxValue);
+    if (current === this.minValue || current === this.maxValue) {
+      return current;
+    }
 
-        this.notifyUpdate(value);
-        this.valueChange.emit(this.getLimitValue(value));
-      }
-    );
+    const before = Math.floor(current / this.tick) * this.tick;
+    let closest = before;
+    if (before + (this.tick / 2) < current) {
+      closest = before + this.tick;
+    }
+    return closest;
   }
 
-  ngOnDestroy(): void {
-    this.valueChangeSubscription.unsubscribe();
+  private increment(numSteps: number) {
+    this.value += numSteps * this.tick;
+  }
+
+  private valueToPercent(value: number) {
+    return (value / this.to) * 100;
   }
 
 }

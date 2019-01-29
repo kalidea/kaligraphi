@@ -1,35 +1,21 @@
-import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-slider',
-  templateUrl: './slider.component.html',
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  templateUrl: './slider.component.html'
 })
 export class SliderComponent {
-  step = 1;
-  isDisabled = false;
-  thumbLabel = true;
-  tickInterval = 25;
-  limit = 30;
+  tick = 10;
 
-  updateStep($event) {
-    this.step = $event.target.value;
-  }
+  from = 0;
 
-  toggle(value) {
-    this.isDisabled = value;
-  }
+  to = 850;
 
-  toggleThumbLabel(value) {
-    this.thumbLabel = value;
-  }
+  max = 620;
+  min = 100;
 
-  updateTickInterval($event) {
-    this.tickInterval = $event.target.value;
-  }
+  color = '#21C0D9';
 
-  updateLimit($event) {
-    this.limit = $event.target.value;
-  }
+  disabled = false;
+
 }

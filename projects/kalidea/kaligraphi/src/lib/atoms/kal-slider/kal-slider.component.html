@@ -1,11 +1,9 @@
-<div class="kal-slider-thumb-label" *ngIf="thumbLabel">{{ value }}</div>
 
-<input type="range"
-       min="0"
-       max="100"
-       [step]="step"
-       [formControl]="control">
-
-<div *ngIf="tickInterval">
-  <span *ngFor="let interval of countTicksInterval()"></span>
+<div class="kal-slider-wrapper" #sliderWrapper>
+  <div class="kal-slider-limit-container"></div>
+  <div class="kal-slider-max-container" [ngStyle]="maxContainerStyles()"></div>
+  <div class="kal-slider-selection-container" [ngStyle]="selectionContainerStyles()"></div>
+  <div class="kal-slider-min-container" [ngStyle]="minContainerStyles()"></div>
+  <div class="kal-slider-pointer" [ngStyle]="pointerStyles()"></div>
 </div>
+

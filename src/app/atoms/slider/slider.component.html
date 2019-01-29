@@ -1,35 +1,43 @@
 <h1>Slider</h1>
 
-<div class="example">
+<div class="example" style="display: block">
   <article>
-    <kal-slider [step]="step"
-                [thumbLabel]="thumbLabel"
-                [tickInterval]="tickInterval"
-                [limit]="limit"
-                [disabled]="isDisabled">
-    </kal-slider>
+    <div>
+      <kal-slider [from]="from"
+                  [to]="to"
+                  [tick]="tick"
+                  [color]="color"
+                  [max]="max"
+                  [min]="min"
+                  [disabled]="disabled">
+      </kal-slider>
+    </div>
   </article>
 </div>
 
 <div class="configurator">
-    <kal-form-field>
-      <kal-input label="Step" [(ngModel)]="step" type="number"></kal-input>
-    </kal-form-field>
-
   <kal-form-field>
-    <kal-input label="Tick interval" [(ngModel)]="tickInterval" type="number"></kal-input>
+    <kal-input label="from" [(ngModel)]="from" type="number"></kal-input>
+  </kal-form-field>
+  <kal-form-field>
+    <kal-input label="to" [(ngModel)]="to" type="number"></kal-input>
+  </kal-form-field>
+  <kal-form-field>
+    <kal-input label="tick" [(ngModel)]="tick" type="number"></kal-input>
+  </kal-form-field>
+  <kal-form-field>
+    <kal-input label="max" [(ngModel)]="max" type="number"></kal-input>
+  </kal-form-field>
+  <kal-form-field>
+    <kal-input label="min" [(ngModel)]="min" type="number"></kal-input>
+  </kal-form-field>
+  <kal-form-field>
+    <kal-input label="color" [(ngModel)]="color" type="color"></kal-input>
   </kal-form-field>
 
   <kal-form-field>
-    <kal-input label="Limit" [(ngModel)]="limit" type="number"></kal-input>
+    <kal-checkbox label="Disable" [(ngModel)]="disabled"></kal-checkbox>
   </kal-form-field>
 
-  <kal-form-field>
-    <kal-checkbox label="Disable" [(ngModel)]="isDisabled"></kal-checkbox>
-  </kal-form-field>
-
-  <kal-form-field>
-    <kal-checkbox label="Show thumb label" [(ngModel)]="thumbLabel"></kal-checkbox>
-  </kal-form-field>
 
 </div>

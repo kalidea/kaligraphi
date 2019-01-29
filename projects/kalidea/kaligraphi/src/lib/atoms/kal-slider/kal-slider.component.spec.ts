@@ -1,171 +1,98 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Component, DebugElement, Type } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { By } from '@angular/platform-browser';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { KalSliderComponent } from './kal-slider.component';
-import { KalSliderModule } from './kal-slider.module';
 
 describe('KalSliderComponent', () => {
-  let sliderDebugElement: DebugElement;
-  let sliderNativeElement: HTMLElement;
-  let sliderInstance: KalSliderComponent;
+  let component: KalSliderComponent;
+  let fixture: ComponentFixture<KalSliderComponent>;
 
-  function createComponent<T>(component: Type<T>): ComponentFixture<T> {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        KalSliderModule,
-        ReactiveFormsModule
-      ],
-      declarations: [component]
+      declarations: [KalSliderComponent]
     })
       .compileComponents();
+  }));
 
-    return TestBed.createComponent<T>(component);
-  }
+  beforeEach(() => {
+    fixture = TestBed.createComponent(KalSliderComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-  describe('basic slider', () => {
-    let fixture: ComponentFixture<BasicSliderComponent>;
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 
-    beforeEach(() => {
-      fixture = createComponent(BasicSliderComponent);
-      fixture.detectChanges();
+  it('should get closest value', () => {
 
-      sliderDebugElement = fixture.debugElement.query(By.directive(KalSliderComponent));
-      sliderNativeElement = sliderDebugElement.nativeElement;
-      sliderInstance = sliderDebugElement.componentInstance;
-    });
+    component.from = 0;
+    component.to = 900;
+    component.tick = 100;
 
-    it('should set the default values', () => {
-      expect(sliderInstance.limit).toBe(0);
-      expect(sliderInstance.value).toBe(0);
-      expect(sliderInstance.disabled).toBeFalsy();
-      expect(sliderInstance.step).toBe(1);
-      expect(sliderInstance.thumbLabel).toBeFalsy();
-      expect(sliderInstance.tickInterval).toBe(0);
-    });
+    const positionsList = [
+      {position: 10, expected: 0},
+      {position: 49, expected: 0},
+      {position: 51, expected: 100},
+      {position: 99, expected: 100},
+      {position: 101, expected: 100},
+      {position: 149, expected: 100},
+      {position: 151, expected: 200},
+      {position: 249, expected: 200},
+      {position: 251, expected: 300},
+      {position: 349, expected: 300},
+      {position: 351, expected: 400},
+    ];
 
-    it('should display the thumb label', () => {
-      sliderInstance.thumbLabel = true;
-      fixture.detectChanges();
-
-      const thumbLabelDiv = fixture.debugElement.query(By.css('.kal-slider-thumb-label'));
-      expect(thumbLabelDiv).toBeTruthy();
-    });
-
-    it('should display the ticks interval', () => {
-      sliderInstance.tickInterval = 25;
-      fixture.detectChanges();
-
-      const spans = fixture.debugElement.queryAll(By.css('span'));
-      expect(spans.length).toEqual(4);
+    positionsList.forEach(event => {
+      component.value = event.position;
+      expect(component.value).toEqual(event.expected);
     });
   });
 
-  describe('slider with reactive form', () => {
-    let fixture: ComponentFixture<SliderReactiveFormComponent>;
-    let sliderElement: DebugElement;
+  it('should manage min and max', () => {
 
-    beforeEach(() => {
-      fixture = createComponent(SliderReactiveFormComponent);
-      fixture.detectChanges();
+    const min = 150;
+    const max = 750;
 
-      sliderDebugElement = fixture.debugElement.query(By.directive(KalSliderComponent));
-      sliderNativeElement = sliderDebugElement.nativeElement;
-      sliderInstance = sliderDebugElement.componentInstance;
-      sliderElement = fixture.debugElement.query(By.css('input[type=range]'));
+    component.from = 0;
+    component.to = 900;
+    component.tick = 100;
+    component.min = min;
+    component.max = max;
+
+    const positionsList = [
+      {position: 50, expected: min},
+      {position: 101, expected: min},
+      {position: 149, expected: min},
+      {position: 151, expected: 200},
+      {position: 249, expected: 200},
+      {position: 251, expected: 300},
+      {position: 701, expected: 700},
+      {position: 751, expected: max},
+      {position: 800, expected: max},
+      {position: 850, expected: max},
+    ];
+
+    positionsList.forEach(event => {
+      component.value = event.position;
+      expect(component.value).toBe(event.expected, `${event.position} should be transform to ${event.expected} (got ${component.value})`);
     });
-
-    it('should set a default value with reactive form', () => {
-      expect(sliderInstance.value).toEqual(75);
-      expect(sliderElement.properties.value).toEqual(75);
-
-      fixture.componentInstance.control.patchValue(41);
-      fixture.detectChanges();
-
-      expect(sliderInstance.value).toEqual(41);
-      expect(sliderElement.properties.value).toEqual(41);
-    });
-
-    it('should be disabled with reactive form', () => {
-      expect(sliderInstance.disabled).toBeTruthy();
-      expect(sliderElement.properties.disabled).toBeTruthy();
-
-      fixture.componentInstance.control.enable();
-      fixture.detectChanges();
-
-      expect(sliderInstance.disabled).toBeFalsy();
-      expect(sliderElement.properties.disabled).toBeFalsy();
-    });
-
-    it('should work with a limit value and a reactive form', () => {
-      sliderInstance.limit = 35;
-      fixture.componentInstance.control.patchValue(68);
-      fixture.detectChanges();
-
-      expect(sliderInstance.value).toEqual(35);
-    });
-
   });
 
-  describe('basic slider with events', () => {
-    let fixture: ComponentFixture<SliderWithEventComponent>;
-    let sliderElement: DebugElement;
+  it('should build styles for max container', () => {
+    component.from = 0;
+    component.to = 1000;
+    expect(component.maxContainerStyles()['width.%']).toEqual(0);
+    component.max = 900;
+    expect(component.maxContainerStyles()['width.%']).toEqual(90);
+  });
 
-    beforeEach(() => {
-      fixture = createComponent(SliderWithEventComponent);
-      fixture.detectChanges();
-
-      sliderDebugElement = fixture.debugElement.query(By.directive(KalSliderComponent));
-      sliderNativeElement = sliderDebugElement.nativeElement;
-      sliderInstance = sliderDebugElement.componentInstance;
-      sliderElement = fixture.debugElement.query(By.css('input[type=range]'));
-    });
-
-    it('should set a default value with @Input', () => {
-      expect(sliderInstance.value).toEqual(24);
-      expect(sliderElement.properties.value).toEqual(24);
-
-      sliderInstance.value = 52;
-      fixture.detectChanges();
-      expect(sliderInstance.value).toEqual(52);
-      expect(sliderElement.properties.value).toEqual(52);
-    });
-
-    it('should be disabled with  @Input', () => {
-      expect(sliderInstance.disabled).toBeFalsy();
-      expect(sliderElement.properties.disabled).toBeFalsy();
-
-      sliderInstance.disabled = true;
-      fixture.detectChanges();
-
-      expect(sliderInstance.disabled).toBeTruthy();
-      expect(sliderElement.properties.disabled).toBeTruthy();
-    });
+  it('should build styles for selection container', () => {
+    component.from = 0;
+    component.to = 1000;
+    component.value = 800;
+    expect(component.selectionContainerStyles()['width.%']).toEqual(80);
+    component.value = 900;
+    expect(component.selectionContainerStyles()['width.%']).toEqual(90);
   });
 });
-
-@Component({
-  template: `
-    <kal-slider></kal-slider>
-  `
-})
-export class BasicSliderComponent {
-}
-
-@Component({
-  template: `
-    <kal-slider [formControl]="control"></kal-slider>
-  `
-})
-export class SliderReactiveFormComponent {
-  control = new FormControl({value: 75, disabled: true});
-}
-
-@Component({
-  template: `
-    <kal-slider [value]="24"></kal-slider>
-  `
-})
-export class SliderWithEventComponent {
-}
