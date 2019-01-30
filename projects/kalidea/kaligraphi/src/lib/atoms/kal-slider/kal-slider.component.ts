@@ -5,8 +5,10 @@ import {
   ElementRef,
   EventEmitter,
   HostListener,
-  Input, OnChanges,
-  Output, SimpleChanges,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
@@ -58,11 +60,11 @@ export class KalSliderComponent extends FormElementComponent<number> implements 
 
   @ViewChild('sliderWrapper') private sliderWrapper: ElementRef;
 
+  private _value = 0;
+
   constructor(private cdr: ChangeDetectorRef) {
     super();
   }
-
-  private _value = 0;
 
   get value() {
     return this._value;

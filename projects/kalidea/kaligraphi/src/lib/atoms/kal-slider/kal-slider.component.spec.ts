@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { KalSliderComponent } from './kal-slider.component';
 import { Component, ViewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+
+import { KalSliderComponent } from './kal-slider.component';
 
 describe('KalSliderComponent logic', () => {
   let component: KalSliderComponent;
