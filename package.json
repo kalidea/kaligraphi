@@ -8,7 +8,7 @@
     "ng": "ng",
     "build": "ng build",
     "build:lib": "npm run build",
-    "copy:styles": "cpx './projects/kalidea/kaligraphi/src/**/*.{sass,scss,css}' ./dist/kalidea/kaligraphi",
+    "copy:styles": "cpx \"./projects/kalidea/kaligraphi/src/**/*.{sass,scss,css}\" ./dist/kalidea/kaligraphi",
     "compile:styles": "node-sass ./projects/kalidea/kaligraphi/src/styles/styles.sass ./dist/kalidea/kaligraphi/styles/styles.css",
     "postbuild": "npm run copy:styles && npm run compile:styles",
     "test:ci": "ng test @kalidea/kaligraphi --karma-config=./projects/kalidea/kaligraphi/karma.test.conf.js --code-coverage",
