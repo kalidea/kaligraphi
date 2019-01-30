@@ -1,15 +1,18 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
   HostListener,
-  Input,
-  Output,
+  Input, OnChanges,
+  Output, SimpleChanges,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 import { END, HOME, LEFT_ARROW, RIGHT_ARROW, } from '@angular/cdk/keycodes';
+import { isNil } from 'lodash';
+
 import { buildProviders, FormElementComponent } from '../../utils/index';
 import { HammerInput } from '../../utils/gestures/gesture-annotations';
 import { clamp } from '../../utils/helpers/numbers';
@@ -23,7 +26,7 @@ import { Coerce } from '../../utils/decorators/coerce';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: buildProviders(KalSliderComponent)
 })
-export class KalSliderComponent extends FormElementComponent<number> {
+export class KalSliderComponent extends FormElementComponent<number> implements OnChanges {
 
   // global expected required
   @Input()
@@ -36,11 +39,11 @@ export class KalSliderComponent extends FormElementComponent<number> {
 
   // range min max
   @Input()
-  @Coerce('number')
+  @Coerce('number', null)
   min: number;
 
   @Input()
-  @Coerce('number')
+  @Coerce('number', null)
   max: number;
 
   @Input()
@@ -55,26 +58,34 @@ export class KalSliderComponent extends FormElementComponent<number> {
 
   @ViewChild('sliderWrapper') private sliderWrapper: ElementRef;
 
+  constructor(private cdr: ChangeDetectorRef) {
+    super();
+  }
+
   private _value = 0;
 
-  @Input()
-  @Coerce('number')
   get value() {
     return this._value;
   }
 
   set value(value: number) {
-    this._value = this.getClosestValue(value);
-    this.valueChange.emit(this.value);
-    super.notifyUpdate(this.value);
+    const closestValue = this.getClosestValue(value);
+
+    // update only if value is different than previous
+    if (this.value !== closestValue) {
+      this._value = closestValue;
+      super.notifyUpdate(this.value);
+      this.valueChange.emit(this.value);
+      this.cdr.markForCheck();
+    }
   }
 
   get maxValue(): number {
-    return this.max > 0 ? this.max : this.to;
+    return isNil(this.max) ? this.to : this.max;
   }
 
   get minValue(): number {
-    return this.min > 0 ? this.min : this.from;
+    return isNil(this.min) ? this.from : this.min;
   }
 
   /**
@@ -101,7 +112,15 @@ export class KalSliderComponent extends FormElementComponent<number> {
     if (this.disabled) {
       return;
     }
-    const numSteps = $event.ctrlKey ? 10 : 1;
+
+    // Manage fast backward / forward
+    let numSteps = 1;
+    if ($event.ctrlKey) {
+      numSteps = 10;
+    } else if ($event.shiftKey) {
+      numSteps = 5;
+    }
+
     switch ($event.keyCode) {
       case HOME:
         this.value = this.minValue;
@@ -154,20 +173,19 @@ export class KalSliderComponent extends FormElementComponent<number> {
 
   maxContainerStyles(): { 'width.%': number } {
     return {
-      'width.%': this.max > 0 ? this.valueToPercent(this.max) : 0,
+      'width.%': this.max ? this.valueToPercent(this.max) : 0,
     };
   }
 
   minContainerStyles(): { 'width.%': number } {
     return {
-      'width.%': this.min > 0 ? this.valueToPercent(this.min) : 0,
+      'width.%': this.min ? this.valueToPercent(this.min) : 0,
     };
   }
 
   writeValue(value) {
-    value = this.getClosestValue(value);
     this.value = value;
-    super.writeValue(value);
+    super.writeValue(this.value);
   }
 
   valueToPercent(value: number): number {
@@ -210,6 +228,12 @@ export class KalSliderComponent extends FormElementComponent<number> {
 
   private increment(numSteps: number): void {
     this.value += numSteps * this.tick;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    super.ngOnChanges(changes);
+    // recalcul value according to last change
+    this.value = this.getClosestValue(this.value);
   }
 
 }
