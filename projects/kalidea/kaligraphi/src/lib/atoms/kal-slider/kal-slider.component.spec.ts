@@ -1,8 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component, ViewChild } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 import { KalSliderComponent } from './kal-slider.component';
 
-describe('KalSliderComponent', () => {
+describe('KalSliderComponent logic', () => {
   let component: KalSliderComponent;
   let fixture: ComponentFixture<KalSliderComponent>;
 
@@ -111,4 +113,68 @@ describe('KalSliderComponent', () => {
     expect(component.valueToPercent(6)).toEqual(50);
     expect(component.valueToPercent(11)).toEqual(100);
   });
+
+  it('should not use max if max is undefined or null', () => {
+    component.from = 0;
+    component.to = 10;
+    component.tick = 1;
+
+    // 0
+    component.max = 0;
+    component.value = 5;
+    expect(component.value).toBe(0, 'max(0) should be managed');
+
+    // null
+    component.max = null;
+    component.value = 6;
+    expect(component.value).toBe(6, 'max(null) should be managed');
+
+    // undefined
+    component.max = undefined;
+    component.value = 7;
+    expect(component.value).toBe(7, 'max(undefined) should be managed');
+
+  });
+});
+
+@Component({
+  selector: 'kal-test',
+  template: `
+    <kal-slider [formControl]="control" from="0" to="10" #slider></kal-slider>
+  `
+})
+export class KalTestComponent {
+  control = new FormControl();
+
+  from = 0;
+
+  to = 10;
+
+  @ViewChild(KalSliderComponent) slider: KalSliderComponent;
+}
+
+describe('KalSliderComponent view', () => {
+  let component: KalTestComponent;
+  let fixture: ComponentFixture<KalTestComponent>;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [ReactiveFormsModule],
+      declarations: [KalSliderComponent, KalTestComponent]
+    })
+      .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(KalTestComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should update view on writeValue ', () => {
+    expect(component.slider.selectionContainerStyles()['width.%']).toBe(0, 'selection container should be 0% width');
+    component.control.patchValue(4);
+    expect(component.slider.selectionContainerStyles()['width.%']).toBe(40, 'selection container should be 40% width');
+  });
+
 });
