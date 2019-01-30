@@ -78,3 +78,16 @@ use [typescript-code-style.xml](./blob/master/typescript-code-style.xml) file to
 
 * `npm run build:lib` to build library
 * `npm run dev:lib` to build library with hot reload
+
+## Link
+
+#### Kaligraphi
+
+* ng build @kalidea/kaligraphi --watch
+* npm run copy:styles
+* cd dist/kalidea/kaligraphi
+* npm link
+
+#### Project
+
+* npm link @kalidea/kaligraphi
