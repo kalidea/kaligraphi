@@ -6,12 +6,12 @@ import { coerceArray, coerceBooleanProperty, coerceCssPixelValue, coerceNumberPr
 
 export type KAL_COERCE_TYPES = 'boolean' | 'number' | 'cssPixelValue' | 'array';
 
-function coerceFromType(value: any, type: KAL_COERCE_TYPES) {
+function coerceFromType(value: any, type: KAL_COERCE_TYPES, fallback) {
   switch (type) {
     case 'array':
       return coerceArray(value);
     case 'number':
-      return coerceNumberProperty(value);
+      return coerceNumberProperty(value, fallback);
     case 'boolean':
       return coerceBooleanProperty(value);
     case 'cssPixelValue':
@@ -20,7 +20,7 @@ function coerceFromType(value: any, type: KAL_COERCE_TYPES) {
   return null;
 }
 
-export function Coerce(type: KAL_COERCE_TYPES): PropertyDecorator & MethodDecorator {
+export function Coerce(type: KAL_COERCE_TYPES, fallback?): PropertyDecorator & MethodDecorator {
   return function (target: any, key: string | symbol, propDesc?: PropertyDescriptor): void | any {
     const privateKey = '_coerce_' + key.toString();
 
@@ -38,7 +38,7 @@ export function Coerce(type: KAL_COERCE_TYPES): PropertyDecorator & MethodDecora
 
     propDesc.set = function (this: any, val: any) {
       const oldValue = this[key];
-      const newVal = coerceFromType(val, type);
+      const newVal = coerceFromType(val, type, fallback);
       if (val !== oldValue) {
         originalSetter.call(this, newVal);
       }
