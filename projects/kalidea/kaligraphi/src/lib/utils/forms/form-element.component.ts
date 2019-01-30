@@ -42,7 +42,9 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
   /**
    * tab index for this element
    */
-  @Input() tabIndex: number;
+  @Input()
+  @HostBinding('attr.tabIndex')
+  tabIndex: number;
 
   /**
    * list of message to display
