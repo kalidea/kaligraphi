@@ -1,5 +1,12 @@
-import { AfterContentInit, ChangeDetectionStrategy, Component, ContentChild, ViewEncapsulation } from '@angular/core';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import {
+  AfterContentInit,
+  ChangeDetectionStrategy,
+  Component,
+  ContentChild,
+  OnChanges,
+  SimpleChanges,
+  ViewEncapsulation
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { KalCardTitleComponent } from './components/kal-card-title.component';
@@ -12,25 +19,37 @@ import { AutoUnsubscribe } from '../../utils';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalCardComponent extends KalCardDismissable implements AfterContentInit {
+export class KalCardComponent extends KalCardDismissable implements AfterContentInit, OnChanges {
 
   @ContentChild(KalCardTitleComponent) title: KalCardTitleComponent;
 
   @AutoUnsubscribe()
   private dismissSubscription = Subscription.EMPTY;
 
-  set dismissable(dismissable: boolean) {
-    this._dismissable = coerceBooleanProperty(dismissable);
+  private updateTitle() {
+
+    // remove previous subscription even if no title
+    if (!this.dismissSubscription.closed) {
+      this.dismissSubscription.unsubscribe();
+    }
+
     if (this.title) {
-      this.title.dismissable = dismissable;
+
+      // transfer dismissable to title and subscribe to it
+      this.title.dismissable = this.dismissable;
+      this.dismissSubscription = this.title.dismissed.subscribe(() => this.dismissed.emit());
+
+      // update view
+      this.cdr.markForCheck();
     }
   }
 
   ngAfterContentInit(): void {
-    if (this.title) {
-      this.title.dismissable = this.dismissable;
-      this.title.dismissed.subscribe(() => this.dismissed.emit());
-    }
+    this.updateTitle();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.updateTitle();
   }
 
 }
