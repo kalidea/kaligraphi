@@ -5,7 +5,8 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChildren,
-  EventEmitter, forwardRef,
+  EventEmitter,
+  forwardRef,
   HostListener,
   Output,
   QueryList,
@@ -15,10 +16,11 @@ import {
 import { CdkPortalOutlet, TemplatePortal } from '@angular/cdk/portal';
 import { ENTER, SPACE } from '@angular/cdk/keycodes';
 import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
+import { Subscription } from 'rxjs';
 import { KalTabComponent } from '../kal-tab/kal-tab.component';
 import { KalTabChange } from '../kal-tab-change';
 import { KalTabHeaderComponent } from '../kal-tab-header/kal-tab-header.component';
-import { buildProviders, FormElementComponent } from '../../../utils/index';
+import { AutoUnsubscribe, buildProviders, FormElementComponent } from '../../../utils/index';
 
 @Component({
   selector: 'kal-tab-group',
@@ -39,7 +41,6 @@ export class KalTabGroupComponent extends FormElementComponent<number> implement
    * List of kal tab component
    */
   @ContentChildren(forwardRef(() => KalTabComponent), {descendants: true}) tabs: QueryList<KalTabComponent>;
-
 
   /**
    * List of kal tab header component
@@ -65,6 +66,9 @@ export class KalTabGroupComponent extends FormElementComponent<number> implement
    * Tab to select when the content is init
    */
   private tabToSelect = null;
+
+  @AutoUnsubscribe()
+  private subscription = Subscription.EMPTY;
 
   constructor(private cdr: ChangeDetectorRef) {
     super();
@@ -165,6 +169,12 @@ export class KalTabGroupComponent extends FormElementComponent<number> implement
   }
 
   ngAfterContentInit() {
+    this.subscription = this.tabs.changes.subscribe(
+      () => {
+        this.cdr.markForCheck();
+      }
+    );
+
     if (this.tabToSelect) {
 
       this.selectedTabIndex = this.tabToSelect;
