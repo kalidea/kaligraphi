@@ -10,7 +10,6 @@ import { FormControl } from '@angular/forms';
 })
 export class CheckboxComponent implements OnInit {
 
-
   themes = [];
 
   large = false;
@@ -30,7 +29,7 @@ export class CheckboxComponent implements OnInit {
   /**
    * Value retrieved by checkbox output
    */
-  private value = true;
+  value = false;
 
   constructor() {
   }
