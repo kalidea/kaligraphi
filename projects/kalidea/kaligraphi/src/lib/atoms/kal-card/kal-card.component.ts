@@ -27,12 +27,13 @@ export class KalCardComponent extends KalCardDismissable implements AfterContent
   private dismissSubscription = Subscription.EMPTY;
 
   private updateTitle() {
-    if (this.title) {
 
-      // remove previous subscription
-      if (!this.dismissSubscription.closed) {
-        this.dismissSubscription.unsubscribe();
-      }
+    // remove previous subscription even if no title
+    if (!this.dismissSubscription.closed) {
+      this.dismissSubscription.unsubscribe();
+    }
+
+    if (this.title) {
 
       // transfer dismissable to title and subscribe to it
       this.title.dismissable = this.dismissable;
