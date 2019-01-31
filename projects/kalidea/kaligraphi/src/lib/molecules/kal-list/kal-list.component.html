@@ -2,7 +2,8 @@
 
   <ng-container *ngIf="virtualScrollConfig; else noVirtualScroll">
 
-    <cdk-virtual-scroll-viewport [style.height.px]="virtualScrollConfig.height" [itemSize]="virtualScrollConfig.itemSize">
+    <cdk-virtual-scroll-viewport [style.height.px]="virtualScrollConfig.height"
+                                 [itemSize]="virtualScrollConfig.itemSize">
 
       <div *cdkVirtualFor="let item of results; index as i">
 
@@ -37,16 +38,22 @@
 
     <div kalListItemSelection
          class="kal-list__item"
-         [disabled]="disableRowsFunction(item)"
-         [class.kal-list__item--selected]="isSelected(item)"
-         [class.kal-list__item--disabled]="disableRowsFunction(item)"
+         [disabled]="isRowDisabled(item)"
+         [class.kal-list__item--selected]="isRowSelected(item)"
+         [class.kal-list__item--disabled]="isRowDisabled(item)"
          (click)="selectItem(item)">
 
       <span class="kal-list__content">
-        <ng-container *ngTemplateOutlet="row.view; context: {item: item}"></ng-container>
+        <ng-container *ngTemplateOutlet="row.view; context: {
+        item: item,
+        index: i,
+        selected: isRowSelected(item),
+        disabled: isRowDisabled(item)
+        }">
+        </ng-container>
       </span>
 
-      <span class="kal-list__icon" *ngIf="selectionMode === 'single'">
+      <span class="kal-list__icon" *ngIf="hasSelectionMode()">
         <kal-icon>keyboard_arrow_right</kal-icon>
       </span>
 

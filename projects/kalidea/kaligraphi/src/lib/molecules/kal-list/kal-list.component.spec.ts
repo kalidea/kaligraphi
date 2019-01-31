@@ -162,7 +162,7 @@ describe('TestListItemComponent', () => {
     spyOn(listInstances.selectionChange, 'emit');
 
     listItems[0].nativeElement.click();
-    expect(listInstances.isSelected(component.dataSource.listItem[0])).toBeTruthy();
+    expect(listInstances.isRowSelected(component.dataSource.listItem[0])).toBeTruthy();
     expect(listInstances.selectionChange.emit).toHaveBeenCalledWith(new KalListSelection(
       [component.dataSource.listItem[0]],
       false,
@@ -178,7 +178,7 @@ describe('TestListItemComponent', () => {
 
     listItems[2].nativeElement.click();
 
-    expect(listInstances.isSelected(component.dataSource.listItem[2])).toBeTruthy();
+    expect(listInstances.isRowSelected(component.dataSource.listItem[2])).toBeTruthy();
     expect(listInstances.selectionChange.emit).toHaveBeenCalledWith(new KalListSelection(
       [component.dataSource.listItem[2]],
       false,
@@ -193,9 +193,9 @@ describe('TestListItemComponent', () => {
     listItems[1].nativeElement.click();
     listItems[2].nativeElement.click();
 
-    expect(listInstances.isSelected(component.dataSource.listItem[0])).toBeTruthy();
-    expect(listInstances.isSelected(component.dataSource.listItem[1])).toBeTruthy();
-    expect(listInstances.isSelected(component.dataSource.listItem[2])).toBeTruthy();
+    expect(listInstances.isRowSelected(component.dataSource.listItem[0])).toBeTruthy();
+    expect(listInstances.isRowSelected(component.dataSource.listItem[1])).toBeTruthy();
+    expect(listInstances.isRowSelected(component.dataSource.listItem[2])).toBeTruthy();
 
     expect(listInstances.selectionChange.emit).toHaveBeenCalledWith(new KalListSelection(
       [component.dataSource.listItem[0],
@@ -211,11 +211,11 @@ describe('TestListItemComponent', () => {
 
     listInstances.selectItem(item);
 
-    expect(listInstances.isSelected(item)).toBeTruthy();
+    expect(listInstances.isRowSelected(item)).toBeTruthy();
 
     listInstances.reset();
 
-    expect(listInstances.isSelected(item)).toBeFalsy();
+    expect(listInstances.isRowSelected(item)).toBeFalsy();
   });
 
   it('should group items', () => {
@@ -235,7 +235,7 @@ describe('TestListItemComponent', () => {
 
     listItems[0].nativeElement.click();
 
-    expect(listInstances.isSelected(component.dataSource.listItem[0])).toBeFalsy();
+    expect(listInstances.isRowSelected(component.dataSource.listItem[0])).toBeFalsy();
 
     disabled = fixture.debugElement.queryAll(By.css('.kal-list__item--disabled'));
 
