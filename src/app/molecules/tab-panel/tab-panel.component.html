@@ -1,7 +1,7 @@
 <h1>Tabs</h1>
 
 <div class="example">
-  <kal-tab-group tabindex="1" [formControl]="formControl">
+  <kal-tab-group tabIndex="1" [formControl]="formControl">
     <kal-tab>
       <ng-template kalTabLabel>
         Label 1
@@ -12,7 +12,7 @@
       reprehenderit!
     </kal-tab>
 
-    <kal-tab>
+    <kal-tab *ngIf="showTab">
       <ng-template kalTabLabel>
         <kal-icon>done</kal-icon>
         Label 2
@@ -39,4 +39,5 @@
 
 <div class="configurator">
   <kal-button (click)="changeTab()">Change tab</kal-button>
+  <kal-button (click)="toggleTab()">Toggle tab</kal-button>
 </div>

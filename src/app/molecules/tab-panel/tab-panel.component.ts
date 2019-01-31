@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -12,11 +12,17 @@ export class TabPanelComponent implements OnInit {
 
   formControl = new FormControl(2);
 
+  showTab = true;
+
   constructor() {
   }
 
   changeTab() {
     this.formControl.patchValue((this.formControl.value + 1) % 3);
+  }
+
+  toggleTab() {
+    this.showTab = !this.showTab;
   }
 
   ngOnInit() {

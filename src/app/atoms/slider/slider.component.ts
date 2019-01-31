@@ -12,6 +12,7 @@ export class SliderComponent {
   to = 850;
 
   max = 620;
+
   min = 100;
 
   color = '#21C0D9';
