@@ -5,6 +5,8 @@
   <kal-checkbox
     [kalTheme]="themes"
     [label]="label"
+    [disabled]="disabled"
+    [value]="value"
   ></kal-checkbox>
 
 </div>
@@ -17,5 +19,13 @@
       <kal-option value="reverse">Reverse</kal-option>
       <kal-option value="large">Large</kal-option>
     </kal-select>
+  </kal-form-field>
+
+  <kal-form-field>
+    <kal-checkbox label="Disable" [(ngModel)]="disabled"></kal-checkbox>
+  </kal-form-field>
+
+  <kal-form-field>
+    <kal-checkbox label="Toggle value" [(ngModel)]="value"></kal-checkbox>
   </kal-form-field>
 </section>

@@ -13,6 +13,7 @@ import { FormControl } from '@angular/forms';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Subscription } from 'rxjs';
 import { buildProviders, FormElementComponent } from '../../utils/index';
+import { Coerce } from '../../utils/decorators/coerce';
 
 @Component({
   selector: 'kal-checkbox',
@@ -34,22 +35,20 @@ export class KalCheckboxComponent extends FormElementComponent<boolean> implemen
    */
   controlSubscription: Subscription;
 
-  private _value = false;
-
-  private _disabled = false;
-
   constructor(private cdr: ChangeDetectorRef) {
     super();
   }
+
+  private _value = false;
 
   get value() {
     return this._value;
   }
 
   @Input()
+  @Coerce('boolean')
   set value(value: boolean) {
-    this._value = coerceBooleanProperty(value);
-
+    this._value = value;
     if (this.control) {
       this.control.patchValue(this._value, {emitEvent: false});
     }
@@ -57,13 +56,16 @@ export class KalCheckboxComponent extends FormElementComponent<boolean> implemen
     this.cdr.markForCheck();
   }
 
+  private _disabled = false;
+
   @Input()
+  @Coerce('boolean')
   get disabled() {
     return this._disabled;
   }
 
   set disabled(value: boolean) {
-    this._disabled = coerceBooleanProperty(value);
+    this._disabled = value;
     if (this.control) {
       this.setDisabledState(this._disabled);
     }
