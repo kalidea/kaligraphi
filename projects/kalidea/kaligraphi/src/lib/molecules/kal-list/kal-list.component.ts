@@ -7,9 +7,11 @@ import {
   EventEmitter,
   HostListener,
   Input,
+  OnChanges,
   OnDestroy,
   Output,
   QueryList,
+  SimpleChanges,
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
@@ -42,7 +44,7 @@ export interface KalVirtualScrollConfig {
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalListComponent<T extends { id: string }> implements CollectionViewer, AfterViewInit, OnDestroy {
+export class KalListComponent<T extends { id: string }> implements CollectionViewer, AfterViewInit, OnChanges, OnDestroy {
 
   /**
    * Datasource to give items list to the component
@@ -51,6 +53,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   get dataSource(): KalListDataSource<T> {
     return this._dataSource;
   }
+
   set dataSource(dataSource: KalListDataSource<T>) {
     if (dataSource !== this._dataSource) {
       this.destroySubscription();
@@ -63,9 +66,6 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
         this.cdr.markForCheck();
       }
     }
-  }
-
-  constructor(private cdr: ChangeDetectorRef) {
   }
 
   @Input()
@@ -86,6 +86,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   get virtualScrollConfig(): KalVirtualScrollConfig {
     return this._virtualScrollConfig;
   }
+
   set virtualScrollConfig(value: KalVirtualScrollConfig) {
     if (value) {
       this._virtualScrollConfig = {
@@ -97,7 +98,6 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
     }
     this.cdr.markForCheck();
   }
-
   /**
    * Selectable items (none, single, multiple)
    */
@@ -131,28 +131,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   /**
    * Function that group items in listing
    */
-  @Input()
-  get groupByFunction(): (item: T) => string {
-    return this.groupByConfig;
-  }
-
-  set groupByFunction(value: (item: T) => string) {
-    this.groupByConfig = value;
-    this.cdr.markForCheck();
-  }
-
-  /**
-   * Function that disable rows in template
-   */
-  @Input()
-  get disableRowsFunction(): (item: T) => boolean {
-    return this.isDisabled ? this.isDisabled : (item: T) => false;
-  }
-
-  set disableRowsFunction(value: (item: T) => boolean) {
-    this.isDisabled = value;
-    this.cdr.markForCheck();
-  }
+  @Input() groupByFunction: (item: T) => string;
 
   /**
    * Results list
@@ -178,11 +157,6 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
    * The reference to the element thats contains the kal list item directive
    */
   @ViewChildren(KalListItemSelectionDirective) children: QueryList<KalListItemSelectionDirective>;
-
-  /**
-   * The config is use to group all items
-   */
-  private groupByConfig: (item: T) => string = null;
 
   /**
    * Manages keyboard events for options in the panel
@@ -220,11 +194,14 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   private _virtualScrollConfig: KalVirtualScrollConfig = null;
 
   /**
-   * Is the row disabled
+   * Function that disable rows in template
    */
-  private isDisabled: (item: T) => boolean = (item: T) => false;
+  @Input() disableRowsFunction: (item: T) => (boolean) = null;
 
-  /**
+  constructor(private cdr: ChangeDetectorRef) {
+  }
+
+    /**
    * Focus the tab element
    */
   @HostListener('focus')
@@ -274,8 +251,8 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
       this._selection.reset();
 
       if (this._selection.all) {
-        this._selection.selected.push(...this.results.filter(element => !this.disableRowsFunction(element)));
-        this._selection.excluded.push(...this.results.filter(element => this.disableRowsFunction(element)));
+        this._selection.selected.push(...this.results.filter(element => !this.isRowDisabled(element)));
+        this._selection.excluded.push(...this.results.filter(element => this.isRowDisabled(element)));
       }
 
       this.cdr.markForCheck();
@@ -288,7 +265,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
    * Select an item in list and emit an event with the selected item value
    */
   selectItem(item: T) {
-    if (!this.disableRowsFunction(item) && this._selectionMode !== KalListSelectionMode.None) {
+    if (!this.isRowDisabled(item) && this._selectionMode !== KalListSelectionMode.None) {
 
       this.selectedItemIndex = this.results.findIndex(row => row === item);
       this.activeItem(this.selectedItemIndex);
@@ -302,8 +279,19 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   /**
    * Is the item selected
    */
-  isSelected(item): boolean {
+  isRowSelected(item): boolean {
     return !item.id ? this._selection.selected.some(element => element === item) : this._selection.contains(item);
+  }
+
+  /**
+   * Is the item disabled
+   */
+  isRowDisabled(item): boolean {
+    return this.disableRowsFunction ? this.disableRowsFunction(item) : false;
+  }
+
+  hasSelectionMode(): boolean {
+    return this.selectionMode !== KalListSelectionMode.None;
   }
 
   /**
@@ -319,7 +307,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
    * Check if items need to be grouped
    */
   containsGroupByFunction(item: T, index: number): boolean {
-    const previousItem = this.results[index - 1];
+    const previousItem = this.results[index - 1] as T;
 
     return this.groupByFunction
       && (!previousItem || this.groupByFunction(previousItem) !== this.groupByFunction(item));
@@ -393,6 +381,10 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
     if (!this.virtualScrollConfig) {
       this.keyManager = new ActiveDescendantKeyManager<KalListItemSelectionDirective>(this.children).withVerticalOrientation();
     }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.cdr.markForCheck();
   }
 
   ngOnDestroy() {
