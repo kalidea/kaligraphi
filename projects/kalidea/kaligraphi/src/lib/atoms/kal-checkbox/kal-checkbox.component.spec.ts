@@ -99,4 +99,26 @@ describe('KalCheckboxComponent', () => {
 
     expect(component.control.disabled).toBeFalsy();
   });
+
+  it('should set the checkbox value', () => {
+
+    component.value = true;
+
+    expect(component.control.value).toBeTruthy();
+
+    component.value = false;
+
+    expect(component.control.value).toBeFalsy();
+  });
+
+  it('should disable the checkbox', () => {
+
+    component.disabled = true;
+
+    expect(component.control.disabled).toBeTruthy();
+
+    component.disabled = false;
+
+    expect(component.control.disabled).toBeFalsy();
+  });
 });

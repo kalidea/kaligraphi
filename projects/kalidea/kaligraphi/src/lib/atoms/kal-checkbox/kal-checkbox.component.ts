@@ -1,6 +1,8 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
+  Input,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -32,8 +34,39 @@ export class KalCheckboxComponent extends FormElementComponent<boolean> implemen
    */
   controlSubscription: Subscription;
 
-  constructor() {
+  private _value = false;
+
+  private _disabled = false;
+
+  constructor(private cdr: ChangeDetectorRef) {
     super();
+  }
+
+  get value() {
+    return this._value;
+  }
+
+  @Input()
+  set value(value: boolean) {
+    this._value = coerceBooleanProperty(value);
+
+    if (this.control) {
+      this.control.patchValue(this._value, {emitEvent: false});
+    }
+
+    this.cdr.markForCheck();
+  }
+
+  @Input()
+  get disabled() {
+    return this._disabled;
+  }
+
+  set disabled(value: boolean) {
+    this._disabled = coerceBooleanProperty(value);
+    if (this.control) {
+      this.setDisabledState(this._disabled);
+    }
   }
 
   /**
@@ -41,6 +74,7 @@ export class KalCheckboxComponent extends FormElementComponent<boolean> implemen
    */
   writeValue(value) {
     this.control.patchValue(value, {emitEvent: false});
+    super.writeValue(value);
   }
 
   /**
@@ -57,7 +91,7 @@ export class KalCheckboxComponent extends FormElementComponent<boolean> implemen
   ngOnInit() {
     this.control = new FormControl(
       {
-        value: this.value ? coerceBooleanProperty(this.value) : false,
+        value: this.value,
         disabled: this.disabled
       }
     );
