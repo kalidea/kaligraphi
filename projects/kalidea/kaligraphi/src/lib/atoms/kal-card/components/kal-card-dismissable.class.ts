@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, EventEmitter, forwardRef, Inject, Input, Output } from '@angular/core';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { Coerce } from '../../../utils/decorators/coerce';
 
 export class KalCardDismissable {
 
@@ -19,12 +19,13 @@ export class KalCardDismissable {
    * true if card is dismissable
    */
   @Input()
+  @Coerce('boolean')
   get dismissable(): boolean {
     return this._dismissable;
   }
 
   set dismissable(dismissable: boolean) {
-    this._dismissable = coerceBooleanProperty(dismissable);
+    this._dismissable = dismissable;
     this.cdr.markForCheck();
   }
 
