@@ -8,7 +8,6 @@ import {
   EventEmitter,
   forwardRef,
   HostListener,
-  OnDestroy,
   Output,
   QueryList,
   ViewChildren,
@@ -31,7 +30,7 @@ import { AutoUnsubscribe, buildProviders, FormElementComponent } from '../../../
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: buildProviders(KalTabGroupComponent)
 })
-export class KalTabGroupComponent extends FormElementComponent<number> implements AfterContentInit, AfterViewInit, OnDestroy {
+export class KalTabGroupComponent extends FormElementComponent<number> implements AfterContentInit, AfterViewInit {
 
   /**
    * This event is emitted when a tab is selected
@@ -196,9 +195,6 @@ export class KalTabGroupComponent extends FormElementComponent<number> implement
 
   ngAfterViewInit(): void {
     this.keyManager = new ActiveDescendantKeyManager<KalTabHeaderComponent>(this.headers).withHorizontalOrientation('ltr');
-  }
-
-  ngOnDestroy() {
   }
 
 }
