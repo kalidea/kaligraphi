@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewEncapsulation } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { KalListSelection } from '@kalidea/kaligraphi';
 import { Observable, of } from 'rxjs';
@@ -50,7 +50,17 @@ export class ListComponent {
     itemSize: 48
   };
 
-  constructor() {
+  displayedCheckbox = false;
+
+  selectedItem = null;
+
+  test = null;
+
+  private selectedRows = [];
+
+  displayPrefixFunction = (item) => (this.test && this.test.id === item.id) || this.selectedRows.length > 0;
+
+  constructor(private cdr: ChangeDetectorRef) {
   }
 
   changeDataSource() {
@@ -108,6 +118,36 @@ export class ListComponent {
   changeSelection() {
     this.listSelection = new KalListSelection<{ id: string }>([{id: '1'}], false, []);
     this.selectedValue = new KalListSelection<{ id: string }>([{id: '1'}], false, []);
+  }
+
+  toggleValue($event, item) {
+    if ($event) {
+      this.selectedRows.push(item);
+    } else {
+      const selectedIndex = this.selectedRows.findIndex(element => element.id === item.id);
+      if (selectedIndex > -1) {
+        this.selectedRows.splice(selectedIndex, 1);
+      }
+    }
+  }
+
+  displayCheckbox() {
+    this.displayedCheckbox = !this.displayedCheckbox;
+    this.cdr.markForCheck();
+  }
+
+  hasCheckbox(item) {
+    return this.displayedCheckbox && item && this.displayedCheckbox.id === item.id;
+  }
+
+  isRowSelected(item) {
+    return this.selectedRows.find(element => element.id === item.id);
+  }
+
+  selectRow($event) {
+    this.selectedValue = $event;
+    this.selectedItem = $event;
+    this.selectedRows = [];
   }
 
 }
