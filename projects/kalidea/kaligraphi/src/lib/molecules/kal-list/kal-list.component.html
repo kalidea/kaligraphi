@@ -53,8 +53,9 @@
         </ng-container>
       </span>
 
-      <span class="kal-list__icon" *ngIf="hasSelectionMode()">
-        <kal-icon>keyboard_arrow_right</kal-icon>
+      <span *ngIf="icon"
+            class="kal-list__icon">
+        <kal-icon>{{ icon }}</kal-icon>
       </span>
 
     </div>

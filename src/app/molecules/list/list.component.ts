@@ -50,6 +50,8 @@ export class ListComponent {
     itemSize: 48
   };
 
+  icon = 'keyboard_arrow_right';
+
   constructor() {
   }
 
@@ -94,14 +96,17 @@ export class ListComponent {
   }
 
   selectMultipleRows() {
+    this.icon = 'keyboard_arrow_right';
     this.selectionMode = 'multiple';
   }
 
   unselectRows() {
+    this.icon = null;
     this.selectionMode = 'none';
   }
 
   selectSingleRow() {
+    this.icon = 'keyboard_arrow_right';
     this.selectionMode = null;
   }
 

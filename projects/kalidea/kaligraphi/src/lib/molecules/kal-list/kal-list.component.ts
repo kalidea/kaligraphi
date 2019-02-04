@@ -47,6 +47,11 @@ export interface KalVirtualScrollConfig {
 export class KalListComponent<T extends { id: string }> implements CollectionViewer, AfterViewInit, OnChanges, OnDestroy {
 
   /**
+   * The icon to display in all templates
+   */
+  @Input() icon: string;
+
+  /**
    * Datasource to give items list to the component
    */
   @Input()
@@ -288,10 +293,6 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
    */
   isRowDisabled(item): boolean {
     return this.disableRowsFunction ? this.disableRowsFunction(item) : false;
-  }
-
-  hasSelectionMode(): boolean {
-    return this.selectionMode !== KalListSelectionMode.None;
   }
 
   /**
