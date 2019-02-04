@@ -156,6 +156,14 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
   }
 
   /**
+   * Reports whether the control is dirty, meaning that the user has changed
+   * the value in the UI.
+   */
+  get dirty() {
+    return this.ngControl ? this.ngControl.dirty : false;
+  }
+
+  /**
    * observe state change
    */
   get statusChange(): Observable<any> {
