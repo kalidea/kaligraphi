@@ -4,9 +4,6 @@
 
   <article>
 
-    {{ hasCheckbox({id: '1'}) | json }}
-    {{ displayedCheckbox | json }}
-
     <kal-list
       #kalListItem
       tabindex="1"
@@ -18,15 +15,10 @@
       [virtualScrollConfig]="virtualScrollConfig"
       (selectionChange)="selectRow($event)">
 
-      <ng-template [kalListItemPrefix]="displayedCheckbox"
-                   [displayPrefixFunction]="displayPrefixFunction"
-                   let-item="item">
-          <kal-checkbox [value]="isRowSelected(item)"
-                        (valueChange)="toggleValue($event, item)">
-          </kal-checkbox>
-      </ng-template>
-
       <ng-template kalListItem let-item="item" let-selected="selected">
+        <div *ngIf="test === item">
+        <kal-checkbox #checkbox (click)="toggleValue($event, item, checkbox)"></kal-checkbox>
+        </div>
         <div (mouseover)="test = item">
           {{ item.name }}
         </div>

@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewEncapsulatio
 import { DataSource } from '@angular/cdk/collections';
 import { KalListSelection } from '@kalidea/kaligraphi';
 import { Observable, of } from 'rxjs';
+import { KalCheckboxComponent } from 'projects/kalidea/kaligraphi/src/lib/atoms/kal-checkbox/kal-checkbox.component';
 
 @Component({
   selector: 'app-list',
@@ -120,15 +121,19 @@ export class ListComponent {
     this.selectedValue = new KalListSelection<{ id: string }>([{id: '1'}], false, []);
   }
 
-  toggleValue($event, item) {
-    if ($event) {
-      this.selectedRows.push(item);
-    } else {
-      const selectedIndex = this.selectedRows.findIndex(element => element.id === item.id);
-      if (selectedIndex > -1) {
-        this.selectedRows.splice(selectedIndex, 1);
-      }
-    }
+  toggleValue($event, item, checkbox: KalCheckboxComponent) {
+    $event.stopPropagation();
+    $event.preventDefault();
+    console.log(checkbox.value, $event);
+    checkbox.value = !checkbox.value;
+    // if ($event) {
+    //   this.selectedRows.push(item);
+    // } else {
+    //   const selectedIndex = this.selectedRows.findIndex(element => element.id === item.id);
+    //   if (selectedIndex > -1) {
+    //     this.selectedRows.splice(selectedIndex, 1);
+    //   }
+    // }
   }
 
   displayCheckbox() {
@@ -136,9 +141,9 @@ export class ListComponent {
     this.cdr.markForCheck();
   }
 
-  hasCheckbox(item) {
-    return this.displayedCheckbox && item && this.displayedCheckbox.id === item.id;
-  }
+  // hasCheckbox(item) {
+  //   return this.displayedCheckbox && item && this.displayedCheckbox.id === item.id;
+  // }
 
   isRowSelected(item) {
     return this.selectedRows.find(element => element.id === item.id);
