@@ -1,0 +1,33 @@
+<h1>Select</h1>
+
+<div class="example">
+  <article>
+
+    <div
+      class="divToLoad"
+      [kalLoading]="loading"
+      [style.width.px]="width"
+      [style.height.px]="height"
+    >
+
+    </div>
+  </article>
+
+</div>
+
+
+<div class="configurator">
+
+  <kal-form-field>
+    <kal-input label="width" [(ngModel)]="width" type="number"></kal-input>
+  </kal-form-field>
+
+  <kal-form-field>
+    <kal-input label="height" [(ngModel)]="height" type="number"></kal-input>
+  </kal-form-field>
+
+  <kal-form-field>
+    <kal-checkbox [(ngModel)]="loading" label="loading"></kal-checkbox>
+  </kal-form-field>
+
+</div>
