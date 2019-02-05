@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { KalListSelection } from '@kalidea/kaligraphi';
 import { Observable, of } from 'rxjs';

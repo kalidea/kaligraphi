@@ -14,6 +14,7 @@ import { KalIconModule } from '../../atoms/kal-icon/kal-icon.module';
               [groupByFunction]="groupByFunction"
               [disableRowsFunction]="disableRowsFunction"
               [selectionMode]="selectable"
+              [icon]="icon"
               (selectionChange)="selectRow($event)">
 
       <ng-template kalListItem let-item="item">
@@ -24,6 +25,8 @@ import { KalIconModule } from '../../atoms/kal-icon/kal-icon.module';
   `
 })
 class TestListItemComponent {
+
+  icon = 'keyboard_arrow_right';
 
   dataSource = new TestDataSource();
 
@@ -69,6 +72,7 @@ class TestDataSource implements DataSource<{ id: string, name: string }> {
 @Component({
   template: `
     <kal-list [dataSource]="dataSource"
+              [icon]="icon"
               (selectionChange)="selectRow($event)">
 
       <ng-template kalListItem let-item="item">
@@ -79,6 +83,8 @@ class TestDataSource implements DataSource<{ id: string, name: string }> {
   `
 })
 class TestListItemWithObservableComponent {
+
+  icon = 'keyboard_arrow_right';
 
   dataSource = of([
     {
