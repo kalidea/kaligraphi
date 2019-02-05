@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { KalListSelection } from '@kalidea/kaligraphi';
 import { Observable, of } from 'rxjs';
@@ -50,6 +50,8 @@ export class ListComponent {
     itemSize: 48
   };
 
+  icon = 'keyboard_arrow_right';
+
   constructor() {
   }
 
@@ -94,14 +96,17 @@ export class ListComponent {
   }
 
   selectMultipleRows() {
+    this.icon = 'keyboard_arrow_right';
     this.selectionMode = 'multiple';
   }
 
   unselectRows() {
+    this.icon = null;
     this.selectionMode = 'none';
   }
 
   selectSingleRow() {
+    this.icon = 'keyboard_arrow_right';
     this.selectionMode = null;
   }
 
