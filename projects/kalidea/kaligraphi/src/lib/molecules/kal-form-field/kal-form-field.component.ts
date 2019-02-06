@@ -59,8 +59,12 @@ export class KalFormFieldComponent implements AfterContentInit {
     }
     this.required = this.formElement.required;
     this.for = this.formElement.id;
-    this.hasError = this.formElement.hasError;
+    this.checkErrorAndDirtyness();
     this.cdr.markForCheck();
+  }
+
+  private checkErrorAndDirtyness() {
+    this.hasError = this.formElement.dirty && this.formElement.hasError;
   }
 
   ngAfterContentInit(): void {
@@ -73,7 +77,7 @@ export class KalFormFieldComponent implements AfterContentInit {
         .subscribe(() => this.configureFormField());
 
       this.statusChange = this.formElement.statusChange.subscribe(data => {
-        this.hasError = this.formElement.hasError;
+        this.checkErrorAndDirtyness();
         this.cdr.markForCheck();
       });
     }
