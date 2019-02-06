@@ -10,25 +10,24 @@ $kal-slider-animation-delay: 50ms
   margin-top: $kal-slider-margin-top
   background: $backgroundColor
 
-=kal-slider($parameters)
-
-  kal-slider
+=kal-themed-slider($theme-parameters)
     .kal-slider-wrapper
       position: relative
       height: $kal-slider-height
 
       .kal-slider-limit-container
-        +kal-slider-bar(#5C5C5C)
+        +kal-slider-bar(get('limit-container.background-color', $theme-parameters))
         width: 100%
 
       .kal-slider-max-container
-        +kal-slider-bar(#7A7A7A)
+        +kal-slider-bar(get('max-container.background-color', $theme-parameters))
+
       .kal-slider-min-container
-        +kal-slider-bar(#5C5C5C)
+        +kal-slider-bar(get('min-container.background-color', $theme-parameters))
 
       .kal-slider-selection-container
         transition: width $kal-slider-animation-delay
-        +kal-slider-bar(#21C0D9)
+        +kal-slider-bar(get('selection-container.background-color', $theme-parameters))
 
       .kal-slider-pointer
         transition: left $kal-slider-animation-delay
@@ -37,5 +36,31 @@ $kal-slider-animation-delay: 50ms
         position: absolute
         width: 6px
         height: $kal-slider-height
-        background: #FFFFFF
+        background: get('pointer.background-color', $theme-parameters)
         box-shadow: 0 0 12px rgba(0, 0, 0, 0.48)
+
+    &.kal-theme--reverse
+
+      .kal-slider-wrapper
+
+        .kal-slider-limit-container
+          background-color: get('reverse.limit-container.background-color', $theme-parameters)
+
+        .kal-slider-max-container
+          background-color: get('reverse.max-container.background-color', $theme-parameters)
+
+        .kal-slider-min-container
+          background-color: get('reverse.mint-container.background-color', $theme-parameters)
+
+        .kal-slider-selection-container
+          background-color: get('reverse.selection-container.background-color', $theme-parameters)
+
+        .kal-slider-pointer
+          background-color: get('reverse.pointer.background-color', $theme-parameters)
+
+=kal-slider($kal-parameters)
+  kal-slider
+    +kal-themed-slider(get('slider.default', $kal-parameters))
+    @each $key, $params in get('slider.alternates', $kal-parameters)
+      &.kal-theme--#{$key}
+        +kal-themed-slider($params)

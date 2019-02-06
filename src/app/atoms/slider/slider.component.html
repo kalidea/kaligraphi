@@ -9,13 +9,28 @@
                   [color]="color"
                   [max]="max"
                   [min]="min"
-                  [disabled]="disabled">
+                  [disabled]="disabled"
+                  [kalTheme]="themes"
+                  [(ngModel)]="value"
+      >
       </kal-slider>
     </div>
   </article>
 </div>
 
 <div class="configurator">
+
+  <kal-form-field>
+    <kal-select label="themes" [multiple]="true" [(ngModel)]="themes">
+      <kal-option value="">default</kal-option>
+      <kal-option value="orange">orange</kal-option>
+      <kal-option value="red">red</kal-option>
+      <kal-option value="blue">blue</kal-option>
+      <kal-option value="green">green</kal-option>
+      <kal-option value="yellow">yellow</kal-option>
+      <kal-option value="reverse">reverse</kal-option>
+    </kal-select>
+  </kal-form-field>
   <kal-form-field>
     <kal-input label="from" [(ngModel)]="from" type="number"></kal-input>
   </kal-form-field>
@@ -30,6 +45,9 @@
   </kal-form-field>
   <kal-form-field>
     <kal-input label="min" [(ngModel)]="min" type="number"></kal-input>
+  </kal-form-field>
+  <kal-form-field>
+    <kal-input label="value" [(ngModel)]="value"></kal-input>
   </kal-form-field>
   <kal-form-field>
     <kal-input label="color" [(ngModel)]="color" type="color"></kal-input>
