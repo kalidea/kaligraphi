@@ -70,6 +70,7 @@ export class KalSliderComponent extends FormElementComponent<number> implements 
     return this._value;
   }
 
+  @Coerce('number', 0)
   set value(value: number) {
     const closestValue = this.getClosestValue(value);
 

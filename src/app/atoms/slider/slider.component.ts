@@ -5,6 +5,8 @@ import { Component } from '@angular/core';
   templateUrl: './slider.component.html'
 })
 export class SliderComponent {
+  themes = [];
+
   tick = 10;
 
   from = 0;
@@ -13,10 +15,12 @@ export class SliderComponent {
 
   max = 620;
 
-  min = 100;
+  min = 0;
 
-  color = '#21C0D9';
+  color = '';
 
   disabled = false;
+
+  value = 120;
 
 }
