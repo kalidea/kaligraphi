@@ -6,6 +6,7 @@
     <div
       class="divToLoad"
       [kalLoading]="loading"
+      [kalLoadingMessage]="message"
       [style.width.px]="width"
       [style.height.px]="height"
     >
@@ -19,6 +20,10 @@
 <div class="configurator">
 
   <kal-form-field>
+    <kal-input label="text" [(ngModel)]="message"></kal-input>
+  </kal-form-field>
+
+  <kal-form-field>
     <kal-input label="width" [(ngModel)]="width" type="number"></kal-input>
   </kal-form-field>
 
@@ -27,7 +32,7 @@
   </kal-form-field>
 
   <kal-form-field>
-    <kal-checkbox [(ngModel)]="loading" label="loading"></kal-checkbox>
+    <kal-button (click)="loading = !loading">toggle</kal-button>
   </kal-form-field>
 
 </div>

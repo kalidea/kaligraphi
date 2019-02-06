@@ -1,18 +1,18 @@
-import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+import { KalLoaderData } from './kal-loader-data';
 
 @Component({
   selector: 'kal-loader',
-  template: `
-    <p> Chargement en cours </p>
-  `,
+  template: `<p>{{ message }}</p>`,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalLoaderComponent implements OnInit {
+export class KalLoaderComponent {
 
-  constructor() { }
+  message: string;
 
-  ngOnInit() {
+  constructor(private readonly data: KalLoaderData) {
+    this.message = this.data.message;
   }
 
 }

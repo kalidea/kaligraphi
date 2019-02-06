@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-loader',
@@ -7,15 +7,15 @@ import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LoaderComponent implements OnInit {
+export class LoaderComponent {
 
   loading = false;
+
   width = 200;
+
   height = 200;
 
-  constructor() { }
+  message = 'chargement en cours';
 
-  ngOnInit() {
-  }
 
 }
