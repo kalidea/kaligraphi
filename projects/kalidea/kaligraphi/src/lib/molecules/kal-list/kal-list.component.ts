@@ -46,10 +46,16 @@ export interface KalVirtualScrollConfig {
 })
 export class KalListComponent<T extends { id: string }> implements CollectionViewer, AfterViewInit, OnChanges, OnDestroy {
 
+  @Input() selectRowOnContentClick = false;
+
+  @Output() highlightedItem: EventEmitter<T> = new EventEmitter<T>(null);
+
+  highlighted = null;
+
   /**
    * The icon to display in all templates
    */
-  @Input() icon: string;
+  @Input() icon = 'keyboard_arrow_right';
 
   /**
    * Datasource to give items list to the component
@@ -269,7 +275,23 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   /**
    * Select an item in list and emit an event with the selected item value
    */
-  selectItem(item: T) {
+  selectItem(item) {
+    if (!this.selectRowOnContentClick) {
+
+      this.selectCheckbox(item);
+
+    } else {
+
+        this.highlighted = item;
+        this.highlightedItem.emit(item);
+      }
+  }
+
+  selectCheckbox(item, $event?) {
+    if ($event) {
+      $event.preventDefault();
+      $event.stopPropagation();
+    }
     if (!this.isRowDisabled(item) && this._selectionMode !== KalListSelectionMode.None) {
 
       this.selectedItemIndex = this.results.findIndex(row => row === item);
@@ -279,6 +301,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
 
       this.selectionChange.emit(this._selection);
     }
+
   }
 
   /**

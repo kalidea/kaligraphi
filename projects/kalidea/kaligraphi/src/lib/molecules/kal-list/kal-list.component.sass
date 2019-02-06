@@ -23,17 +23,20 @@
         .kal-list__content
           color: get("palettes.grey.wf500", $kal-parameters)
       .kal-list__content
+        display: flex
         flex: 1
       .kal-list__icon
         color: get("palettes.grey.wf300", $kal-parameters)
         transition: font-size .1s ease
       &:not(.kal-list__item--disabled)
-        &:hover, &.kal-list__item--highlighted
+        &:hover, &.kal-list__item--hover
           background-color: get("palettes.orange.lighter", $kal-parameters)
           transition: font-size .1s ease
-          .kal-list__icon
-            color: get("palettes.orange.normal", $kal-parameters)
-            font-size: 24px
+        &.kal-list__item--highlighted
+          background-color: get("palettes.blue.lighter", $kal-parameters)
+        //  .kal-list__icon
+        //    color: get("palettes.orange.normal", $kal-parameters)
+        //    font-size: 24px
         &.kal-list__item--selected, &:focus
           border: 1px solid get("palettes.orange.normal", $kal-parameters)
           .kal-list__icon

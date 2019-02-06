@@ -2,31 +2,34 @@
 
 <!--<div class="example">-->
 
-  <article>
+<article>
 
-    <kal-list
-      #kalListItem
-      tabindex="1"
-      [icon]="icon"
-      [selection]="listSelection"
-      [dataSource]="dataSource"
-      [groupByFunction]="groupByFunction"
-      [disableRowsFunction]="disableRowsFunction"
-      [selectionMode]="selectionMode"
-      [virtualScrollConfig]="virtualScrollConfig"
-      (selectionChange)="selectedValue = $event">
+  <kal-list
+    #kalListItem
+    tabindex="1"
+    [icon]="icon"
+    [selection]="listSelection"
+    [dataSource]="dataSource"
+    [groupByFunction]="groupByFunction"
+    [disableRowsFunction]="disableRowsFunction"
+    [selectionMode]="selectionMode"
+    [virtualScrollConfig]="virtualScrollConfig"
+    [selectRowOnContentClick]="selectRowOnContentClick"
+    [class.has-selected-element]="listSelection && listSelection.selected.length > 0"
+    (selectionChange)="selectRow($event)"
+    (highlightedItem)="highlightItem($event)">
 
-      <ng-template kalListItem let-item="item">
-        {{ item.name }}
-      </ng-template>
+    <ng-template kalListItem let-item="item">
+      {{ item.name }}
+    </ng-template>
 
-    </kal-list>
+  </kal-list>
 
-    <div>
-      {{ selectedValue | json }}
-    </div>
+  <div>
+    {{ selectedValue | json }}
+  </div>
 
-  </article>
+</article>
 
 <!--</div>-->
 
@@ -40,5 +43,6 @@
   <kal-button type="button" kalTheme="secondary" (click)="kalListItem.selectAll()">Select All rows</kal-button>
   <kal-button type="button" kalTheme="secondary" (click)="changeSelection()">Select first item</kal-button>
   <kal-button type="button" kalTheme="secondary" (click)="changeDataSource()">Change DataSource</kal-button>
+  <kal-button type="button" kalTheme="secondary" (click)="selectRowOnContentClick = !selectRowOnContentClick">Select row on content click</kal-button>
 
 </div>

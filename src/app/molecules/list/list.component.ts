@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
-import { KalListSelection } from '@kalidea/kaligraphi';
 import { Observable, of } from 'rxjs';
+import { KalListSelection } from 'src/projects/kalidea/kaligraphi/src/lib/molecules/kal-list/kal-list-selection';
+import { KalListComponent } from 'src/projects/kalidea/kaligraphi/src/lib/molecules/kal-list/kal-list.component';
 
 @Component({
   selector: 'app-list',
@@ -52,7 +53,20 @@ export class ListComponent {
 
   icon = 'keyboard_arrow_right';
 
+  selectRowOnContentClick = false;
+
+  @ViewChild(KalListComponent) kalListComponent: KalListComponent;
+
   constructor() {
+  }
+
+  selectRow($event) {
+    this.listSelection = $event;
+    this.kalListComponent.highlighted = null;
+  }
+
+  highlightItem($event) {
+    this.listSelection = new KalListSelection();
   }
 
   changeDataSource() {
