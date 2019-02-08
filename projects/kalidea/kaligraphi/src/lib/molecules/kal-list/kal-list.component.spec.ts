@@ -4,9 +4,11 @@ import { By } from '@angular/platform-browser';
 import { DataSource } from '@angular/cdk/collections';
 import { Observable, of } from 'rxjs';
 import { KalListModule, KalListSelection } from './kal-list.module';
+import { KalIconModule } from '../../atoms/kal-icon/kal-icon.module';
 import { KalListComponent, } from './kal-list.component';
 import { KalIconComponent } from '../../atoms/kal-icon/kal-icon.component';
-import { KalIconModule } from '../../atoms/kal-icon/kal-icon.module';
+import { KalCheckboxComponent } from '../../atoms/kal-checkbox/kal-checkbox.component';
+import { KalCheckboxModule } from '../..//atoms/kal-checkbox/kal-checkbox.module';
 
 @Component({
   template: `
@@ -14,6 +16,7 @@ import { KalIconModule } from '../../atoms/kal-icon/kal-icon.module';
               [groupByFunction]="groupByFunction"
               [disableRowsFunction]="disableRowsFunction"
               [selectionMode]="selectable"
+              [selectRowOnContentClick]="selectRowOnContentClick"
               [icon]="icon"
               (selectionChange)="selectRow($event)">
 
@@ -35,6 +38,8 @@ class TestListItemComponent {
   disableRowsFunction = null;
 
   selectable = 'single';
+
+  selectRowOnContentClick = null;
 
   selectRow($event) {
   }
@@ -126,6 +131,7 @@ describe('TestListItemComponent', () => {
       imports: [
         KalListModule,
         KalIconModule,
+        KalCheckboxModule
       ],
       declarations: [
         TestListItemComponent,
@@ -167,49 +173,42 @@ describe('TestListItemComponent', () => {
   it('should select an item', () => {
     spyOn(listInstances.selectionChange, 'emit');
 
-    listItems[0].nativeElement.click();
-    expect(listInstances.isRowSelected(component.dataSource.listItem[0])).toBeTruthy();
-    expect(listInstances.selectionChange.emit).toHaveBeenCalledWith(new KalListSelection(
-      [component.dataSource.listItem[0]],
-      false,
-      []
-    ));
+    listItems.forEach(
+      (item, index) => {
+        item.nativeElement.click();
+        expect(listInstances.isRowSelected(component.dataSource.listItem[index])).toBeTruthy();
+        expect(listInstances.selectionChange.emit).toHaveBeenCalledWith(new KalListSelection(
+          [component.dataSource.listItem[index]],
+          false,
+          []
+        ));
+      }
+    );
 
-    listItems[1].nativeElement.click();
-    expect(listInstances.selectionChange.emit).toHaveBeenCalledWith(new KalListSelection(
-      [component.dataSource.listItem[1]],
-      false,
-      []
-    ));
+    let listCheckbox = fixture.debugElement.queryAll(By.directive(KalCheckboxComponent));
 
-    listItems[2].nativeElement.click();
-
-    expect(listInstances.isRowSelected(component.dataSource.listItem[2])).toBeTruthy();
-    expect(listInstances.selectionChange.emit).toHaveBeenCalledWith(new KalListSelection(
-      [component.dataSource.listItem[2]],
-      false,
-      []
-    ));
+    expect(listCheckbox.length).toEqual(0);
 
     component.selectable = 'multiple';
     listInstances.reset();
     fixture.detectChanges();
 
-    listItems[0].nativeElement.click();
-    listItems[1].nativeElement.click();
-    listItems[2].nativeElement.click();
-
-    expect(listInstances.isRowSelected(component.dataSource.listItem[0])).toBeTruthy();
-    expect(listInstances.isRowSelected(component.dataSource.listItem[1])).toBeTruthy();
-    expect(listInstances.isRowSelected(component.dataSource.listItem[2])).toBeTruthy();
+    listItems.forEach(
+      (item, index) => {
+        item.nativeElement.click();
+        expect(listInstances.isRowSelected(component.dataSource.listItem[index])).toBeTruthy();
+      }
+    );
 
     expect(listInstances.selectionChange.emit).toHaveBeenCalledWith(new KalListSelection(
-      [component.dataSource.listItem[0],
-        component.dataSource.listItem[1],
-        component.dataSource.listItem[2]],
+      [...component.dataSource.listItem],
       false,
       []
     ));
+
+    listCheckbox = fixture.debugElement.queryAll(By.directive(KalCheckboxComponent));
+
+    expect(listCheckbox.length).toEqual(3);
   });
 
   it('should reset selected item', () => {
@@ -247,6 +246,38 @@ describe('TestListItemComponent', () => {
 
     expect(disabled.length).toEqual(1);
   });
+
+  it('should highlight a row', () => {
+
+    spyOn(listInstances.highlightedItem, 'emit');
+
+    const selectedItem = component.dataSource.listItem[0];
+
+    component.selectRowOnContentClick = true;
+
+    fixture.detectChanges();
+
+    let highlighted = fixture.debugElement.queryAll(By.css('.kal-list__item--highlighted'));
+
+    expect(listInstances.selectRowOnContentClick).toBeTruthy();
+
+    expect(listInstances.highlighted).toBeNull();
+
+    expect(highlighted.length).toEqual(0);
+
+    listItems[0].nativeElement.click();
+
+    fixture.detectChanges();
+
+    highlighted = fixture.debugElement.queryAll(By.css('.kal-list__item--highlighted'));
+
+    expect(listInstances.highlighted).toEqual(selectedItem);
+
+    expect(listInstances.highlightedItem.emit).toHaveBeenCalledWith(selectedItem);
+
+    expect(highlighted.length).toEqual(1);
+
+  });
 });
 
 describe('TestListItemWithObservableComponent', () => {
@@ -260,6 +291,7 @@ describe('TestListItemWithObservableComponent', () => {
       imports: [
         KalListModule,
         KalIconModule,
+        KalCheckboxModule
       ],
       declarations: [
         TestListItemWithObservableComponent,

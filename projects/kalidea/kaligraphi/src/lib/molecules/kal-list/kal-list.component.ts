@@ -23,6 +23,7 @@ import { KalListItemDirective } from './kal-list-item.directive';
 import { KalListItemSelectionDirective } from './kal-list-item-selection.directive';
 import { KalListSelection } from './kal-list-selection';
 import { AutoUnsubscribe } from '../../utils';
+import { Coerce } from '../../utils/decorators/coerce';
 
 enum KalListSelectionMode {
   None = 'none',
@@ -46,11 +47,10 @@ export interface KalVirtualScrollConfig {
 })
 export class KalListComponent<T extends { id: string }> implements CollectionViewer, AfterViewInit, OnChanges, OnDestroy {
 
-  @Input() selectRowOnContentClick = false;
-
-  @Output() highlightedItem: EventEmitter<T> = new EventEmitter<T>(null);
-
   highlighted = null;
+
+  @Coerce('boolean')
+  @Input() selectRowOnContentClick = false;
 
   /**
    * The icon to display in all templates
@@ -158,6 +158,11 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
    * Triggered when selection has changed
    */
   @Output() selectionChange: EventEmitter<KalListSelection<T>> = new EventEmitter<KalListSelection<T>>();
+
+  /**
+   * Triggered when an item has been highlighted
+   */
+  @Output() highlightedItem: EventEmitter<T> = new EventEmitter<T>(null);
 
   /**
    * Row template

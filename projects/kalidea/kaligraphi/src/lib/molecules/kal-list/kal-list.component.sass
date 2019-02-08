@@ -32,11 +32,11 @@
         &:hover, &.kal-list__item--hover
           background-color: get("palettes.orange.lighter", $kal-parameters)
           transition: font-size .1s ease
+          .kal-list__icon
+            color: get("palettes.orange.normal", $kal-parameters)
+            font-size: 24px
         &.kal-list__item--highlighted
           background-color: get("palettes.blue.lighter", $kal-parameters)
-        //  .kal-list__icon
-        //    color: get("palettes.orange.normal", $kal-parameters)
-        //    font-size: 24px
         &.kal-list__item--selected, &:focus
           border: 1px solid get("palettes.orange.normal", $kal-parameters)
           .kal-list__icon
