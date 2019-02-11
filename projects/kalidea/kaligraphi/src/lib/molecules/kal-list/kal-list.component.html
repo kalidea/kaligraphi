@@ -41,7 +41,7 @@
          [disabled]="isRowDisabled(item)"
          [class.kal-list__item--selected]="isRowSelected(item)"
          [class.kal-list__item--disabled]="isRowDisabled(item)"
-         [class.kal-list__item--highlighted]="highlighted === item"
+         [class.kal-list__item--highlighted]="isHighlighted(item)"
          (click)="selectItem(item)">
 
       <span class="kal-list__content">

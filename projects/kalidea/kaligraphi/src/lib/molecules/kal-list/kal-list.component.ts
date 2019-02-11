@@ -21,7 +21,7 @@ import { CollectionViewer, DataSource, ListRange } from '@angular/cdk/collection
 import { Observable, Subscription } from 'rxjs';
 import { KalListItemDirective } from './kal-list-item.directive';
 import { KalListItemSelectionDirective } from './kal-list-item-selection.directive';
-import { KalListSelection } from './kal-list-selection';
+import { KalSelectionModel, KalSelection } from './kal-list-selection';
 import { AutoUnsubscribe } from '../../utils';
 import { Coerce } from '../../utils/decorators/coerce';
 
@@ -45,7 +45,7 @@ export interface KalVirtualScrollConfig {
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalListComponent<T extends { id: string }> implements CollectionViewer, AfterViewInit, OnChanges, OnDestroy {
+export class KalListComponent<T> implements CollectionViewer, AfterViewInit, OnChanges, OnDestroy {
 
   highlighted = null;
 
@@ -80,12 +80,12 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   }
 
   @Input()
-  get selection(): KalListSelection<T> {
+  get selection(): KalSelectionModel<T> {
     return this._selection;
   }
 
-  set selection(value: KalListSelection<T>) {
-    this._selection = value && (value.constructor.name === 'KalListSelection') ? value : new KalListSelection<T>();
+  set selection(value: KalSelectionModel<T>) {
+    this._selection = value && (value.constructor.name === 'KalSelectionModel') ? value : new KalSelectionModel<T>();
     this.cdr.markForCheck();
   }
 
@@ -121,14 +121,10 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
         break;
 
       case KalListSelectionMode.None:
-        this._selection.selected = [];
-        this._selection.excluded = [];
         this._selectionMode = value;
         break;
 
       default:
-        this._selection.selected = this._selection.selected.length > 0 ? [this._selection.selected[0]] as T[] : [];
-        this._selection.excluded = [];
         this._selectionMode = KalListSelectionMode.Single;
         break;
     }
@@ -157,7 +153,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   /**
    * Triggered when selection has changed
    */
-  @Output() selectionChange: EventEmitter<KalListSelection<T>> = new EventEmitter<KalListSelection<T>>();
+  @Output() selectionChange: EventEmitter<KalSelectionModel<T>> = new EventEmitter<KalSelectionModel<T>>();
 
   /**
    * Triggered when an item has been highlighted
@@ -191,7 +187,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
 
   private _dataSource: KalListDataSource<T> = null;
 
-  private _selection: KalListSelection<T> = new KalListSelection<T>();
+  private _selection: KalSelectionModel<T> = new KalSelectionModel<T>();
 
   /**
    * Selectable items (none, single, multiple)
@@ -263,17 +259,17 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
 
   selectAll() {
     if (this._selectionMode === KalListSelectionMode.Multiple) {
-      this._selection.all = !this._selection.all;
-      this._selection.reset();
-
-      if (this._selection.all) {
-        this._selection.selected.push(...this.results.filter(element => !this.isRowDisabled(element)));
-        this._selection.excluded.push(...this.results.filter(element => this.isRowDisabled(element)));
-      }
-
-      this.cdr.markForCheck();
-
-      this.selectionChange.emit(this._selection);
+      // this._selection.all = !this._selection.all;
+      // this._selection.clear();
+      //
+      // if (this._selection.all) {
+      //   this._selection.selected.push(...this.results.filter(element => !this.isRowDisabled(element)));
+      //   this._selection.excluded.push(...this.results.filter(element => this.isRowDisabled(element)));
+      // }
+      //
+      // this.cdr.markForCheck();
+      //
+      // this.selectionChange.emit(this._selection);
     }
   }
 
@@ -313,7 +309,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
    * Is the item selected
    */
   isRowSelected(item): boolean {
-    return !item.id ? this._selection.selected.some(element => element === item) : this._selection.contains(item);
+    return this.selection.isSelected(item);
   }
 
   /**
@@ -327,7 +323,8 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
    * Reset the selected item
    */
   reset() {
-    this._selection = new KalListSelection<T>();
+    // this._selection = new KalListSelection<T>();
+    this._selection.clear();
     this.activeItem(null);
     this.cdr.markForCheck();
   }
@@ -342,12 +339,8 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
       && (!previousItem || this.groupByFunction(previousItem) !== this.groupByFunction(item));
   }
 
-  toggleItem(item: T) {
-    if (this._selection.indexOf(item) === -1) {
-      this._selection.add(item);
-    } else {
-      this._selection.remove(item);
-    }
+  isHighlighted(item) {
+    return this.highlighted.id === item.id;
   }
 
   private activeItem(index: number) {
@@ -356,24 +349,33 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
     }
   }
 
+  // toggleItem(item: T) {
+  //   if (this._selection.indexOf(item) === -1) {
+  //     this._selection.add(item);
+  //   } else {
+  //     this._selection.remove(item);
+  //   }
+  // }
+
   private updateSelectedItem(item: T) {
-    if (this._selectionMode !== KalListSelectionMode.Multiple) {
-      this._selection.selected = [];
-      this._selection.add(item);
-    } else if (this._selection.all) {
-
-      const position = this._selection.indexOf(item, 'excluded');
-
-      if (position === -1) {
-        this._selection.remove(item);
-        this._selection.add(item, 'excluded');
-      } else {
-        this._selection.remove(item, 'excluded');
-        this._selection.add(item);
-      }
-    } else {
-      this.toggleItem(item);
-    }
+    this._selection.toggle(item);
+    // if (this._selectionMode !== KalListSelectionMode.Multiple) {
+    //   this._selection.selected = [];
+    //   this._selection.add(item);
+    // } else if (this._selection.all) {
+    //
+    //   const position = this._selection.indexOf(item, 'excluded');
+    //
+    //   if (position === -1) {
+    //     this._selection.remove(item);
+    //     this._selection.add(item, 'excluded');
+    //   } else {
+    //     this._selection.remove(item, 'excluded');
+    //     this._selection.add(item);
+    //   }
+    // } else {
+    //   this.toggleItem(item);
+    // }
   }
 
   private destroySubscription() {

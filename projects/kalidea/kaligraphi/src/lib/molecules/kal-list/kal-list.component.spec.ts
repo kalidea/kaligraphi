@@ -3,7 +3,7 @@ import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { DataSource } from '@angular/cdk/collections';
 import { Observable, of } from 'rxjs';
-import { KalListModule, KalListSelection } from './kal-list.module';
+import { KalListModule, KalListSelection, KalSelectionModel } from './kal-list.module';
 import { KalIconModule } from '../../atoms/kal-icon/kal-icon.module';
 import { KalListComponent, } from './kal-list.component';
 import { KalIconComponent } from '../../atoms/kal-icon/kal-icon.component';
@@ -177,10 +177,9 @@ describe('TestListItemComponent', () => {
       (item, index) => {
         item.nativeElement.click();
         expect(listInstances.isRowSelected(component.dataSource.listItem[index])).toBeTruthy();
-        expect(listInstances.selectionChange.emit).toHaveBeenCalledWith(new KalListSelection(
-          [component.dataSource.listItem[index]],
-          false,
-          []
+        expect(listInstances.selectionChange.emit).toHaveBeenCalledWith(new KalSelectionModel({
+          included: [component.dataSource.listItem[index]],
+          all: false}
         ));
       }
     );
@@ -200,10 +199,11 @@ describe('TestListItemComponent', () => {
       }
     );
 
-    expect(listInstances.selectionChange.emit).toHaveBeenCalledWith(new KalListSelection(
-      [...component.dataSource.listItem],
-      false,
-      []
+    expect(listInstances.selectionChange.emit).toHaveBeenCalledWith(new KalSelectionModel(
+      {
+        included: [...component.dataSource.listItem],
+        all: false
+      }
     ));
 
     listCheckbox = fixture.debugElement.queryAll(By.directive(KalCheckboxComponent));
