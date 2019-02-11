@@ -3,14 +3,15 @@ import { Overlay } from '@angular/cdk/overlay';
 import { PortalModule } from '@angular/cdk/portal';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { KalInputModule } from '../../atoms/kal-input/kal-input.module';
-import { KalIconModule } from '../../atoms/kal-icon/kal-icon.module';
-
 import { KalDatepickerComponent } from './kal-datepicker.component';
 import { KalDatepickerHeaderComponent } from './kal-datepicker-header/kal-datepicker-header.component';
 import { KalMonthCalendarComponent } from './kal-month-calendar/kal-month-calendar.component';
 import { KalDatepickerMultiViewComponent } from './kal-datepicker-multi-view/kal-datepicker-multi-view.component';
+
+import { KalInputModule } from '../../atoms/kal-input/kal-input.module';
+import { KalIconModule } from '../../atoms/kal-icon/kal-icon.module';
 import { KalUtilityModule } from '../../utility/kal-utility.module';
+
 import { KalDate } from 'projects/kalidea/kaligraphi/src/lib/molecules/kal-datepicker/kal-date';
 import { FormElementComponent } from 'projects/kalidea/kaligraphi/src/lib/utils';
 

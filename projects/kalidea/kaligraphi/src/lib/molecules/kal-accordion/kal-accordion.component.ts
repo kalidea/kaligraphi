@@ -3,6 +3,7 @@ import { FocusKeyManager } from '@angular/cdk/a11y';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { END, HOME } from '@angular/cdk/keycodes';
 import { CdkAccordion } from '@angular/cdk/accordion';
+
 import { KAL_ACCORDION, KalAccordionBase } from './kal-accordion-base';
 import { KalExpansionPanelHeaderComponent } from './kal-expansion-panel-header/kal-expansion-panel-header.component';
 

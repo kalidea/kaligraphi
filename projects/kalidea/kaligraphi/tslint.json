@@ -1,7 +1,8 @@
 {
   "extends": [
     "../../../tslint.json",
-    "tslint-jasmine-rules"
+    "tslint-jasmine-rules",
+    "tslint-import-group-ordering"
   ],
   "rules": {
     "no-focused-tests": true,
@@ -17,6 +18,59 @@
       "element",
       "kal",
       "kebab-case"
-    ]
+    ],
+    "import-group-ordering": {
+      "severity": "error",
+      "options": {
+        "imports-groups": [
+          {
+            "name": "core"
+          },
+          {
+            "name": "dependencies"
+          },
+          {
+            "name": "common"
+          },
+          {
+            "name": "product"
+          },
+          {
+            "name": "product-external"
+          },
+          {
+            "name": "other"
+          }
+        ],
+        "matching-rules": [
+          {
+            "type": "project",
+            "imports-group": "core",
+            "matches": "^(@angular)"
+          },
+          {
+            "type": "dependencies",
+            "imports-group": "dependencies",
+            "disable-native-nodejs-modules": true,
+            "from-package.json": true
+          },
+          {
+            "type": "project",
+            "imports-group": "product",
+            "matches": "^(./)"
+          },
+          {
+            "type": "project",
+            "imports-group": "product-external",
+            "matches": "^(../)"
+          },
+          {
+            "type": "project",
+            "imports-group": "other",
+            "matches": ".*"
+          }
+        ]
+      }
+    }
   }
 }

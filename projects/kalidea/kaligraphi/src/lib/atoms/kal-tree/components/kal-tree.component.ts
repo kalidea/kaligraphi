@@ -13,13 +13,19 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { SelectionChange } from '@angular/cdk/collections';
+
 import { cloneDeep } from 'lodash';
 import { Subscription } from 'rxjs';
 
+import { KalTreeNodeComponent } from './kal-tree-node.component';
+
+import { AutoUnsubscribe } from '../../../utils/decorators/auto-unsubscribe';
 import { KalTreeNodeOutletDirective } from '../directives/kal-tree-node-outlet.directive';
 import { KalTreeNode } from '../classes/kal-tree-node';
 import { KalTreeControl } from '../classes/kal-tree-control';
-import { AutoUnsubscribe } from '../../../utils/decorators/auto-unsubscribe';
+
+
+const plop = 'plop';
 
 /**
  * Wrapper for the CdkTable with Kaligraphi design styles.

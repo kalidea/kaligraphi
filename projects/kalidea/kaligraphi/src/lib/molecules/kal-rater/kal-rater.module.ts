@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { KalRaterComponent } from './kal-rater.component';
+
 import { KalIconModule } from '../../atoms/kal-icon/kal-icon.module';
 export { KalRaterComponent } from './kal-rater.component';
 

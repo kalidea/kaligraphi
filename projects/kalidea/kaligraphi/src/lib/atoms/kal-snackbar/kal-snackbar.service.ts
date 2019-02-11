@@ -6,6 +6,7 @@ import { ComponentPortal, PortalInjector } from '@angular/cdk/portal';
 import { KalSnackbarConfig } from './kal-snackbar-config';
 import { KalSnackbarComponent } from './kal-snackbar.component';
 import { KAL_SNACKBAR_CONFIG } from './kal-snackbar.injector';
+
 import { KalOverlayManager } from '../../utils/classes/kal-overlay-manager';
 
 @Injectable({

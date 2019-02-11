@@ -5,6 +5,7 @@ import { PortalModule } from '@angular/cdk/portal';
 import { RIGHT_ARROW, LEFT_ARROW, ENTER } from '@angular/cdk/keycodes';
 
 import { KalTabGroupComponent } from './kal-tab-group.component';
+
 import { KalTabComponent } from '../kal-tab/kal-tab.component';
 import { KalTabHeaderComponent } from '../kal-tab-header/kal-tab-header.component';
 import { KalTabBodyComponent } from '../kal-tab-body/kal-tab-body.component';

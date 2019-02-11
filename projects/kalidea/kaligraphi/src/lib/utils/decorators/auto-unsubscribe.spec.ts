@@ -1,5 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
+
 import { interval } from 'rxjs';
+
 import { AutoUnsubscribe } from './auto-unsubscribe';
 
 @Component({

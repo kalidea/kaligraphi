@@ -7,6 +7,7 @@ import {
   forwardRef,
   ViewEncapsulation
 } from '@angular/core';
+
 import { Subscription } from 'rxjs';
 
 import { AutoUnsubscribe, FormElementComponent } from '../../utils/index';
@@ -76,7 +77,7 @@ export class KalFormFieldComponent implements AfterContentInit {
       this.inputChange = this.formElement.inputChange
         .subscribe(() => this.configureFormField());
 
-      this.statusChange = this.formElement.statusChange.subscribe(data => {
+      this.statusChange = this.formElement.statusChange.subscribe(() => {
         this.checkErrorAndDirtyness();
         this.cdr.markForCheck();
       });

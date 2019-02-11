@@ -18,7 +18,9 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { UniqueSelectionDispatcher } from '@angular/cdk/collections';
 import { CdkAccordionItem } from '@angular/cdk/accordion';
 import { DOCUMENT } from '@angular/common';
+
 import { Subject } from 'rxjs';
+
 import { KAL_ACCORDION, KalAccordionBase } from '../kal-accordion-base';
 import { kalExpansionAnimations } from '../expansion-animations';
 import { uniqid } from '../../../utils/index';

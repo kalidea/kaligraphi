@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
 import { KalDropDirective } from './directives/kal-drop.directive';
 import { KalDragDirective } from './directives/kal-drag.directive';
 

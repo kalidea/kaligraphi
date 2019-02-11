@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+
 import { KalLoaderData } from './kal-loader-data';
 
 @Component({

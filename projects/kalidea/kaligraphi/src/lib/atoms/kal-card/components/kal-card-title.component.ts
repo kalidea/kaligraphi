@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+
 import { KalCardDismissable } from './kal-card-dismissable.class';
 
 @Component({

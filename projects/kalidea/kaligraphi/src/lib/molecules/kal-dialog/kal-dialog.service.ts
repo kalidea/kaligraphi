@@ -7,6 +7,7 @@ import { KAL_DIALOG_DATA } from './kal-dialog.injector';
 import { KalDialogRef } from './kal-dialog-ref';
 import { KalDialogConfig } from './kal-dialog-config';
 import { KalDialogContainerComponent } from './dialog-container/kal-dialog-container.component';
+
 import { KalOverlayManager } from '../../utils/classes/kal-overlay-manager';
 
 

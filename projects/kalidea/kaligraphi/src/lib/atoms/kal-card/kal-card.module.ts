@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-export * from './kal-card.component';
-
 import { KalCardComponent } from './kal-card.component';
 import { KalCardHeaderComponent } from './components/kal-card-header.component';
 import { KalCardContentComponent } from './components/kal-card-content.component';
