@@ -7,10 +7,12 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
+
 import { Subscription } from 'rxjs';
 
 import { KalCardTitleComponent } from './components/kal-card-title.component';
 import { KalCardDismissable } from './components/kal-card-dismissable.class';
+
 import { AutoUnsubscribe } from '../../utils';
 
 @Component({

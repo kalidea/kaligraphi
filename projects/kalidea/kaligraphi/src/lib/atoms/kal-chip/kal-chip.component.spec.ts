@@ -2,8 +2,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component } from '@angular/core';
 
 import { KalChipComponent } from './kal-chip.component';
-import { KalIconModule } from '../kal-icon/kal-icon.module';
 import { KalChipModule } from './kal-chip.module';
+
+import { KalIconModule } from '../kal-icon/kal-icon.module';
 
 @Component({
   selector: 'kal-test',

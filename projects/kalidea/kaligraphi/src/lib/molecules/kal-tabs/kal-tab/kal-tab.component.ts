@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
+
 import { KalTabLabelDirective } from '../kal-tab-label.directive';
 import { KalTabGroupComponent } from '../kal-tab-group/kal-tab-group.component';
 

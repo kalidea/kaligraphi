@@ -5,7 +5,6 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-
 import { CdkNestedTreeNode, CdkTree, CdkTreeNode } from '@angular/cdk/tree';
 import {
   Attribute,
@@ -19,8 +18,10 @@ import {
   OnDestroy,
   QueryList,
 } from '@angular/core';
-import { KalTreeNodeOutletDirective } from '../directives/kal-tree-node-outlet.directive';
+
 import { KalTreeComponent } from './kal-tree.component';
+
+import { KalTreeNodeOutletDirective } from '../directives/kal-tree-node-outlet.directive';
 import { KalTreeNode } from '../classes/kal-tree-node';
 
 /**

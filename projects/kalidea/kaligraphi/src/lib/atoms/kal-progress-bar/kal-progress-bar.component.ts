@@ -9,6 +9,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
+
 import { clamp } from '../../utils/helpers/numbers';
 
 @Component({

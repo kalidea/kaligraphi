@@ -8,6 +8,7 @@ import { KalDialogCloseDirective } from './directives/kal-dialog-close.directive
 import { KalDialogContentDirective } from './directives/kal-dialog-content.directive';
 import { KalDialogHeaderDirective } from './directives/kal-dialog-header.directive';
 import { KalDialogFooterDirective } from './directives/kal-dialog-footer.directive';
+
 import { KalIconModule } from '../../atoms/kal-icon/kal-icon.module';
 
 

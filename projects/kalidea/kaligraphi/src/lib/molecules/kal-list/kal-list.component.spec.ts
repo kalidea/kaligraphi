@@ -2,9 +2,12 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { DataSource } from '@angular/cdk/collections';
+
 import { Observable, of } from 'rxjs';
+
 import { KalListModule, KalListSelection } from './kal-list.module';
 import { KalListComponent, } from './kal-list.component';
+
 import { KalIconComponent } from '../../atoms/kal-icon/kal-icon.component';
 import { KalIconModule } from '../../atoms/kal-icon/kal-icon.module';
 

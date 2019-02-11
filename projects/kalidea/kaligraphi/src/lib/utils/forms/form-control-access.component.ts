@@ -1,5 +1,5 @@
-import { forwardRef } from '@angular/core';
-import { AbstractControl, AsyncValidator, ControlValueAccessor, NG_ASYNC_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { AbstractControl, AsyncValidator, ControlValueAccessor } from '@angular/forms';
+
 import { of } from 'rxjs';
 
 
@@ -22,18 +22,6 @@ export abstract class FormControlAccessComponent<T = any> implements ControlValu
    * previous value
    */
   protected previousValue: T = null;
-
-  /**
-   * function called when control is changed
-   */
-  protected onChange: any = () => {
-  }
-
-  /**
-   * function called when control is touched
-   */
-  protected onTouched: any = () => {
-  }
 
   constructor() {
   }
@@ -81,6 +69,18 @@ export abstract class FormControlAccessComponent<T = any> implements ControlValu
   validate(c: AbstractControl) {
     return of({});
   }
+
+  /**
+   * function called when control is changed
+   */
+  protected onChange: any = () => {
+  };
+
+  /**
+   * function called when control is touched
+   */
+  protected onTouched: any = () => {
+  };
 
   /**
    * compare 2 value of this control and return equality

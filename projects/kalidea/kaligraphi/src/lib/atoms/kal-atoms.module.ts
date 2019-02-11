@@ -31,7 +31,7 @@ export * from './kal-card/kal-card.module';
 export * from './kal-tree/kal-tree.module';
 export * from './kal-drag-drop/kal-drag-drop.module';
 export * from './kal-chip/kal-chip.module';
-export * from './kal-loader/kal-loader.component';
+export * from './kal-loader/kal-loader.module';
 
 const exports = [
   KalInputModule,

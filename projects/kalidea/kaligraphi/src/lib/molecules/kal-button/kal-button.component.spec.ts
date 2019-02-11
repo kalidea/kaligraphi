@@ -3,8 +3,9 @@ import { By } from '@angular/platform-browser';
 import { Component } from '@angular/core';
 
 import { KalButtonComponent } from './kal-button.component';
-import { KalIconComponent } from '../../atoms/kal-icon/kal-icon.component';
 import { KalButtonModule } from './kal-button.module';
+
+import { KalIconComponent } from '../../atoms/kal-icon/kal-icon.component';
 
 @Component({
   template: `

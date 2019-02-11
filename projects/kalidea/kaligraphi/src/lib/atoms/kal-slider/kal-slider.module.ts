@@ -3,9 +3,10 @@ import { CommonModule } from '@angular/common';
 import { HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 
 import { KalSliderComponent } from './kal-slider.component';
-export { KalSliderComponent } from './kal-slider.component';
 
 import { GestureConfig } from '../../utils/gestures/gesture-config';
+
+export { KalSliderComponent } from './kal-slider.component';
 
 const exports = [
   KalSliderComponent

@@ -2,10 +2,12 @@ import { Directive, ElementRef, HostListener, Input, OnDestroy, ViewContainerRef
 import { Overlay, OverlayRef, PositionStrategy } from '@angular/cdk/overlay';
 import { DOWN_ARROW, ENTER, ESCAPE, SPACE, UP_ARROW } from '@angular/cdk/keycodes';
 import { TemplatePortal } from '@angular/cdk/portal';
+
 import { filter, tap } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 
 import { KalMenuComponent } from './kal-menu.component';
+
 import { AutoUnsubscribe } from '../../utils';
 
 @Directive({

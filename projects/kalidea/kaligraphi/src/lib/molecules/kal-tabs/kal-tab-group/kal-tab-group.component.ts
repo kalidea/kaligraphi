@@ -16,7 +16,9 @@ import {
 import { CdkPortalOutlet, TemplatePortal } from '@angular/cdk/portal';
 import { ENTER, SPACE } from '@angular/cdk/keycodes';
 import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
+
 import { Subscription } from 'rxjs';
+
 import { KalTabComponent } from '../kal-tab/kal-tab.component';
 import { KalTabChange } from '../kal-tab-change';
 import { KalTabHeaderComponent } from '../kal-tab-header/kal-tab-header.component';

@@ -1,5 +1,6 @@
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { SelectionModel } from '@angular/cdk/collections';
+
 import { KalFlatTreeNode } from './kal-tree-node';
 
 export class KalTreeControl extends FlatTreeControl<KalFlatTreeNode> {

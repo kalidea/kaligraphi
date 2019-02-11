@@ -10,8 +10,9 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
+
 import { Subscription } from 'rxjs';
+
 import { buildProviders, FormElementComponent } from '../../utils/index';
 import { Coerce } from '../../utils/decorators/coerce';
 

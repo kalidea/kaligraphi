@@ -2,9 +2,11 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Component, ViewChild } from '@angular/core';
+
 import { take } from 'rxjs/operators';
 
 import { KalInputComponent } from './kal-input.component';
+
 import { KalIconComponent, KalIconModule } from '../kal-icon/kal-icon.module';
 
 @Component({

@@ -11,8 +11,10 @@ import {
 } from '@angular/core';
 import { FocusableOption, FocusMonitor, FocusOrigin } from '@angular/cdk/a11y';
 import { ENTER, SPACE } from '@angular/cdk/keycodes';
+
 import { merge, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
+
 import { KalExpansionPanelComponent } from '../kal-expansion-panel/kal-expansion-panel.component';
 import { kalExpansionAnimations } from '../expansion-animations';
 

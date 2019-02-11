@@ -1,4 +1,5 @@
 import { InputFormater } from './input-formater';
+
 import { formatPhoneNumber } from '../../../utils/helpers/phone';
 
 export class PhoneFormat extends InputFormater {

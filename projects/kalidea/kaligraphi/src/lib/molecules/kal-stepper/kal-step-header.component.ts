@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { FocusMonitor } from '@angular/cdk/a11y';
+
 import { KalStepLabelDirective } from './kal-step-label.directive';
 
 @Component({

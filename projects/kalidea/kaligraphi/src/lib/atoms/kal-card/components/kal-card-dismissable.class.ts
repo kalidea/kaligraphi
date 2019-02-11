@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, EventEmitter, forwardRef, Inject, Input, Output } from '@angular/core';
+
 import { Coerce } from '../../../utils/decorators/coerce';
 
 export class KalCardDismissable {
@@ -9,10 +10,10 @@ export class KalCardDismissable {
   @Output()
   dismissed: EventEmitter<void> = new EventEmitter<void>();
 
+  protected _dismissable = false;
+
   constructor(@Inject(forwardRef(() => ChangeDetectorRef)) protected cdr: ChangeDetectorRef) {
   }
-
-  protected _dismissable = false;
 
   /**
    * getset for dismissable property

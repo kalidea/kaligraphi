@@ -1,7 +1,8 @@
 import { Directive, EventEmitter, HostBinding, HostListener, Input, OnDestroy, Output } from '@angular/core';
+import { coerceArray } from '@angular/cdk/coercion';
+
 import { KalDragService } from '../services/kal-drag.service';
 import { Memoize } from '../../../utils/decorators/memoize';
-import { coerceArray } from '@angular/cdk/coercion';
 
 export enum KalDropPosition {
   Top = 'top',

@@ -6,6 +6,7 @@ import {
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { CdkPortalOutlet, TemplatePortal } from '@angular/cdk/portal';
 import { Highlightable } from '@angular/cdk/a11y';
+
 import { KalTabGroupComponent } from '../kal-tab-group/kal-tab-group.component';
 
 @Component({

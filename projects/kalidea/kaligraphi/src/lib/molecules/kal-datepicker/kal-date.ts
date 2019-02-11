@@ -1,6 +1,7 @@
-import { isString } from 'util';
 import { isEmpty, values } from 'lodash';
 import { DateObjectUnits, DateTime, Duration, DurationObject, Interval } from 'luxon';
+
+import { isString } from 'util';
 
 export type KalDateType = string | DateTime | Date | KalDate;
 

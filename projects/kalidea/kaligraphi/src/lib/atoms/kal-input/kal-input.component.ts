@@ -12,6 +12,8 @@ import {
 } from '@angular/core';
 import { AbstractControl, FormControl, NgControl } from '@angular/forms';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { FormHooks } from '@angular/forms/src/model';
+
 import { of, Subscription } from 'rxjs';
 
 import { InputFormater } from './format/input-formater';
@@ -21,7 +23,6 @@ import { PhoneFormat } from './format/phone.format';
 import { StringFormat } from './format/string.format';
 
 import { buildProviders, FormElementComponent } from '../../utils/index';
-import { FormHooks } from '@angular/forms/src/model';
 
 @Component({
   selector: 'kal-input',
