@@ -1,6 +1,6 @@
 import {
   KalSelectionModel,
-} from 'projects/kalidea/kaligraphi/src/lib/molecules/kal-list/kal-list-selection';
+} from 'projects/kalidea/kaligraphi/src/lib/molecules/kal-list/kal-selection';
 import { cloneDeep, range } from 'lodash';
 
 const items = range(0, 4).map(id => ({id}));
@@ -95,7 +95,7 @@ describe('KalSelectionModel', () => {
 
   });
 
-  it('should verify that items are excluded (all: true)', () => {
+  it('should verify that items are removed (all: true)', () => {
     const selection = new KalSelectionModel({multiple: true, all: true});
     const selectedItem = items[0];
 
@@ -110,7 +110,7 @@ describe('KalSelectionModel', () => {
     );
   });
 
-  it('should verify that items are included after deselection (all: true)', () => {
+  it('should verify that items are added after deselection (all: true)', () => {
     const selection = new KalSelectionModel({multiple: true, all: true});
     const selectedItem1 = items[0];
     const selectedItem2 = items[1];
@@ -239,6 +239,33 @@ describe('KalSelectionModel', () => {
     selection.select(cloneDeep(items[1]));
 
     expect(selection.total).toEqual(items.length);
+
+  });
+
+  fit('should contains items', () => {
+    const selection = new KalSelectionModel({multiple: true, added: [items[0]], count: items.length});
+
+    expect(selection.isSelected(items[0])).toBeTruthy();
+
+    console.log(selection.added.selected);
+
+    selection.select(items[1]);
+
+    console.log(selection.added.selected);
+
+    // expect(selection.isSelected(items[1])).toBeTruthy();
+
+    // expect(selection.total).toEqual(items.length);
+    //
+    // selection.deselect(items[0]);
+    // selection.deselect(cloneDeep(items[1]));
+    //
+    // expect(selection.total).toEqual(items.length - 2);
+    //
+    // selection.select(items[0]);
+    // selection.select(cloneDeep(items[1]));
+    //
+    // expect(selection.total).toEqual(items.length);
 
   });
 });

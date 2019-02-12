@@ -15,7 +15,7 @@
     [selectionMode]="selectionMode"
     [virtualScrollConfig]="virtualScrollConfig"
     [selectRowOnContentClick]="selectRowOnContentClick"
-    [class.has-selected-element]="listSelection && listSelection.selected.length > 0"
+    [class.has-selected-element]="listSelection && listSelection.total > 0"
     (selectionChange)="selectRow($event)"
     (highlightedItem)="highlightItem($event)">
 
@@ -40,7 +40,7 @@
   <kal-button type="button" kalTheme="secondary" (click)="unselectRows()">Unselectable rows</kal-button>
   <kal-button type="button" kalTheme="secondary" (click)="selectSingleRow()">Single selectable row</kal-button>
   <kal-button type="button" kalTheme="secondary" (click)="selectMultipleRows()">Multiple selectable rows</kal-button>
-  <kal-button type="button" kalTheme="secondary" (click)="kalListItem.selectAll()">Select All rows</kal-button>
+  <kal-button type="button" kalTheme="secondary" (click)="selectAll()">Select All rows</kal-button>
   <kal-button type="button" kalTheme="secondary" (click)="changeSelection()">Select first item</kal-button>
   <kal-button type="button" kalTheme="secondary" (click)="changeDataSource()">Change DataSource</kal-button>
   <kal-button type="button" kalTheme="secondary" (click)="selectRowOnContentClick = !selectRowOnContentClick">Select row on content click</kal-button>

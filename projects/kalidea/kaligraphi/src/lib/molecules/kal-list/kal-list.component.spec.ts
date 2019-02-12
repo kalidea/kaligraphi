@@ -3,7 +3,7 @@ import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { DataSource } from '@angular/cdk/collections';
 import { Observable, of } from 'rxjs';
-import { KalListModule, KalListSelection, KalSelectionModel } from './kal-list.module';
+import { KalListModule } from './kal-list.module';
 import { KalIconModule } from '../../atoms/kal-icon/kal-icon.module';
 import { KalListComponent, } from './kal-list.component';
 import { KalIconComponent } from '../../atoms/kal-icon/kal-icon.component';
@@ -15,7 +15,7 @@ import { KalCheckboxModule } from '../..//atoms/kal-checkbox/kal-checkbox.module
     <kal-list [dataSource]="dataSource"
               [groupByFunction]="groupByFunction"
               [disableRowsFunction]="disableRowsFunction"
-              [selectionMode]="selectable"
+              [selectionMode]="selectionMode"
               [selectRowOnContentClick]="selectRowOnContentClick"
               [icon]="icon"
               (selectionChange)="selectRow($event)">
@@ -37,7 +37,7 @@ class TestListItemComponent {
 
   disableRowsFunction = null;
 
-  selectable = 'single';
+  selectionMode = 'single';
 
   selectRowOnContentClick = null;
 
@@ -170,27 +170,31 @@ describe('TestListItemComponent', () => {
     expect(listItems[2].nativeElement.innerText.trim()).toEqual('Item 3');
   });
 
-  it('should select an item', () => {
+  it('should select an item (single mode)', () => {
     spyOn(listInstances.selectionChange, 'emit');
 
     listItems.forEach(
       (item, index) => {
         item.nativeElement.click();
         expect(listInstances.isRowSelected(component.dataSource.listItem[index])).toBeTruthy();
-        expect(listInstances.selectionChange.emit).toHaveBeenCalledWith(new KalSelectionModel({
-          included: [component.dataSource.listItem[index]],
-          all: false}
-        ));
+        expect(listInstances.selectionChange.emit).toHaveBeenCalledWith({
+            added: [component.dataSource.listItem[index]],
+            all: false,
+            count: 0,
+            removed: []
+          });
       }
     );
+  });
 
-    let listCheckbox = fixture.debugElement.queryAll(By.directive(KalCheckboxComponent));
-
-    expect(listCheckbox.length).toEqual(0);
-
-    component.selectable = 'multiple';
-    listInstances.reset();
+  it('should select an item (multiple mode)', () => {
+    spyOn(listInstances.selectionChange, 'emit');
+    component.selectionMode = 'multiple';
     fixture.detectChanges();
+
+    const listCheckbox = fixture.debugElement.queryAll(By.directive(KalCheckboxComponent));
+
+    expect(listCheckbox.length).toEqual(3);
 
     listItems.forEach(
       (item, index) => {
@@ -199,26 +203,23 @@ describe('TestListItemComponent', () => {
       }
     );
 
-    expect(listInstances.selectionChange.emit).toHaveBeenCalledWith(new KalSelectionModel(
-      {
-        included: [...component.dataSource.listItem],
-        all: false
-      }
-    ));
+    expect(listInstances.selectionChange.emit).toHaveBeenCalledWith({
+      added: [...component.dataSource.listItem],
+      all: false,
+      count: 0,
+      removed: []
+    });
 
-    listCheckbox = fixture.debugElement.queryAll(By.directive(KalCheckboxComponent));
-
-    expect(listCheckbox.length).toEqual(3);
   });
 
-  it('should reset selected item', () => {
+  it('should clear the selection', () => {
     const item = component.dataSource.listItem[0];
 
     listInstances.selectItem(item);
 
     expect(listInstances.isRowSelected(item)).toBeTruthy();
 
-    listInstances.reset();
+    listInstances.clear();
 
     expect(listInstances.isRowSelected(item)).toBeFalsy();
   });

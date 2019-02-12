@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
-import { KalListComponent } from '@kalidea/kaligraphi';
-import { KalListSelection } from '@kalidea/kaligraphi';
+import { KalListComponent, KalSelectionModel } from '@kalidea/kaligraphi';
 import { Observable, of } from 'rxjs';
+import { range } from 'lodash';
 
 @Component({
   selector: 'app-list',
@@ -12,6 +12,8 @@ import { Observable, of } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ListComponent {
+
+  items = [];
 
   /**
    * dataSource
@@ -55,44 +57,34 @@ export class ListComponent {
 
   selectRowOnContentClick = false;
 
-  @ViewChild(KalListComponent) kalListComponent: KalListComponent<{id: string, name: string, disabled: boolean}>;
+  @ViewChild(KalListComponent) kalListComponent: KalListComponent<{ id: string, name: string, disabled: boolean }>;
 
   constructor() {
   }
 
   selectRow($event) {
-    this.listSelection = $event;
+    this.selectedValue = $event;
     this.kalListComponent.highlighted = null;
   }
 
-  highlightItem($event) {
-    this.listSelection = new KalListSelection();
+  highlightItem() {
+    this.listSelection = new KalSelectionModel();
   }
 
   changeDataSource() {
     this.virtualScrollConfig = null;
 
-    this.dataSource = [
-      {
-        id: '1',
-        name: 'aTest',
-        disabled: true
-      },
-      {
-        id: '2',
-        name: 'aTest2',
-        disabled: false
-      },
-      {
-        id: '3',
-        name: 'aTest3',
-        disabled: false
-      }, {
-        id: '4',
-        name: 'bTest4',
-        disabled: false
-      },
-    ];
+    this.dataSource = range(1, 5).map(
+      index => {
+        return {
+          id: '' + index,
+          name: (index !== 4 ? 'aTest' : 'bTest') + index,
+          disabled: index === 1
+        };
+      }
+    );
+
+    this.listSelection = new KalSelectionModel({count: this.dataSource.length});
   }
 
   /**
@@ -109,24 +101,34 @@ export class ListComponent {
     this.disableRowsFunction = !this.disableRowsFunction ? (item) => item['disabled'] : null;
   }
 
+  selectAll() {
+    if (this.selectedValue && this.selectedValue.all) {
+      this.kalListComponent.clear();
+    } else {
+      this.kalListComponent.selectAll();
+    }
+  }
+
   selectMultipleRows() {
     this.icon = 'keyboard_arrow_right';
     this.selectionMode = 'multiple';
+    this.selectedValue = null;
   }
 
   unselectRows() {
     this.icon = null;
     this.selectionMode = 'none';
+    this.selectedValue = null;
   }
 
   selectSingleRow() {
     this.icon = 'keyboard_arrow_right';
     this.selectionMode = null;
+    this.selectedValue = null;
   }
 
   changeSelection() {
-    this.listSelection = new KalListSelection<{ id: string }>([{id: '1'}], false, []);
-    this.selectedValue = new KalListSelection<{ id: string }>([{id: '1'}], false, []);
+    this.listSelection = new KalSelectionModel<{ id: string }>({added: [{id: '1'}], all: false});
   }
 
 }

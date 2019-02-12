@@ -24,7 +24,7 @@ class Test {
   
   groupByFunction: (item: {name: string}) => string;
   
-  listSelection = new KalListSelection<{id: string}>([{id: '1'}, {id: '2'}]);
+  listSelection = new KalSelectionModel<{id: string}>({added: [{id: '1'}, {id: '2'}]});
   
   selectRow($event) {
   }

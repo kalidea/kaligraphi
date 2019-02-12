@@ -21,7 +21,7 @@ import { CollectionViewer, DataSource, ListRange } from '@angular/cdk/collection
 import { Observable, Subscription } from 'rxjs';
 import { KalListItemDirective } from './kal-list-item.directive';
 import { KalListItemSelectionDirective } from './kal-list-item-selection.directive';
-import { KalSelectionModel, KalSelection } from './kal-list-selection';
+import { KalSelectionModel, KalSelection } from './kal-selection';
 import { AutoUnsubscribe } from '../../utils';
 import { Coerce } from '../../utils/decorators/coerce';
 
@@ -86,11 +86,9 @@ export class KalListComponent<T> implements CollectionViewer, AfterViewInit, OnC
 
   set selection(value: KalSelectionModel<T>) {
     this._selection = value && (value.constructor.name === 'KalSelectionModel') ? value : new KalSelectionModel<T>();
-    this.cdr.markForCheck();
-  }
 
-  get selectionMode() {
-    return this._selectionMode;
+    this.countItems();
+    this.cdr.markForCheck();
   }
 
   @Input()
@@ -113,22 +111,32 @@ export class KalListComponent<T> implements CollectionViewer, AfterViewInit, OnC
    * Selectable items (none, single, multiple)
    */
   @Input()
+  get selectionMode() {
+    return this._selectionMode;
+  }
+
   set selectionMode(value: KalListSelectionMode) {
+
+    const count = this._selection.count;
 
     switch (value) {
       case KalListSelectionMode.Multiple:
         this._selectionMode = value;
+        this._selection = new KalSelectionModel({multiple: true, count});
         break;
 
       case KalListSelectionMode.None:
         this._selectionMode = value;
+        this._selection = new KalSelectionModel({multiple: false, count});
         break;
 
       default:
         this._selectionMode = KalListSelectionMode.Single;
+        this._selection = new KalSelectionModel({multiple: false, count});
         break;
     }
 
+    this.countItems();
     this.activeItem(null);
 
     this.cdr.markForCheck();
@@ -153,7 +161,7 @@ export class KalListComponent<T> implements CollectionViewer, AfterViewInit, OnC
   /**
    * Triggered when selection has changed
    */
-  @Output() selectionChange: EventEmitter<KalSelectionModel<T>> = new EventEmitter<KalSelectionModel<T>>();
+  @Output() selectionChange: EventEmitter<KalSelection<T>> = new EventEmitter<KalSelection<T>>();
 
   /**
    * Triggered when an item has been highlighted
@@ -259,17 +267,10 @@ export class KalListComponent<T> implements CollectionViewer, AfterViewInit, OnC
 
   selectAll() {
     if (this._selectionMode === KalListSelectionMode.Multiple) {
-      // this._selection.all = !this._selection.all;
-      // this._selection.clear();
-      //
-      // if (this._selection.all) {
-      //   this._selection.selected.push(...this.results.filter(element => !this.isRowDisabled(element)));
-      //   this._selection.excluded.push(...this.results.filter(element => this.isRowDisabled(element)));
-      // }
-      //
-      // this.cdr.markForCheck();
-      //
-      // this.selectionChange.emit(this._selection);
+      this._selection = new KalSelectionModel({multiple: true, all: true, count: this._selection.count});
+      this.cdr.markForCheck();
+
+      this.selectionChange.emit(this._selection.format());
     }
   }
 
@@ -293,14 +294,15 @@ export class KalListComponent<T> implements CollectionViewer, AfterViewInit, OnC
       $event.preventDefault();
       $event.stopPropagation();
     }
+
     if (!this.isRowDisabled(item) && this._selectionMode !== KalListSelectionMode.None) {
 
       this.selectedItemIndex = this.results.findIndex(row => row === item);
       this.activeItem(this.selectedItemIndex);
 
-      this.updateSelectedItem(item);
+      this._selection.toggle(item);
 
-      this.selectionChange.emit(this._selection);
+      this.selectionChange.emit(this._selection.format());
     }
 
   }
@@ -322,11 +324,14 @@ export class KalListComponent<T> implements CollectionViewer, AfterViewInit, OnC
   /**
    * Reset the selected item
    */
-  reset() {
+  clear() {
     // this._selection = new KalListSelection<T>();
     this._selection.clear();
     this.activeItem(null);
+
     this.cdr.markForCheck();
+
+    this.selectionChange.emit(this._selection.format());
   }
 
   /**
@@ -339,43 +344,23 @@ export class KalListComponent<T> implements CollectionViewer, AfterViewInit, OnC
       && (!previousItem || this.groupByFunction(previousItem) !== this.groupByFunction(item));
   }
 
+  /**
+   * Is the item highlighted
+   */
   isHighlighted(item) {
-    return this.highlighted.id === item.id;
+    return !!this.highlighted && this.highlighted.id === item.id;
+  }
+
+  private countItems() {
+    if (this._selection && this._selection.count < this.results.length) {
+      this._selection.count = this.results.length;
+    }
   }
 
   private activeItem(index: number) {
     if (this.keyManager) {
       this.keyManager.setActiveItem(index);
     }
-  }
-
-  // toggleItem(item: T) {
-  //   if (this._selection.indexOf(item) === -1) {
-  //     this._selection.add(item);
-  //   } else {
-  //     this._selection.remove(item);
-  //   }
-  // }
-
-  private updateSelectedItem(item: T) {
-    this._selection.toggle(item);
-    // if (this._selectionMode !== KalListSelectionMode.Multiple) {
-    //   this._selection.selected = [];
-    //   this._selection.add(item);
-    // } else if (this._selection.all) {
-    //
-    //   const position = this._selection.indexOf(item, 'excluded');
-    //
-    //   if (position === -1) {
-    //     this._selection.remove(item);
-    //     this._selection.add(item, 'excluded');
-    //   } else {
-    //     this._selection.remove(item, 'excluded');
-    //     this._selection.add(item);
-    //   }
-    // } else {
-    //   this.toggleItem(item);
-    // }
   }
 
   private destroySubscription() {
@@ -392,6 +377,7 @@ export class KalListComponent<T> implements CollectionViewer, AfterViewInit, OnC
       this.subscription = (this.dataSource as DataSource<T>).connect(this).subscribe(
         (items: T[]) => {
           this.results = items;
+          this.countItems();
           this.cdr.markForCheck();
         }
       );
@@ -399,11 +385,13 @@ export class KalListComponent<T> implements CollectionViewer, AfterViewInit, OnC
       this.subscription = (this.dataSource as Observable<T[]>).subscribe(
         (items: T[]) => {
           this.results = items;
+          this.countItems();
           this.cdr.markForCheck();
         }
       );
     } else if (Array.isArray(this.dataSource)) {
       this.results = this.dataSource as T[];
+      this.countItems();
       this.cdr.markForCheck();
     }
   }

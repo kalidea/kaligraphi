@@ -42,9 +42,9 @@ export class KalSelection<T extends {id?: string}> {
 
   count ? = 0; // Total of elements
 
-  included?: T[] = []; // List of included elements
+  added?: T[] = []; // List of added elements
 
-  excluded?: T[] = []; // List of excluded elements
+  removed?: T[] = []; // List of removed elements
 
   all ? = false; // Check if all items are selected
 
@@ -87,11 +87,11 @@ class SubSelectionModel<T extends {id?: string}> extends SelectionModel<T> {
 
 export class KalSelectionModel<T extends {id?: string}> extends SelectionModel<T> {
 
-  private included: SelectionModel<T>;
+  added: SelectionModel<T>;
 
-  private excluded: SelectionModel<T>;
+  private removed: SelectionModel<T>;
 
-  private count = 0;
+  count = 0;
 
   private all = false;
 
@@ -100,63 +100,63 @@ export class KalSelectionModel<T extends {id?: string}> extends SelectionModel<T
 
     // destructure and add default value
     const {
-      included,
+      added,
       all,
-      excluded,
+      removed,
       count,
       multiple,
     } = {...new KalSelection(), ...params};
 
-    this.included = new SubSelectionModel<T>(multiple, included as T[], false);
-    this.excluded = new SubSelectionModel<T>(multiple, excluded as T[], false);
+    this.added = new SubSelectionModel<T>(multiple, added as T[], true);
+    this.removed = new SubSelectionModel<T>(multiple, removed as T[], true);
     this.all = all;
     this.count = count;
-
   }
 
   /**
    * get number of selected items
    */
   get total() {
-    return this.all ? this.count - this.excluded.selected.length : this.included.selected.length;
+    return this.all ? this.count - this.removed.selected.length : this.added.selected.length;
   }
 
   private get store(): SelectionModel<T> {
-    return this.all ? this.excluded : this.included;
+    return this.all ? this.removed : this.added;
   }
 
   select(item: T): void {
-    this.all ? this.excluded.deselect(item) : this.included.select(item);
+    this.all ? this.removed.deselect(item) : this.added.select(item);
   }
 
   deselect(item: T): void {
-    this.all ? this.excluded.select(item) : this.included.deselect(item);
+    this.all ? this.removed.select(item) : this.added.deselect(item);
   }
 
   toggle(item: T): void {
-    this.all ? this.excluded.toggle(item) : this.included.toggle(item);
+    this.all ? this.removed.toggle(item) : this.added.toggle(item);
   }
 
   clear(): void {
-    this.included.clear();
-    this.excluded.clear();
+    this.added.clear();
+    this.removed.clear();
     this.all = false;
   }
 
   isSelected(item: T): boolean {
-    return this.all ? !this.excluded.isSelected(item) : !!this.included.isSelected(item);
+    return this.all ? !this.removed.isSelected(item) : !!this.added.isSelected(item);
   }
 
   isEmpty(): boolean {
-    return this.all ? this.count === this.excluded.selected.length : this.included.isEmpty();
+    return this.all ? this.count === this.removed.selected.length : this.added.isEmpty();
   }
 
   format() {
     return {
-      added: this.included.selected,
-      removed: this.excluded.selected,
+      added: this.added.selected,
+      removed: this.removed.selected,
       all: this.all,
-      count: this.count
+      count: this.count,
+      total: this.total
     };
   }
 
