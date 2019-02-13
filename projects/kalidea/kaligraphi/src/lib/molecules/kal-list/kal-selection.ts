@@ -1,5 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { isNil } from 'lodash';
+import { isNil, cloneDeep } from 'lodash';
 
 type KalListSelectionStore = 'included' | 'excluded';
 
@@ -62,12 +62,21 @@ class SubSelectionModel<T extends {id?: string}> extends SelectionModel<T> {
   }
 
   isSelected(item: T): boolean {
+
     if (!isNil(item.id)) {
-      return this.selected.some(element => '' + element.id === '' + item.id);
-    } else {
-      this.selected.some(element => element === item);
+      item = this.getItem(item) || item;
     }
+
+    return super.isSelected(item);
   }
+
+  // isSelected(item: T): boolean {
+  //   if (!isNil(item.id)) {
+  //     return this.selected.some(element => '' + element.id === '' + item.id);
+  //   } else {
+  //     this.selected.some(element => element === item);
+  //   }
+  // }
 
   select(item: T): void {
     if (!this.isSelected(item)) {
@@ -87,7 +96,7 @@ class SubSelectionModel<T extends {id?: string}> extends SelectionModel<T> {
 
 export class KalSelectionModel<T extends {id?: string}> extends SelectionModel<T> {
 
-  added: SelectionModel<T>;
+  private added: SelectionModel<T>;
 
   private removed: SelectionModel<T>;
 
@@ -107,7 +116,9 @@ export class KalSelectionModel<T extends {id?: string}> extends SelectionModel<T
       multiple,
     } = {...new KalSelection(), ...params};
 
+    // this.added = new SelectionModel<T>(multiple, added as T[], true);
     this.added = new SubSelectionModel<T>(multiple, added as T[], true);
+    // this.removed = new SelectionModel<T>(multiple, removed as T[], true);
     this.removed = new SubSelectionModel<T>(multiple, removed as T[], true);
     this.all = all;
     this.count = count;

@@ -242,30 +242,26 @@ describe('KalSelectionModel', () => {
 
   });
 
-  fit('should contains items', () => {
+  it('should contains items', () => {
     const selection = new KalSelectionModel({multiple: true, added: [items[0]], count: items.length});
 
     expect(selection.isSelected(items[0])).toBeTruthy();
-
-    console.log(selection.added.selected);
+    expect(selection.isSelected(cloneDeep(items[0]))).toBeTruthy();
 
     selection.select(items[1]);
 
-    console.log(selection.added.selected);
+    expect(selection.isSelected(items[1])).toBeTruthy();
+    expect(selection.total).toEqual(2);
 
-    // expect(selection.isSelected(items[1])).toBeTruthy();
+    selection.deselect(items[0]);
+    selection.deselect(cloneDeep(items[1]));
 
-    // expect(selection.total).toEqual(items.length);
-    //
-    // selection.deselect(items[0]);
-    // selection.deselect(cloneDeep(items[1]));
-    //
-    // expect(selection.total).toEqual(items.length - 2);
-    //
-    // selection.select(items[0]);
-    // selection.select(cloneDeep(items[1]));
-    //
-    // expect(selection.total).toEqual(items.length);
+    expect(selection.total).toEqual(0);
+
+    selection.select(items[0]);
+    selection.select(cloneDeep(items[1]));
+
+    expect(selection.total).toEqual(2);
 
   });
 });
