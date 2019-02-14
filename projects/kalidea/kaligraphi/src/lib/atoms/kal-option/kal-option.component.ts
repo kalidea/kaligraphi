@@ -115,7 +115,7 @@ export class KalOptionComponent implements AfterViewInit, Highlightable {
   /**
    * This method sets display styles on the option to make it appear
    * active. This is used by the ActiveDescendantKeyManager so key
-   * events will display the proper options as active on arrow key events.
+   * events will display the proper optionsComponent as active on arrow key events.
    */
   setActiveStyles(): void {
     this.isHighlighted = true;
@@ -125,7 +125,7 @@ export class KalOptionComponent implements AfterViewInit, Highlightable {
   /**
    * This method removes display styles on the option that made it appear
    * active. This is used by the ActiveDescendantKeyManager so key
-   * events will display the proper options as active on arrow key events.
+   * events will display the proper optionsComponent as active on arrow key events.
    */
   setInactiveStyles(): void {
     this.isHighlighted = false;

@@ -15,6 +15,7 @@ import { SnackbarComponent } from 'src/app/atoms/snackbar/snackbar.component';
 import { TreeComponent } from 'src/app/atoms/tree/tree.component';
 import { ChipComponent } from 'src/app/atoms/chip/chip.component';
 import { LoaderComponent } from 'src/app/atoms/loader/loader.component';
+import { AutocompleteComponent } from 'src/app/atoms/autocomplete/autocomplete.component';
 
 const routes: Routes = [
   {path: 'input', component: InputComponent},
@@ -31,6 +32,7 @@ const routes: Routes = [
   {path: 'tree', component: TreeComponent},
   {path: 'chip', component: ChipComponent},
   {path: 'loader', component: LoaderComponent},
+  {path: 'autocomplete', component: AutocompleteComponent},
 ];
 
 @NgModule({

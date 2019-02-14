@@ -1,0 +1,36 @@
+<h1>Autocomplete</h1>
+
+<section class="example">
+  <article>
+    <kal-form-field>
+      <kal-input
+        label="autocomplete"
+        [kalAutocomplete]="dataSource"
+        (kalAutocompleteSelected)="result = $event"
+        [kalTheme]="themes"
+        [clearable]="true"></kal-input>
+    </kal-form-field>
+
+    selected : {{ result | json }}
+  </article>
+
+</section>
+
+<div class="configurator">
+
+  <kal-form-field>
+    <kal-select placeholder="themes" multiple="true" [(ngModel)]="themes" label="themes">
+      <kal-option value="">none</kal-option>
+      <kal-option value="reverse">reverse</kal-option>
+    </kal-select>
+  </kal-form-field>
+
+  <kal-form-field>
+    <kal-select [ngModel]="emperors" (ngModelChange)="updateEmperors()" label="Type" multiple>
+      <kal-option [value]="emp" *ngFor="let emp of emperorsList">{{ emp }}</kal-option>
+    </kal-select>
+  </kal-form-field>
+
+
+
+</div>

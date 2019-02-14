@@ -164,7 +164,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   @ViewChildren(KalListItemSelectionDirective) children: QueryList<KalListItemSelectionDirective>;
 
   /**
-   * Manages keyboard events for options in the panel
+   * Manages keyboard events for optionsComponent in the panel
    */
   private keyManager: ActiveDescendantKeyManager<KalListItemSelectionDirective> = null;
 

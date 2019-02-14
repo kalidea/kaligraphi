@@ -1,0 +1,10 @@
+<ul>
+  <li *ngFor="let option of options">
+    <kal-option [value]="option"
+                [label]="option.label"
+                (selectionChange)="select(option)"
+                (click)="select(option)">
+      {{ option.label }}
+    </kal-option>
+  </li>
+</ul>
