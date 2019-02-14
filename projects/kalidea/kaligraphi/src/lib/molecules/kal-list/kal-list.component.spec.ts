@@ -5,10 +5,10 @@ import { DataSource } from '@angular/cdk/collections';
 import { Observable, of } from 'rxjs';
 import { KalListModule } from './kal-list.module';
 import { KalIconModule } from '../../atoms/kal-icon/kal-icon.module';
+import { KalCheckboxModule } from '../..//atoms/kal-checkbox/kal-checkbox.module';
 import { KalListComponent, } from './kal-list.component';
 import { KalIconComponent } from '../../atoms/kal-icon/kal-icon.component';
 import { KalCheckboxComponent } from '../../atoms/kal-checkbox/kal-checkbox.component';
-import { KalCheckboxModule } from '../..//atoms/kal-checkbox/kal-checkbox.module';
 
 @Component({
   template: `
@@ -114,7 +114,7 @@ class TestListItemWithObservableComponent {
 
 }
 
-fdescribe('TestListItemComponent', () => {
+describe('TestListItemComponent', () => {
   let component: TestListItemComponent;
   let fixture: ComponentFixture<TestListItemComponent>;
   let listDebugElements: DebugElement;
