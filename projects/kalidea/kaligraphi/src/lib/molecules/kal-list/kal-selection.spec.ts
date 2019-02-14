@@ -1,7 +1,5 @@
-import {
-  KalSelectionModel,
-} from 'projects/kalidea/kaligraphi/src/lib/molecules/kal-list/kal-selection';
 import { cloneDeep, range } from 'lodash';
+import { KalSelectionModel } from './kal-selection';
 
 const items = range(0, 4).map(id => ({id}));
 
@@ -245,8 +243,8 @@ describe('KalSelectionModel', () => {
   it('should contains items', () => {
     const selection = new KalSelectionModel({multiple: true, added: [items[0]], count: items.length});
 
-    expect(selection.isSelected(items[0])).toBeTruthy();
-    expect(selection.isSelected(cloneDeep(items[0]))).toBeTruthy();
+    expect(selection.isSelected(items[0])).toBeTruthy('should contains first item');
+    expect(selection.isSelected(cloneDeep(items[0]))).toBeTruthy('should contains first item cloned');
 
     selection.select(items[1]);
 

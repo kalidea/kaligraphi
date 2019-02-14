@@ -114,7 +114,7 @@ class TestListItemWithObservableComponent {
 
 }
 
-describe('TestListItemComponent', () => {
+fdescribe('TestListItemComponent', () => {
   let component: TestListItemComponent;
   let fixture: ComponentFixture<TestListItemComponent>;
   let listDebugElements: DebugElement;
@@ -178,11 +178,12 @@ describe('TestListItemComponent', () => {
         item.nativeElement.click();
         expect(listInstances.isRowSelected(component.dataSource.listItem[index])).toBeTruthy();
         expect(listInstances.selectionChange.emit).toHaveBeenCalledWith({
-            added: [component.dataSource.listItem[index]],
-            all: false,
-            count: 0,
-            removed: []
-          });
+          added: [component.dataSource.listItem[index]],
+          all: false,
+          count: 3,
+          removed: [],
+          total: 1
+        });
       }
     );
   });
@@ -203,11 +204,13 @@ describe('TestListItemComponent', () => {
       }
     );
 
+    console.log(listInstances.selection.format());
     expect(listInstances.selectionChange.emit).toHaveBeenCalledWith({
       added: [...component.dataSource.listItem],
       all: false,
-      count: 0,
-      removed: []
+      count: 3,
+      removed: [],
+      total: 3
     });
 
   });

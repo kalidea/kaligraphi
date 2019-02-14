@@ -271,6 +271,8 @@ export class KalListComponent<T> implements CollectionViewer, AfterViewInit, OnC
       this.cdr.markForCheck();
 
       this.selectionChange.emit(this._selection.format());
+    } else {
+      throw Error('Cannot select multiple rows width single selection mode.');
     }
   }
 
@@ -300,7 +302,11 @@ export class KalListComponent<T> implements CollectionViewer, AfterViewInit, OnC
       this.selectedItemIndex = this.results.findIndex(row => row === item);
       this.activeItem(this.selectedItemIndex);
 
-      this._selection.toggle(item);
+      if (this._selectionMode === KalListSelectionMode.Multiple || !this._selection.isSelected(item)) {
+
+        this._selection.toggle(item);
+
+      }
 
       this.selectionChange.emit(this._selection.format());
     }
