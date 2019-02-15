@@ -352,7 +352,7 @@ export class KalListComponent<T> implements CollectionViewer, AfterViewInit, OnC
   /**
    * Is the item highlighted
    */
-  isHighlighted(item) {
+  isHighlighted(item): boolean {
     return !!this.highlighted && this.highlighted.id === item.id;
   }
 
