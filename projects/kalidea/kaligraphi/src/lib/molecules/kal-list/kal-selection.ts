@@ -94,7 +94,7 @@ export class KalSelectionModel<T extends { id?: string }> extends SelectionModel
   /**
    * get number of selected items
    */
-  getTotal(): number {
+  get total(): number {
     return this.all ? this.count - this.removed.selected.length : this.added.selected.length;
   }
 
