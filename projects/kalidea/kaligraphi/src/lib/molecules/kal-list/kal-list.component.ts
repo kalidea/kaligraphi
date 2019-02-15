@@ -21,7 +21,7 @@ import { CollectionViewer, DataSource, ListRange } from '@angular/cdk/collection
 import { Observable, of, Subscription } from 'rxjs';
 import { KalListItemDirective } from './kal-list-item.directive';
 import { KalListItemSelectionDirective } from './kal-list-item-selection.directive';
-import { KalSelectionModel, KalSelection } from './kal-selection';
+import { KalSelectionModel, KalSelection } from '../../utils/classes/kal-selection';
 import { AutoUnsubscribe } from '../../utils';
 import { Coerce } from '../../utils/decorators/coerce';
 
