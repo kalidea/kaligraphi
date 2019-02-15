@@ -16,7 +16,7 @@
     "@angular/animations": "^7.0.0",
     "@angular/forms": "^7.0.0",
     "rxjs": "~6.3.3",
-    "lodash": "latest",
+    "lodash": "^4.17.11",
     "luxon": "^1.4.4"
   }
 }

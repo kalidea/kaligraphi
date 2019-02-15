@@ -44,15 +44,15 @@
          [class.kal-list__item--highlighted]="isHighlighted(item)"
          (click)="selectItem(item)">
 
-      <span class="kal-list__content">
+      <div class="kal-list__content">
 
-        <span *ngIf="selectionMode === 'multiple'">
+        <div *ngIf="selectionMode === 'multiple'">
 
             <kal-checkbox [value]="isRowSelected(item)"
                           (click)="selectCheckbox(item, $event)">
             </kal-checkbox>
 
-        </span>
+        </div>
 
         <ng-container *ngTemplateOutlet="row.view; context: {
         item: item,
@@ -61,7 +61,7 @@
         disabled: isRowDisabled(item)
         }">
         </ng-container>
-      </span>
+      </div>
 
       <span *ngIf="icon"
             class="kal-list__icon">

@@ -3,14 +3,29 @@ import { cloneDeep, isNil } from 'lodash';
 
 export class KalSelection<T extends { id?: string }> {
 
-  count ? = 0; // Total of elements
+  /**
+   * Total of elements
+   */
+  count ? = 0;
 
-  added?: T[] = []; // List of added elements
+  /**
+   * List of added elements
+   */
+  added?: T[] = [];
 
-  removed?: T[] = []; // List of removed elements
+  /**
+   * List of removed elements
+   */
+  removed?: T[] = [];
 
-  all ? = false; // Check if all items are selected
+  /**
+   * Check if all items are selected
+   */
+  all ? = false;
 
+  /**
+   * Is a multiple selection
+   */
   multiple ? = false;
 }
 
@@ -121,9 +136,6 @@ export class KalSelectionModel<T extends { id?: string }> extends SelectionModel
       count: this.count,
       total: this.total
     };
-  }
-
-  changes() {
   }
 
 }

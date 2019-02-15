@@ -18,7 +18,7 @@ import {
 import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
 import { ENTER, SPACE } from '@angular/cdk/keycodes';
 import { CollectionViewer, DataSource, ListRange } from '@angular/cdk/collections';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { KalListItemDirective } from './kal-list-item.directive';
 import { KalListItemSelectionDirective } from './kal-list-item-selection.directive';
 import { KalSelectionModel, KalSelection } from './kal-selection';
@@ -331,7 +331,6 @@ export class KalListComponent<T> implements CollectionViewer, AfterViewInit, OnC
    * Reset the selected item
    */
   clear() {
-    // this._selection = new KalListSelection<T>();
     this._selection.clear();
     this.activeItem(null);
 
@@ -378,27 +377,23 @@ export class KalListComponent<T> implements CollectionViewer, AfterViewInit, OnC
     }
   }
 
+  private setResults(dataSource$: Observable<T[] | ReadonlyArray<T>>) {
+    this.subscription = dataSource$.subscribe(
+      (items: T[]) => {
+        this.results = items;
+        this.countItems();
+        this.cdr.markForCheck();
+      }
+    );
+  }
+
   private observeDataSource() {
     if ((this.dataSource as DataSource<T>).connect instanceof Function) {
-      this.subscription = (this.dataSource as DataSource<T>).connect(this).subscribe(
-        (items: T[]) => {
-          this.results = items;
-          this.countItems();
-          this.cdr.markForCheck();
-        }
-      );
+      this.setResults((this.dataSource as DataSource<T>).connect(this));
     } else if (this.dataSource instanceof Observable) {
-      this.subscription = (this.dataSource as Observable<T[]>).subscribe(
-        (items: T[]) => {
-          this.results = items;
-          this.countItems();
-          this.cdr.markForCheck();
-        }
-      );
+      this.setResults((this.dataSource as Observable<T[]>));
     } else if (Array.isArray(this.dataSource)) {
-      this.results = this.dataSource as T[];
-      this.countItems();
-      this.cdr.markForCheck();
+      this.setResults(of(this.dataSource as T[]));
     }
   }
 
