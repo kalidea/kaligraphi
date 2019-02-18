@@ -33,7 +33,7 @@ export class ListComponent {
   selectedValue;
 
   /**
-   * items selectionMode
+   * _items selectionMode
    */
   selectionMode = 'single';
 
@@ -82,7 +82,7 @@ export class ListComponent {
   }
 
   /**
-   * Add a function that group all items
+   * Add a function that group all _items
    */
   addGroupByFunction() {
     this.groupByFunction = !this.groupByFunction ? (item) => item['name'].charAt(0).toLocaleUpperCase() : null;
@@ -120,7 +120,7 @@ export class ListComponent {
 class TestDataSource implements DataSource<{ id: string, name: string }> {
 
   /**
-   * Return an observable that contains the items list
+   * Return an observable that contains the _items list
    */
   connect(): Observable<any> {
     const listItem = [];

@@ -16,6 +16,7 @@ import { KalTreeModule } from './kal-tree/kal-tree.module';
 import { KalDragDropModule } from './kal-drag-drop/kal-drag-drop.module';
 import { KalChipModule } from './kal-chip/kal-chip.module';
 import { KalLoaderModule } from './kal-loader/kal-loader.module';
+import { KalCarouselModule } from './kal-carousel/kal-carousel.module';
 
 export * from './kal-input/kal-input.module';
 export * from './kal-textarea/kal-textarea.module';
@@ -32,6 +33,7 @@ export * from './kal-tree/kal-tree.module';
 export * from './kal-drag-drop/kal-drag-drop.module';
 export * from './kal-chip/kal-chip.module';
 export * from './kal-loader/kal-loader.component';
+export * from './kal-carousel/kal-carousel.module';
 
 const exports = [
   KalInputModule,
@@ -48,7 +50,8 @@ const exports = [
   KalTreeModule,
   KalDragDropModule,
   KalChipModule,
-  KalLoaderModule
+  KalLoaderModule,
+  KalCarouselModule
 ];
 
 @NgModule({

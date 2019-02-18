@@ -150,7 +150,7 @@ describe('TestListItemComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should create 3 items', () => {
+  it('should create 3 _items', () => {
     expect(listItems.length).toEqual(3);
   });
 
@@ -158,7 +158,7 @@ describe('TestListItemComponent', () => {
     expect(iconsDebugElements.length).toEqual(3);
   });
 
-  it('should display items in list component', () => {
+  it('should display _items in list component', () => {
     expect(listItems[0].nativeElement.innerText.trim()).toEqual('Item 1');
     expect(listItems[1].nativeElement.innerText.trim()).toEqual('Item 2');
     expect(listItems[2].nativeElement.innerText.trim()).toEqual('Item 3');
@@ -224,7 +224,7 @@ describe('TestListItemComponent', () => {
     expect(listInstances.isRowSelected(item)).toBeFalsy();
   });
 
-  it('should group items', () => {
+  it('should group _items', () => {
     component.groupByFunction = (item) => item['name'].charAt(0).toLocaleUpperCase();
 
     fixture.detectChanges();
@@ -281,7 +281,7 @@ describe('TestListItemWithObservableComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should create 3 items', () => {
+  it('should create 3 _items', () => {
     expect(listItems.length).toEqual(3);
   });
 
@@ -289,7 +289,7 @@ describe('TestListItemWithObservableComponent', () => {
     expect(iconsDebugElements.length).toEqual(3);
   });
 
-  it('should display items in list component', () => {
+  it('should display _items in list component', () => {
     expect(listItems[0].nativeElement.innerText.trim()).toEqual('Item 1');
     expect(listItems[1].nativeElement.innerText.trim()).toEqual('Item 2');
     expect(listItems[2].nativeElement.innerText.trim()).toEqual('Item 3');

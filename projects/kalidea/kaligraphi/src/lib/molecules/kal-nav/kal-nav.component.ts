@@ -21,7 +21,7 @@ export class KalNavComponent implements OnInit {
   @Input() logo;
 
   /**
-   * nav items list
+   * nav _items list
    */
   @Input() items: KalNavItem[];
 
