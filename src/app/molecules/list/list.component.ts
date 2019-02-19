@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { KalListComponent, KalSelectionModel } from '@kalidea/kaligraphi';
 import { Observable, of } from 'rxjs';
@@ -11,8 +11,7 @@ import { range } from 'lodash';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ListComponent {
-
+export class ListComponent implements OnInit {
   items = [];
 
   /**
@@ -62,8 +61,8 @@ export class ListComponent {
   constructor() {
   }
 
-  selectRow($event) {
-    this.selectedValue = $event;
+  selectRow($event: KalSelectionModel<{ id: string }>) {
+    this.selectedValue = $event.format();
     this.kalListComponent.highlighted = null;
   }
 
@@ -129,6 +128,11 @@ export class ListComponent {
 
   changeSelection() {
     this.listSelection = new KalSelectionModel<{ id: string }>({added: [{id: '1'}], all: false});
+  }
+
+  ngOnInit(): void {
+    this.selectionMode = 'multiple';
+    this.listSelection = new KalSelectionModel<{ id: string }>({added: [{id: '1'}, {id: '2'}], all: false});
   }
 
 }

@@ -204,7 +204,6 @@ describe('TestListItemComponent', () => {
       }
     );
 
-    console.log(listInstances.selection.format());
     expect(listInstances.selectionChange.emit).toHaveBeenCalledWith({
       added: [...component.dataSource.listItem],
       all: false,

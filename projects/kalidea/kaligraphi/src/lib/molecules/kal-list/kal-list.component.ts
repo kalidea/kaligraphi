@@ -8,7 +8,7 @@ import {
   HostListener,
   Input,
   OnChanges,
-  OnDestroy,
+  OnDestroy, OnInit,
   Output,
   QueryList,
   SimpleChanges,
@@ -19,9 +19,10 @@ import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
 import { ENTER, SPACE } from '@angular/cdk/keycodes';
 import { CollectionViewer, DataSource, ListRange } from '@angular/cdk/collections';
 import { Observable, of, Subscription } from 'rxjs';
+import { cloneDeep } from 'lodash';
 import { KalListItemDirective } from './kal-list-item.directive';
 import { KalListItemSelectionDirective } from './kal-list-item-selection.directive';
-import { KalSelectionModel, KalSelection } from '../../utils/classes/kal-selection';
+import { KalSelectionModel } from '../../utils/classes/kal-selection';
 import { AutoUnsubscribe } from '../../utils';
 import { Coerce } from '../../utils/decorators/coerce';
 
@@ -45,9 +46,11 @@ export interface KalVirtualScrollConfig {
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalListComponent<T> implements CollectionViewer, AfterViewInit, OnChanges, OnDestroy {
+export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewInit, OnChanges, OnDestroy {
 
   highlighted = null;
+
+  isInitialized = false;
 
   @Coerce('boolean')
   @Input() selectRowOnContentClick = false;
@@ -80,18 +83,6 @@ export class KalListComponent<T> implements CollectionViewer, AfterViewInit, OnC
   }
 
   @Input()
-  get selection(): KalSelectionModel<T> {
-    return this._selection;
-  }
-
-  set selection(value: KalSelectionModel<T>) {
-    this._selection = value && (value.constructor.name === 'KalSelectionModel') ? value : new KalSelectionModel<T>();
-
-    this.countItems();
-    this.cdr.markForCheck();
-  }
-
-  @Input()
   get virtualScrollConfig(): KalVirtualScrollConfig {
     return this._virtualScrollConfig;
   }
@@ -107,6 +98,7 @@ export class KalListComponent<T> implements CollectionViewer, AfterViewInit, OnC
     }
     this.cdr.markForCheck();
   }
+
   /**
    * Selectable items (none, single, multiple)
    */
@@ -114,33 +106,46 @@ export class KalListComponent<T> implements CollectionViewer, AfterViewInit, OnC
   get selectionMode() {
     return this._selectionMode;
   }
-
   set selectionMode(value: KalListSelectionMode) {
-
-    const count = this._selection.count;
 
     switch (value) {
       case KalListSelectionMode.Multiple:
         this._selectionMode = value;
-        this._selection = new KalSelectionModel({multiple: true, count});
         break;
 
       case KalListSelectionMode.None:
         this._selectionMode = value;
-        this._selection = new KalSelectionModel({multiple: false, count});
         break;
 
       default:
         this._selectionMode = KalListSelectionMode.Single;
-        this._selection = new KalSelectionModel({multiple: false, count});
         break;
     }
 
-    this.countItems();
+    if (this.isInitialized) {
+      this._selection.multiple = value === KalListSelectionMode.Multiple;
+      this.countItems();
+    }
+
     this.activeItem(null);
 
     this.cdr.markForCheck();
 
+  }
+
+  @Input()
+  get selection(): KalSelectionModel<T> {
+    return this._selection;
+  }
+
+  set selection(value: KalSelectionModel<T>) {
+    if (value && (value.constructor.name === 'KalSelectionModel')) {
+      this._selection = value;
+      console.log(this.selectionMode);
+      this._selection.multiple = this.selectionMode === KalListSelectionMode.Multiple;
+      this.countItems();
+      this.cdr.markForCheck();
+    }
   }
 
   /**
@@ -161,7 +166,7 @@ export class KalListComponent<T> implements CollectionViewer, AfterViewInit, OnC
   /**
    * Triggered when selection has changed
    */
-  @Output() selectionChange: EventEmitter<KalSelection<T>> = new EventEmitter<KalSelection<T>>();
+  @Output() selectionChange: EventEmitter<KalSelectionModel<T>> = new EventEmitter<KalSelectionModel<T>>();
 
   /**
    * Triggered when an item has been highlighted
@@ -195,7 +200,7 @@ export class KalListComponent<T> implements CollectionViewer, AfterViewInit, OnC
 
   private _dataSource: KalListDataSource<T> = null;
 
-  private _selection: KalSelectionModel<T> = new KalSelectionModel<T>();
+  private _selection: KalSelectionModel<T> = null;
 
   /**
    * Selectable items (none, single, multiple)
@@ -267,10 +272,10 @@ export class KalListComponent<T> implements CollectionViewer, AfterViewInit, OnC
 
   selectAll() {
     if (this._selectionMode === KalListSelectionMode.Multiple) {
-      this._selection = new KalSelectionModel({multiple: true, all: true, count: this._selection.count});
+      this._selection.selectAll();
       this.cdr.markForCheck();
 
-      this.selectionChange.emit(this._selection.format());
+      this.selectionChange.emit(this._selection);
     } else {
       throw Error('Cannot select multiple rows width single selection mode.');
     }
@@ -308,7 +313,7 @@ export class KalListComponent<T> implements CollectionViewer, AfterViewInit, OnC
 
       }
 
-      this.selectionChange.emit(this._selection.format());
+      this.selectionChange.emit(this._selection);
     }
 
   }
@@ -336,7 +341,7 @@ export class KalListComponent<T> implements CollectionViewer, AfterViewInit, OnC
 
     this.cdr.markForCheck();
 
-    this.selectionChange.emit(this._selection.format());
+    this.selectionChange.emit(this._selection);
   }
 
   /**
@@ -357,7 +362,7 @@ export class KalListComponent<T> implements CollectionViewer, AfterViewInit, OnC
   }
 
   private countItems() {
-    if (this._selection && this._selection.count < this.results.length) {
+    if (this._selection && this.results && this._selection.count < this.results.length) {
       this._selection.count = this.results.length;
     }
   }
@@ -395,6 +400,15 @@ export class KalListComponent<T> implements CollectionViewer, AfterViewInit, OnC
     } else if (Array.isArray(this.dataSource)) {
       this.setResults(of(this.dataSource as T[]));
     }
+  }
+
+  ngOnInit(): void {
+    if (!this._selection) {
+      this._selection = new KalSelectionModel<T>({
+        multiple: this.selectionMode === KalListSelectionMode.Multiple
+      });
+    }
+    this.isInitialized = true;
   }
 
   ngAfterViewInit() {
