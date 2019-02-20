@@ -126,10 +126,6 @@ export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewI
 
   @Coerce('boolean')
   @Input()
-  get selectRowOnContentClick(): boolean {
-    return this._selectRowOnContentClick;
-  }
-
   set selectRowOnContentClick(value: boolean) {
     this._selectRowOnContentClick = value;
     this.cdr.markForCheck();
@@ -308,7 +304,7 @@ export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewI
    * Select an item in list and emit an event with the selected item value
    */
   selectItem(item) {
-    if (!this.selectRowOnContentClick) {
+    if (!this._selectRowOnContentClick) {
 
       this.selectCheckbox(item);
 
