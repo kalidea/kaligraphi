@@ -18,7 +18,7 @@ export class KalCarouselComponent<T> implements OnInit {
 
   @HostBinding('attr.tabIndex') tabIndex = 2;
 
-  @Input(prefix + 'Start')
+  @Input()
   currentItem = 0;
 
   @Input()

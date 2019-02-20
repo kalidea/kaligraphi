@@ -103,6 +103,7 @@ export class KalCarouselItemDirective<T> implements OnInit {
 
   private moveView(status: KalCarouselItemStatus) {
 
+    // don't do anything until animation is done
     if (this.animationRunning) {
       return;
     }
@@ -133,8 +134,15 @@ export class KalCarouselItemDirective<T> implements OnInit {
       animate(300, style({marginLeft: marginTo * width}))
     ]);
 
+
+    this.createAnimation(viewRef, positionTo, moveAfterAnimation, myAnimation);
+
+  }
+
+  private createAnimation(viewRef, positionTo, moveAfterAnimation, animation: AnimationFactory) {
+
     // create player
-    this.player = myAnimation.create(viewRef.rootNodes[0]);
+    this.player = animation.create(viewRef.rootNodes[0]);
     this.player.onDone(() => {
       // remove viewRef if needed
       if (moveAfterAnimation) {
