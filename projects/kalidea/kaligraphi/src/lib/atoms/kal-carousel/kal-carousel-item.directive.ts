@@ -1,4 +1,15 @@
-import { Directive, ElementRef, EmbeddedViewRef, Host, OnInit, Optional, TemplateRef, ViewContainerRef } from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  EmbeddedViewRef,
+  forwardRef,
+  Host,
+  Inject,
+  OnInit,
+  Optional,
+  TemplateRef,
+  ViewContainerRef
+} from '@angular/core';
 import { animate, AnimationBuilder, AnimationFactory, AnimationPlayer, style } from '@angular/animations';
 
 import { KalCarouselComponent, KalCarouselItemStatus } from './kal-carousel.component';
@@ -40,18 +51,18 @@ export class KalCarouselItemDirective<T> implements OnInit {
     private template: TemplateRef<CarouselContext<T>>,
     private builder: AnimationBuilder,
     private elementRef: ElementRef,
-    @Host() @Optional() private carousel: KalCarouselComponent<T>) {
+    @Host() @Optional() @Inject(forwardRef(() => KalCarouselComponent)) private carousel: KalCarouselComponent<T>) {
   }
 
-  get currentItem() {
+  get currentIndex(): number {
     return this.carousel.currentItem;
   }
 
-  get items() {
+  get items(): T[] {
     return this.carousel.items;
   }
 
-  private get length() {
+  private get length(): number {
     return this.carousel.length;
   }
 
