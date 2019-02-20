@@ -206,18 +206,6 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
     }
   }
 
-  initSelection() {
-    const isMutliple = this.selectionMode === KalListSelectionMode.Multiple;
-
-    if (this.selectionMode === KalListSelectionMode.None && !this._selection.isEmpty()) {
-      this._selection.clear();
-    } else if (this._selection.multiple !== isMutliple) {
-      this._selection.multiple = isMutliple;
-    }
-
-    this.countItems();
-  }
-
   /**
    * The virtual scroll config
    */
@@ -238,6 +226,18 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
       this._virtualScrollConfig = null;
     }
     this.cdr.markForCheck();
+  }
+
+  initSelection() {
+    const isMutliple = this.selectionMode === KalListSelectionMode.Multiple;
+
+    if (this.selectionMode === KalListSelectionMode.None && !this._selection.isEmpty()) {
+      this._selection.clear();
+    } else if (this._selection.multiple !== isMutliple) {
+      this._selection.multiple = isMutliple;
+    }
+
+    this.countItems();
   }
 
   /**
