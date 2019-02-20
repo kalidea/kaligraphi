@@ -8,8 +8,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
-import { startWith } from 'rxjs/operators';
 import { Observable, Subject, Subscription } from 'rxjs';
+import { startWith } from 'rxjs/operators';
 
 import { KalAutocompleteOption } from './kal-autocomplete-option';
 import { KalOptionComponent } from '../kal-option/kal-option.component';
@@ -106,8 +106,6 @@ export class KalAutocompleteComponent<T> implements AfterViewInit {
       .subscribe(() => {
         this.initKeyManager();
       });
-
-    // setTimeout( () => this.keyManager.setFirstItemActive());
 
   }
 }
