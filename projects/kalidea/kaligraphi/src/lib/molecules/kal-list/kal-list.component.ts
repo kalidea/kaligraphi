@@ -47,7 +47,7 @@ export interface KalVirtualScrollConfig {
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalListComponent<T extends {id?: string}> implements CollectionViewer, OnInit, AfterViewInit, OnChanges, OnDestroy {
+export class KalListComponent<T extends { id?: string }> implements CollectionViewer, OnInit, AfterViewInit, OnChanges, OnDestroy {
 
   @Input() highlightedItem: T = null;
 
@@ -95,24 +95,21 @@ export class KalListComponent<T extends {id?: string}> implements CollectionView
    * Function that disable rows in template
    */
   @Input() disableRowsFunction: (item: T) => (boolean) = null;
-
+  @Coerce('boolean')
+  @Input() selectRowOnContentClick = false;
   private isInitialized = false;
-
   /**
    * Manages keyboard events for options in the panel
    */
   private keyManager: ActiveDescendantKeyManager<KalListItemSelectionDirective> = null;
-
   /**
    * Whether or not the select is focus
    */
   private isFocused: boolean;
-
   /**
    * The selected item index
    */
   private selectedItemIndex: number;
-
   /**
    * The subscription
    */
@@ -121,9 +118,6 @@ export class KalListComponent<T extends {id?: string}> implements CollectionView
 
   constructor(private cdr: ChangeDetectorRef) {
   }
-
-  @Coerce('boolean')
-  @Input() selectRowOnContentClick = false;
 
   private _dataSource: KalListDataSource<T> = null;
 
@@ -146,30 +140,6 @@ export class KalListComponent<T extends {id?: string}> implements CollectionView
         this.results = [];
         this.cdr.markForCheck();
       }
-    }
-  }
-
-  private _selection: KalSelectionModel<T> = null;
-
-  @Input()
-  get selection(): KalSelectionModel<T> {
-    return this._selection;
-  }
-
-  set selection(value: KalSelectionModel<T>) {
-    if (value && (value.constructor.name === 'KalSelectionModel')) {
-      this._selection = value;
-
-      const isMutliple = this.selectionMode === KalListSelectionMode.Multiple;
-
-      if (this.selectionMode === KalListSelectionMode.None && !this._selection.isEmpty()) {
-        this._selection.clear();
-      } else if (this._selection.multiple !== isMutliple) {
-        this._selection.multiple = isMutliple;
-      }
-
-      this.countItems();
-      this.cdr.markForCheck();
     }
   }
 
@@ -203,7 +173,7 @@ export class KalListComponent<T extends {id?: string}> implements CollectionView
     }
 
     if (this.isInitialized) {
-      if (value === KalListSelectionMode.None) {
+      if (this.selectionMode === KalListSelectionMode.None && !this._selection.isEmpty()) {
         this._selection.clear();
       } else {
         this._selection.multiple = value === KalListSelectionMode.Multiple;
@@ -215,6 +185,37 @@ export class KalListComponent<T extends {id?: string}> implements CollectionView
 
     this.cdr.markForCheck();
 
+  }
+
+  private _selection: KalSelectionModel<T> = null;
+
+  @Input()
+  get selection(): KalSelectionModel<T> {
+    return this._selection;
+  }
+
+  set selection(value: KalSelectionModel<T>) {
+    if (value && (value.constructor.name === 'KalSelectionModel')) {
+      this._selection = value;
+
+      if (this.isInitialized) {
+        this.initSelection();
+      }
+
+      this.cdr.markForCheck();
+    }
+  }
+
+  initSelection() {
+    const isMutliple = this.selectionMode === KalListSelectionMode.Multiple;
+
+    if (this.selectionMode === KalListSelectionMode.None && !this._selection.isEmpty()) {
+      this._selection.clear();
+    } else if (this._selection.multiple !== isMutliple) {
+      this._selection.multiple = isMutliple;
+    }
+
+    this.countItems();
   }
 
   /**
@@ -426,9 +427,9 @@ export class KalListComponent<T extends {id?: string}> implements CollectionView
       this._selection = new KalSelectionModel<T>({
         multiple: this.selectionMode === KalListSelectionMode.Multiple
       });
-
-      this.countItems();
     }
+
+    this.initSelection();
 
     this.isInitialized = true;
   }
