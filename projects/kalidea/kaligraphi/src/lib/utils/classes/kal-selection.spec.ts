@@ -1,7 +1,7 @@
 import { cloneDeep, range } from 'lodash';
 import { KalSelectionModel } from './kal-selection';
 
-const items = range(0, 4).map(id => ({id}));
+const items = range(0, 4).map(id => ({id: '' + id}));
 
 describe('KalSelectionModel', () => {
 
