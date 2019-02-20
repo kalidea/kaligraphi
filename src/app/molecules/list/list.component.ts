@@ -63,7 +63,7 @@ export class ListComponent implements OnInit {
 
   selectRow($event: KalSelectionModel<{ id: string }>) {
     this.selectedValue = $event.format();
-    this.kalListComponent.highlighted = null;
+    this.kalListComponent.highlightedItem = null;
   }
 
   highlightItem() {

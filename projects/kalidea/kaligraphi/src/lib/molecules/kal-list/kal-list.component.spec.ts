@@ -245,7 +245,7 @@ describe('TestListItemComponent', () => {
 
   it('should highlight a row', () => {
 
-    spyOn(listInstances.highlightedItem, 'emit');
+    spyOn(listInstances.highlighted, 'emit');
 
     const selectedItem = component.dataSource.listItem[0];
 
@@ -257,7 +257,7 @@ describe('TestListItemComponent', () => {
 
     expect(listInstances.selectRowOnContentClick).toBeTruthy();
 
-    expect(listInstances.highlighted).toBeNull();
+    expect(listInstances.highlightedItem).toBeNull();
 
     expect(highlighted.length).toEqual(0);
 
@@ -267,9 +267,9 @@ describe('TestListItemComponent', () => {
 
     highlighted = fixture.debugElement.queryAll(By.css('.kal-list__item--highlighted'));
 
-    expect(listInstances.highlighted).toEqual(selectedItem);
+    expect(listInstances.highlightedItem).toEqual(selectedItem);
 
-    expect(listInstances.highlightedItem.emit).toHaveBeenCalledWith(selectedItem);
+    expect(listInstances.highlighted.emit).toHaveBeenCalledWith(selectedItem);
 
     expect(highlighted.length).toEqual(1);
 
