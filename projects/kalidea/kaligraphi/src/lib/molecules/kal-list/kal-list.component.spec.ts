@@ -9,6 +9,7 @@ import { KalCheckboxModule } from '../../atoms/kal-checkbox/kal-checkbox.module'
 import { KalListComponent, } from './kal-list.component';
 import { KalIconComponent } from '../../atoms/kal-icon/kal-icon.component';
 import { KalCheckboxComponent } from '../../atoms/kal-checkbox/kal-checkbox.component';
+import { KalSelectionModel } from '../../utils/classes/kal-selection';
 
 @Component({
   template: `
@@ -172,18 +173,16 @@ describe('TestListItemComponent', () => {
 
   it('should select an item (single mode)', () => {
     spyOn(listInstances.selectionChange, 'emit');
+    const listCheckbox = fixture.debugElement.queryAll(By.directive(KalCheckboxComponent));
+
+    expect(listCheckbox.length).toEqual(0);
 
     listItems.forEach(
       (item, index) => {
         item.nativeElement.click();
         expect(listInstances.isRowSelected(component.dataSource.listItem[index])).toBeTruthy();
-        expect(listInstances.selectionChange.emit).toHaveBeenCalledWith({
-          added: [component.dataSource.listItem[index]],
-          all: false,
-          count: 3,
-          removed: [],
-          total: 1
-        });
+        expect(listInstances.selectionChange.emit).toHaveBeenCalled();
+        expect(listInstances.selection.format()).toEqual(new KalSelectionModel({added: [component.dataSource.listItem[index]], count: 3}).format());
       }
     );
   });
@@ -201,17 +200,11 @@ describe('TestListItemComponent', () => {
       (item, index) => {
         item.nativeElement.click();
         expect(listInstances.isRowSelected(component.dataSource.listItem[index])).toBeTruthy();
+        expect(listInstances.selectionChange.emit).toHaveBeenCalled();
       }
     );
 
-    expect(listInstances.selectionChange.emit).toHaveBeenCalledWith({
-      added: [...component.dataSource.listItem],
-      all: false,
-      count: 3,
-      removed: [],
-      total: 3
-    });
-
+    expect(listInstances.selection.format()).toEqual(new KalSelectionModel({added: [...component.dataSource.listItem], count: 3}).format());
   });
 
   it('should clear the selection', () => {

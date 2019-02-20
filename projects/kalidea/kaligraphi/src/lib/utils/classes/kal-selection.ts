@@ -1,5 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { cloneDeep, isNil } from 'lodash';
+import { isNil } from 'lodash';
 
 export class KalSelection<T extends { id?: string }> {
 
@@ -88,8 +88,6 @@ export class KalSelectionModel<T extends { id?: string }> extends SelectionModel
       count,
       multiple,
     } = {...new KalSelection(), ...params};
-
-    console.log('init');
 
     this.initSelection(added.length > 1 || all ? true : multiple, added as T[], removed as T[]);
 

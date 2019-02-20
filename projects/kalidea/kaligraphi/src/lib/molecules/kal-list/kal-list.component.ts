@@ -123,7 +123,11 @@ export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewI
     }
 
     if (this.isInitialized) {
-      this._selection.multiple = value === KalListSelectionMode.Multiple;
+      if (value === KalListSelectionMode.None) {
+        this._selection.clear();
+      } else {
+        this._selection.multiple = value === KalListSelectionMode.Multiple;
+      }
       this.countItems();
     }
 
@@ -141,8 +145,15 @@ export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewI
   set selection(value: KalSelectionModel<T>) {
     if (value && (value.constructor.name === 'KalSelectionModel')) {
       this._selection = value;
-      console.log(this.selectionMode);
-      this._selection.multiple = this.selectionMode === KalListSelectionMode.Multiple;
+
+      const isMutliple = this.selectionMode === KalListSelectionMode.Multiple;
+
+      if (this.selectionMode === KalListSelectionMode.None && !this._selection.isEmpty()) {
+        this._selection.clear();
+      } else if (this._selection.multiple !== isMutliple) {
+        this._selection.multiple = isMutliple;
+      }
+
       this.countItems();
       this.cdr.markForCheck();
     }
@@ -407,6 +418,7 @@ export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewI
       this._selection = new KalSelectionModel<T>({
         multiple: this.selectionMode === KalListSelectionMode.Multiple
       });
+      this.countItems();
     }
     this.isInitialized = true;
   }
