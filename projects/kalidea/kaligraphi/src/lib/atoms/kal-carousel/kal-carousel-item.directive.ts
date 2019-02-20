@@ -1,6 +1,7 @@
-import { Directive, ElementRef, EmbeddedViewRef, Host, Input, OnInit, Optional, TemplateRef, ViewContainerRef } from '@angular/core';
-import { KalCarouselComponent, KalCarouselItemStatus } from './kal-carousel.component';
+import { Directive, ElementRef, EmbeddedViewRef, Host, OnInit, Optional, TemplateRef, ViewContainerRef } from '@angular/core';
 import { animate, AnimationBuilder, AnimationFactory, AnimationPlayer, style } from '@angular/animations';
+
+import { KalCarouselComponent, KalCarouselItemStatus } from './kal-carousel.component';
 
 class CarouselContext<T> {
   /** item value. */

@@ -27,6 +27,7 @@ export class AppComponent {
     {label: 'Chips', route: '/atoms/chip'},
     {label: 'Loader', route: '/atoms/loader'},
     {label: 'Carousel', route: '/atoms/carousel'},
+    {label: 'Autocomplete', route: '/atoms/autocomplete'},
     {label: '---', route: ''},
     {label: 'Button', route: '/molecules/button'},
     {label: 'List', route: '/molecules/list'},

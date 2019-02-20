@@ -16,11 +16,11 @@
 * Should open the panel when trigger is clicked
 * Should close the panel when a click occurs outside the panel
 * Should to have so many option as option components when is open
-* Should display given options
+* Should display given optionsComponent
 * Should set a default label
 * Should close when option is clicked
 * Should select an option in option list
 * Should select multiple option in option list
-* Should select options via the UP/DOWN arrow keys
-* Should select multiple options via the UP/DOWN arrow keys on multiple select
+* Should select optionsComponent via the UP/DOWN arrow keys
+* Should select multiple optionsComponent via the UP/DOWN arrow keys on multiple select
 * Should select the first option when there is only one option

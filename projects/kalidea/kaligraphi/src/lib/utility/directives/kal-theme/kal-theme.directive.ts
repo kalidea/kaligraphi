@@ -8,9 +8,9 @@ export class KalThemeDirective {
 
   static readonly prefix = 'kal-theme--';
 
-  private themes: string[];
-
   public rawThemes: string | string[];
+
+  private themes: string[];
 
   constructor(private renderer: Renderer2, private elementRef: ElementRef) {
   }
@@ -34,13 +34,17 @@ export class KalThemeDirective {
 
     this.themes = themes as string[];
 
-    (<string[]>this.themes)
-      .filter(theme => theme !== '')
-      .map(theme => KalThemeDirective.prefix + theme)
+    this.kalThemeAsClassNames
       .forEach(className => {
         this.renderer.addClass(this.elementRef.nativeElement, className);
       });
 
+  }
+
+  get kalThemeAsClassNames(): string[] {
+    return (<string[]>this.themes)
+      .filter(theme => theme !== '')
+      .map(theme => KalThemeDirective.prefix + theme);
   }
 
   private removeOldThemes() {

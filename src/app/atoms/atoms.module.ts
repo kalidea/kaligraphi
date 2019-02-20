@@ -19,6 +19,7 @@ import { TreeComponent } from './tree/tree.component';
 import { ChipComponent } from './chip/chip.component';
 import { LoaderComponent } from './loader/loader.component';
 import { CarouselComponent } from './carousel/carousel.component';
+import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 
 @NgModule({
   imports: [
@@ -43,7 +44,9 @@ import { CarouselComponent } from './carousel/carousel.component';
     TreeComponent,
     ChipComponent,
     LoaderComponent,
-    CarouselComponent
+    CarouselComponent,
+    LoaderComponent,
+    AutocompleteComponent
   ]
 })
 export class AtomsModule { }
