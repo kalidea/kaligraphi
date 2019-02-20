@@ -182,7 +182,8 @@ describe('TestListItemComponent', () => {
         item.nativeElement.click();
         expect(listInstances.isRowSelected(component.dataSource.listItem[index])).toBeTruthy();
         expect(listInstances.selectionChange.emit).toHaveBeenCalled();
-        expect(listInstances.selection.format()).toEqual(new KalSelectionModel({added: [component.dataSource.listItem[index]], count: 3}).format());
+        expect(listInstances.selection.format())
+          .toEqual(new KalSelectionModel({added: [component.dataSource.listItem[index]], count: 3}).format());
       }
     );
   });
