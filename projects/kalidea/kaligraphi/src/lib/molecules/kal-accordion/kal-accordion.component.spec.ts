@@ -46,7 +46,7 @@ describe('KalAccordionComponent', () => {
     expect(panelInstances[1].getExpandedState()).toEqual('expanded');
   });
 
-  it('should allow multiple _items to be expanded simultaneously', () => {
+  it('should allow multiple items to be expanded simultaneously', () => {
     const fixture = TestBed.createComponent(SetOfItemsComponent);
     fixture.componentInstance.multi = true;
     fixture.detectChanges();
@@ -60,7 +60,7 @@ describe('KalAccordionComponent', () => {
     expect(panelInstances[1].getExpandedState()).toEqual('expanded');
   });
 
-  it('should expand or collapse all enabled _items', () => {
+  it('should expand or collapse all enabled items', () => {
     const fixture = TestBed.createComponent(SetOfItemsComponent);
     fixture.detectChanges();
 
@@ -83,7 +83,7 @@ describe('KalAccordionComponent', () => {
     expect(panelInstances[1].getExpandedState()).toEqual('collapsed');
   });
 
-  it('should not expand or collapse disabled _items', () => {
+  it('should not expand or collapse disabled items', () => {
     const fixture = TestBed.createComponent(SetOfItemsComponent);
     fixture.detectChanges();
 

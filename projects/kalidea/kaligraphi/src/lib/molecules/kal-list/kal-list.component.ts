@@ -52,7 +52,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   @Input() icon: string;
 
   /**
-   * Datasource to give _items list to the component
+   * Datasource to give items list to the component
    */
   @Input()
   get dataSource(): KalListDataSource<T> {
@@ -104,7 +104,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
     this.cdr.markForCheck();
   }
   /**
-   * Selectable _items (none, single, multiple)
+   * Selectable items (none, single, multiple)
    */
   @Input()
   set selectionMode(value: KalListSelectionMode) {
@@ -134,7 +134,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   }
 
   /**
-   * Function that group _items in listing
+   * Function that group items in listing
    */
   @Input() groupByFunction: (item: T) => string;
 
@@ -183,7 +183,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   private _selection: KalListSelection<T> = new KalListSelection<T>();
 
   /**
-   * Selectable _items (none, single, multiple)
+   * Selectable items (none, single, multiple)
    */
   private _selectionMode: KalListSelectionMode = KalListSelectionMode.Single;
 
@@ -305,7 +305,7 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   }
 
   /**
-   * Check if _items need to be grouped
+   * Check if items need to be grouped
    */
   containsGroupByFunction(item: T, index: number): boolean {
     const previousItem = this.results[index - 1] as T;
