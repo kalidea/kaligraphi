@@ -1,9 +1,5 @@
-import {
-  Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, Input, Output,
-  EventEmitter
-} from '@angular/core';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
-
+import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core';
+import { Coerce } from '../../utils/decorators/coerce';
 
 @Component({
   selector: 'kal-button',
@@ -12,7 +8,12 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalButtonComponent implements OnInit {
+export class KalButtonComponent {
+
+  /**
+   * Is the button disabled ?
+   */
+  private isDisabled = false;
 
   /**
    * tabindex value
@@ -21,25 +22,17 @@ export class KalButtonComponent implements OnInit {
 
   @Input() size: 'normal' | 'large' = 'normal';
 
-  /**
-   * Is the button disabled ?
-   */
-  private isDisabled = false;
+  @Input() type: 'button' | 'submit' | 'reset' = 'button';
 
-  constructor() {
-  }
-
+  @Input()
+  @Coerce('boolean')
   get disabled() {
     return this.isDisabled;
   }
 
-  @Input()
   set disabled(value: boolean) {
-    this.isDisabled = coerceBooleanProperty(value);
+    this.isDisabled = value;
     this.tabIndex = this.disabled ? this.tabIndex : null;
-  }
-
-  ngOnInit() {
   }
 
 }
