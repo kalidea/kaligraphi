@@ -20,7 +20,7 @@ import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
 import { ENTER, SPACE } from '@angular/cdk/keycodes';
 import { CollectionViewer, DataSource, ListRange } from '@angular/cdk/collections';
 import { Observable, of, Subscription } from 'rxjs';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, isNil } from 'lodash';
 import { KalListItemDirective } from './kal-list-item.directive';
 import { KalListItemSelectionDirective } from './kal-list-item-selection.directive';
 import { KalSelectionModel } from '../../utils/classes/kal-selection';
@@ -381,7 +381,13 @@ export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewI
    * Is the item highlighted
    */
   isHighlighted(item): boolean {
-    return !!this.highlightedItem && this.highlightedItem.id === item.id;
+    if (!this.highlightedItem) {
+      return false;
+    } else if (!isNil(item.id)) {
+      return this.highlightedItem.id === item.id;
+    } else {
+      return this.highlightedItem === item;
+    }
   }
 
   private countItems() {
