@@ -11,7 +11,7 @@ export class KalListItemSelectionDirective implements Highlightable {
    */
   @Input() disabled: boolean;
 
-  @HostBinding('class.kal-list__item--highlighted') hightlighted;
+  @HostBinding('class.kal-list__item--hover') hightlighted;
 
   constructor() {}
 

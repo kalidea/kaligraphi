@@ -9,6 +9,7 @@ import {
   Input,
   OnChanges,
   OnDestroy,
+  OnInit,
   Output,
   QueryList,
   SimpleChanges,
@@ -18,10 +19,12 @@ import {
 import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
 import { ENTER, SPACE } from '@angular/cdk/keycodes';
 import { CollectionViewer, DataSource, ListRange } from '@angular/cdk/collections';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
+import { cloneDeep, isNil } from 'lodash';
 import { KalListItemDirective } from './kal-list-item.directive';
 import { KalListItemSelectionDirective } from './kal-list-item-selection.directive';
-import { KalListSelection } from './kal-list-selection';
+import { KalSelectionModel } from '../../utils/classes/kal-selection';
+import { Coerce } from '../../utils/decorators/coerce';
 import { AutoUnsubscribe } from '../../utils';
 
 enum KalListSelectionMode {
@@ -44,12 +47,82 @@ export interface KalVirtualScrollConfig {
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalListComponent<T extends { id: string }> implements CollectionViewer, AfterViewInit, OnChanges, OnDestroy {
+export class KalListComponent<T extends { id?: string }> implements CollectionViewer, OnInit, AfterViewInit, OnChanges, OnDestroy {
+
+  @Input() highlightedItem: T = null;
 
   /**
    * The icon to display in all templates
    */
-  @Input() icon: string;
+  @Input() icon = 'keyboard_arrow_right';
+
+  /**
+   * Function that group items in listing
+   */
+  @Input() groupByFunction: (item: T) => string;
+
+  /**
+   * Results list
+   */
+  results: T[] = [];
+
+  /**
+   * @inheritDoc
+   */
+  viewChange: Observable<ListRange>;
+
+  /**
+   * Triggered when selection has changed
+   */
+  @Output() readonly selectionChange: EventEmitter<KalSelectionModel<T>> = new EventEmitter<KalSelectionModel<T>>();
+
+  /**
+   * Triggered when an item has been highlighted
+   */
+  @Output() readonly highlighted: EventEmitter<T> = new EventEmitter<T>();
+
+  /**
+   * Row template
+   */
+  @ContentChild(KalListItemDirective) row: KalListItemDirective;
+
+  /**
+   * The reference to the element thats contains the kal list item directive
+   */
+  @ViewChildren(KalListItemSelectionDirective) children: QueryList<KalListItemSelectionDirective>;
+
+  /**
+   * Function that disable rows in template
+   */
+  @Input() disableRowsFunction: (item: T) => (boolean) = null;
+
+  @Coerce('boolean')
+  @Input() selectRowOnContentClick = false;
+
+  private isInitialized = false;
+
+  /**
+   * Manages keyboard events for options in the panel
+   */
+  private keyManager: ActiveDescendantKeyManager<KalListItemSelectionDirective> = null;
+
+  /**
+   * Whether or not the select is focus
+   */
+  private isFocused: boolean;
+
+  /**
+   * The selected item index
+   */
+  private selectedItemIndex: number;
+
+  /**
+   * The subscription
+   */
+  @AutoUnsubscribe()
+  private subscription: Subscription = Subscription.EMPTY;
+
+  private _dataSource: KalListDataSource<T> = null;
 
   /**
    * Datasource to give items list to the component
@@ -73,19 +146,73 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
     }
   }
 
+  /**
+   * Selectable items (none, single, multiple)
+   */
+  private _selectionMode: KalListSelectionMode = KalListSelectionMode.Single;
+
+  /**
+   * Selectable items (none, single, multiple)
+   */
   @Input()
-  get selection(): KalListSelection<T> {
-    return this._selection;
-  }
-
-  set selection(value: KalListSelection<T>) {
-    this._selection = value && (value.constructor.name === 'KalListSelection') ? value : new KalListSelection<T>();
-    this.cdr.markForCheck();
-  }
-
   get selectionMode() {
     return this._selectionMode;
   }
+
+  set selectionMode(value: KalListSelectionMode) {
+
+    switch (value) {
+      case KalListSelectionMode.Multiple:
+        this._selectionMode = value;
+        break;
+
+      case KalListSelectionMode.None:
+        this._selectionMode = value;
+        break;
+
+      default:
+        this._selectionMode = KalListSelectionMode.Single;
+        break;
+    }
+
+    if (this.isInitialized) {
+      if (this.selectionMode === KalListSelectionMode.None && !this._selection.isEmpty()) {
+        this._selection.clear();
+      } else {
+        this._selection.multiple = value === KalListSelectionMode.Multiple;
+      }
+      this.countItems();
+    }
+
+    this.activeItem(null);
+
+    this.cdr.markForCheck();
+
+  }
+
+  private _selection: KalSelectionModel<T> = null;
+
+  @Input()
+  get selection(): KalSelectionModel<T> {
+    return this._selection;
+  }
+
+  set selection(value: KalSelectionModel<T>) {
+    if (value && (value.constructor.name === 'KalSelectionModel')) {
+      this._selection = value;
+
+      if (this.isInitialized) {
+        this.initSelection();
+      }
+
+      this.cdr.markForCheck();
+    }
+  }
+
+  /**
+   * The virtual scroll config
+   */
+  private _virtualScrollConfig: KalVirtualScrollConfig = null;
 
   @Input()
   get virtualScrollConfig(): KalVirtualScrollConfig {
@@ -103,110 +230,11 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
     }
     this.cdr.markForCheck();
   }
-  /**
-   * Selectable items (none, single, multiple)
-   */
-  @Input()
-  set selectionMode(value: KalListSelectionMode) {
-
-    switch (value) {
-      case KalListSelectionMode.Multiple:
-        this._selectionMode = value;
-        break;
-
-      case KalListSelectionMode.None:
-        this._selection.selected = [];
-        this._selection.excluded = [];
-        this._selectionMode = value;
-        break;
-
-      default:
-        this._selection.selected = this._selection.selected.length > 0 ? [this._selection.selected[0]] as T[] : [];
-        this._selection.excluded = [];
-        this._selectionMode = KalListSelectionMode.Single;
-        break;
-    }
-
-    this.activeItem(null);
-
-    this.cdr.markForCheck();
-
-  }
-
-  /**
-   * Function that group items in listing
-   */
-  @Input() groupByFunction: (item: T) => string;
-
-  /**
-   * Results list
-   */
-  results: T[] = [];
-
-  /**
-   * @inheritDoc
-   */
-  viewChange: Observable<ListRange>;
-
-  /**
-   * Triggered when selection has changed
-   */
-  @Output() selectionChange: EventEmitter<KalListSelection<T>> = new EventEmitter<KalListSelection<T>>();
-
-  /**
-   * Row template
-   */
-  @ContentChild(KalListItemDirective) row: KalListItemDirective;
-
-  /**
-   * The reference to the element thats contains the kal list item directive
-   */
-  @ViewChildren(KalListItemSelectionDirective) children: QueryList<KalListItemSelectionDirective>;
-
-  /**
-   * Manages keyboard events for optionsComponent in the panel
-   */
-  private keyManager: ActiveDescendantKeyManager<KalListItemSelectionDirective> = null;
-
-  /**
-   * Whether or not the select is focus
-   */
-  private isFocused: boolean;
-
-  /**
-   * The selected item index
-   */
-  private selectedItemIndex: number;
-
-  private _dataSource: KalListDataSource<T> = null;
-
-  private _selection: KalListSelection<T> = new KalListSelection<T>();
-
-  /**
-   * Selectable items (none, single, multiple)
-   */
-  private _selectionMode: KalListSelectionMode = KalListSelectionMode.Single;
-
-  /**
-   * The subscription
-   */
-  @AutoUnsubscribe()
-  private subscription: Subscription = Subscription.EMPTY;
-
-  /**
-   * The virtual scroll config
-   */
-  private _virtualScrollConfig: KalVirtualScrollConfig = null;
-
-  /**
-   * Function that disable rows in template
-   */
-  @Input() disableRowsFunction: (item: T) => (boolean) = null;
 
   constructor(private cdr: ChangeDetectorRef) {
   }
 
-    /**
+  /**
    * Focus the tab element
    */
   @HostListener('focus')
@@ -250,42 +278,71 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
     }
   }
 
+  initSelection() {
+    const isMutliple = this.selectionMode === KalListSelectionMode.Multiple;
+
+    if (this.selectionMode === KalListSelectionMode.None && !this._selection.isEmpty()) {
+      this._selection.clear();
+    } else if (this._selection.multiple !== isMutliple) {
+      this._selection.multiple = isMutliple;
+    }
+
+    this.countItems();
+  }
+
   selectAll() {
     if (this._selectionMode === KalListSelectionMode.Multiple) {
-      this._selection.all = !this._selection.all;
-      this._selection.reset();
-
-      if (this._selection.all) {
-        this._selection.selected.push(...this.results.filter(element => !this.isRowDisabled(element)));
-        this._selection.excluded.push(...this.results.filter(element => this.isRowDisabled(element)));
-      }
-
+      this._selection.selectAll();
       this.cdr.markForCheck();
 
       this.selectionChange.emit(this._selection);
+    } else {
+      throw Error('Cannot select multiple rows with single selection mode.');
     }
   }
 
   /**
    * Select an item in list and emit an event with the selected item value
    */
-  selectItem(item: T) {
+  selectItem(item) {
+    if (!this.selectRowOnContentClick) {
+
+      this.selectCheckbox(item);
+
+    } else {
+
+      this.highlightedItem = item;
+      this.highlighted.emit(item);
+    }
+  }
+
+  selectCheckbox(item, $event?) {
+    if ($event) {
+      $event.preventDefault();
+      $event.stopPropagation();
+    }
+
     if (!this.isRowDisabled(item) && this._selectionMode !== KalListSelectionMode.None) {
 
       this.selectedItemIndex = this.results.findIndex(row => row === item);
       this.activeItem(this.selectedItemIndex);
 
-      this.updateSelectedItem(item);
+      if (this._selectionMode === KalListSelectionMode.Multiple || !this._selection.isSelected(item)) {
+
+        this._selection.toggle(item);
+
+      }
 
       this.selectionChange.emit(this._selection);
     }
+
   }
 
   /**
    * Is the item selected
    */
   isRowSelected(item): boolean {
-    return !item.id ? this._selection.selected.some(element => element === item) : this._selection.contains(item);
+    return this.selection.isSelected(item);
   }
 
   /**
@@ -298,10 +355,13 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
   /**
    * Reset the selected item
    */
-  reset() {
-    this._selection = new KalListSelection<T>();
+  clear() {
+    this._selection.clear();
     this.activeItem(null);
+
     this.cdr.markForCheck();
+
+    this.selectionChange.emit(this._selection);
   }
 
   /**
@@ -314,37 +374,28 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
       && (!previousItem || this.groupByFunction(previousItem) !== this.groupByFunction(item));
   }
 
-  toggleItem(item: T) {
-    if (this._selection.indexOf(item) === -1) {
-      this._selection.add(item);
+  /**
+   * Is the item highlighted
+   */
+  isHighlighted(item: T): boolean {
+    if (!this.highlightedItem) {
+      return false;
+    } else if (!isNil(item.id)) {
+      return this.highlightedItem.id === item.id;
     } else {
-      this._selection.remove(item);
+      return this.highlightedItem === item;
+    }
+  }
+
+  private countItems() {
+    if (this._selection && this.results && this._selection.count < this.results.length) {
+      this._selection.count = this.results.length;
     }
   }
 
   private activeItem(index: number) {
     if (this.keyManager) {
       this.keyManager.setActiveItem(index);
-    }
-  }
-
-  private updateSelectedItem(item: T) {
-    if (this._selectionMode !== KalListSelectionMode.Multiple) {
-      this._selection.selected = [];
-      this._selection.add(item);
-    } else if (this._selection.all) {
-
-      const position = this._selection.indexOf(item, 'excluded');
-
-      if (position === -1) {
-        this._selection.remove(item);
-        this._selection.add(item, 'excluded');
-      } else {
-        this._selection.remove(item, 'excluded');
-        this._selection.add(item);
-      }
-    } else {
-      this.toggleItem(item);
     }
   }
 
@@ -357,25 +408,36 @@ export class KalListComponent<T extends { id: string }> implements CollectionVie
     }
   }
 
+  private setResults(dataSource$: Observable<T[] | ReadonlyArray<T>>) {
+    this.subscription = dataSource$.subscribe(
+      (items: T[]) => {
+        this.results = items;
+        this.countItems();
+        this.cdr.markForCheck();
+      }
+    );
+  }
+
   private observeDataSource() {
     if ((this.dataSource as DataSource<T>).connect instanceof Function) {
-      this.subscription = (this.dataSource as DataSource<T>).connect(this).subscribe(
-        (items: T[]) => {
-          this.results = items;
-          this.cdr.markForCheck();
-        }
-      );
+      this.setResults((this.dataSource as DataSource<T>).connect(this));
     } else if (this.dataSource instanceof Observable) {
-      this.subscription = (this.dataSource as Observable<T[]>).subscribe(
-        (items: T[]) => {
-          this.results = items;
-          this.cdr.markForCheck();
-        }
-      );
+      this.setResults((this.dataSource as Observable<T[]>));
     } else if (Array.isArray(this.dataSource)) {
-      this.results = this.dataSource as T[];
-      this.cdr.markForCheck();
+      this.setResults(of(this.dataSource as T[]));
     }
+  }
+
+  ngOnInit(): void {
+    if (!this._selection) {
+      this._selection = new KalSelectionModel<T>({
+        multiple: this.selectionMode === KalListSelectionMode.Multiple
+      });
+    }
+
+    this.initSelection();
+
+    this.isInitialized = true;
   }
 
   ngAfterViewInit() {
