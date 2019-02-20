@@ -95,29 +95,32 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
    * Function that disable rows in template
    */
   @Input() disableRowsFunction: (item: T) => (boolean) = null;
+
   @Coerce('boolean')
   @Input() selectRowOnContentClick = false;
+
   private isInitialized = false;
+
   /**
    * Manages keyboard events for options in the panel
    */
   private keyManager: ActiveDescendantKeyManager<KalListItemSelectionDirective> = null;
+
   /**
    * Whether or not the select is focus
    */
   private isFocused: boolean;
+
   /**
    * The selected item index
    */
   private selectedItemIndex: number;
+
   /**
    * The subscription
    */
   @AutoUnsubscribe()
   private subscription: Subscription = Subscription.EMPTY;
-
-  constructor(private cdr: ChangeDetectorRef) {
-  }
 
   private _dataSource: KalListDataSource<T> = null;
 
@@ -228,16 +231,7 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
     this.cdr.markForCheck();
   }
 
-  initSelection() {
-    const isMutliple = this.selectionMode === KalListSelectionMode.Multiple;
-
-    if (this.selectionMode === KalListSelectionMode.None && !this._selection.isEmpty()) {
-      this._selection.clear();
-    } else if (this._selection.multiple !== isMutliple) {
-      this._selection.multiple = isMutliple;
-    }
-
-    this.countItems();
+  constructor(private cdr: ChangeDetectorRef) {
   }
 
   /**
@@ -282,6 +276,18 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
     } else {
       this.keyManager.onKeydown(event);
     }
+  }
+
+  initSelection() {
+    const isMutliple = this.selectionMode === KalListSelectionMode.Multiple;
+
+    if (this.selectionMode === KalListSelectionMode.None && !this._selection.isEmpty()) {
+      this._selection.clear();
+    } else if (this._selection.multiple !== isMutliple) {
+      this._selection.multiple = isMutliple;
+    }
+
+    this.countItems();
   }
 
   selectAll() {
