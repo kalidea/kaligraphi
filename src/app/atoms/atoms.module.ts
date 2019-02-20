@@ -18,6 +18,7 @@ import { SnackbarComponent } from './snackbar/snackbar.component';
 import { TreeComponent } from './tree/tree.component';
 import { ChipComponent } from './chip/chip.component';
 import { LoaderComponent } from './loader/loader.component';
+import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 
 @NgModule({
   imports: [
@@ -41,7 +42,8 @@ import { LoaderComponent } from './loader/loader.component';
     CardComponent,
     TreeComponent,
     ChipComponent,
-    LoaderComponent
+    LoaderComponent,
+    AutocompleteComponent
   ]
 })
 export class AtomsModule { }

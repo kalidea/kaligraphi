@@ -75,7 +75,7 @@ describe('TestSelectComponent', () => {
       expect(component.select.options.length).toBe(options.length);
     });
 
-    it('should display given options', () => {
+    it('should display given optionsComponent', () => {
       trigger.click();
 
       component.options.map(o => expect(overlayContainerElement.textContent).toContain(o.viewValue));
@@ -165,39 +165,39 @@ describe('TestSelectComponent', () => {
 
 
     // todo @frank repare for angular 7
-    // it('should select options via the UP/DOWN arrow keys', () => {
+    // it('should select optionsComponent via the UP/DOWN arrow keys', () => {
     //   component.select.focus();
     //
     //   component.select.handleKeydown(createKeyboardEvent('keydown', ENTER));
     //   component.select.handleKeydown(createKeyboardEvent('keydown', DOWN_ARROW));
     //   component.select.handleKeydown(createKeyboardEvent('keydown', ENTER));
     //
-    //   expect(component.select.options.first.isHighlighted).toBeTruthy();
-    //   expect(component.select.options.first.active).toBeTruthy();
-    //   expect(component.select.selected).toEqual(component.options.first);
+    //   expect(component.select.optionsComponent.first.isHighlighted).toBeTruthy();
+    //   expect(component.select.optionsComponent.first.active).toBeTruthy();
+    //   expect(component.select.selected).toEqual(component.optionsComponent.first);
     //
     //   component.select.handleKeydown(createKeyboardEvent('keydown', ENTER));
     //   component.select.handleKeydown(createKeyboardEvent('keydown', DOWN_ARROW));
     //   component.select.handleKeydown(createKeyboardEvent('keydown', ENTER));
     //
-    //   const optionsPos1 = component.select.options.find((item, index) => index === 1);
+    //   const optionsPos1 = component.select.optionsComponent.find((item, index) => index === 1);
     //   expect(optionsPos1.isHighlighted).toBeTruthy();
     //   expect(optionsPos1.active).toBeTruthy();
     //   expect(component.select.selected).toEqual(optionsPos1);
     //
-    //   expect(component.select.options.first.isHighlighted).toBeFalsy();
-    //   expect(component.select.options.first.active).toBeFalsy();
+    //   expect(component.select.optionsComponent.first.isHighlighted).toBeFalsy();
+    //   expect(component.select.optionsComponent.first.active).toBeFalsy();
     // });
 
-    // it('should select multiple options via the UP/DOWN arrow keys on multiple select', () => {
+    // it('should select multiple optionsComponent via the UP/DOWN arrow keys on multiple select', () => {
     //   component.select.multiple = true;
     //   component.select.focus();
     //   component.select.handleKeydown(createKeyboardEvent('keydown', ENTER));
     //   component.select.handleKeydown(createKeyboardEvent('keydown', DOWN_ARROW));
     //   component.select.handleKeydown(createKeyboardEvent('keydown', ENTER));
     //
-    //   expect(component.select.options.first.isHighlighted).toBeTruthy();
-    //   expect(component.select.options.first.active).toBeTruthy();
+    //   expect(component.select.optionsComponent.first.isHighlighted).toBeTruthy();
+    //   expect(component.select.optionsComponent.first.active).toBeTruthy();
     //
     //   let selectedOptions = component.select.selected as KalOptionComponent[];
     //   expect(selectedOptions.length).toEqual(1);
@@ -205,11 +205,11 @@ describe('TestSelectComponent', () => {
     //   component.select.handleKeydown(createKeyboardEvent('keydown', DOWN_ARROW));
     //   component.select.handleKeydown(createKeyboardEvent('keydown', ENTER));
     //
-    //   const optionsPos1 = component.select.options.find((item, index) => index === 1);
+    //   const optionsPos1 = component.select.optionsComponent.find((item, index) => index === 1);
     //   expect(optionsPos1.isHighlighted).toBeTruthy();
     //   expect(optionsPos1.active).toBeTruthy();
-    //   expect(component.select.options.first.isHighlighted).toBeFalsy();
-    //   expect(component.select.options.first.active).toBeTruthy();
+    //   expect(component.select.optionsComponent.first.isHighlighted).toBeFalsy();
+    //   expect(component.select.optionsComponent.first.active).toBeTruthy();
     //
     //   selectedOptions = component.select.selected as KalOptionComponent[];
     //   expect(selectedOptions.length).toEqual(2);

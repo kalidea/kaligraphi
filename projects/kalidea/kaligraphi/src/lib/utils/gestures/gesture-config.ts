@@ -17,7 +17,7 @@ import {
 } from './gesture-annotations';
 
 /**
- * Injection token that can be used to provide options to the Hammerjs instance.
+ * Injection token that can be used to provide optionsComponent to the Hammerjs instance.
  * More info at http://hammerjs.github.io/api/.
  */
 export const KAL_HAMMER_OPTIONS = new InjectionToken<HammerOptions>('KAL_HAMMER_OPTIONS');

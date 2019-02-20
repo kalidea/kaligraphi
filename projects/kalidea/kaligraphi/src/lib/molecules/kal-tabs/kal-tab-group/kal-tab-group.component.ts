@@ -53,7 +53,7 @@ export class KalTabGroupComponent extends FormElementComponent<number> implement
   private selectedTabIndex = 0;
 
   /**
-   * Manages keyboard events for options in the panel
+   * Manages keyboard events for optionsComponent in the panel
    */
   private keyManager: ActiveDescendantKeyManager<KalTabHeaderComponent>;
 

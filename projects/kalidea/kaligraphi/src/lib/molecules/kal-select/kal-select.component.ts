@@ -42,7 +42,7 @@ export class KalSelectComponent
   implements OnInit, OnDestroy, AfterContentInit {
 
   /**
-   * All of the defined select options
+   * All of the defined select optionsComponent
    */
   @ContentChildren(KalOptionComponent, {descendants: true}) options: QueryList<KalOptionComponent>;
 
@@ -67,7 +67,7 @@ export class KalSelectComponent
   private overlayRef: OverlayRef;
 
   /**
-   * Manages keyboard events for options in the panel
+   * Manages keyboard events for optionsComponent in the panel
    */
   private keyManager: ActiveDescendantKeyManager<KalOptionComponent>;
 
@@ -337,7 +337,7 @@ export class KalSelectComponent
   }
 
   /**
-   * Event emitted when several options are selected
+   * Event emitted when several optionsComponent are selected
    * Set the option as active
    */
   private multipleOptionSelected(options: KalOptionComponent[], withNotify = true) {
