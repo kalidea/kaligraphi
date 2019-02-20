@@ -18,6 +18,7 @@ import { SnackbarComponent } from './snackbar/snackbar.component';
 import { TreeComponent } from './tree/tree.component';
 import { ChipComponent } from './chip/chip.component';
 import { LoaderComponent } from './loader/loader.component';
+import { CarouselComponent } from './carousel/carousel.component';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 
 @NgModule({
@@ -42,6 +43,8 @@ import { AutocompleteComponent } from './autocomplete/autocomplete.component';
     CardComponent,
     TreeComponent,
     ChipComponent,
+    LoaderComponent,
+    CarouselComponent,
     LoaderComponent,
     AutocompleteComponent
   ]

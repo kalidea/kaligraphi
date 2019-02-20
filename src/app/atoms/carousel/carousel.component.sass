@@ -1,0 +1,54 @@
+
+$arrow-width: 20px
+$height: 200px
+
+kal-carousel
+  height: $height
+  position: relative
+  display: block
+
+  .container
+    display: flex
+    overflow: hidden
+
+
+  a
+    position: absolute
+    width: $arrow-width
+    top: 0
+    bottom: 0
+    background: #CCC
+    border: 1px solid #CCC
+    color: #FFF
+    display: flex
+    &::before
+      align-self: center
+      display: block
+      text-align: center
+      width: 100%
+    &:hover
+      background: white
+      border: 1px solid #CCC
+      &::before
+        color: #CCC
+
+  a.previous
+    left: -#{$arrow-width + 2}
+    &::before
+      content: '<'
+
+  a.next
+    right: -#{$arrow-width + 2}
+    &::before
+      content: '>'
+
+
+  article
+    box-sizing: border-box
+    background-position: center center
+    background-size: cover
+    display: inline-block
+    flex: 0 0 calc(100%/4)
+    height: $height
+    border: 2px solid #FFF
+    position: relative
