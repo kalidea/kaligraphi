@@ -17,7 +17,7 @@
     [selectRowOnContentClick]="selectRowOnContentClick"
     [class.has-selected-element]="listSelection && listSelection.total > 0"
     (selectionChange)="selectRow($event)"
-    (highlightedItem)="highlightItem()">
+    (highlighted)="highlightItem()">
 
     <ng-template kalListItem let-item="item">
       {{ item.name }}

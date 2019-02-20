@@ -9,6 +9,7 @@ import { KalCheckboxModule } from '../../atoms/kal-checkbox/kal-checkbox.module'
 import { KalListComponent, } from './kal-list.component';
 import { KalIconComponent } from '../../atoms/kal-icon/kal-icon.component';
 import { KalCheckboxComponent } from '../../atoms/kal-checkbox/kal-checkbox.component';
+import { KalSelectionModel } from '../../utils/classes/kal-selection';
 
 @Component({
   template: `
@@ -172,18 +173,17 @@ describe('TestListItemComponent', () => {
 
   it('should select an item (single mode)', () => {
     spyOn(listInstances.selectionChange, 'emit');
+    const checkboxList = fixture.debugElement.queryAll(By.directive(KalCheckboxComponent));
+
+    expect(checkboxList.length).toEqual(0);
 
     listItems.forEach(
       (item, index) => {
         item.nativeElement.click();
         expect(listInstances.isRowSelected(component.dataSource.listItem[index])).toBeTruthy();
-        expect(listInstances.selectionChange.emit).toHaveBeenCalledWith({
-          added: [component.dataSource.listItem[index]],
-          all: false,
-          count: 3,
-          removed: [],
-          total: 1
-        });
+        expect(listInstances.selectionChange.emit).toHaveBeenCalled();
+        expect(listInstances.selection.format())
+          .toEqual(new KalSelectionModel({added: [component.dataSource.listItem[index]], count: 3}).format());
       }
     );
   });
@@ -193,26 +193,19 @@ describe('TestListItemComponent', () => {
     component.selectionMode = 'multiple';
     fixture.detectChanges();
 
-    const listCheckbox = fixture.debugElement.queryAll(By.directive(KalCheckboxComponent));
+    const checkboxList = fixture.debugElement.queryAll(By.directive(KalCheckboxComponent));
 
-    expect(listCheckbox.length).toEqual(3);
+    expect(checkboxList.length).toEqual(3);
 
     listItems.forEach(
       (item, index) => {
         item.nativeElement.click();
         expect(listInstances.isRowSelected(component.dataSource.listItem[index])).toBeTruthy();
+        expect(listInstances.selectionChange.emit).toHaveBeenCalled();
       }
     );
 
-    console.log(listInstances.selection.format());
-    expect(listInstances.selectionChange.emit).toHaveBeenCalledWith({
-      added: [...component.dataSource.listItem],
-      all: false,
-      count: 3,
-      removed: [],
-      total: 3
-    });
-
+    expect(listInstances.selection.format()).toEqual(new KalSelectionModel({added: [...component.dataSource.listItem], count: 3}).format());
   });
 
   it('should clear the selection', () => {
@@ -253,7 +246,7 @@ describe('TestListItemComponent', () => {
 
   it('should highlight a row', () => {
 
-    spyOn(listInstances.highlightedItem, 'emit');
+    spyOn(listInstances.highlighted, 'emit');
 
     const selectedItem = component.dataSource.listItem[0];
 
@@ -265,7 +258,7 @@ describe('TestListItemComponent', () => {
 
     expect(listInstances.selectRowOnContentClick).toBeTruthy();
 
-    expect(listInstances.highlighted).toBeNull();
+    expect(listInstances.highlightedItem).toBeNull();
 
     expect(highlighted.length).toEqual(0);
 
@@ -275,9 +268,9 @@ describe('TestListItemComponent', () => {
 
     highlighted = fixture.debugElement.queryAll(By.css('.kal-list__item--highlighted'));
 
-    expect(listInstances.highlighted).toEqual(selectedItem);
+    expect(listInstances.highlightedItem).toEqual(selectedItem);
 
-    expect(listInstances.highlightedItem.emit).toHaveBeenCalledWith(selectedItem);
+    expect(listInstances.highlighted.emit).toHaveBeenCalledWith(selectedItem);
 
     expect(highlighted.length).toEqual(1);
 

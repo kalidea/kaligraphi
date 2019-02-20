@@ -5,7 +5,7 @@
     <cdk-virtual-scroll-viewport [style.height.px]="virtualScrollConfig.height"
                                  [itemSize]="virtualScrollConfig.itemSize">
 
-      <div *cdkVirtualFor="let item of results; index as i">
+      <div *cdkVirtualFor="let item of results; index as i" class="kal-list__row">
 
         <ng-container *ngTemplateOutlet="rowTemplate; context: {item: item, i: i}"></ng-container>
 
