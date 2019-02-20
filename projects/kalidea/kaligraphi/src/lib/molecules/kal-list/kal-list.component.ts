@@ -47,7 +47,7 @@ export interface KalVirtualScrollConfig {
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewInit, OnChanges, OnDestroy {
+export class KalListComponent<T extends {id?: string}> implements CollectionViewer, OnInit, AfterViewInit, OnChanges, OnDestroy {
 
   @Input() highlightedItem: T = null;
 
@@ -370,7 +370,7 @@ export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewI
   /**
    * Is the item highlighted
    */
-  isHighlighted(item): boolean {
+  isHighlighted(item: T): boolean {
     if (!this.highlightedItem) {
       return false;
     } else if (!isNil(item.id)) {
