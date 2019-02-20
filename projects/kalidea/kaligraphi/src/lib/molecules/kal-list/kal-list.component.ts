@@ -8,7 +8,8 @@ import {
   HostListener,
   Input,
   OnChanges,
-  OnDestroy, OnInit,
+  OnDestroy,
+  OnInit,
   Output,
   QueryList,
   SimpleChanges,
@@ -50,7 +51,7 @@ export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewI
 
   highlighted = null;
 
-  isInitialized = false;
+  private isInitialized = false;
 
   @Coerce('boolean')
   @Input() selectRowOnContentClick = false;
@@ -288,7 +289,7 @@ export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewI
 
       this.selectionChange.emit(this._selection);
     } else {
-      throw Error('Cannot select multiple rows width single selection mode.');
+      throw Error('Cannot select multiple rows with single selection mode.');
     }
   }
 
@@ -416,10 +417,11 @@ export class KalListComponent<T> implements CollectionViewer, OnInit, AfterViewI
   ngOnInit(): void {
     if (!this._selection) {
       this._selection = new KalSelectionModel<T>({
-        multiple: this.selectionMode === KalListSelectionMode.Multiple
-      });
+        multiple: this.selectionMode === KalListSelectionMode.Multiple});
+
       this.countItems();
     }
+
     this.isInitialized = true;
   }
 

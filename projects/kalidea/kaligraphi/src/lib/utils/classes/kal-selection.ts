@@ -29,7 +29,7 @@ export class KalSelection<T extends { id?: string }> {
   multiple ? = false;
 
   /**
-   * Total of selection
+   * Total selected elements
    */
   total ? = 0;
 }

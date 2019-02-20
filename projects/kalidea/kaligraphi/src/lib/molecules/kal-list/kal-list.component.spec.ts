@@ -173,9 +173,9 @@ describe('TestListItemComponent', () => {
 
   it('should select an item (single mode)', () => {
     spyOn(listInstances.selectionChange, 'emit');
-    const listCheckbox = fixture.debugElement.queryAll(By.directive(KalCheckboxComponent));
+    const checkboxList = fixture.debugElement.queryAll(By.directive(KalCheckboxComponent));
 
-    expect(listCheckbox.length).toEqual(0);
+    expect(checkboxList.length).toEqual(0);
 
     listItems.forEach(
       (item, index) => {
@@ -192,9 +192,9 @@ describe('TestListItemComponent', () => {
     component.selectionMode = 'multiple';
     fixture.detectChanges();
 
-    const listCheckbox = fixture.debugElement.queryAll(By.directive(KalCheckboxComponent));
+    const checkboxList = fixture.debugElement.queryAll(By.directive(KalCheckboxComponent));
 
-    expect(listCheckbox.length).toEqual(3);
+    expect(checkboxList.length).toEqual(3);
 
     listItems.forEach(
       (item, index) => {
