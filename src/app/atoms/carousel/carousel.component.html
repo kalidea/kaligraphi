@@ -1,0 +1,18 @@
+<h1>Carousel</h1>
+
+<div class="example" >
+  <kal-carousel #carousel="kalCarousel" [items]="elements">
+    <a (click)="carousel.previous()" class="previous" *ngIf="!carousel.isFirst"></a>
+    <div class="container">
+      <article
+        *kalCarouselItem="let e"
+        [style.background-image]="'url('+ e.image + ')'">
+        <h3> {{ e.title }}</h3>
+      </article>
+    </div>
+    <a (click)="carousel.next()" class="next" *ngIf="!isEndOfViewport(carousel.currentItem)"></a>
+  </kal-carousel>
+
+</div>
+
+

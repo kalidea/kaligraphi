@@ -1,6 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ReplaySubject, Subject } from 'rxjs';
-import { shareReplay } from 'rxjs/operators';
+import { Component, HostBinding, Input, OnInit } from '@angular/core';
+import { ReplaySubject } from 'rxjs';
 
 export enum KalCarouselItemStatus {
   Init = 'init', // init value
@@ -13,12 +12,14 @@ const prefix = 'kalCarousel';
 @Component({
   selector: 'kal-carousel',
   template: '<ng-content></ng-content>',
-  exportAs: 'kal-carousel'
+  exportAs: 'kalCarousel'
 })
 export class KalCarouselComponent<T> implements OnInit {
 
+  @HostBinding('attr.tabIndex') tabIndex = 2;
+
   @Input(prefix + 'Start')
-  start = 0;
+  currentItem = 0;
 
   @Input()
   items: T[] = [];
@@ -29,18 +30,25 @@ export class KalCarouselComponent<T> implements OnInit {
     return this.updateViewSubject.asObservable();
   }
 
-  constructor() {
-  }
-
-  private get length() {
+  get length() {
     return this.items.length;
   }
 
+  get isFirst() {
+    return this.currentItem === 0;
+  }
+
+  get isLast() {
+    return this.currentItem === this.length - 1;
+  }
+
   next() {
+    this.currentItem = (this.currentItem + 1) % this.items.length;
     this.updateViewSubject.next(KalCarouselItemStatus.Append);
   }
 
   previous() {
+    this.currentItem = (this.currentItem - 1 + this.items.length) % this.items.length;
     this.updateViewSubject.next(KalCarouselItemStatus.Shift);
   }
 

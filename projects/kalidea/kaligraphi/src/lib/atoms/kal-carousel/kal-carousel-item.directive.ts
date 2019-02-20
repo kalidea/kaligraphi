@@ -1,6 +1,6 @@
 import { Directive, ElementRef, EmbeddedViewRef, Host, Input, OnInit, Optional, TemplateRef, ViewContainerRef } from '@angular/core';
 import { KalCarouselComponent, KalCarouselItemStatus } from './kal-carousel.component';
-import { animate, AnimationBuilder, AnimationFactory, style } from '@angular/animations';
+import { animate, AnimationBuilder, AnimationFactory, AnimationPlayer, style } from '@angular/animations';
 
 class CarouselContext<T> {
   /** item value. */
@@ -20,8 +20,6 @@ class CarouselContext<T> {
 
   /** Whether this is the last item  */
   last: boolean;
-
-  animationDone: void;
 }
 
 const prefix = 'kalCarouselItem';
@@ -32,8 +30,9 @@ const prefix = 'kalCarouselItem';
 })
 export class KalCarouselItemDirective<T> implements OnInit {
 
-  @Input()
-  kalCarouselItemUseAnimation = false;
+  private player: AnimationPlayer;
+
+  private animationRunning = false;
 
   constructor(
     private viewContainerRef: ViewContainerRef,
@@ -43,35 +42,16 @@ export class KalCarouselItemDirective<T> implements OnInit {
     @Host() @Optional() private carousel: KalCarouselComponent<T>) {
   }
 
-  get start() {
-    return this.carousel.start;
-  }
-
-  @Input(prefix + 'Start')
-  set start(start) {
-    this.carousel.start = start;
+  get currentItem() {
+    return this.carousel.currentItem;
   }
 
   get items() {
     return this.carousel.items;
   }
 
-  @Input(prefix + 'Of')
-  set items(items) {
-    this.carousel.items = items;
-  }
-
-  private get itemsOrdered(): T[] {
-    const itemsList: T[] = [];
-    for (let i = 0; i < this.length; i++) {
-      const index = (this.length + i + this.start) % (this.length);
-      itemsList[i] = this.items[index];
-    }
-    return itemsList;
-  }
-
   private get length() {
-    return this.items.length;
+    return this.carousel.length;
   }
 
   private render(status: KalCarouselItemStatus) {
@@ -83,90 +63,89 @@ export class KalCarouselItemDirective<T> implements OnInit {
         });
         break;
       case KalCarouselItemStatus.Append:
-        this.append();
-        break;
       case KalCarouselItemStatus.Shift:
         // https://netbasal.com/building-a-simple-carousel-component-with-angular-3a94092b7080
-        this.shift();
+        this.moveView(status);
         break;
 
     }
   }
 
-  private append() {
-    const [from, to] = [0, this.length - 1];
-    const viewRef = <EmbeddedViewRef<CarouselContext<T>>>this.viewContainerRef.get(from);
-    viewRef.context.status = KalCarouselItemStatus.Append;
+  private getVariables(status: KalCarouselItemStatus): {
+    positionFrom: number,
+    positionTo: number,
+    marginFrom: number,
+    marginTo: number,
+    moveAfterAnimation: boolean
+  } {
 
-    const myAnimation: AnimationFactory = this.builder.build([
-      animate(400, style({ transform: `translateX(-100%)` }))
-    ]);
+    const end = this.length - 1;
+    let [
+      positionFrom,
+      positionTo,
+      marginFrom,
+      marginTo,
+      moveAfterAnimation
+    ] = [0, end, 0, -1, true];
 
-    const player = myAnimation.create(viewRef.rootNodes[0]);
-    player.onDone( () => {
-      this.viewContainerRef.move(viewRef, to);
-      player.reset();
-    });
-    player.play();
-  }
+    if (status === KalCarouselItemStatus.Shift) {
+      [
+        positionFrom,
+        positionTo,
+        marginFrom,
+        marginTo,
+        moveAfterAnimation
+      ] = [end, 0, -1, 0, false];
+    }
 
-
-  private shift() {
-    const [from, to] = [this.length - 1, 0];
-    const viewRef = <EmbeddedViewRef<CarouselContext<T>>>this.viewContainerRef.get(from);
-    viewRef.context.status = KalCarouselItemStatus.Shift;
-
-    const myAnimation: AnimationFactory = this.builder.build([
-      style({ transform: `translateX(0%)`}),
-      animate(400, style({ transform: `translateX(+100%)` }))
-    ]);
-
-    this.viewContainerRef.move(viewRef, to);
-    const player = myAnimation.create(viewRef.rootNodes[0]);
-    player.onDone( () => {
-      player.reset();
-    });
-    player.play();
+    return {positionFrom, positionTo, marginFrom, marginTo, moveAfterAnimation};
   }
 
   private moveView(status: KalCarouselItemStatus) {
 
-    const end = this.length - 1;
-
-    let animation = null;
-    let from, to;
-
-    if (status === KalCarouselItemStatus.Append) {
-      // from 0 to end
-      [from, to] = [0, end];
-    } else {
-      // from end to 0
-      [from, to] = [end, 0];
+    if (this.animationRunning) {
+      return;
     }
 
-    const viewRef = <EmbeddedViewRef<CarouselContext<T>>>this.viewContainerRef.get(from);
-    this.viewContainerRef.move(viewRef, to);
+    const {
+      positionFrom,
+      positionTo,
+      marginFrom,
+      marginTo,
+      moveAfterAnimation
+    } = this.getVariables(status);
 
-    // const sign = status === KalCarouselItemStatus.Append ? '-' : '+';
-    //
-    // const myAnimation : AnimationFactory = this.builder.build([
-    //   animate(400, style({ transform: `translateX(${sign}25%)` }))
-    // ]);
-    //
-    //
-    // const [from, to] = status === KalCarouselItemStatus.Append ? [0, end] : [end, 0];
-    // const viewRef = <EmbeddedViewRef<CarouselContext<T>>>this.viewContainerRef.get(from);
-    //
-    // console.log(viewRef.rootNodes[0].parentElement);
-    // const player = myAnimation.create(viewRef.rootNodes[0].parentElement);
-    // player.play();
-    //
-    // player.onDone( () => {
-    //
-    //   player.reset();
-    // });
-
+    // get view ref and update context
+    const viewRef = <EmbeddedViewRef<CarouselContext<T>>>this.viewContainerRef.get(positionFrom);
     viewRef.context.status = status;
+
+    // move viewRef if needed
+    if (!moveAfterAnimation) {
+      this.viewContainerRef.move(viewRef, positionTo);
+    }
+
+    // get width of element
+    const width = (viewRef.rootNodes[0] as HTMLElement).getBoundingClientRect().width;
+
+    // build animation
+    const myAnimation: AnimationFactory = this.builder.build([
+      style({marginLeft: marginFrom * width}),
+      animate(300, style({marginLeft: marginTo * width}))
+    ]);
+
+    // create player
+    this.player = myAnimation.create(viewRef.rootNodes[0]);
+    this.player.onDone(() => {
+      // remove viewRef if needed
+      if (moveAfterAnimation) {
+        this.viewContainerRef.move(viewRef, positionTo);
+      }
+      this.player.reset();
+      this.animationRunning = false;
+    });
+    this.animationRunning = true;
+    this.player.play();
+
   }
 
   private editContext(item: T,

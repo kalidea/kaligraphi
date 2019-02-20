@@ -15,6 +15,7 @@ import { SnackbarComponent } from 'src/app/atoms/snackbar/snackbar.component';
 import { TreeComponent } from 'src/app/atoms/tree/tree.component';
 import { ChipComponent } from 'src/app/atoms/chip/chip.component';
 import { LoaderComponent } from 'src/app/atoms/loader/loader.component';
+import { CarouselComponent } from 'src/app/atoms/carousel/carousel.component';
 
 const routes: Routes = [
   {path: 'input', component: InputComponent},
@@ -31,6 +32,7 @@ const routes: Routes = [
   {path: 'tree', component: TreeComponent},
   {path: 'chip', component: ChipComponent},
   {path: 'loader', component: LoaderComponent},
+  {path: 'carousel', component: CarouselComponent},
 ];
 
 @NgModule({
