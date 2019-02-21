@@ -73,8 +73,12 @@ export class KalDatepickerMultiViewComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // scroll to current year
-    document.getElementsByClassName('selected-year')[0].scrollIntoView();
+    const selectedYear = document.getElementsByClassName('selected-year')[0];
+
+    // scroll to selected year
+    if (selectedYear) {
+      selectedYear.scrollIntoView();
+    }
   }
 
 }
