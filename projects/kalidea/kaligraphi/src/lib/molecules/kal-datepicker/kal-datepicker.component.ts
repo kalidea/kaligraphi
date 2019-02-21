@@ -38,6 +38,8 @@ export type KalCalendarView = 'month' | 'multi';
 })
 export class KalDatepickerComponent extends FormElementComponent<KalDate> implements OnInit {
 
+  private readonly yearsIncrement = 30;
+
   /**
    * Reference to calendar template.
    */
@@ -86,12 +88,15 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
 
   /**
    * Max year that should be displayed in year selection.
-   * If there's no year setted we're taking the current year and add 30 years.
    */
   @Input()
   @Coerce('number')
   get maxYear(): number {
-    return this._maxYear || DateTime.local().year + 30;
+    if (this._maxYear && this.isCurrentDateValid && this.currentDate.getYear() <= this._maxYear) {
+      return this._maxYear;
+    } else {
+      return DateTime.local().year + this.yearsIncrement;
+    }
   }
 
   set maxYear(maxYear: number) {
@@ -104,12 +109,12 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     this.cdr.markForCheck();
   }
 
-  private _minYear: number;
+  private _minYear = 1940;
 
   @Input()
   @Coerce('number')
   get minYear(): number {
-    return this._minYear || 1940;
+    return this._minYear;
   }
 
   set minYear(minYear: number) {
@@ -157,6 +162,13 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
       .withPositions([
         {originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top'}
       ]);
+  }
+
+  /**
+   * Whether the current date is valid.
+   */
+  private get isCurrentDateValid(): boolean {
+    return this.currentDate && this.currentDate.valid;
   }
 
   /**
