@@ -2,7 +2,11 @@
 
 <div class="example" [class.reverse]="reverse">
   <kal-form-field>
-    <kal-datepicker [formControl]="control" [kalTheme]="themes" name="datepicker"></kal-datepicker>
+    <kal-datepicker [formControl]="control"
+                    [kalTheme]="themes" name="datepicker"
+                    [minYear]="minYear"
+                    [maxYear]="maxYear"
+    ></kal-datepicker>
   </kal-form-field>
 </div>
 
@@ -22,5 +26,13 @@
   </ng-container>
 
   <kal-button (click)="clearValidators()" kalTheme="secondary">Clear validators</kal-button>
+
+  <kal-form-field>
+    <kal-input [(ngModel)]="maxYear" label="Max year"></kal-input>
+  </kal-form-field>
+
+  <kal-form-field>
+    <kal-input [(ngModel)]="minYear" label="Min year"></kal-input>
+  </kal-form-field>
 
 </div>

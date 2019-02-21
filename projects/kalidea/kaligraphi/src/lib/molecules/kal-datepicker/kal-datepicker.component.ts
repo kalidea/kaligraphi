@@ -1,10 +1,11 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   forwardRef,
   Injector,
-  OnDestroy,
+  Input,
   OnInit,
   ViewChild,
   ViewEncapsulation
@@ -13,12 +14,14 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { FormControl, NgControl } from '@angular/forms';
-import { filter, map, tap } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import { filter, map, tap } from 'rxjs/operators';
+import { DateTime } from 'luxon';
 import { coerceKalDateProperty, KalDate, KalDateType } from './kal-date';
 import { KalMonthCalendarComponent } from './kal-month-calendar/kal-month-calendar.component';
 import { KalDatepickerHeaderComponent } from './kal-datepicker-header/kal-datepicker-header.component';
-import { buildProviders, FormElementComponent } from '../../utils/index';
+import { AutoUnsubscribe, buildProviders, FormElementComponent } from '../../utils/index';
+import { Coerce } from '../../../lib/utils/decorators/coerce';
 
 /**
  * Possible views for the calendar.
@@ -33,7 +36,7 @@ export type KalCalendarView = 'month' | 'multi';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: buildProviders(KalDatepickerComponent)
 })
-export class KalDatepickerComponent extends FormElementComponent<KalDate> implements OnInit, OnDestroy {
+export class KalDatepickerComponent extends FormElementComponent<KalDate> implements OnInit {
 
   /**
    * Reference to calendar template.
@@ -65,11 +68,13 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   /**
    * Subscription to `overlayRef.backdropClick()`.
    */
+  @AutoUnsubscribe()
   private backdropClickSubscription = Subscription.EMPTY;
 
   /**
    * Subscription to `overlayRef.keydownEvents()` with `ESC` key.
    */
+  @AutoUnsubscribe()
   private escapeKeySubscription = Subscription.EMPTY;
 
   /**
@@ -77,8 +82,49 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
    */
   private overlayRef: OverlayRef;
 
+  private _maxYear: number;
+
+  /**
+   * Max year that should be displayed in year selection.
+   * If there's no year setted we're taking the current year and add 30 years.
+   */
+  @Input()
+  @Coerce('number')
+  get maxYear(): number {
+    return this._maxYear || DateTime.local().year + 30;
+  }
+
+  set maxYear(maxYear: number) {
+    // check if year length is valid
+    if (('' + maxYear).length !== 4) {
+      return;
+    }
+
+    this._maxYear = maxYear;
+    this.cdr.markForCheck();
+  }
+
+  private _minYear: number;
+
+  @Input()
+  @Coerce('number')
+  get minYear(): number {
+    return this._minYear || 1940;
+  }
+
+  set minYear(minYear: number) {
+    // check if year length is valid
+    if (('' + minYear).length !== 4) {
+      return;
+    }
+
+    this._minYear = minYear;
+    this.cdr.markForCheck();
+  }
+
   constructor(private overlay: Overlay,
               private elementRef: ElementRef<HTMLElement>,
+              private cdr: ChangeDetectorRef,
               private injector: Injector) {
     super();
   }
@@ -222,8 +268,4 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     ).subscribe();
   }
 
-  ngOnDestroy(): void {
-    this.backdropClickSubscription.unsubscribe();
-    this.escapeKeySubscription.unsubscribe();
-  }
 }
