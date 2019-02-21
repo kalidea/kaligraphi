@@ -2,13 +2,17 @@
 <div class="kal-day-calendar__letter">
   <div *ngFor="let day of narrowWeekDays"> {{ day }}</div>
 </div>
+
 <div class="kal-day-calendar__number">
-  <button type="button"
+
+  <button *ngFor="let date of datesList"
+          type="button"
+          [class.hidden]="isDateHidden(date)"
           [kalAutofocus]="isDaySelected(date)"
           [class.selected]="isDaySelected(date)"
           [disabled]="shouldDisable(date)"
-          (click)="pickDate(date)"
-          *ngFor="let date of datesList">
+          (click)="pickDate(date)">
     {{ date.getDay() }}
   </button>
+
 </div>

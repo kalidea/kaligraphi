@@ -46,13 +46,27 @@ export class KalMonthCalendarComponent implements OnInit {
   get datesList(): KalDate[] {
     const startMonth = this.displayedDate.getDate().startOf('month');
     const datesList: KalDate[] = [];
+    const startWeekOfMonth = startMonth.startOf('week');
+    const endWeek = startWeekOfMonth.endOf('month');
+
+    // Count days between the first weekday of the first monthday and the first monthday.
+    // We should add 1 because we want to include the last day in the computation
+    const countWeekDays = startMonth.weekday !== 1 ? (endWeek.day - startWeekOfMonth.day) + 1 : 0;
 
     // create an array with all days in selected date month
-    for (let i = 0; i < startMonth.daysInMonth; i++) {
-      datesList.push(new KalDate(startMonth.plus({days: i})));
+    for (let i = 0; i < (countWeekDays + startMonth.daysInMonth); i++) {
+      datesList.push(new KalDate(startWeekOfMonth.plus({days: i})));
     }
 
     return datesList;
+  }
+
+  /**
+   * Whether we should add a `hidden` class to our button.
+   * It allows us to hide the days of the previous month.
+   */
+  isDateHidden(date: KalDate): boolean {
+    return date.getMonth() !== this.displayedDate.getMonth();
   }
 
   /**

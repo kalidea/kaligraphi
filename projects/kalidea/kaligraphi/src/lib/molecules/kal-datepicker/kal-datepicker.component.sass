@@ -49,6 +49,8 @@
           padding: get("calendar.month.number.button.padding", $theme-parameters)
           text-align: get("calendar.month.number.button.text-align", $theme-parameters)
           background-color: get("calendar.month.number.button.background-color", $theme-parameters)
+          &.hidden
+            visibility: hidden
           &:not(:disabled)
             &:hover, &:active, &:focus, &.selected
               cursor: get("calendar.month.number.button.selected.cursor", $theme-parameters)
