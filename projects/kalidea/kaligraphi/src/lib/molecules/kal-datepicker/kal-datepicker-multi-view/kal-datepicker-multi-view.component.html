@@ -1,7 +1,7 @@
 <div class="kal-datepicker-multi-view__wrapper">
   <!-- Months list -->
   <div class="kal-datepicker-multi-view__month">
-    <div [class.selected]="isMonthSelected(i + 1)"
+    <div [class.selected-month]="isMonthSelected(i + 1)"
           *ngFor="let month of shortMonths; index as i"
           (click)="selectDate({month: i + 1})">
       {{ month }}
@@ -11,7 +11,7 @@
 <!-- Years list -->
   <div class="kal-datepicker-multi-view__year">
     <div *ngFor="let year of years"
-          [class.selected]="isYearSelected(year)"
+          [class.selected-year]="isYearSelected(year)"
           (click)="selectDate({year: year})">
       {{ year }}
     </div>

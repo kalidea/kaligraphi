@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewEncapsulation
+} from '@angular/core';
 import { DateObjectUnits, Info } from 'luxon';
 import { KalDate } from '../kal-date';
 
@@ -10,7 +18,7 @@ import { KalDate } from '../kal-date';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class KalDatepickerMultiViewComponent {
+export class KalDatepickerMultiViewComponent implements AfterViewInit {
 
   /**
    * Returns an array of standalone short month names.
@@ -58,6 +66,11 @@ export class KalDatepickerMultiViewComponent {
    */
   isYearSelected(year: number): boolean {
     return this.displayedDate && this.displayedDate.getYear() === year;
+  }
+
+  ngAfterViewInit(): void {
+    // scroll to current year
+    document.getElementsByClassName('selected-year')[0].scrollIntoView();
   }
 
 }
