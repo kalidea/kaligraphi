@@ -5,9 +5,40 @@
       opacity: 0.3
   kal-loader
     display: flex
+    flex-flow: column wrap
+    justify-content: center
+    align-contents: center
     width: 100%
-    p
+    > div:nth-child(1)
       width: 100%
       align-self: center
-      border: 1px solid blue
-      background: lightblue
+      text-align: center
+      font-size: 15px
+      font-weight: 600
+      margin-bottom: 14px
+    > div:nth-child(2)
+      width: 100%
+      height: 6px
+      align-self: center
+      background-color: rgba(232,149,54,.3)
+      position: relative
+      overflow: hidden
+      &::before
+        content: ''
+        display: block
+        width: 50%
+        height: 6px
+        position: absolute
+        left: -50%
+        top: 0
+        background-color: #E89536
+        animation: moveloader 1s infinite
+    &.kal-theme--reverse
+      > div:nth-child(2)
+        background-color: rgba(92,92,92,.3)
+
+  @keyframes moveloader
+    from
+      left: -50%
+    to
+      left: 100%
