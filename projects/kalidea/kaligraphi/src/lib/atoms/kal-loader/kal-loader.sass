@@ -1,14 +1,13 @@
 =kal-loader($parameters)
   .kal-loading-could-change
-    min-height: 40px
-    &.kal-loading-is-loading
-      opacity: 0.2
+    min-height: 30px
   kal-loader
     display: flex
     flex-flow: column wrap
     justify-content: center
     align-items: center
     width: 100%
+    background-color: rgba(255,255,255,.8)
     > div:nth-child(1)
       width: 80%
       align-self: center
@@ -16,6 +15,7 @@
       font-size: 15px
       font-weight: 600
       margin-bottom: 14px
+      color: #1F1F1F
     > div:nth-child(2)
       width: 60%
       height: 6px
@@ -29,13 +29,17 @@
         width: 50%
         height: 6px
         position: absolute
+        z-index: 2
         left: -50%
         top: 0
         background-color: #E89536
         animation: moveloader 1s infinite
     &.kal-theme--reverse
+      background-color: rgba(0,0,0,.8)
+      > div:nth-child(1)
+        color: #F5F5F5
       > div:nth-child(2)
-        background-color: rgba(92,92,92,.3)
+        background-color: rgba(92,92,92,.8)
 
   @keyframes moveloader
     from
