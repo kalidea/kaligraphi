@@ -44,6 +44,9 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     'password': new StringFormat()
   };
 
+  /**
+   * form control for this component
+   */
   control: FormControl;
 
   /**
