@@ -95,57 +95,44 @@ describe('KalInputComponent', () => {
     expect(getInput().getAttribute('placeholder')).toEqual(placeholder);
   });
 
-  fit('format number on patch value', ((done) => {
+  it('format number on patch value', () => {
     component.type = 'number';
     fixture.detectChanges();
-
     const userInput = '2,2';
-    component.valueChanges.pipe(take(1)).subscribe(value => {
-      component.inputComponent.formatValue();
-      expect(component.inputComponent.value).toBe(userInput, 'user input should be untouched');
-      done();
-    });
-    component.value = userInput;
-  }));
+    expect(component.inputComponent.formater.toUser(userInput)).toBe(userInput, 'user input should be untouched');
 
-  it('format currency on patch value', ((done) => {
+  });
+
+  it('format currency on patch value', () => {
     component.type = 'currency';
     fixture.detectChanges();
 
     const userInput = '12.0';
-    component.valueChanges.pipe(take(1)).subscribe(value => {
-      component.inputComponent.formatValue();
-      expect(component.inputComponent.value).toBe('12,00', 'user input should be formatted');
-      done();
-    });
-    component.value = userInput;
-  }));
+    expect(component.inputComponent.formater.toUser(userInput)).toBe('12,00', 'user input should be formatted');
+  });
 
-  it('format currency on patch value with wrong value', ((done) => {
+  it('format currency on patch value with wrong value', () => {
     component.type = 'currency';
     fixture.detectChanges();
 
     const userInput = '12a';
-    component.valueChanges.pipe(take(1)).subscribe(value => {
-      component.inputComponent.formatValue();
-      expect(component.inputComponent.value).toBe('12,00', 'user input should be formatted');
-      done();
-    });
-    component.value = userInput;
-  }));
+    expect(component.inputComponent.formater.toUser(userInput)).toBe('12,00', 'user input should be formatted');
+  });
 
 
-  it('format phone number on patch value', ((done) => {
+  it('format phone number on patch value', () => {
     component.type = 'phone';
     fixture.detectChanges();
 
-    const userInput = '03 83838383';
-    component.valueChanges.pipe(take(1)).subscribe(value => {
-      expect(component.inputComponent.value).toBe('03 83 83 83 83', 'user input should be formatted');
-      done();
-    });
-    component.value = userInput;
-  }));
+    expect(component.inputComponent.formater.toUser('03 83838383'))
+      .toBe('03 83 83 83 83', 'user input should be formatted');
+
+    expect(component.inputComponent.formater.toUser('0033383838383'))
+      .toBe('0033 3 83 83 83 83', 'user input should be formatted');
+
+    expect(component.inputComponent.formater.toUser('+333 838 383 83'))
+      .toBe('+33 3 83 83 83 83', 'user input should be formatted');
+  });
 
   it('should add an icon to clear field', () => {
     const text = 'abcdefgh';
