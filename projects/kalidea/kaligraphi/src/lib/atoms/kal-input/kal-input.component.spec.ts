@@ -125,7 +125,7 @@ describe('KalInputComponent', () => {
 
     const userInput = '12a';
     component.valueChanges.pipe(take(1)).subscribe(value => {
-      expect(component.inputComponent.value).toBe('0,00', 'user input should be formatted');
+      expect(component.inputComponent.value).toBe('12,00', 'user input should be formatted');
       done();
     });
     component.value = userInput;

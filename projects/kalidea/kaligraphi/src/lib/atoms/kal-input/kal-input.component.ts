@@ -11,6 +11,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { AbstractControl, FormControl, NgControl } from '@angular/forms';
+import { FormHooks } from '@angular/forms/src/model';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { of, Subscription } from 'rxjs';
 
@@ -21,7 +22,6 @@ import { PhoneFormat } from './format/phone.format';
 import { StringFormat } from './format/string.format';
 
 import { buildProviders, FormElementComponent } from '../../utils/index';
-import { FormHooks } from '@angular/forms/src/model';
 
 @Component({
   selector: 'kal-input',
@@ -47,6 +47,11 @@ export class KalInputComponent extends FormElementComponent<string> implements O
   control: FormControl;
 
   /**
+   * should we format data on field on blur ?
+   */
+  @Input() formatOnBlur = true;
+
+  /**
    * type of input  ( text, password, email, number, ... )
    */
   @Input() type = 'text';
@@ -63,12 +68,12 @@ export class KalInputComponent extends FormElementComponent<string> implements O
 
   @Output() readonly iconClicked = new EventEmitter();
 
-  private controlChangedSubscription = Subscription.EMPTY;
-
   /**
    * event to trigger change
    */
-  private updateOnEvent: 'change' | 'blur' | 'submit' = 'change';
+  @Input() updateOnEvent: FormHooks = 'change';
+
+  private controlChangedSubscription = Subscription.EMPTY;
 
   private isClearable = false;
 
@@ -135,7 +140,7 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     this.value = value;
 
     // update form control
-    this.control.patchValue(value, {emitEvent: false});
+    // this.control.patchValue(this.formater.toUser(value), {emitEvent: false});
 
     this.valueChange.emit(value);
 
@@ -146,6 +151,12 @@ export class KalInputComponent extends FormElementComponent<string> implements O
 
   validate(c: AbstractControl) {
     return of(c.errors);
+  }
+
+  formatValue() {
+    if (this.formatOnBlur) {
+      this.control.patchValue(this.formater.toUser(this.value), {emitEvent: false});
+    }
   }
 
   ngOnDestroy(): void {
@@ -159,17 +170,15 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     this.ngControl = this.injector.get(NgControl, null);
 
     // grab updateOn property from control
-    let updateOn: FormHooks;
     if (this.ngControl && this.ngControl.control) {
-      updateOn = this.ngControl.control.updateOn;
+      this.updateOnEvent = this.ngControl.control.updateOn;
     }
 
-    this.control = new FormControl(this.value, {updateOn});
+    this.control = new FormControl(this.value, {updateOn: this.updateOnEvent});
 
     this.controlChangedSubscription = this.control.valueChanges.subscribe(value => {
       // notify parent for validation
       this.notifyUpdate(value);
     });
   }
-
 }
