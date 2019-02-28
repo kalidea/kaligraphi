@@ -3,7 +3,7 @@ import { KalLoaderData } from './kal-loader-data';
 
 @Component({
   selector: 'kal-loader',
-  template: `<p>{{ message }}</p>`,
+  template: `<div>{{ message }}</div><div></div>`,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })

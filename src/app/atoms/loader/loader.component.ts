@@ -11,11 +11,11 @@ export class LoaderComponent {
 
   loading = false;
 
-  width = 200;
+  width = 350;
 
-  height = 200;
+  height = 400;
 
-  message = 'chargement en cours';
+  message = 'Chargement en cours';
 
 
 }
