@@ -139,9 +139,6 @@ export class KalInputComponent extends FormElementComponent<string> implements O
   notifyUpdate(value) {
     this.value = value;
 
-    // update form control
-    // this.control.patchValue(this.formater.toUser(value), {emitEvent: false});
-
     this.valueChange.emit(value);
 
     // notify parent
