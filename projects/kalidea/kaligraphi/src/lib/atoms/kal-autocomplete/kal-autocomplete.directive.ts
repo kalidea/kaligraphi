@@ -4,6 +4,7 @@ import {
   EventEmitter,
   Host,
   HostListener,
+  Inject,
   Input,
   OnDestroy,
   Optional,
@@ -11,11 +12,12 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { FlexibleConnectedPositionStrategy, Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
+import { DOCUMENT } from '@angular/common';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { DOWN_ARROW, ENTER, ESCAPE, SPACE, UP_ARROW } from '@angular/cdk/keycodes';
 
-import { Subscription } from 'rxjs';
-import { startWith, take } from 'rxjs/operators';
+import { fromEvent, merge, Observable, of, Subscription } from 'rxjs';
+import { filter, skip, startWith, take } from 'rxjs/operators';
 
 import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 import { KalInputComponent } from '../kal-input/kal-input.component';
@@ -53,7 +55,9 @@ export class KalAutocompleteDirective<T = string> implements OnDestroy {
               private readonly input: KalInputComponent,
               private readonly elementRef: ElementRef,
               private readonly viewContainerRef: ViewContainerRef,
-              @Optional() @Host() private readonly theme: KalThemeDirective) {
+              @Optional() @Host() private readonly theme: KalThemeDirective,
+              @Optional() @Inject(DOCUMENT) private _document: any) {
+
   }
 
   @Input('kalAutocomplete')
@@ -125,6 +129,25 @@ export class KalAutocompleteDirective<T = string> implements OnDestroy {
 
   }
 
+  /** Stream of clicks outside of the autocomplete panel. */
+
+  private getOutsideClickStream(): Observable<any> {
+    if (!this._document) {
+      return of(null);
+    }
+
+    return merge(
+      fromEvent<MouseEvent>(this._document, 'click'),
+      fromEvent<TouchEvent>(this._document, 'touchend')
+    )
+      .pipe(filter(event => {
+        const clickTarget = event.target as HTMLElement;
+        return this.overlayRef.hasAttached() &&
+          clickTarget !== this.elementRef.nativeElement &&
+          (!!this._overlayRef && !this._overlayRef.overlayElement.contains(clickTarget));
+      }));
+  }
+
   @HostListener('focusin')
   private open() {
 
@@ -144,21 +167,27 @@ export class KalAutocompleteDirective<T = string> implements OnDestroy {
     const valueChangeSubscription = this.input
       .valueChange
       .pipe(startWith(this.input.value))
-      .subscribe(filter => {
-        this.updateOptionsList(filter);
+      .subscribe(expression => {
+        this.updateOptionsList(expression);
       });
 
-    this.subscriptionsList.push(selectionChangeSubscription, valueChangeSubscription);
+    // watch for click outside
+    const clickOutsideSubscription = this.getOutsideClickStream()
+      .pipe(skip(1)) // skip first click
+      .subscribe(() => this.close());
+
+
+    this.subscriptionsList.push(selectionChangeSubscription, valueChangeSubscription, clickOutsideSubscription);
   }
 
   /**
    * update autocomplete options list according to filter provided
    */
-  private updateOptionsList(filter = '') {
+  private updateOptionsList(expression = '') {
     let optionsList = [];
-    if (filter.trim() !== '') {
+    if (expression.trim() !== '') {
       try {
-        const regexp = new RegExp(`.*${filter}.*`, 'i');
+        const regexp = new RegExp(`.*${expression}.*`, 'i');
         optionsList = this._dataSource.filter(element => regexp.test(element.label));
       } catch (e) {
         optionsList = this._dataSource;
