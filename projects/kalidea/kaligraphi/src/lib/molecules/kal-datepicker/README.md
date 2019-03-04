@@ -2,7 +2,7 @@
 
 `<kal-datepicker>`  allows users to enter a date either through text input, or by choosing a date from the calendar.
 
-For our purpose, the `<kal-datepicker>` goes from the year 1940 to current year. 
+For our purpose, the `<kal-datepicker>` goes from the year <b>1940</b> to <b>(current year + 30 years)</b>. 
 
 # Usage
 
@@ -16,13 +16,21 @@ For our purpose, the `<kal-datepicker>` goes from the year 1940 to current year.
 control = new FormControl();
 ```
 
-#### Default value
+#### Default values
 
 You can pass a default date to the datepicker. It should be a `KalDate` type. 
 
 If you don't specify a date when instantiating a `KalDate`, the date will be today.
 ```typescript
 control = new FormControl(new KalDate('08/11/2018'));
+```
+
+You can also set a minimum year and a maximum year to limit years list.
+```typescript
+<kal-datepicker [formControl]="control"
+                minYear="1940"
+                maxYear="2100">
+</kal-datepicker>
 ```
 
 #### Validators

@@ -6,27 +6,27 @@
              (iconClicked)="open()">
   </kal-input>
 
-<ng-template cdkPortal #datepickerCalendar="cdkPortal">
-<div class="kal-datepicker__calendar">
-  <kal-datepicker-header (updatedMonth)="updateView($event)">
+  <ng-template cdkPortal #datepickerCalendar="cdkPortal">
+    <div class="kal-datepicker__calendar">
+      <kal-datepicker-header>
 
-    <p (click)="changeCurrentView()">
-      {{ currentPeriod }}
-    </p>
+        <p (click)="changeCurrentView()">
+          {{ currentPeriod }}
+        </p>
 
-  </kal-datepicker-header>
+      </kal-datepicker-header>
 
-  <kal-month-calendar
-    #monthCalendar
-    [hidden]="isMultiView"
-    (datePicked)="setInputValue($event)">
-  </kal-month-calendar>
+      <kal-month-calendar #monthCalendar
+                          [hidden]="isMultiView"
+                          (datePicked)="setInputValue($event)">
+      </kal-month-calendar>
 
-  <kal-datepicker-multi-view
-    *ngIf="isMultiView"
-    [displayedDate]="monthCalendar.displayedDate"
-    (selectedDate)="monthCalendar.updateDate($event)">
-  </kal-datepicker-multi-view>
-</div>
-</ng-template>
+      <kal-datepicker-multi-view *ngIf="isMultiView"
+                                 [displayedDate]="monthCalendar.displayedDate"
+                                 [minYear]="minYear"
+                                 [maxYear]="maxYear"
+                                 (selectedDate)="monthCalendar.updateDate($event)">
+      </kal-datepicker-multi-view>
+    </div>
+  </ng-template>
 </div>

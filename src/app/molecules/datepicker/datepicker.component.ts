@@ -13,6 +13,10 @@ export class DatepickerComponent implements OnInit {
 
   reverse = false;
 
+  minYear = 1900;
+
+  maxYear = 2100;
+
   control = new FormControl(new KalDate());
 
   dateValidatorForm: FormGroup;

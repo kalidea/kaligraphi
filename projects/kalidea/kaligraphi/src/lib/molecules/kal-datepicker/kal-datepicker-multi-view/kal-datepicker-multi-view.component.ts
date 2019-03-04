@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewEncapsulation
+} from '@angular/core';
 import { DateObjectUnits, Info } from 'luxon';
 import { KalDate } from '../kal-date';
 
@@ -10,7 +18,7 @@ import { KalDate } from '../kal-date';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class KalDatepickerMultiViewComponent {
+export class KalDatepickerMultiViewComponent implements AfterViewInit {
 
   /**
    * Returns an array of standalone short month names.
@@ -18,13 +26,17 @@ export class KalDatepickerMultiViewComponent {
    */
   readonly shortMonths = Info.months('short');
 
+  @Input() displayedDate: KalDate;
+
+  @Input() minYear: number;
+
+  @Input() maxYear: number;
+
   /**
    * Emits event with which type of date was selected.
    * Its type is `DateObjectUnits` but we're only using `month` and `year` in this type.
    */
   @Output() selectedDate = new EventEmitter<DateObjectUnits>();
-
-  @Input() displayedDate: KalDate;
 
   /**
    * Years to display.
@@ -32,7 +44,7 @@ export class KalDatepickerMultiViewComponent {
   get years(): number[] {
     const years = [];
 
-    for (let i = 2030; i >= 1940; i--) {
+    for (let i = this.maxYear; i >= this.minYear; i--) {
       years.push(i);
     }
 
@@ -58,6 +70,15 @@ export class KalDatepickerMultiViewComponent {
    */
   isYearSelected(year: number): boolean {
     return this.displayedDate && this.displayedDate.getYear() === year;
+  }
+
+  ngAfterViewInit(): void {
+    const selectedYear = document.getElementsByClassName('selected-year')[0];
+
+    // scroll to selected year
+    if (selectedYear) {
+      selectedYear.scrollIntoView();
+    }
   }
 
 }
