@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Directive,
   ElementRef,
   EventEmitter,
@@ -63,12 +64,14 @@ export class KalAutocompleteDirective<T = string> implements OnDestroy {
   @Input('kalAutocomplete')
   set dataSource(dataSource: KalAutocompleteOption<T>[]) {
     this._dataSource = dataSource;
+    this.updateOptionsList();
   }
 
 
   private get positionsList(): FlexibleConnectedPositionStrategy {
     return this.overlay.position()
       .flexibleConnectedTo(this.elementRef)
+      .withFlexibleDimensions(true)
       .withPositions([
         {
           overlayY: 'top',
@@ -87,7 +90,9 @@ export class KalAutocompleteDirective<T = string> implements OnDestroy {
       const panelClass = this.theme ? this.theme.kalThemeAsClassNames : [''];
       const config: OverlayConfig = {
         positionStrategy: this.positionsList,
-        panelClass: panelClass.join(' ')
+        scrollStrategy: this.overlay.scrollStrategies.reposition({scrollThrottle: 100}),
+        panelClass: panelClass.concat('kal-overlay-autocomplete').join(' ').trim(),
+        maxHeight: '90vh'
       };
       this._overlayRef = this.overlay.create(config);
 
@@ -184,18 +189,20 @@ export class KalAutocompleteDirective<T = string> implements OnDestroy {
    * update autocomplete options list according to filter provided
    */
   private updateOptionsList(expression = '') {
-    let optionsList = [];
-    if (expression.trim() !== '') {
-      try {
-        const regexp = new RegExp(`.*${expression}.*`, 'i');
-        optionsList = this._dataSource.filter(element => regexp.test(element.label));
-      } catch (e) {
+    if (this.autocompleteComponent) {
+      let optionsList = [];
+      if (expression.trim() !== '') {
+        try {
+          const regexp = new RegExp(`.*${expression}.*`, 'i');
+          optionsList = this._dataSource.filter(element => regexp.test(element.label));
+        } catch (e) {
+          optionsList = this._dataSource;
+        }
+      } else {
         optionsList = this._dataSource;
       }
-    } else {
-      optionsList = this._dataSource;
+      this.autocompleteComponent.options = optionsList;
     }
-    this.autocompleteComponent.options = optionsList;
   }
 
   /**
