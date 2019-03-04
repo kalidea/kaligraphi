@@ -1,11 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { Component, ViewChild } from '@angular/core';
-import { take } from 'rxjs/operators';
+import { Component, LOCALE_ID, ViewChild } from '@angular/core';
+import localeFr from '@angular/common/locales/fr';
 
 import { KalInputComponent } from './kal-input.component';
 import { KalIconComponent, KalIconModule } from '../kal-icon/kal-icon.module';
+import { registerLocaleData } from '@angular/common';
 
 @Component({
   selector: 'kal-test',
@@ -27,15 +28,21 @@ import { KalIconComponent, KalIconModule } from '../kal-icon/kal-icon.module';
 class TestComponent {
 
   inputControl: FormControl = new FormControl();
+
   inputControlBlur: FormControl = new FormControl('', {updateOn: 'blur'});
 
   limit: number;
+
   placeholder = 'plop';
+
   type = 'text';
+
   icon = 'calendar_today';
+
   clearable = false;
 
   @ViewChild('inputChange') inputComponent: KalInputComponent;
+
   @ViewChild('inputBlur') inputComponentBlur: KalInputComponent;
 
   get valueChanges() {
@@ -60,8 +67,13 @@ describe('KalInputComponent', () => {
     return fixture.debugElement.query(By.css('input')).nativeElement;
   };
 
+  beforeAll(() => {
+    registerLocaleData(localeFr, 'fr');
+  });
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      providers: [{provide: LOCALE_ID, useValue: 'fr-FR'}],
       imports: [
         ReactiveFormsModule,
         KalIconModule

@@ -1,9 +1,10 @@
 import { InputFormater } from './input-formater';
+import { formatNumber } from '@angular/common';
 
 export class NumberFormat extends InputFormater {
 
-  protected maximumFractionDigits = 4;
-  protected minimumFractionDigits = 0;
+  protected digitsInfo = '.0-4';
+
   protected style = 'decimal';
 
   /**
@@ -24,13 +25,7 @@ export class NumberFormat extends InputFormater {
       .replace(/[^0-9\.\,]/g, '') // keep only numbers
       .replace(',', '.'); // replace comma by decimal point
 
-    const options = {
-      style: this.style,
-      maximumFractionDigits: this.maximumFractionDigits,
-      minimumFractionDigits: this.minimumFractionDigits
-    };
-    value = (+value).toLocaleString(undefined, options);
-    return value;
+    return formatNumber(+value, this.locale, this.digitsInfo);
   }
 
 }

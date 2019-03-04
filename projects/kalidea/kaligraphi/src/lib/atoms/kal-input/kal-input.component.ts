@@ -16,10 +16,7 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { of, Subscription } from 'rxjs';
 
 import { InputFormater } from './format/input-formater';
-import { NumberFormat } from './format/number.format';
-import { CurrencyFormat } from './format/currency.format';
-import { PhoneFormat } from './format/phone.format';
-import { StringFormat } from './format/string.format';
+import { KalFormaterService } from './kal-formater.service';
 
 import { buildProviders, FormElementComponent } from '../../utils/index';
 
@@ -32,17 +29,6 @@ import { buildProviders, FormElementComponent } from '../../utils/index';
   providers: buildProviders(KalInputComponent)
 })
 export class KalInputComponent extends FormElementComponent<string> implements OnDestroy, AfterContentInit {
-
-  /**
-   * list of formaters
-   */
-  private static formatersList: { [key: string]: InputFormater } = {
-    'number': new NumberFormat(),
-    'currency': new CurrencyFormat(),
-    'phone': new PhoneFormat(),
-    'text': new StringFormat(),
-    'password': new StringFormat()
-  };
 
   /**
    * form control for this component
@@ -80,7 +66,9 @@ export class KalInputComponent extends FormElementComponent<string> implements O
 
   private isClearable = false;
 
-  constructor(private cdr: ChangeDetectorRef, private injector: Injector) {
+  constructor(private cdr: ChangeDetectorRef,
+              private injector: Injector,
+              private formaters: KalFormaterService) {
     super();
   }
 
@@ -106,7 +94,7 @@ export class KalInputComponent extends FormElementComponent<string> implements O
    * get formater for this type
    */
   get formater(): InputFormater {
-    return KalInputComponent.formatersList[this.type] || KalInputComponent.formatersList['text'];
+    return this.formaters.get(this.type);
   }
 
   clearField() {
