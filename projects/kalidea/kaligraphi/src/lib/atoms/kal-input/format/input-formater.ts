@@ -1,7 +1,9 @@
 /**
  * parent class of input formatter
  */
+
 export abstract class InputFormater {
+  constructor(protected locale: string) {}
 
   /**
    * called when need convert user input to code

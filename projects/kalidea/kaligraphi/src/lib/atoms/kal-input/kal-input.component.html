@@ -6,6 +6,7 @@
     [type]="htmlInputType"
     [name]="name"
     [attr.placeholder]="placeholder"
+    (blur)="formatValue()"
     [formControl]="control">
 
   <kal-icon *ngIf="clearable"
