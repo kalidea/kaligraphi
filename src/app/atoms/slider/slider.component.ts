@@ -21,6 +21,8 @@ export class SliderComponent {
 
   disabled = false;
 
+  readonly = false;
+
   value = 120;
 
 }
