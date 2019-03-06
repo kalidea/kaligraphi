@@ -3,15 +3,17 @@
 <div class="example" style="display: block">
   <article>
     <div>
-      <kal-slider [from]="from"
-                  [to]="to"
-                  [tick]="tick"
-                  [color]="color"
-                  [max]="max"
-                  [min]="min"
-                  [disabled]="disabled"
-                  [kalTheme]="themes"
-                  [(ngModel)]="value"
+      <kal-slider
+        [from]="from"
+        [to]="to"
+        [tick]="tick"
+        [color]="color"
+        [max]="max"
+        [min]="min"
+        [disabled]="disabled"
+        [readonly]="readonly"
+        [kalTheme]="themes"
+        [(ngModel)]="value"
       >
       </kal-slider>
     </div>
@@ -54,8 +56,11 @@
   </kal-form-field>
 
   <kal-form-field>
-    <kal-checkbox label="Disable" [(ngModel)]="disabled"></kal-checkbox>
+    <kal-checkbox label="disabled" [(ngModel)]="disabled"></kal-checkbox>
   </kal-form-field>
 
+  <kal-form-field>
+    <kal-checkbox label="readonly" [(ngModel)]="readonly"></kal-checkbox>
+  </kal-form-field>
 
 </div>

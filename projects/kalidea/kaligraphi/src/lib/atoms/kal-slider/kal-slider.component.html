@@ -4,6 +4,6 @@
   <div class="kal-slider-max-container" [ngStyle]="maxContainerStyles()"></div>
   <div class="kal-slider-selection-container" [ngStyle]="selectionContainerStyles()"></div>
   <div class="kal-slider-min-container" [ngStyle]="minContainerStyles()"></div>
-  <div class="kal-slider-pointer" [ngStyle]="pointerStyles()"></div>
+  <div class="kal-slider-pointer" [ngStyle]="pointerStyles()" *ngIf="!readonly"></div>
 </div>
 

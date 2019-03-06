@@ -62,7 +62,7 @@ export class KalSliderComponent extends FormElementComponent<number> implements 
 
   private _value = 0;
 
-  constructor(private cdr: ChangeDetectorRef) {
+  constructor(private readonly cdr: ChangeDetectorRef) {
     super();
   }
 
@@ -100,9 +100,16 @@ export class KalSliderComponent extends FormElementComponent<number> implements 
     return this.sliderWrapper ? this.sliderWrapper.nativeElement.getBoundingClientRect() : null;
   }
 
+  /**
+   * can we update this slider ?
+   */
+  private get isUpdatable() {
+    return !this.disabled && !this.readonly;
+  }
+
   @HostListener('mousedown', ['$event'])
   mouseDown($event: MouseEvent) {
-    if (this.disabled) {
+    if (!this.isUpdatable) {
       return;
     }
     const offset = this.sliderDimensions.left;
@@ -112,7 +119,7 @@ export class KalSliderComponent extends FormElementComponent<number> implements 
 
   @HostListener('keydown', ['$event'])
   keyDown($event: KeyboardEvent) {
-    if (this.disabled) {
+    if (!this.isUpdatable) {
       return;
     }
 
@@ -143,7 +150,7 @@ export class KalSliderComponent extends FormElementComponent<number> implements 
   @HostListener('slide', ['$event'])
   slide($event: HammerInput) {
 
-    if (this.disabled) {
+    if (!this.isUpdatable) {
       return;
     }
 

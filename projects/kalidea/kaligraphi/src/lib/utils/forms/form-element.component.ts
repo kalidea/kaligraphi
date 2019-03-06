@@ -6,6 +6,7 @@ import { distinctUntilChanged } from 'rxjs/operators';
 
 import { FormControlAccessComponent } from './form-control-access.component';
 import { uniqid } from '../helpers/uniq';
+import { Coerce } from '../decorators/coerce';
 
 export class FormElementComponent<T = string> extends FormControlAccessComponent<T> implements OnChanges, OnDestroy {
 
@@ -45,6 +46,13 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
   @Input()
   @HostBinding('attr.tabIndex')
   tabIndex: number;
+
+  /**
+   * readonly for this element
+   */
+  @Input()
+  @Coerce('boolean')
+  readonly: boolean;
 
   /**
    * list of message to display
@@ -105,21 +113,6 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
   @Input()
   set active(value) {
     this.activeSubject$.next(coerceBooleanProperty(value));
-  }
-
-  /**
-   * getter for readonly property
-   */
-  get readonly() {
-    return this.isReadonly;
-  }
-
-  /**
-   * setter for readonly property
-   */
-  @Input()
-  set readonly(value) {
-    this.isReadonly = coerceBooleanProperty(value);
   }
 
   /**
