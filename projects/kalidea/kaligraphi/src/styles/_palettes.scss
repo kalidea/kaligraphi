@@ -50,6 +50,15 @@ $kal-palette-green: (
   light: lighten(#1FD29D, 20%),
   lighter: lighten(#1FD29D, 40%)
 );
+
+$kal-palette-marine: (
+  darker: darken(#094074, 40%),
+  dark: darken(#094074, 20%),
+  normal: #094074,
+  light: lighten(#094074, 20%),
+  lighter: lighten(#094074, 40%)
+);
+
 /* global palettes */
 $kal-palettes: (
   'black': #000000,
@@ -59,5 +68,6 @@ $kal-palettes: (
   'orange': $kal-palette-orange,
   'red': $kal-palette-red,
   'blue': $kal-palette-blue,
-  'green': $kal-palette-green
+  'green': $kal-palette-green,
+  'marine': $kal-palette-marine
 );
