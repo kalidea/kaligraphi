@@ -1,5 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { isNil } from 'lodash';
+import { Observable, Subject } from 'rxjs';
 
 export class KalSelection<T extends { id?: string }> {
 
@@ -77,6 +78,10 @@ export class KalSelectionModel<T extends { id?: string }> extends SelectionModel
 
   private isMultiple = false;
 
+  private readonly changes$: Subject<KalSelection<T>> = new Subject<KalSelection<T>>();
+
+  // changed: Subject<KalSelection<T>>;
+
   constructor(params?: KalSelection<T>) {
     super();
 
@@ -123,25 +128,34 @@ export class KalSelectionModel<T extends { id?: string }> extends SelectionModel
 
   select(item: T): void {
     this.all ? this.removed.deselect(item) : this.added.select(item);
+    this.changes$.next(this.format());
   }
 
   deselect(item: T): void {
     this.all ? this.removed.select(item) : this.added.deselect(item);
+    this.changes$.next(this.format());
   }
 
   toggle(item: T): void {
     this.all ? this.removed.toggle(item) : this.added.toggle(item);
+    this.changes$.next(this.format());
   }
 
   selectAll() {
-    this.clear();
+    this.clear({emitEvent: false});
     this.all = true;
+
+    this.changes$.next(this.format());
   }
 
-  clear(): void {
+  clear({emitEvent}: {emitEvent: boolean} = {emitEvent: true}): void {
     this.added.clear();
     this.removed.clear();
     this.all = false;
+
+    if (emitEvent) {
+      this.changes$.next(this.format());
+    }
   }
 
   isSelected(item: T): boolean {
@@ -169,6 +183,10 @@ export class KalSelectionModel<T extends { id?: string }> extends SelectionModel
       all: this.all,
       total: this.total
     };
+  }
+
+  get changes(): Observable<KalSelection<T>> {
+    return this.changes$.asObservable();
   }
 
 }

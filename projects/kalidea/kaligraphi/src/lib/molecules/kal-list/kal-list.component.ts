@@ -20,7 +20,7 @@ import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
 import { ENTER, SPACE } from '@angular/cdk/keycodes';
 import { CollectionViewer, DataSource, ListRange } from '@angular/cdk/collections';
 import { Observable, of, Subscription } from 'rxjs';
-import { cloneDeep, isNil } from 'lodash';
+import { isNil } from 'lodash';
 import { KalListItemDirective } from './kal-list-item.directive';
 import { KalListItemSelectionDirective } from './kal-list-item-selection.directive';
 import { KalSelectionModel } from '../../utils/classes/kal-selection';
@@ -122,6 +122,12 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
   @AutoUnsubscribe()
   private subscription: Subscription = Subscription.EMPTY;
 
+  @AutoUnsubscribe()
+  private selectionSubscription: Subscription = Subscription.EMPTY;
+
+  constructor(private cdr: ChangeDetectorRef) {
+  }
+
   private _dataSource: KalListDataSource<T> = null;
 
   /**
@@ -205,6 +211,10 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
         this.initSelection();
       }
 
+      this.selectionSubscription.unsubscribe();
+
+      this.selectionChanges();
+
       this.cdr.markForCheck();
     }
   }
@@ -229,9 +239,6 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
       this._virtualScrollConfig = null;
     }
     this.cdr.markForCheck();
-  }
-
-  constructor(private cdr: ChangeDetectorRef) {
   }
 
   /**
@@ -428,11 +435,18 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
     }
   }
 
+  private selectionChanges() {
+    this.selectionSubscription = this.selection.changes.subscribe(
+      () => {
+      });
+  }
+
   ngOnInit(): void {
     if (!this._selection) {
       this._selection = new KalSelectionModel<T>({
         multiple: this.selectionMode === KalListSelectionMode.Multiple
       });
+      this.selectionChanges();
     }
 
     this.initSelection();
