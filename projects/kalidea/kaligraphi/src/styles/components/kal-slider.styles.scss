@@ -34,7 +34,7 @@ $kal-styles-slider: (
     ),
   ),
   'alternates': (
-    'orange': (
+    'orange-normal': (
       'limit-container':(
         background-color: get("orange.lighter", $kal-palettes),
       ),
@@ -68,7 +68,7 @@ $kal-styles-slider: (
         ),
       ),
     ),
-    'red': (
+    'red-normal': (
       'limit-container':(
         background-color: get("red.lighter", $kal-palettes),
       ),
@@ -102,7 +102,7 @@ $kal-styles-slider: (
         ),
       ),
     ),
-    'blue': (
+    'blue-normal': (
       'limit-container':(
         background-color: get("blue.lighter", $kal-palettes),
       ),
@@ -136,7 +136,7 @@ $kal-styles-slider: (
         ),
       ),
     ),
-    'green': (
+    'green-normal': (
       'limit-container':(
         background-color: get("green.lighter", $kal-palettes),
       ),
@@ -170,7 +170,7 @@ $kal-styles-slider: (
         ),
       ),
     ),
-    'yellow': (
+    'yellow-normal': (
       'limit-container':(
         background-color: get("yellow.lighter", $kal-palettes),
       ),
