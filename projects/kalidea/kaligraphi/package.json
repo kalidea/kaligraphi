@@ -1,6 +1,6 @@
 {
   "name": "@kalidea/kaligraphi",
-  "version": "0.0.74",
+  "version": "0.0.75",
   "public": "true",
   "publishConfig": {
     "access": "public"
