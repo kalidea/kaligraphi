@@ -50,13 +50,45 @@ $kal-palette-green: (
   light: lighten(#1FD29D, 20%),
   lighter: lighten(#1FD29D, 40%)
 );
-
+/* marine */
 $kal-palette-marine: (
   darker: darken(#094074, 40%),
   dark: darken(#094074, 20%),
   normal: #094074,
   light: lighten(#094074, 20%),
   lighter: lighten(#094074, 40%)
+);
+/* anthracite */
+$kal-palette-anthracite: (
+  darker: darken(#293133, 40%),
+  dark: darken(#293133, 20%),
+  normal: #293133,
+  light: lighten(#293133, 20%),
+  lighter: lighten(#293133, 40%)
+);
+/* corail */
+$kal-palette-corail: (
+  darker: darken(#FF7F50, 40%),
+  dark: darken(#FF7F50, 20%),
+  normal: #FF7F50,
+  light: lighten(#FF7F50, 20%),
+  lighter: lighten(#FF7F50, 40%)
+);
+/* blueviolet */
+$kal-palette-blueviolet: (
+  darker: darken(#3A006F, 40%),
+  dark: darken(#3A006F, 20%),
+  normal: #3A006F,
+  light: lighten(#3A006F, 20%),
+  lighter: lighten(#3A006F, 40%)
+);
+/* cornflowerblue */
+$kal-palette-cornflowerblue: (
+  darker: darken(#6495ed, 40%),
+  dark: darken(#6495ed, 20%),
+  normal: #6495ed,
+  light: lighten(#6495ed, 20%),
+  lighter: lighten(#6495ed, 30%)
 );
 
 /* global palettes */
@@ -69,5 +101,9 @@ $kal-palettes: (
   'red': $kal-palette-red,
   'blue': $kal-palette-blue,
   'green': $kal-palette-green,
-  'marine': $kal-palette-marine
+  'marine': $kal-palette-marine,
+  'anthracite': $kal-palette-anthracite,
+  'corail': $kal-palette-corail,
+  'blueviolet': $kal-palette-blueviolet,
+  'cornflowerblue': $kal-palette-cornflowerblue,
 );

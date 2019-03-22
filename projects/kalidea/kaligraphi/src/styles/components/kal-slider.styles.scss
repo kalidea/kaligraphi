@@ -442,5 +442,141 @@ $kal-styles-slider: (
         ),
       ),
     ),
+    'anthracite-normal': (
+      'limit-container':(
+        background-color: get("anthracite.lighter", $kal-palettes),
+      ),
+      'max-container': (
+        background-color: get("anthracite.light", $kal-palettes),
+      ),
+      'min-container': (
+        background-color: get("anthracite.light", $kal-palettes),
+      ),
+      'selection-container': (
+        background-color: get("anthracite.normal", $kal-palettes),
+      ),
+      'pointer': (
+        background-color: get("white", $kal-palettes),
+      ),
+      'reverse': (
+        'limit-container':(
+          background-color: get("grey.wf600", $kal-palettes),
+        ),
+        'max-container': (
+          background-color: get("grey.wf400", $kal-palettes),
+        ),
+        'min-container': (
+          background-color: get("grey.wf400", $kal-palettes),
+        ),
+        'selection-container': (
+          background-color: get("anthracite.normal", $kal-palettes),
+        ),
+        'pointer': (
+          background-color: get("white", $kal-palettes),
+        ),
+      ),
+    ),
+    'corail-normal': (
+      'limit-container':(
+        background-color: get("corail.lighter", $kal-palettes),
+      ),
+      'max-container': (
+        background-color: get("corail.light", $kal-palettes),
+      ),
+      'min-container': (
+        background-color: get("corail.light", $kal-palettes),
+      ),
+      'selection-container': (
+        background-color: get("corail.normal", $kal-palettes),
+      ),
+      'pointer': (
+        background-color: get("white", $kal-palettes),
+      ),
+      'reverse': (
+        'limit-container':(
+          background-color: get("grey.wf600", $kal-palettes),
+        ),
+        'max-container': (
+          background-color: get("grey.wf400", $kal-palettes),
+        ),
+        'min-container': (
+          background-color: get("grey.wf400", $kal-palettes),
+        ),
+        'selection-container': (
+          background-color: get("corail.normal", $kal-palettes),
+        ),
+        'pointer': (
+          background-color: get("white", $kal-palettes),
+        ),
+      ),
+    ),
+    'blueviolet-normal': (
+      'limit-container':(
+        background-color: get("blueviolet.lighter", $kal-palettes),
+      ),
+      'max-container': (
+        background-color: get("blueviolet.light", $kal-palettes),
+      ),
+      'min-container': (
+        background-color: get("blueviolet.light", $kal-palettes),
+      ),
+      'selection-container': (
+        background-color: get("blueviolet.normal", $kal-palettes),
+      ),
+      'pointer': (
+        background-color: get("white", $kal-palettes),
+      ),
+      'reverse': (
+        'limit-container':(
+          background-color: get("grey.wf600", $kal-palettes),
+        ),
+        'max-container': (
+          background-color: get("grey.wf400", $kal-palettes),
+        ),
+        'min-container': (
+          background-color: get("grey.wf400", $kal-palettes),
+        ),
+        'selection-container': (
+          background-color: get("blueviolet.normal", $kal-palettes),
+        ),
+        'pointer': (
+          background-color: get("white", $kal-palettes),
+        ),
+      ),
+    ),
+    'cornflowerblue-normal': (
+      'limit-container':(
+        background-color: get("cornflowerblue.lighter", $kal-palettes),
+      ),
+      'max-container': (
+        background-color: get("cornflowerblue.light", $kal-palettes),
+      ),
+      'min-container': (
+        background-color: get("cornflowerblue.light", $kal-palettes),
+      ),
+      'selection-container': (
+        background-color: get("cornflowerblue.normal", $kal-palettes),
+      ),
+      'pointer': (
+        background-color: get("white", $kal-palettes),
+      ),
+      'reverse': (
+        'limit-container':(
+          background-color: get("grey.wf600", $kal-palettes),
+        ),
+        'max-container': (
+          background-color: get("grey.wf400", $kal-palettes),
+        ),
+        'min-container': (
+          background-color: get("grey.wf400", $kal-palettes),
+        ),
+        'selection-container': (
+          background-color: get("cornflowerblue.normal", $kal-palettes),
+        ),
+        'pointer': (
+          background-color: get("white", $kal-palettes),
+        ),
+      ),
+    ),
   )
 );
