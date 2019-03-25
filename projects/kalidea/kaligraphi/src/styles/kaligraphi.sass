@@ -80,5 +80,4 @@
     @each $colorName, $palette in get("palettes", $parameters)
       /* create css var only for map */
       @if type-of($palette) == 'map'
-        @each $level, $color in $palette
-          --color-#{$colorName}-#{$level}: #{$color}
+          --color-#{$colorName}: #{get('normal', $palette)}
