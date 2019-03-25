@@ -211,8 +211,6 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
         this.initSelection();
       }
 
-      this.selectionSubscription.unsubscribe();
-
       this.selectionChanges();
 
       this.cdr.markForCheck();
@@ -436,8 +434,10 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
   }
 
   private selectionChanges() {
+    this.selectionSubscription.unsubscribe();
     this.selectionSubscription = this.selection.changes.subscribe(
       () => {
+        this.cdr.markForCheck();
       });
   }
 
