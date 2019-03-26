@@ -14,12 +14,12 @@ import { AbstractControl, FormControl, NgControl } from '@angular/forms';
 import { FormHooks } from '@angular/forms/src/model';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { of, Subscription } from 'rxjs';
+import { startWith } from 'rxjs/operators';
 
 import { InputFormater } from './format/input-formater';
 import { KalFormaterService } from './kal-formater.service';
 
-import { buildProviders, FormElementComponent } from '../../utils/index';
-import { startWith } from 'rxjs/operators';
+import { AutoUnsubscribe, buildProviders, FormElementComponent } from '../../utils/index';
 
 @Component({
   selector: 'kal-input',
@@ -63,7 +63,11 @@ export class KalInputComponent extends FormElementComponent<string> implements O
    */
   @Input() updateOnEvent: FormHooks = 'change';
 
+  @AutoUnsubscribe()
   private controlChangedSubscription = Subscription.EMPTY;
+
+  @AutoUnsubscribe()
+  private controlStatusChangedSubscription = Subscription.EMPTY;
 
   private isClearable = false;
 
@@ -99,7 +103,9 @@ export class KalInputComponent extends FormElementComponent<string> implements O
   }
 
   clearField() {
-    this.control.setValue('');
+    if (!this.disabled) {
+      this.control.setValue('');
+    }
   }
 
   customIconClicked() {
@@ -148,9 +154,15 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     }
   }
 
+  private getSuperControl() {
+    if (this.ngControl && this.ngControl.control) {
+      return this.ngControl.control;
+    }
+    return null;
+  }
+
   ngOnDestroy(): void {
     this.cdr.detach();
-    this.controlChangedSubscription.unsubscribe();
   }
 
   ngAfterContentInit(): void {
@@ -158,20 +170,23 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     // ngControl for formControl does not contain `control` on ngOnInit
     this.ngControl = this.injector.get(NgControl, null);
 
+    const superControl = this.getSuperControl();
+
     // grab updateOn property from control
-    if (this.ngControl && this.ngControl.control) {
-      this.updateOnEvent = this.ngControl.control.updateOn;
+    if (superControl) {
+      this.updateOnEvent = superControl.updateOn;
     }
 
     this.control = new FormControl(this.value, {updateOn: this.updateOnEvent});
 
     // update disabled state
-    if (this.ngControl && this.ngControl.control) {
-      this.ngControl.control.statusChanges
+    if (superControl) {
+      this.controlStatusChangedSubscription = superControl.statusChanges
         .pipe(startWith(1))
         .subscribe(() => {
-          if (this.ngControl.control.status !== this.control.status) {
-            this.ngControl.control.enabled ? this.control.enable() : this.control.disable();
+          if (superControl.disabled !== this.control.disabled) {
+            superControl.enabled ? this.control.enable() : this.control.disable();
+            this.setDisabledState(superControl.enabled === true);
           }
         });
 
