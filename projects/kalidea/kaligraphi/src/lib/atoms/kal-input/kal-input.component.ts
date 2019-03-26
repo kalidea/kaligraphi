@@ -180,10 +180,6 @@ export class KalInputComponent extends FormElementComponent<string> implements O
         });
     }
 
-    this.controlValueChangedSubscription = this.control.valueChanges.subscribe(value => {
-      // notify parent for validation
-      this.notifyUpdate(value);
-    });
   }
 
   ngOnDestroy(): void {
@@ -203,6 +199,11 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     }
 
     this.control = new FormControl(this.value, {updateOn: this.updateOnEvent});
+
+    this.controlValueChangedSubscription = this.control.valueChanges.subscribe(value => {
+      // notify parent for validation
+      this.notifyUpdate(value);
+    });
 
     this.manageControlChangedSubscription();
 
