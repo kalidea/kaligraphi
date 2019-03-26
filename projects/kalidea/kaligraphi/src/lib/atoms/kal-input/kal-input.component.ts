@@ -161,23 +161,11 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     return null;
   }
 
-  /**
-   * manage value and status change of control
-   */
-  private manageControlChangedSubscription() {
-
-    // update disabled state
-    if (this.superControl) {
-      this.controlStatusChangedSubscription = this.superControl.statusChanges
-        .pipe(startWith(1))
-        .subscribe(() => {
-          if (this.superControl.disabled !== this.control.disabled) {
-            this.superControl.enabled ? this.control.enable() : this.control.disable();
-            this.setDisabledState(this.superControl.enabled === true);
-          }
-        });
+  private updateStatus() {
+    if (this.superControl.disabled !== this.control.disabled) {
+      this.superControl.enabled ? this.control.enable() : this.control.disable();
+      this.setDisabledState(this.superControl.enabled === true);
     }
-
   }
 
   ngOnDestroy(): void {
@@ -196,12 +184,17 @@ export class KalInputComponent extends FormElementComponent<string> implements O
 
     this.control = new FormControl(this.value, {updateOn: this.updateOnEvent});
 
+    // update disabled state
+    if (this.superControl) {
+      this.controlStatusChangedSubscription = this.superControl.statusChanges
+        .pipe(startWith(1))
+        .subscribe(() => this.updateStatus());
+    }
+
     this.controlValueChangedSubscription = this.control.valueChanges.subscribe(value => {
       // notify parent for validation
       this.notifyUpdate(value);
     });
-
-    this.manageControlChangedSubscription();
 
   }
 }
