@@ -19,6 +19,7 @@ import { InputFormater } from './format/input-formater';
 import { KalFormaterService } from './kal-formater.service';
 
 import { buildProviders, FormElementComponent } from '../../utils/index';
+import { startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'kal-input',
@@ -163,6 +164,18 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     }
 
     this.control = new FormControl(this.value, {updateOn: this.updateOnEvent});
+
+    // update disabled state
+    if (this.ngControl && this.ngControl.control) {
+      this.ngControl.control.statusChanges
+        .pipe(startWith(1))
+        .subscribe(() => {
+          if (this.ngControl.control.status !== this.control.status) {
+            this.ngControl.control.enabled ? this.control.enable() : this.control.disable();
+          }
+        });
+
+    }
 
     this.controlChangedSubscription = this.control.valueChanges.subscribe(value => {
       // notify parent for validation

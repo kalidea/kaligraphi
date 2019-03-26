@@ -63,6 +63,10 @@
   </kal-form-field>
 
   <kal-form-field>
+    <kal-checkbox [ngModel]="disabled" (ngModelChange)="updateDisable($event)" label="disabled"></kal-checkbox>
+  </kal-form-field>
+
+  <kal-form-field>
     <kal-input
       label="Icon"
       [(ngModel)]="icon"
