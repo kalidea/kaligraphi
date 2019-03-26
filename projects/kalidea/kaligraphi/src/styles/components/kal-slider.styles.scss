@@ -238,40 +238,6 @@ $kal-styles-slider: (
         ),
       ),
     ),
-    'marine': (
-      'limit-container':(
-        background-color: get("marine.lighter", $kal-palettes),
-      ),
-      'max-container': (
-        background-color: get("marine.light", $kal-palettes),
-      ),
-      'min-container': (
-        background-color: get("marine.light", $kal-palettes),
-      ),
-      'selection-container': (
-        background-color: get("marine.normal", $kal-palettes),
-      ),
-      'pointer': (
-        background-color: get("white", $kal-palettes),
-      ),
-      'reverse': (
-        'limit-container':(
-          background-color: get("grey.wf600", $kal-palettes),
-        ),
-        'max-container': (
-          background-color: get("grey.wf400", $kal-palettes),
-        ),
-        'min-container': (
-          background-color: get("grey.wf400", $kal-palettes),
-        ),
-        'selection-container': (
-          background-color: get("marine.normal", $kal-palettes),
-        ),
-        'pointer': (
-          background-color: get("white", $kal-palettes),
-        ),
-      ),
-    ),
     'anthracite': (
       'limit-container':(
         background-color: get("anthracite.lighter", $kal-palettes),
