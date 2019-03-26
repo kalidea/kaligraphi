@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostBinding, Injector, Input, ViewContainerRef } from '@angular/core';
+import { Directive, ElementRef, HostBinding, Injector, Input, OnDestroy, ViewContainerRef } from '@angular/core';
 import { Overlay, OverlayConfig, OverlayRef, PositionStrategy } from '@angular/cdk/overlay';
 import { ComponentPortal, PortalInjector } from '@angular/cdk/portal';
 
@@ -10,7 +10,7 @@ import { Coerce } from '../../utils/decorators/coerce';
 @Directive({
   selector: '[kalLoading]'
 })
-export class KalLoadingDirective {
+export class KalLoadingDirective implements OnDestroy {
 
   /**
    * message to display in overlay
@@ -24,13 +24,13 @@ export class KalLoadingDirective {
   @HostBinding('class.kal-loading-could-change')
   readonly couldBeInLoadingState = true;
 
-  private overlayRef: OverlayRef;
-
   /**
    * add class to element while loading
    */
   @HostBinding('class.kal-loading-is-loading')
   _loading = false;
+
+  private overlayRef: OverlayRef;
 
   constructor(private elementRef: ElementRef,
               private viewContainerRef: ViewContainerRef,
@@ -112,6 +112,12 @@ export class KalLoadingDirective {
 
     this.overlayRef.detach();
     return this.overlayRef;
+  }
+
+  ngOnDestroy(): void {
+    if (this.overlayRef) {
+      this.overlayRef.dispose();
+    }
   }
 
 
