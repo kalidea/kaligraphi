@@ -11,11 +11,17 @@ export class MenuComponent implements OnInit {
 
   themes = [];
 
+  optionsList = ['Option 1', 'Option 2', 'Option 3'];
+
   constructor() { }
 
 
   get reverse() {
     return this.themes.some(t => t === 'reverse');
+  }
+
+  updateOptions() {
+    this.optionsList = ['Option A', 'Option B', 'Option C'];
   }
 
   selected($event) {
