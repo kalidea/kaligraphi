@@ -14,11 +14,12 @@ import { AbstractControl, FormControl, NgControl } from '@angular/forms';
 import { FormHooks } from '@angular/forms/src/model';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { of, Subscription } from 'rxjs';
+import { startWith } from 'rxjs/operators';
 
 import { InputFormater } from './format/input-formater';
 import { KalFormaterService } from './kal-formater.service';
 
-import { buildProviders, FormElementComponent } from '../../utils/index';
+import { AutoUnsubscribe, buildProviders, FormElementComponent } from '../../utils/index';
 
 @Component({
   selector: 'kal-input',
@@ -62,7 +63,11 @@ export class KalInputComponent extends FormElementComponent<string> implements O
    */
   @Input() updateOnEvent: FormHooks = 'change';
 
-  private controlChangedSubscription = Subscription.EMPTY;
+  @AutoUnsubscribe()
+  private controlValueChangedSubscription = Subscription.EMPTY;
+
+  @AutoUnsubscribe()
+  private controlStatusChangedSubscription = Subscription.EMPTY;
 
   private isClearable = false;
 
@@ -98,7 +103,9 @@ export class KalInputComponent extends FormElementComponent<string> implements O
   }
 
   clearField() {
-    this.control.setValue('');
+    if (!this.disabled) {
+      this.control.setValue('');
+    }
   }
 
   customIconClicked() {
@@ -147,9 +154,22 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     }
   }
 
+  private get superControl() {
+    if (this.ngControl && this.ngControl.control) {
+      return this.ngControl.control;
+    }
+    return null;
+  }
+
+  private updateStatus() {
+    if (this.superControl.disabled !== this.control.disabled) {
+      this.superControl.enabled ? this.control.enable() : this.control.disable();
+      this.setDisabledState(this.superControl.enabled === true);
+    }
+  }
+
   ngOnDestroy(): void {
     this.cdr.detach();
-    this.controlChangedSubscription.unsubscribe();
   }
 
   ngAfterContentInit(): void {
@@ -158,15 +178,23 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     this.ngControl = this.injector.get(NgControl, null);
 
     // grab updateOn property from control
-    if (this.ngControl && this.ngControl.control) {
-      this.updateOnEvent = this.ngControl.control.updateOn;
+    if (this.superControl) {
+      this.updateOnEvent = this.superControl.updateOn;
     }
 
     this.control = new FormControl(this.value, {updateOn: this.updateOnEvent});
 
-    this.controlChangedSubscription = this.control.valueChanges.subscribe(value => {
+    // update disabled state
+    if (this.superControl) {
+      this.controlStatusChangedSubscription = this.superControl.statusChanges
+        .pipe(startWith(1))
+        .subscribe(() => this.updateStatus());
+    }
+
+    this.controlValueChangedSubscription = this.control.valueChanges.subscribe(value => {
       // notify parent for validation
       this.notifyUpdate(value);
     });
+
   }
 }

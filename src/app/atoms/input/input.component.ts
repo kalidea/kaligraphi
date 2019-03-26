@@ -18,6 +18,8 @@ export class InputComponent implements OnInit {
 
   clearable = false;
 
+  disabled = false;
+
   icon = '';
 
   content = '';
@@ -39,4 +41,14 @@ export class InputComponent implements OnInit {
   ngOnInit() {
   }
 
+  updateDisable($event) {
+    if (this.disabled) {
+      this.controlChange.enable();
+      this.controlBlur.enable();
+    } else {
+      this.controlChange.disable();
+      this.controlBlur.disable();
+    }
+    this.disabled = $event;
+  }
 }
