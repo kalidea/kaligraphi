@@ -8,9 +8,7 @@
     </kal-button>
 
     <kal-menu #menu [kalTheme]="themes">
-      <kal-option (selectionChange)="selected($event)">Option 1</kal-option>
-      <kal-option (selectionChange)="selected($event)">Option 2</kal-option>
-      <kal-option (selectionChange)="selected($event)">Option 3</kal-option>
+      <kal-option *ngFor="let option of optionsList" (selectionChange)="selected($event)">{{ option }}</kal-option>
     </kal-menu>
 
   </article>
@@ -27,5 +25,9 @@
       <kal-option value="tertiary">tertiary</kal-option>
       <kal-option value="reverse">reverse</kal-option>
     </kal-select>
+  </kal-form-field>
+
+  <kal-form-field>
+    <kal-button (click)="updateOptions()">Update option</kal-button>
   </kal-form-field>
 </div>

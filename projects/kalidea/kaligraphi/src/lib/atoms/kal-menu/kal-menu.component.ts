@@ -14,6 +14,7 @@ import {
 import { DOWN_ARROW, ENTER, ESCAPE, SPACE, UP_ARROW } from '@angular/cdk/keycodes';
 import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
 import { merge, Subscription } from 'rxjs';
+import { startWith } from 'rxjs/operators';
 
 import { KalOptionComponent } from '../kal-option/kal-option.component';
 import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
@@ -48,7 +49,10 @@ export class KalMenuComponent implements AfterContentInit, OnDestroy {
   @Output() readonly selectionChange = new EventEmitter<KalOptionComponent>();
 
   @AutoUnsubscribe()
-  private subscriptionsList: Subscription[] = [];
+  private tabSubscription: Subscription = Subscription.EMPTY;
+
+  @AutoUnsubscribe()
+  private selectionSubscription: Subscription = Subscription.EMPTY;
 
   private keyManager: ActiveDescendantKeyManager<KalOptionComponent>;
 
@@ -88,29 +92,40 @@ export class KalMenuComponent implements AfterContentInit, OnDestroy {
     this.keyManager.setActiveItem(-1);
   }
 
-  ngAfterContentInit() {
-    // set kalMenu theme to overlay content
-    if (this.themeDirective) {
-      this.theme = this.themeDirective.kalTheme;
-    }
+  private initOptionsList() {
+
+    // remove previous subscriptions
+    this.tabSubscription.unsubscribe();
+    this.selectionSubscription.unsubscribe();
 
     // init key manager
     this.keyManager = new ActiveDescendantKeyManager<KalOptionComponent>(this.options)
       .withWrap()
       .withVerticalOrientation()
       .withTypeAhead();
-    const tabSubscription = this.keyManager.tabOut.subscribe(() => this.closed.emit('tab'));
+    this.tabSubscription = this.keyManager.tabOut.subscribe(() => this.closed.emit('tab'));
 
     // watch for selection and close this dropdown
-    const selectionSubscription = merge<KalOptionComponent>(...this.options.map(option => option.selectionChange))
+    this.selectionSubscription = merge<KalOptionComponent>(...this.options.map(option => option.selectionChange))
       .subscribe(
         (value) => {
           this.selectionChange.emit(value);
           this.closed.emit();
         }
       );
+  }
 
-    this.subscriptionsList.push(tabSubscription, selectionSubscription);
+  ngAfterContentInit() {
+    // set kalMenu theme to overlay content
+    if (this.themeDirective) {
+      this.theme = this.themeDirective.kalTheme;
+    }
+
+    // init event subscription After ContentInit and when options change
+    this.options.changes
+      .pipe(startWith(1))
+      .subscribe(() => this.initOptionsList());
+
   }
 
   ngOnDestroy(): void {
