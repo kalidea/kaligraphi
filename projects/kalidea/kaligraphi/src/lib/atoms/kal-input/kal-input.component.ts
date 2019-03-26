@@ -154,7 +154,7 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     }
   }
 
-  private getSuperControl() {
+  private get superControl() {
     if (this.ngControl && this.ngControl.control) {
       return this.ngControl.control;
     }
@@ -166,16 +166,14 @@ export class KalInputComponent extends FormElementComponent<string> implements O
    */
   private manageControlChangedSubscription() {
 
-    const superControl = this.getSuperControl();
-
     // update disabled state
-    if (superControl) {
-      this.controlStatusChangedSubscription = superControl.statusChanges
+    if (this.superControl) {
+      this.controlStatusChangedSubscription = this.superControl.statusChanges
         .pipe(startWith(1))
         .subscribe(() => {
-          if (superControl.disabled !== this.control.disabled) {
-            superControl.enabled ? this.control.enable() : this.control.disable();
-            this.setDisabledState(superControl.enabled === true);
+          if (this.superControl.disabled !== this.control.disabled) {
+            this.superControl.enabled ? this.control.enable() : this.control.disable();
+            this.setDisabledState(this.superControl.enabled === true);
           }
         });
     }
@@ -191,11 +189,9 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     // ngControl for formControl does not contain `control` on ngOnInit
     this.ngControl = this.injector.get(NgControl, null);
 
-    const superControl = this.getSuperControl();
-
     // grab updateOn property from control
-    if (superControl) {
-      this.updateOnEvent = superControl.updateOn;
+    if (this.superControl) {
+      this.updateOnEvent = this.superControl.updateOn;
     }
 
     this.control = new FormControl(this.value, {updateOn: this.updateOnEvent});
