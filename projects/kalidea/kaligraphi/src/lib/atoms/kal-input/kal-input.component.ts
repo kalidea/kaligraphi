@@ -64,7 +64,7 @@ export class KalInputComponent extends FormElementComponent<string> implements O
   @Input() updateOnEvent: FormHooks = 'change';
 
   @AutoUnsubscribe()
-  private controlChangedSubscription = Subscription.EMPTY;
+  private controlValueChangedSubscription = Subscription.EMPTY;
 
   @AutoUnsubscribe()
   private controlStatusChangedSubscription = Subscription.EMPTY;
@@ -161,6 +161,31 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     return null;
   }
 
+  /**
+   * manage value and status change of control
+   */
+  private manageControlChangedSubscription() {
+
+    const superControl = this.getSuperControl();
+
+    // update disabled state
+    if (superControl) {
+      this.controlStatusChangedSubscription = superControl.statusChanges
+        .pipe(startWith(1))
+        .subscribe(() => {
+          if (superControl.disabled !== this.control.disabled) {
+            superControl.enabled ? this.control.enable() : this.control.disable();
+            this.setDisabledState(superControl.enabled === true);
+          }
+        });
+    }
+
+    this.controlValueChangedSubscription = this.control.valueChanges.subscribe(value => {
+      // notify parent for validation
+      this.notifyUpdate(value);
+    });
+  }
+
   ngOnDestroy(): void {
     this.cdr.detach();
   }
@@ -179,22 +204,7 @@ export class KalInputComponent extends FormElementComponent<string> implements O
 
     this.control = new FormControl(this.value, {updateOn: this.updateOnEvent});
 
-    // update disabled state
-    if (superControl) {
-      this.controlStatusChangedSubscription = superControl.statusChanges
-        .pipe(startWith(1))
-        .subscribe(() => {
-          if (superControl.disabled !== this.control.disabled) {
-            superControl.enabled ? this.control.enable() : this.control.disable();
-            this.setDisabledState(superControl.enabled === true);
-          }
-        });
+    this.manageControlChangedSubscription();
 
-    }
-
-    this.controlChangedSubscription = this.control.valueChanges.subscribe(value => {
-      // notify parent for validation
-      this.notifyUpdate(value);
-    });
   }
 }
