@@ -32,6 +32,11 @@ export class KalFormFieldComponent implements AfterContentInit {
   label: string;
 
   /**
+   * Under Label of the field
+   */
+  legend: string;
+
+  /**
    * Is the field required
    */
   required = false;
@@ -57,6 +62,7 @@ export class KalFormFieldComponent implements AfterContentInit {
     if (!(this.formElement instanceof KalCheckboxComponent)) {
       this.label = this.formElement.label;
     }
+    this.legend = this.formElement.legend;
     this.required = this.formElement.required;
     this.for = this.formElement.id;
     this.checkErrorAndDirtyness();
