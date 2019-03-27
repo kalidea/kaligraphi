@@ -39,7 +39,8 @@ $kal-styles-checkbox: (
         'background-color': get("black", $kal-palettes),
         'border-radius': $kal-base-borderradius,
         'transition': all .2s,
-        'box-shadow': none
+        'box-shadow': none,
+        'font-size': 12px
       ),
       'disabled' :(
         'color': get("grey.wf500", $kal-palettes),
@@ -66,7 +67,8 @@ $kal-styles-checkbox: (
       'checkfalse': (
         'after': (
           'opacity': 0,
-          'transform': scale(0)
+          'transform': scale(0),
+          'content': ' '
         ),
         'before': (
           'background-color': get("grey.wf100", $kal-palettes)
@@ -232,7 +234,9 @@ $kal-styles-checkbox: (
           'after': (
             'opacity': 1,
             'transform': scale(1),
-            'left': 23px
+            'left': 23px,
+            'content': '\2713',
+            'color': get("green.normal", $kal-palettes),
           ),
           'before': (
             'background-color': get("green.normal", $kal-palettes),
@@ -242,7 +246,9 @@ $kal-styles-checkbox: (
         'checkfalse': (
           'after': (
             'opacity': 1,
-            'transform': scale(1)
+            'transform': scale(1),
+            'content': '\2715',
+            'color': get("grey.wf400", $kal-palettes),
           ),
           'before': (
             'background-color': get("grey.wf350", $kal-palettes)

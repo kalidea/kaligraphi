@@ -50,7 +50,8 @@
         background-color: get("label.after.background-color", $theme-parameters)
         border-radius: get("label.after.border-radius", $theme-parameters)
         transition:  get("label.after.transition", $theme-parameters)
-        box-shadow:  get("label.after.box-shadow", $theme-parameters),
+        box-shadow:  get("label.after.box-shadow", $theme-parameters)
+        font-size: get("label.after.font-size", $theme-parameters),
     // Aspect before si "non coché"
     [type="checkbox"]:not(:checked) + label::before
       background-color: get("label.checkfalse.before.background-color", $theme-parameters)
@@ -62,11 +63,15 @@
     [type="checkbox"]:not(:checked) + label::after
       opacity: get("label.checkfalse.after.opacity", $theme-parameters)
       transform: get("label.checkfalse.after.transform", $theme-parameters)
+      content: get("label.checkfalse.after.content", $theme-parameters)
+      color: get("label.checkfalse.after.color", $theme-parameters)
     // Aspect after si "cochée"
     [type="checkbox"]:checked + label::after
       opacity: get("label.checktrue.after.opacity", $theme-parameters)
       transform: get("label.checktrue.after.transform", $theme-parameters)
       left: get("label.checktrue.after.left", $theme-parameters)
+      content: get("label.checktrue.after.content", $theme-parameters)
+      color: get("label.checktrue.after.color", $theme-parameters)
     // Aspect after si "disabled"
     [type="checkbox"]:disabled + label
       color: get("label.disabled.color", $theme-parameters)
