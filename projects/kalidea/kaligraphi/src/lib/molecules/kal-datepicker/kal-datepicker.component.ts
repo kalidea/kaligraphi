@@ -239,7 +239,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     this.overlayRef = this.overlay.create({
       positionStrategy: this.positionStrategy,
       hasBackdrop: true,
-      width: this.elementRef.nativeElement.getBoundingClientRect().width,
+      width: '240px',
       backdropClass: 'cdk-overlay-transparent-backdrop'
     });
   }
