@@ -18,6 +18,8 @@ import { KalChipModule } from './kal-chip/kal-chip.module';
 import { KalLoaderModule } from './kal-loader/kal-loader.module';
 import { KalCarouselModule } from './kal-carousel/kal-carousel.module';
 import { KalAutocompleteModule } from './kal-autocomplete/kal-autocomplete.module';
+import { KalTooltipModule } from './kal-tooltip/kal-tooltip.module';
+
 
 export * from './kal-input/kal-input.module';
 export * from './kal-textarea/kal-textarea.module';
@@ -36,6 +38,7 @@ export * from './kal-chip/kal-chip.module';
 export * from './kal-loader/kal-loader.component';
 export * from './kal-carousel/kal-carousel.module';
 export * from './kal-autocomplete/kal-autocomplete.module';
+export * from './kal-tooltip/kal-tooltip.module';
 
 const exports = [
   KalInputModule,
@@ -55,7 +58,8 @@ const exports = [
   KalLoaderModule,
   KalCarouselModule,
   KalLoaderModule,
-  KalAutocompleteModule
+  KalAutocompleteModule,
+  KalTooltipModule
 ];
 
 @NgModule({
