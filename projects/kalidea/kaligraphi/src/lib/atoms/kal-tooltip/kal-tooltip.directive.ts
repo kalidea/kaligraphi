@@ -46,7 +46,7 @@ export class KalTooltipDirective implements OnDestroy {
               private readonly injector: Injector,
               private readonly viewContainerRef: ViewContainerRef,
               private readonly elementRef: ElementRef<HTMLElement>,
-              @Optional() private readonly theme: KalThemeDirective,) {
+              @Optional() private readonly theme: KalThemeDirective) {
   }
 
   @HostListener('mouseenter')
