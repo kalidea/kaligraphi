@@ -15,10 +15,10 @@ import {
 import { END, HOME, LEFT_ARROW, RIGHT_ARROW, } from '@angular/cdk/keycodes';
 import { isNil } from 'lodash';
 
-import { buildProviders, FormElementComponent } from '../../utils';
 import { HammerInput } from '../../utils/gestures/gesture-annotations';
 import { clamp } from '../../utils/helpers/numbers';
 import { Coerce } from '../../utils/decorators/coerce';
+import { buildProviders, FormElementComponent } from '../../utils/forms/form-element.component';
 
 @Component({
   selector: 'kal-slider',

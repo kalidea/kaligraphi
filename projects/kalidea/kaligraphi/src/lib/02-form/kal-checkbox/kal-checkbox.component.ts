@@ -10,9 +10,9 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Subscription } from 'rxjs';
-import { buildProviders, FormElementComponent } from '../../utils/index';
+
+import { buildProviders, FormElementComponent } from '../../utils/forms/form-element.component';
 import { Coerce } from '../../utils/decorators/coerce';
 
 @Component({
@@ -35,11 +35,13 @@ export class KalCheckboxComponent extends FormElementComponent<boolean> implemen
    */
   controlSubscription: Subscription;
 
+  private _value = false;
+
+  private _disabled = false;
+
   constructor(private cdr: ChangeDetectorRef) {
     super();
   }
-
-  private _value = false;
 
   get value() {
     return this._value;
@@ -55,8 +57,6 @@ export class KalCheckboxComponent extends FormElementComponent<boolean> implemen
 
     this.cdr.markForCheck();
   }
-
-  private _disabled = false;
 
   @Input()
   @Coerce('boolean')

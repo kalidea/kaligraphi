@@ -25,7 +25,8 @@ import { isNil } from 'lodash';
 import { KalListItemDirective } from './kal-list-item.directive';
 import { KalListItemSelectionDirective } from './kal-list-item-selection.directive';
 import { KalSelectionModel } from '../../utils/classes/kal-selection';
-import { Coerce, AutoUnsubscribe } from '../../utils/';
+import { Coerce } from '../../utils/decorators/coerce';
+import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 
 enum KalListSelectionMode {
   None = 'none',

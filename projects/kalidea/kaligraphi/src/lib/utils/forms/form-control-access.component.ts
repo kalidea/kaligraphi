@@ -73,13 +73,13 @@ export abstract class FormControlAccessComponent<T = any> implements ControlValu
    * function called when control is changed
    */
   protected onChange: any = () => {
-  };
+  }
 
   /**
    * function called when control is touched
    */
   protected onTouched: any = () => {
-  };
+  }
 
   /**
    * compare 2 value of this control and return equality

@@ -18,8 +18,9 @@ import { startWith } from 'rxjs/operators';
 
 import { InputFormater } from './format/input-formater';
 import { KalFormaterService } from './kal-formater.service';
+import { buildProviders, FormElementComponent } from '../../utils/forms/form-element.component';
+import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 
-import { AutoUnsubscribe, buildProviders, FormElementComponent } from '../../utils';
 
 @Component({
   selector: 'kal-input',

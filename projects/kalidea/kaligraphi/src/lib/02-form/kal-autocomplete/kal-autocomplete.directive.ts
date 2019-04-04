@@ -20,7 +20,7 @@ import { DOWN_ARROW, ENTER, ESCAPE, SPACE, UP_ARROW } from '@angular/cdk/keycode
 import { fromEvent, merge, Observable, of, Subscription } from 'rxjs';
 import { filter, skip, startWith, take } from 'rxjs/operators';
 
-import { AutoUnsubscribe } from '../../utils';
+import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 import { KalInputComponent } from '../kal-input/kal-input.component';
 import { KalAutocompleteComponent } from './kal-autocomplete.component';
 import { KalAutocompleteOption } from './kal-autocomplete-option';

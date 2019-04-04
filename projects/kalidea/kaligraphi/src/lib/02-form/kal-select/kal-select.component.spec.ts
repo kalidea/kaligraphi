@@ -2,15 +2,13 @@ import { Component, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { CdkPortal } from '@angular/cdk/portal';
-import { DOWN_ARROW, ENTER } from '@angular/cdk/keycodes';
 import { Platform } from '@angular/cdk/platform';
 import { Overlay, OverlayContainer } from '@angular/cdk/overlay';
 
 import { KalSelectComponent } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-select/kal-select.component';
 import { KalOptionComponent, KalOptionModule } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-option/kal-option.module';
-import { createKeyboardEvent } from 'projects/kalidea/kaligraphi/src/lib/utils/tests/event-keyboard';
-import { KalUtilityModule } from 'projects/kalidea/kaligraphi/src/lib/utility/kal-utility.module';
 import { KalIconModule } from 'projects/kalidea/kaligraphi/src/lib/01-typography/kal-icon/kal-icon.module';
+import { KalUtilityModule } from 'projects/kalidea/kaligraphi/src/lib/99-utility/kal-utility.module';
 
 function configureTestingModule(declarations: any[]) {
   TestBed.configureTestingModule({
@@ -249,6 +247,7 @@ describe('TestSelectComponent', () => {
 })
 class TestSelectComponent {
   @ViewChild(KalSelectComponent) select: KalSelectComponent;
+
   @ViewChildren(KalOptionComponent) options: QueryList<KalOptionComponent>;
 }
 
@@ -261,6 +260,7 @@ class TestSelectComponent {
 })
 class TestSelectOneComponent {
   @ViewChild(KalSelectComponent) select: KalSelectComponent;
+
   @ViewChildren(KalOptionComponent) options: QueryList<KalOptionComponent>;
 }
 

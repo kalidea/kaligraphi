@@ -8,7 +8,8 @@ import {
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { AutoUnsubscribe, buildProviders, FormElementComponent } from '../../utils/index';
+import { buildProviders, FormElementComponent } from '../../utils/forms/form-element.component';
+import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 
 @Component({
   selector: 'kal-textarea',

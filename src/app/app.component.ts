@@ -15,6 +15,7 @@ export class AppComponent {
     {label: 'chip', route: '/typography/chip'},
 
   ];
+
   // Form
   itemsForm: KalNavItem[] = [
     {label: 'autocomplete', route: '/form/autocomplete'},
@@ -31,6 +32,7 @@ export class AppComponent {
     {label: 'textarea', route: '/form/textarea'},
 
   ];
+
   // Layout
   itemsLayout: KalNavItem[] = [
     {label: 'accordion', route: '/layout/accordion'},
@@ -43,6 +45,7 @@ export class AppComponent {
     {label: 'stepper', route: '/layout/stepper'},
 
   ];
+
   itemsOverlay: KalNavItem[] = [
     {label: 'loader', route: '/overlay/loader'},
     {label: 'dialog', route: '/overlay/dialog'},
@@ -50,11 +53,12 @@ export class AppComponent {
     {label: 'snackbar', route: '/overlay/snackbar'},
     {label: 'tooltip', route: '/overlay/tooltip'},
   ];
-  items = {
-    'Typography': this.itemsTypography,
-    'Form': this.itemsForm,
-    'Layout': this.itemsLayout,
-    'Overlay': this.itemsOverlay,
-  };
+
+  items = [
+    {key: 'Typography', list: this.itemsTypography},
+    {key: 'Form', list: this.itemsForm},
+    {key: 'Layout', list: this.itemsLayout},
+    {key: 'Overlay', list: this.itemsOverlay},
+  ];
 
 }

@@ -13,7 +13,7 @@ import { startWith } from 'rxjs/operators';
 
 import { KalAutocompleteOption } from './kal-autocomplete-option';
 import { KalOptionComponent } from '../kal-option/kal-option.component';
-import { AutoUnsubscribe } from '../../utils';
+import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 
 @Component({
   selector: 'kal-autocomplete',

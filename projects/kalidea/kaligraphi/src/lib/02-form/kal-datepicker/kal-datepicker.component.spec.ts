@@ -10,9 +10,9 @@ import { KalDatepickerComponent } from 'projects/kalidea/kaligraphi/src/lib/02-f
 import { KalDatepickerHeaderComponent } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-datepicker/kal-datepicker-header/kal-datepicker-header.component';
 import { KalMonthCalendarComponent } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-datepicker/kal-month-calendar/kal-month-calendar.component';
 import { KalDatepickerMultiViewComponent } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-datepicker/kal-datepicker-multi-view/kal-datepicker-multi-view.component';
-import { KalUtilityModule } from 'projects/kalidea/kaligraphi/src/lib/utility/kal-utility.module';
 import { KalDate } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-datepicker/kal-date';
 import { FormElementComponent } from 'projects/kalidea/kaligraphi/src/lib/utils';
+import { KalUtilityModule } from 'projects/kalidea/kaligraphi/src/lib/99-utility/kal-utility.module';
 
 describe('KalDatepickerComponent', () => {
   let component: KalDatepickerComponent;

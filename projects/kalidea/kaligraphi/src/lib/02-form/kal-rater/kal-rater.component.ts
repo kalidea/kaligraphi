@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
 
-import { buildProviders, FormElementComponent } from '../../utils/index';
+import { buildProviders, FormElementComponent } from '../../utils/forms/form-element.component';
 
 @Component({
   selector: 'kal-rater',

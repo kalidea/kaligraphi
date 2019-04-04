@@ -18,8 +18,9 @@ import { NgControl } from '@angular/forms';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { UniqueSelectionDispatcher } from '@angular/cdk/collections';
 
-import { buildProviders, FormElementComponent, uniqid } from '../../utils';
+import { buildProviders, FormElementComponent } from '../../utils/forms/form-element.component';
 import { KalRadioChange } from './kal-radio-change';
+import { uniqid } from '../../utils/helpers/uniq';
 
 @Component({
   selector: 'kal-radio-group',

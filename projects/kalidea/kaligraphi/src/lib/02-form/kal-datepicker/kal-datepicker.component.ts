@@ -21,8 +21,9 @@ import { DateTime } from 'luxon';
 import { coerceKalDateProperty, KalDate, KalDateType } from './kal-date';
 import { KalMonthCalendarComponent } from './kal-month-calendar/kal-month-calendar.component';
 import { KalDatepickerHeaderComponent } from './kal-datepicker-header/kal-datepicker-header.component';
-import { AutoUnsubscribe, buildProviders, FormElementComponent } from '../../utils';
+import { buildProviders, FormElementComponent } from '../../utils/forms/form-element.component';
 import { Coerce } from '../../utils/decorators/coerce';
+import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 
 /**
  * Possible views for the calendar.

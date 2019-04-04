@@ -25,9 +25,9 @@ import { NgControl } from '@angular/forms';
 import { filter, startWith } from 'rxjs/operators';
 import { merge, Subscription } from 'rxjs';
 
-import { buildProviders, FormElementComponent } from '../../utils';
 import { KalOptionComponent } from '../kal-option/kal-option.component';
 import { KalThemeDirective } from '../../99-utility/directives/kal-theme/kal-theme.directive';
+import { buildProviders, FormElementComponent } from '../../utils/forms/form-element.component';
 
 @Component({
   selector: 'kal-select',

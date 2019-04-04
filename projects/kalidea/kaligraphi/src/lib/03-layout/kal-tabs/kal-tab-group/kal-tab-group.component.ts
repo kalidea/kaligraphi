@@ -21,7 +21,8 @@ import { Subscription } from 'rxjs';
 import { KalTabComponent } from '../kal-tab/kal-tab.component';
 import { KalTabChange } from '../kal-tab-change';
 import { KalTabHeaderComponent } from '../kal-tab-header/kal-tab-header.component';
-import { AutoUnsubscribe, buildProviders, FormElementComponent } from '../../../utils';
+import { buildProviders, FormElementComponent } from '../../../utils/forms/form-element.component';
+import { AutoUnsubscribe } from '../../../utils/decorators/auto-unsubscribe';
 
 @Component({
   selector: 'kal-tab-group',

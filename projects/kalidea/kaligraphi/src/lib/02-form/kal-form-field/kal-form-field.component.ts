@@ -10,8 +10,9 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { AutoUnsubscribe, FormElementComponent } from '../../utils';
+import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 import { KalCheckboxComponent } from '../kal-checkbox/kal-checkbox.component';
+import { FormElementComponent } from '../../utils/forms/form-element.component';
 
 @Component({
   selector: 'kal-form-field',
