@@ -23,7 +23,6 @@ import { KalTabGroupComponent } from '../kal-tab-group/kal-tab-group.component';
       </ng-content>
     </ng-template>
   `,
-  styleUrls: ['./kal-tab.component.sass'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })

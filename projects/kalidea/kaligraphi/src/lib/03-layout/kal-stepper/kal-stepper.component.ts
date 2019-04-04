@@ -38,7 +38,7 @@ export class KalStepHeaderDirective implements FocusableOption {
 @Component({
   selector: 'kal-stepper',
   templateUrl: './kal-stepper.component.html',
-  styleUrls: ['./kal-stepper.component.sass'],
+  styleUrls: ['./kal-stepper.sass'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })

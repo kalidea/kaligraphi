@@ -25,7 +25,7 @@ import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 @Component({
   selector: 'kal-input',
   templateUrl: './kal-input.component.html',
-  styleUrls: ['./kal-input.component.sass'],
+  styleUrls: ['./kal-input.sass'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: buildProviders(KalInputComponent)

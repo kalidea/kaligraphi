@@ -27,7 +27,6 @@ import { AutoUnsubscribe } from '../../../utils/decorators/auto-unsubscribe';
 @Component({
   selector: 'kal-tab-group',
   templateUrl: './kal-tab-group.component.html',
-  styleUrls: ['./kal-tab-group.component.sass'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: buildProviders(KalTabGroupComponent)

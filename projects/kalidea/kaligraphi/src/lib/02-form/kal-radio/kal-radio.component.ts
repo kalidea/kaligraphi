@@ -200,7 +200,7 @@ export class KalRadioGroupComponent extends FormElementComponent<any> implements
 @Component({
   selector: 'kal-radio',
   templateUrl: './kal-radio.component.html',
-  styleUrls: ['./kal-radio.component.sass'],
+  styleUrls: ['./kal-radio.sass'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })

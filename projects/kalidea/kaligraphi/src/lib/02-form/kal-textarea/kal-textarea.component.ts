@@ -14,7 +14,7 @@ import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 @Component({
   selector: 'kal-textarea',
   templateUrl: './kal-textarea.component.html',
-  styleUrls: ['./kal-textarea.component.sass'],
+  styleUrls: ['./kal-textarea.sass'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: buildProviders(KalTextareaComponent)

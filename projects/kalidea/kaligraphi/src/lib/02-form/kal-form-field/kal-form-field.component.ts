@@ -17,7 +17,7 @@ import { FormElementComponent } from '../../utils/forms/form-element.component';
 @Component({
   selector: 'kal-form-field',
   templateUrl: './kal-form-field.component.html',
-  styleUrls: ['./kal-form-field.component.sass'],
+  styleUrls: ['./kal-form-field.sass'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })

@@ -8,7 +8,6 @@ export interface KalNavItem {
 @Component({
   selector: 'kal-nav',
   templateUrl: './kal-nav.component.html',
-  styleUrls: ['./kal-nav.component.sass'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })

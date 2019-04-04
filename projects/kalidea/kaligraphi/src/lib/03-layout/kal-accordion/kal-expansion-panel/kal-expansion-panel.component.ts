@@ -30,7 +30,6 @@ export type KalExpansionPanelState = 'expanded' | 'collapsed';
 @Component({
   selector: 'kal-expansion-panel',
   templateUrl: './kal-expansion-panel.component.html',
-  styleUrls: ['./kal-expansion-panel.component.sass'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [kalExpansionAnimations.bodyExpansion],

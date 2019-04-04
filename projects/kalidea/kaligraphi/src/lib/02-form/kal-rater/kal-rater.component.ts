@@ -15,7 +15,7 @@ import { buildProviders, FormElementComponent } from '../../utils/forms/form-ele
 @Component({
   selector: 'kal-rater',
   templateUrl: './kal-rater.component.html',
-  styleUrls: ['./kal-rater.component.sass'],
+  styleUrls: ['./kal-rater.sass'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [buildProviders(KalRaterComponent)]

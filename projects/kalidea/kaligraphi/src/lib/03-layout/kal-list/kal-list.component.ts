@@ -44,7 +44,7 @@ export interface KalVirtualScrollConfig {
 @Component({
   selector: 'kal-list',
   templateUrl: './kal-list.component.html',
-  styleUrls: ['./kal-list.component.sass'],
+  styleUrls: ['./kal-list.sass'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })

@@ -6,7 +6,6 @@ import { clamp } from '../../utils/helpers/numbers';
 @Component({
   selector: 'kal-progress-bar',
   templateUrl: './kal-progress-bar.component.html',
-  styleUrls: ['./kal-progress-bar.component.sass'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })

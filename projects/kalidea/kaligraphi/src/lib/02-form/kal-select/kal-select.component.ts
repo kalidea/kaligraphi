@@ -32,7 +32,7 @@ import { buildProviders, FormElementComponent } from '../../utils/forms/form-ele
 @Component({
   selector: 'kal-select',
   templateUrl: './kal-select.component.html',
-  styleUrls: ['./kal-select.component.sass'],
+  styleUrls: ['./kal-select.sass'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: buildProviders(KalSelectComponent)

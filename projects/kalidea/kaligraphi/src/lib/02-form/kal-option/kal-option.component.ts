@@ -16,7 +16,7 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 @Component({
   selector: 'kal-option',
   templateUrl: './kal-option.component.html',
-  styleUrls: ['./kal-option.component.sass'],
+  styleUrls: ['./kal-option.sass'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })

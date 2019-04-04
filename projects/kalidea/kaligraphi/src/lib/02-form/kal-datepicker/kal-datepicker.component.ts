@@ -33,7 +33,7 @@ export type KalCalendarView = 'month' | 'multi';
 @Component({
   selector: 'kal-datepicker',
   templateUrl: './kal-datepicker.component.html',
-  styleUrls: ['./kal-datepicker.component.sass'],
+  styleUrls: ['./kal-datepicker.sass'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: buildProviders(KalDatepickerComponent)

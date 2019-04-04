@@ -23,7 +23,7 @@ import { buildProviders, FormElementComponent } from '../../utils/forms/form-ele
 @Component({
   selector: 'kal-slider',
   templateUrl: './kal-slider.component.html',
-  styleUrls: ['./kal-slider.component.sass'],
+  styleUrls: ['./kal-slider.sass'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: buildProviders(KalSliderComponent)

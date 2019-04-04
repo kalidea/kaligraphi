@@ -20,7 +20,6 @@ import { kalExpansionAnimations } from '../expansion-animations';
 @Component({
   selector: 'kal-expansion-panel-header',
   templateUrl: './kal-expansion-panel-header.component.html',
-  styleUrls: ['./kal-expansion-panel-header.component.sass'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [kalExpansionAnimations.indicatorRotate]

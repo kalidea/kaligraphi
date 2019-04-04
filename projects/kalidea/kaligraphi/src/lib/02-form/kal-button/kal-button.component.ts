@@ -4,7 +4,7 @@ import { Coerce } from '../../utils/decorators/coerce';
 @Component({
   selector: 'kal-button',
   templateUrl: './kal-button.component.html',
-  styleUrls: ['./kal-button.component.sass'],
+  styleUrls: ['./kal-button.sass'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })

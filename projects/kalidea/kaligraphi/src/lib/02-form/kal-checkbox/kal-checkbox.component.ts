@@ -18,7 +18,7 @@ import { Coerce } from '../../utils/decorators/coerce';
 @Component({
   selector: 'kal-checkbox',
   templateUrl: './kal-checkbox.component.html',
-  styleUrls: ['./kal-checkbox.component.sass'],
+  styleUrls: ['./kal-checkbox.sass'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: buildProviders(KalCheckboxComponent)

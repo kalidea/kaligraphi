@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
 @Component({
   selector: 'kal-icon',
   templateUrl: './kal-icon.component.html',
-  styleUrls: ['./kal-icon.component.sass'],
+  styleUrls: ['./kal-icon.sass'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
