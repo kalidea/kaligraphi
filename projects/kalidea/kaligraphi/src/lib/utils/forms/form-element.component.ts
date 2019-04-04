@@ -16,11 +16,6 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
   @Input() label: string;
 
   /**
-   * legend for this form element
-   */
-  @Input() legend: string;
-
-  /**
    * Is the field required
    */
   @Input() required = false;

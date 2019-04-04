@@ -5,6 +5,7 @@ import {
   Component,
   ContentChild,
   forwardRef,
+  Input,
   ViewEncapsulation
 } from '@angular/core';
 import { Subscription } from 'rxjs';
@@ -32,11 +33,6 @@ export class KalFormFieldComponent implements AfterContentInit {
   label: string;
 
   /**
-   * Under Label of the field
-   */
-  legend: string;
-
-  /**
    * Is the field required
    */
   required = false;
@@ -45,6 +41,11 @@ export class KalFormFieldComponent implements AfterContentInit {
    * For attribute
    */
   for: string;
+
+  /**
+   * Legend of the field
+   */
+  @Input() legend: string;
 
   @ContentChild(forwardRef(() => FormElementComponent))
   formElement: FormElementComponent;
@@ -62,7 +63,6 @@ export class KalFormFieldComponent implements AfterContentInit {
     if (!(this.formElement instanceof KalCheckboxComponent)) {
       this.label = this.formElement.label;
     }
-    this.legend = this.formElement.legend;
     this.required = this.formElement.required;
     this.for = this.formElement.id;
     this.checkErrorAndDirtyness();
