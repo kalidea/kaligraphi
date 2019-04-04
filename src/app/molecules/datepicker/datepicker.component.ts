@@ -21,6 +21,10 @@ export class DatepickerComponent implements OnInit {
 
   dateValidatorForm: FormGroup;
 
+  closeOnPick = false;
+
+  updateDate: String;
+
   constructor(private fb: FormBuilder) {
   }
 
@@ -33,6 +37,11 @@ export class DatepickerComponent implements OnInit {
       minDate: null,
       maxDate: null
     });
+  }
+
+  update($event: any) {
+    console.log($event);
+    this.control.patchValue($event);
   }
 
   ngOnInit(): void {
@@ -57,7 +66,6 @@ export class DatepickerComponent implements OnInit {
       }
     );
   }
-
 }
 
 export function minDateValidator(minDate: KalDate) {

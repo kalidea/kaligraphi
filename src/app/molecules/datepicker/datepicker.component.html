@@ -3,6 +3,7 @@
 <div class="example" [class.reverse]="reverse">
   <kal-form-field>
     <kal-datepicker [formControl]="control"
+                    [closeOnPick]="closeOnPick"
                     [kalTheme]="themes" name="datepicker"
                     [minYear]="minYear"
                     [maxYear]="maxYear"
@@ -11,8 +12,16 @@
 </div>
 
 <div class="configurator">
+
+
   <kal-form-field>
     <kal-checkbox [(ngModel)]="reverse" label="reverse"></kal-checkbox>
+  </kal-form-field>
+  <kal-form-field>
+    <kal-checkbox [(ngModel)]="closeOnPick" label="Close on Date pick"></kal-checkbox>
+  </kal-form-field>
+  <kal-form-field>
+    <kal-input [ngModel]="updateDate" (ngModelChange)="update($event)" [ngModelOptions]="{updateOn: 'blur'}" label="set date"></kal-input>
   </kal-form-field>
 
   <ng-container [formGroup]="dateValidatorForm">
