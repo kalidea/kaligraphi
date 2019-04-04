@@ -1,6 +1,20 @@
 <div id="container">
   <nav>
-    <kal-nav [items]="items" logo="https://via.placeholder.com/250/E89536/FFFFFF?text=Kaligraphi"></kal-nav>
+
+    <div class="kal-nav__logo">
+      <img src="https://via.placeholder.com/250/E89536/FFFFFF?text=Kaligraphi" height="100"/>
+    </div>
+
+    <kal-accordion [multi]="true">
+      <kal-expansion-panel *ngFor="let param of items|keyvalue">
+        <kal-expansion-panel-header>{{ param.key }}</kal-expansion-panel-header>
+        <kal-expansion-panel-content>
+          <kal-nav [items]="param.value"></kal-nav>
+        </kal-expansion-panel-content>
+      </kal-expansion-panel>
+    </kal-accordion>
+
+
   </nav>
 
   <main>

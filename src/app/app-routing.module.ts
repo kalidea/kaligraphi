@@ -3,17 +3,21 @@ import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: 'atoms',
-    loadChildren: './atoms/atoms.module#AtomsModule',
-  },
-  {
-    path: 'molecules',
-    loadChildren: './molecules/molecules.module#MoleculesModule',
-  },
-  {
     path: 'typography',
-    loadChildren: './typography/typography.module#TypographyModule',
-  }
+    loadChildren: './01-typography/typography.module#TypographyModule',
+  },
+  {
+    path: 'form',
+    loadChildren: './02-form/form.module#FormModule',
+  },
+  {
+    path: 'layout',
+    loadChildren: './03-layout/layout.module#LayoutModule',
+  },
+  {
+    path: 'overlay',
+    loadChildren: './04-overlay/overlay.module#OverlayModule',
+  },
 ];
 
 @NgModule({

@@ -1,0 +1,18 @@
+<div class="kal-nav__logo"
+     *ngIf="logo">
+  <img
+  [src]="logo"
+  />
+</div>
+<nav class="kal-nav__items">
+  <a
+    *ngFor="let link of items"
+    [routerLink]="link.route"
+    routerLinkActive="active">
+    {{ link.label }}
+  </a>
+</nav>
+
+<!-- projected content-->
+<ng-content></ng-content>
+
