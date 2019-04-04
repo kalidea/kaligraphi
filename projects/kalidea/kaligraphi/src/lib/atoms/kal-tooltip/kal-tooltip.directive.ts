@@ -42,6 +42,9 @@ export class KalTooltipDirective implements OnDestroy {
   @AutoUnsubscribe()
   private eventSubscription = Subscription.EMPTY;
 
+  @AutoUnsubscribe()
+  private animationSubscription = Subscription.EMPTY;
+
   constructor(private readonly overlay: Overlay,
               private readonly injector: Injector,
               private readonly viewContainerRef: ViewContainerRef,
@@ -72,7 +75,12 @@ export class KalTooltipDirective implements OnDestroy {
       const instance: KalTooltipComponent = this.componentRef.instance;
       // wait for animation end before removing overlay
       if (instance) {
-        instance.animationEnd$.subscribe(() => this.overlayRef.detach());
+        if (this.animationSubscription) {
+          this.animationSubscription.unsubscribe();
+        }
+        this.animationSubscription = instance.animationEnd$
+          .pipe(take(1))
+          .subscribe(() => this.overlayRef.detach());
         instance.close();
       }
     }
@@ -159,7 +167,7 @@ const ANIMATION_TIMINGS = '400ms cubic-bezier(0.25, 0.8, 0.25, 1)';
     ])
   ]
 })
-export class KalTooltipComponent {
+export class KalTooltipComponent implements OnDestroy {
   animationState: 'void' | 'enter' | 'leave' = 'enter';
 
   private animationEndSubject$ = new Subject<boolean>();
@@ -186,6 +194,12 @@ export class KalTooltipComponent {
   animationDone({toState}) {
     if (toState === 'leave') {
       this.animationEndSubject$.next(true);
+      this.animationEndSubject$.complete();
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (!this.animationEndSubject$.closed) {
       this.animationEndSubject$.complete();
     }
   }
