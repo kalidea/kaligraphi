@@ -38,8 +38,6 @@ export type KalCalendarView = 'month' | 'multi';
 })
 export class KalDatepickerComponent extends FormElementComponent<KalDate> implements OnInit {
 
-  private readonly yearsIncrement = 30;
-
   /**
    * Reference to calendar template.
    */
@@ -68,6 +66,15 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   currentDate: KalDate;
 
   /**
+   * close datepicker when user select a date
+   */
+  @Input()
+  @Coerce('boolean')
+  closeOnPick = false;
+
+  private readonly yearsIncrement = 30;
+
+  /**
    * Subscription to `overlayRef.backdropClick()`.
    */
   @AutoUnsubscribe()
@@ -85,6 +92,15 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   private overlayRef: OverlayRef;
 
   private _maxYear: number;
+
+  private _minYear = 1940;
+
+  constructor(private overlay: Overlay,
+              private elementRef: ElementRef<HTMLElement>,
+              private cdr: ChangeDetectorRef,
+              private injector: Injector) {
+    super();
+  }
 
   /**
    * Max year that should be displayed in year selection.
@@ -109,8 +125,6 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     this.cdr.markForCheck();
   }
 
-  private _minYear = 1940;
-
   @Input()
   @Coerce('number')
   get minYear(): number {
@@ -125,13 +139,6 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
 
     this._minYear = minYear;
     this.cdr.markForCheck();
-  }
-
-  constructor(private overlay: Overlay,
-              private elementRef: ElementRef<HTMLElement>,
-              private cdr: ChangeDetectorRef,
-              private injector: Injector) {
-    super();
   }
 
   /**
@@ -202,18 +209,9 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   setInputValue(date: KalDate, event = {emitEvent: true}): void {
     const displayedDate = (date && date.valid) ? date.toString() : '';
     this.control.setValue(displayedDate, event);
-  }
-
-  /**
-   * Update the view according to `$event` parameter.
-   * If we receive a `null` value it means that we're currently displaying the `multi` view and
-   * we wants to display the `month` view.
-   */
-  updateView($event: number | null): void {
-    if ($event === null) {
-      this.changeCurrentView();
-    } else {
-      this.monthCalendar.updateMonth($event);
+    // close calendar if user pick
+    if (!event.emitEvent && this.closeOnPick) {
+      this.close();
     }
   }
 
@@ -233,6 +231,19 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
 
     // store the date
     this.currentDate = kalDate;
+  }
+
+  /**
+   * Update the view according to `$event` parameter.
+   * If we receive a `null` value it means that we're currently displaying the `multi` view and
+   * we wants to display the `month` view.
+   */
+  updateView($event: number | null): void {
+    if ($event === null) {
+      this.changeCurrentView();
+    } else {
+      this.monthCalendar.updateMonth($event);
+    }
   }
 
   private createOverlay(): void {
