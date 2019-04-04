@@ -1,17 +1,17 @@
 $kal-styles-tooltip: (
   'default': (
-    'kal-tootip': (
+    'kal-tooltip': (
       'margin': 14px 0,
-    ),
-    'div': (
-      'padding': 6px 12px,
-      'font-size': 11px,
-      'line-height': 15px,
-      'box-sizing': border-box,
-      'border-radius': 3px,
-      'background-color': get("grey.wf200", $kal-palettes),
-      'border': 1px solid get("grey.wf300", $kal-palettes),
-      'color': get("black", $kal-palettes),
+      'div': (
+        'padding': 6px 12px,
+        'font-size': 11px,
+        'line-height': 15px,
+        'box-sizing': border-box,
+        'border-radius': 3px,
+        'background-color': get("grey.wf200", $kal-palettes),
+        'border': 1px solid get("grey.wf300", $kal-palettes),
+        'color': get("black", $kal-palettes),
+      ),
     ),
     'reverse': (
       'kal-tootip': (
