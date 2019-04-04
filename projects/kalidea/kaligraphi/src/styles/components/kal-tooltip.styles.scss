@@ -1,0 +1,28 @@
+$kal-styles-tooltip: (
+  'default': (
+    'kal-tootip': (
+      'margin': 14px 0,
+    ),
+    'div': (
+      'padding': 6px 12px,
+      'font-size': 11px,
+      'line-height': 15px,
+      'box-sizing': border-box,
+      'border-radius': 3px,
+      'background-color': get("grey.wf200", $kal-palettes),
+      'border': 1px solid get("grey.wf300", $kal-palettes),
+      'color': get("black", $kal-palettes),
+    ),
+    'reverse': (
+      'kal-tootip': (
+        'div': (
+          'background-color': get("grey.wf600", $kal-palettes),
+          'border-color': get("grey.wf500", $kal-palettes),
+          'color': get("white", $kal-palettes),
+        ),
+      ),
+    ),
+  ),
+  'alternates': (
+  ),
+);

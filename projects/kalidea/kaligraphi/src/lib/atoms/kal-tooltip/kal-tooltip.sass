@@ -1,21 +1,27 @@
 
-=kal-tooltip($kal-parameters)
+=kal-themed-tooltip($theme-parameters)
+  kal-tooltip
+    margin: get("kal-tooltip.margin", $theme-parameters)
+    > div
+      padding: get("kal-tooltip.div.padding", $theme-parameters)
+      font-size: get("kal-tooltip.div.font-size", $theme-parameters)
+      line-height: get("kal-tooltip.div.line-height", $theme-parameters)
+      box-sizing: get("kal-tooltip.div.box-sizing", $theme-parameters)
+      border-radius: get("kal-tooltip.div.border-radius", $theme-parameters)
+      background-color: get("kal-tooltip.div.background-color", $theme-parameters)
+      border: 1px solid get("kal-tooltip.div.border", $theme-parameters)
+      color: get("kal-tooltip.div.color", $theme-parameters)
+      &.kal-theme--reverse
+        background-color: get("reverse.kal-tooltip.div.background-color", $theme-parameters)
+        border-color: get("reverse.kal-tooltip.div.border-color", $theme-parameters)
+        color: get("reverse.kal-tooltip.div.color", $theme-parameters)
 
+=kal-tooltip($kal-parameters)
   [kaltooltip]
     user-select: none
 
-  kal-tooltip
-    margin: 15px 0
-    > div
-      padding: 6px 12px
-      font-size: 11px
-      line-height: 15px
-      box-sizing: border-box
-      border-radius: 3px
-      background-color: #D6D6D6
-      border: 1px solid #B8B8B8
-      color: #000
-      &.kal-theme--reverse
-        background-color: #5C5C5C
-        border-color: #7A7A7A
-        color: #FFF
+    +kal-themed-tooltip(get('tooltip.default', $kal-parameters))
+    
+    @each $key, $params in get('tooltip.alternates', $kal-parameters)
+      &.kal-theme--#{$key}
+        +kal-themed-tooltip($params)
