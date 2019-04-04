@@ -20,6 +20,7 @@ import { ChipComponent } from './chip/chip.component';
 import { LoaderComponent } from './loader/loader.component';
 import { CarouselComponent } from './carousel/carousel.component';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
+import { TooltipComponent } from './tooltip/tooltip.component';
 
 @NgModule({
   imports: [
@@ -46,7 +47,8 @@ import { AutocompleteComponent } from './autocomplete/autocomplete.component';
     LoaderComponent,
     CarouselComponent,
     LoaderComponent,
-    AutocompleteComponent
+    AutocompleteComponent,
+    TooltipComponent
   ]
 })
 export class AtomsModule { }

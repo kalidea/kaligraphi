@@ -1,0 +1,22 @@
+<h1>Radio</h1>
+
+<div class="example" [class.reverse]="hasReverse">
+  <article>
+    <kal-button
+      [kalTheme]="themes"
+      kalTooltip="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam minima neque pariatur placeat similique. "
+    >Bouton avec tooltip</kal-button>
+  </article>
+</div>
+
+
+<div class="configurator">
+  <kal-form-field>
+    <kal-select label="themes" [multiple]="true" [(ngModel)]="themes">
+      <kal-option value="">default</kal-option>
+      <kal-option value="primary">primary</kal-option>
+      <kal-option value="reverse">reverse</kal-option>
+    </kal-select>
+  </kal-form-field>
+
+</div>

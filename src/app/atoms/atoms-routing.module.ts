@@ -17,6 +17,7 @@ import { ChipComponent } from 'src/app/atoms/chip/chip.component';
 import { LoaderComponent } from 'src/app/atoms/loader/loader.component';
 import { CarouselComponent } from 'src/app/atoms/carousel/carousel.component';
 import { AutocompleteComponent } from 'src/app/atoms/autocomplete/autocomplete.component';
+import { TooltipComponent } from 'src/app/atoms/tooltip/tooltip.component';
 
 const routes: Routes = [
   {path: 'input', component: InputComponent},
@@ -35,6 +36,7 @@ const routes: Routes = [
   {path: 'loader', component: LoaderComponent},
   {path: 'carousel', component: CarouselComponent},
   {path: 'autocomplete', component: AutocompleteComponent},
+  {path: 'tooltip', component: TooltipComponent},
 ];
 
 @NgModule({

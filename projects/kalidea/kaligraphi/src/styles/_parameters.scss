@@ -43,6 +43,9 @@ $kal-headings: (
 @import 'components/kal-progress-bar.styles';
 @import 'components/kal-card.styles';
 @import 'components/kal-slider.styles';
+@import 'components/kal-tooltip.styles';
+
+
 // global parameters
 $kal-parameters: (
   palettes: $kal-palettes,
@@ -55,6 +58,7 @@ $kal-parameters: (
   progress-bar: $kal-styles-progress-bar,
   card: $kal-styles-card,
   slider: $kal-styles-slider,
+  tooltip: $kal-styles-tooltip,
   form: (
     elements: (
       'button': $kal-styles-button,
