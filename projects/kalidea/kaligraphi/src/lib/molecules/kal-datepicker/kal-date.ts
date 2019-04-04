@@ -1,5 +1,5 @@
 import { isString } from 'util';
-import { isEmpty, values } from 'lodash';
+import { isEmpty } from 'lodash';
 import { DateObjectUnits, DateTime, Duration, DurationObject, Interval } from 'luxon';
 
 export type KalDateType = string | DateTime | Date | KalDate;
@@ -57,7 +57,7 @@ export class KalDate {
       }
 
       date = DateTime.fromFormat(rawDate as string, format);
-    } else if (rawDate.constructor.name === 'KalDate') {
+    } else if (rawDate instanceof KalDate) {
       date = (rawDate as KalDate).getDate();
     } else {
       // else this is a luxon date

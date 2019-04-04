@@ -61,6 +61,10 @@ export class KalMonthCalendarComponent implements OnInit {
     return datesList;
   }
 
+  get currentDate(): KalDate {
+    return this.datepicker.currentDate;
+  }
+
   /**
    * Whether we should add a `hidden` class to our button.
    * It allows us to hide the days of the previous month.
@@ -105,13 +109,13 @@ export class KalMonthCalendarComponent implements OnInit {
    * Whether the day in the given date is the displayed day.
    */
   isDaySelected(date: KalDate): boolean {
-    return this.datepicker.currentDate.getDay() === date.getDay() &&
-      this.datepicker.currentDate.getMonth() === date.getMonth() &&
-      this.datepicker.currentDate.getYear() === date.getYear();
+    return this.currentDate.getDay() === date.getDay() &&
+      this.currentDate.getMonth() === date.getMonth() &&
+      this.currentDate.getYear() === date.getYear();
   }
 
   ngOnInit(): void {
     // avoid reference
-    this.displayedDate = new KalDate(this.datepicker.currentDate || null);
+    this.displayedDate = new KalDate(this.currentDate || null);
   }
 }

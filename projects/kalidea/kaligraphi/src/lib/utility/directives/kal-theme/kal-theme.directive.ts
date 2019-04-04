@@ -48,9 +48,10 @@ export class KalThemeDirective {
   }
 
   private removeOldThemes() {
-    const classList: DOMTokenList = this.elementRef.nativeElement.classList;
-    for (let i = 0; i < classList.length; i++) {
-      const className = classList.item(i);
+    // var length is updated at each classe suppression,
+    // that's why we should clone this DOMTokenList
+    const classList: string[] = Array.from(this.elementRef.nativeElement.classList);
+    for (const className of classList) {
       if (new RegExp(KalThemeDirective.prefix).test(className)) {
         this.renderer.removeClass(this.elementRef.nativeElement, className);
       }

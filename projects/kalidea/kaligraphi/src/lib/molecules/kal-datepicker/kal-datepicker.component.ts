@@ -147,7 +147,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   get currentPeriod(): string {
     const date = this.monthCalendar ? this.monthCalendar.displayedDate : this.currentDate;
     const month = date.getMonthAsString();
-    return month.charAt(0).toLocaleUpperCase() + month.slice(1) + ' ' + date.getYear();
+    return month ? month.charAt(0).toLocaleUpperCase() + month.slice(1) + ' ' + date.getYear() : '';
   }
 
   /**
@@ -210,7 +210,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     const displayedDate = (date && date.valid) ? date.toString() : '';
     this.control.setValue(displayedDate, event);
     // close calendar if user pick
-    if (!event.emitEvent && this.closeOnPick) {
+    if (event.emitEvent && this.closeOnPick) {
       this.close();
     }
   }
