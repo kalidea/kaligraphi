@@ -5,6 +5,7 @@ import {
   Component,
   ContentChild,
   forwardRef,
+  Input,
   ViewEncapsulation
 } from '@angular/core';
 import { Subscription } from 'rxjs';
@@ -40,6 +41,11 @@ export class KalFormFieldComponent implements AfterContentInit {
    * For attribute
    */
   for: string;
+
+  /**
+   * Legend of the field
+   */
+  @Input() legend: string;
 
   @ContentChild(forwardRef(() => FormElementComponent))
   formElement: FormElementComponent;

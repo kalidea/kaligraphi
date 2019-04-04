@@ -2,7 +2,7 @@
 
 <div class="example" [class.reverse]="reverse">
 
-  <kal-form-field>
+  <kal-form-field [legend]="legend">
     <kal-input label="Input label"
                required="true"
                [kalTheme]="themes"
@@ -33,5 +33,10 @@
   <kal-checkbox [(ngModel)]="disabled" label="disabled"></kal-checkbox>
 
   <kal-checkbox [(ngModel)]="reverse" label="reverse"></kal-checkbox>
-
+  <kal-form-field>
+    <kal-input
+      label="legend"
+      [(ngModel)]="legend"
+    ></kal-input>
+  </kal-form-field>
 </div>

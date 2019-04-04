@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
-import { FormControl, Validator, Validators } from '@angular/forms';
+import {ChangeDetectionStrategy, Component, ViewEncapsulation} from '@angular/core';
+import {FormControl, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-form-field',
@@ -17,6 +17,8 @@ export class FormFieldComponent {
   disabled = false;
 
   reverse = false;
+
+  legend = 'new legend';
 
   get themes() {
     return this.reverse ? 'reverse' : '';

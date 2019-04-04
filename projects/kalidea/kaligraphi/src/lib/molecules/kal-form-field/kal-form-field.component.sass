@@ -1,7 +1,6 @@
 =kal-themed-form-field($theme-parameters)
     .kal-form-field__wrapper
       background-color: get('wrapper.background-color', $theme-parameters)
-
       &.kal-form-field--error
         .kal-form-field__label
           color: get('wrapper.error.color', $theme-parameters)
@@ -18,6 +17,10 @@
         &.kal-form-field--required::after
           content: get('wrapper.label.required.content', $theme-parameters)
 
+      .kal-form-field__legend
+        font-size: get('wrapper.legend.font-size', $theme-parameters)
+        color: get('wrapper.legend.color', $theme-parameters)
+        margin: get('wrapper.legend.margin', $theme-parameters)
     &.kal-theme--reverse
       .kal-form-field__wrapper
         background-color: get('reverse.wrapper.background-color', $theme-parameters)
