@@ -21,6 +21,9 @@
     <kal-checkbox [(ngModel)]="closeOnPick" label="Close on Date pick"></kal-checkbox>
   </kal-form-field>
   <kal-form-field>
+    <kal-checkbox [(ngModel)]="openOnClick" label="open datepicker on input click"></kal-checkbox>
+  </kal-form-field>
+  <kal-form-field>
     <kal-input [ngModel]="updateDate" (ngModelChange)="update($event)" [ngModelOptions]="{updateOn: 'blur'}" label="set date"></kal-input>
   </kal-form-field>
 
