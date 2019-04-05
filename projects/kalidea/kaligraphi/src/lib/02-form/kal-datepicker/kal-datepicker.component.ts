@@ -4,6 +4,7 @@ import {
   Component,
   ElementRef,
   forwardRef,
+  HostListener,
   Injector,
   Input,
   OnInit,
@@ -72,7 +73,14 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
    */
   @Input()
   @Coerce('boolean')
-  closeOnPick = false;
+  closeOnPick = true;
+
+  /**
+   * open datepicker when user click on field
+   */
+  @Input()
+  @Coerce('boolean')
+  openOnClick = true;
 
   private readonly yearsIncrement = 30;
 
@@ -191,9 +199,12 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     this.datePickerHeader.markForCheck();
   }
 
-  open() {
-    if (!this.overlayRef.hasAttached()) {
-      this.overlayRef.attach(this.datepickerCalendar);
+  @HostListener('click', ['$event'])
+  open($event = false) {
+    if ($event === false || this.openOnClick) {
+      if (!this.overlayRef.hasAttached()) {
+        this.overlayRef.attach(this.datepickerCalendar);
+      }
     }
   }
 

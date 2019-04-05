@@ -21,7 +21,9 @@ export class DatepickerComponent implements OnInit {
 
   dateValidatorForm: FormGroup;
 
-  closeOnPick = false;
+  closeOnPick = true;
+
+  openOnClick = true;
 
   updateDate: String;
 
