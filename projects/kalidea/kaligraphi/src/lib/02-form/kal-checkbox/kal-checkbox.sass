@@ -53,6 +53,17 @@
         box-shadow:  get("label.after.box-shadow", $theme-parameters)
         font-size: get("label.after.font-size", $theme-parameters)
         font-weight: get("label.after.font-weight", $theme-parameters)
+      span
+        display: get("span.display", $theme-parameters)
+        position: get("span.position", $theme-parameters)
+        z-index: get("span.z-index", $theme-parameters)
+        top: get("span.top", $theme-parameters)
+        left: get("span.left", $theme-parameters)
+        height: get("span.height", $theme-parameters)
+        width: get("span.width", $theme-parameters)
+        border-radius: get("span.border-radius", $theme-parameters)
+        background-color: get("span.background-color", $theme-parameters)
+        opacity: get("span.opacity", $theme-parameters)
     // Aspect before si "non coché"
     [type="checkbox"]:not(:checked) + label::before
       background-color: get("label.checkfalse.before.background-color", $theme-parameters)
@@ -85,26 +96,15 @@
         background-color: get("label.disabled.before.background-color", $theme-parameters)
         border-color: get("label.disabled.before.border-color", $theme-parameters)
     // Surbrillance du check
-    div
-      display: get("div.display", $theme-parameters)
-      position: get("div.position", $theme-parameters)
-      z-index: get("div.z-index", $theme-parameters)
-      top: get("div.top", $theme-parameters)
-      left: get("div.left", $theme-parameters)
-      height: get("div.height", $theme-parameters)
-      width: get("div.width", $theme-parameters)
-      border-radius: get("div.border-radius", $theme-parameters)
-      background-color: get("div.background-color", $theme-parameters)
-      opacity: get("div.opacity", $theme-parameters)
-    &:not(:disabled):hover div
-      background-color: get("hover.div.background-color", $theme-parameters)
-    [type="checkbox"]:not(:checked) ~ div
-      left:  get("div.checkfalse.left", $theme-parameters)
-    [type="checkbox"]:checked ~ div
-      left:  get("div.checktrue.left", $theme-parameters)
-    [type="checkbox"]:not(:disabled):focus ~ div,
-    [type="checkbox"]:not(:disabled):active ~ div
-      background-color: get("active.div.background-color", $theme-parameters)
+    &:hover [type="checkbox"]:not(:disabled) + label span
+      background-color: get("hover.span.background-color", $theme-parameters)
+    [type="checkbox"]:not(:checked) + label span
+      left:  get("span.checkfalse.left", $theme-parameters)
+    [type="checkbox"]:checked + label span
+      left:  get("span.checktrue.left", $theme-parameters)
+    [type="checkbox"]:not(:disabled):focus + label span,
+    [type="checkbox"]:not(:disabled):active + label span
+      background-color: get("active.span.background-color", $theme-parameters)
 
     // Variante couleur
     &.kal-theme--reverse
@@ -125,11 +125,11 @@
       [type="checkbox"]:disabled + label::after
         background-color: get("reverse.label.after.disabled.background-color", $theme-parameters)
         color: get("reverse.label.after.disabled.color", $theme-parameters)
-      &:not(:disabled):hover div
-        background-color: get("reverse.hover.div.background-color", $theme-parameters)
-      [type="checkbox"]:not(:disabled):focus ~ div,
-      [type="checkbox"]:not(:disabled):active ~ div
-        background-color: get("reverse.active.div.background-color", $theme-parameters)
+      &:hover [type="checkbox"]:not(:disabled) + label span
+        background-color: get("reverse.hover.span.background-color", $theme-parameters)
+      [type="checkbox"]:not(:disabled):focus + label span,
+      [type="checkbox"]:not(:disabled):active + label span
+        background-color: get("reverse.active.span.background-color", $theme-parameters)
 
 =kal-checkbox($kal-parameters)
   kal-checkbox
