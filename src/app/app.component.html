@@ -7,7 +7,7 @@
 
     <kal-accordion [multi]="true">
       <kal-expansion-panel *ngFor="let param of items">
-        <kal-expansion-panel-header>{{ param.key }}</kal-expansion-panel-header>
+        <kal-expansion-panel-header><span>{{ param.key }}</span></kal-expansion-panel-header>
         <kal-expansion-panel-content>
           <kal-nav [items]="param.list"></kal-nav>
         </kal-expansion-panel-content>
