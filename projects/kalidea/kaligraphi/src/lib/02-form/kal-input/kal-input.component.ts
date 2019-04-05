@@ -6,13 +6,14 @@ import {
   EventEmitter,
   Injector,
   Input,
+  OnChanges,
   OnDestroy,
   Output,
+  SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
 import { AbstractControl, FormControl, NgControl } from '@angular/forms';
 import { FormHooks } from '@angular/forms/src/model';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { of, Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
@@ -20,6 +21,7 @@ import { InputFormater } from './format/input-formater';
 import { KalFormaterService } from './kal-formater.service';
 import { buildProviders, FormElementComponent } from '../../utils/forms/form-element.component';
 import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
+import { Coerce } from '../../utils/decorators/coerce';
 
 
 @Component({
@@ -30,12 +32,14 @@ import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: buildProviders(KalInputComponent)
 })
-export class KalInputComponent extends FormElementComponent<string> implements OnDestroy, AfterContentInit {
+export class KalInputComponent extends FormElementComponent<string> implements OnChanges, OnDestroy, AfterContentInit {
 
   /**
    * form control for this component
    */
   control: FormControl;
+
+  @Input() autocomplete: string;
 
   /**
    * should we format data on field on blur ?
@@ -64,13 +68,15 @@ export class KalInputComponent extends FormElementComponent<string> implements O
    */
   @Input() updateOnEvent: FormHooks = 'change';
 
+  @Input()
+  @Coerce('boolean')
+  clearable = false;
+
   @AutoUnsubscribe()
   private controlValueChangedSubscription = Subscription.EMPTY;
 
   @AutoUnsubscribe()
   private controlStatusChangedSubscription = Subscription.EMPTY;
-
-  private isClearable = false;
 
   constructor(private cdr: ChangeDetectorRef,
               private injector: Injector,
@@ -86,21 +92,18 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     }
   }
 
-  @Input()
-  get clearable(): boolean {
-    return this.isClearable;
-  }
-
-  set clearable(clearable: boolean) {
-    this.isClearable = coerceBooleanProperty(clearable);
-    this.cdr.markForCheck();
-  }
-
   /**
    * get formater for this type
    */
   get formater(): InputFormater {
     return this.formaters.get(this.type);
+  }
+
+  private get superControl() {
+    if (this.ngControl && this.ngControl.control) {
+      return this.ngControl.control;
+    }
+    return null;
   }
 
   clearField() {
@@ -155,13 +158,6 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     }
   }
 
-  private get superControl() {
-    if (this.ngControl && this.ngControl.control) {
-      return this.ngControl.control;
-    }
-    return null;
-  }
-
   private updateStatus() {
     if (this.superControl.disabled !== this.control.disabled) {
       this.superControl.enabled ? this.control.enable() : this.control.disable();
@@ -171,6 +167,11 @@ export class KalInputComponent extends FormElementComponent<string> implements O
 
   ngOnDestroy(): void {
     this.cdr.detach();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    super.ngOnChanges(changes);
+    this.cdr.markForCheck();
   }
 
   ngAfterContentInit(): void {

@@ -1,5 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { KalAutocompleteOption } from '@kalidea/kaligraphi';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-autocomplete',
@@ -15,6 +16,8 @@ export class AutocompleteComponent {
 
   emperors: string[];
 
+  control = new FormControl('');
+
   emperorsList = [
     'Charlemagne',
     'Louis XIV the Great',
@@ -23,13 +26,20 @@ export class AutocompleteComponent {
     'Napoleon I',
   ];
 
+  clearOnPick = false;
+
   constructor() {
     this.emperors = this.emperorsList;
     this.updateEmperors();
+    this.control.valueChanges.subscribe(d => console.log({d}))
   }
 
 
   updateEmperors() {
     this.dataSource = this.emperors.map(name => ({value: name, label: name}));
+  }
+
+  choicePicked($event) {
+    this.result = $event;
   }
 }
