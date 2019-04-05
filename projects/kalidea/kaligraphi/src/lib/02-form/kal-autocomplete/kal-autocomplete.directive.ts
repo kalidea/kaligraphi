@@ -194,16 +194,13 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
    */
   private updateOptionsList(expression = '') {
     if (this.autocompleteComponent) {
-      let optionsList = [];
+      let optionsList = this._dataSource;
       if ((expression || '').trim() !== '') {
         try {
           const regexp = new RegExp(`.*${expression}.*`, 'i');
           optionsList = this._dataSource.filter(element => regexp.test(element.label));
         } catch (e) {
-          optionsList = this._dataSource;
         }
-      } else {
-        optionsList = this._dataSource;
       }
       this.autocompleteComponent.options = optionsList;
     }
