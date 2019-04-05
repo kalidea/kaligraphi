@@ -35,6 +35,11 @@ export class KalAutocompleteDirective<T = string> implements OnDestroy {
   @Output() readonly kalAutocompleteSelected = new EventEmitter<KalAutocompleteOption<T>>();
 
   /**
+   * clear field on option picked
+   */
+  @Input() kalClearOnPick = false;
+
+  /**
    * reference to the overlay created
    */
   private _overlayRef: OverlayRef;
@@ -223,7 +228,7 @@ export class KalAutocompleteDirective<T = string> implements OnDestroy {
   private notifySelectionUpdate(option: KalAutocompleteOption<T>) {
     this.kalAutocompleteSelected.emit(option);
     if (option) {
-      this.input.writeValue(option.label);
+      this.input.writeValue(this.kalClearOnPick ? '' : option.label);
     }
     this.close();
   }
