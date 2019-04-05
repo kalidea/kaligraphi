@@ -239,22 +239,12 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
   }
 
   /**
-   * Focus the tab element
+   * manage focus and blur event on listelement
    */
-  @HostListener('focus')
-  focus(): void {
-    this.isFocused = true;
-    if (this._selectionMode !== KalListSelectionMode.None) {
-      this.activeItem(this.selectedItemIndex);
-    }
-  }
-
-  /**
-   * Blur the tab element
-   */
-  @HostListener('blur')
-  blur() {
-    this.isFocused = false;
+  @HostListener('blur', ['$event'])
+  @HostListener('focus', ['$event'])
+  manageUserEvent($event): void {
+    this.isFocused = $event instanceof FocusEvent;
     if (this._selectionMode !== KalListSelectionMode.None) {
       this.activeItem(this.selectedItemIndex);
     }
