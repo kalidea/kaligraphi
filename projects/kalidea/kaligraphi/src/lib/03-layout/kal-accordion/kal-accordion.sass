@@ -1,2 +1,20 @@
+
 =kal-accordion($parameters)
   kal-accordion
+    kal-expansion-panel
+      kal-expansion-panel-header
+        display: flex
+        flex-flow: row wrap
+        justify-content: flex-start
+        align-items: center
+
+        > span:nth-child(1)
+          flex: 1
+        > span:nth-child(2)
+          i
+            color: get("palettes.grey.wf300",$kal-parameters)
+
+        &[aria-disabled="false"]:hover
+          cursor: pointer
+          i
+            color: get("palettes.orange.normal",$kal-parameters)
