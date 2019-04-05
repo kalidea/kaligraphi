@@ -7,6 +7,7 @@ import {
   Inject,
   Input,
   OnDestroy,
+  OnInit,
   Optional,
   Output,
   ViewContainerRef
@@ -25,14 +26,18 @@ import { KalAutocompleteComponent } from './kal-autocomplete.component';
 import { KalAutocompleteOption } from './kal-autocomplete-option';
 import { KalThemeDirective } from '../../99-utility/directives/kal-theme/kal-theme.directive';
 
-
 @Directive({
   selector: 'kal-input[kalAutocomplete]',
   exportAs: 'kalAutocomplete'
 })
-export class KalAutocompleteDirective<T = string> implements OnDestroy {
+export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
 
   @Output() readonly kalAutocompleteSelected = new EventEmitter<KalAutocompleteOption<T>>();
+
+  /**
+   * clear field on option picked
+   */
+  @Input() kalClearOnPick = false;
 
   /**
    * reference to the overlay created
@@ -66,7 +71,6 @@ export class KalAutocompleteDirective<T = string> implements OnDestroy {
     this._dataSource = dataSource;
     this.updateOptionsList();
   }
-
 
   private get positionsList(): FlexibleConnectedPositionStrategy {
     return this.overlay.position()
@@ -190,16 +194,13 @@ export class KalAutocompleteDirective<T = string> implements OnDestroy {
    */
   private updateOptionsList(expression = '') {
     if (this.autocompleteComponent) {
-      let optionsList = [];
-      if (expression.trim() !== '') {
+      let optionsList = this._dataSource;
+      if ((expression || '').trim() !== '') {
         try {
           const regexp = new RegExp(`.*${expression}.*`, 'i');
           optionsList = this._dataSource.filter(element => regexp.test(element.label));
         } catch (e) {
-          optionsList = this._dataSource;
         }
-      } else {
-        optionsList = this._dataSource;
       }
       this.autocompleteComponent.options = optionsList;
     }
@@ -223,9 +224,13 @@ export class KalAutocompleteDirective<T = string> implements OnDestroy {
   private notifySelectionUpdate(option: KalAutocompleteOption<T>) {
     this.kalAutocompleteSelected.emit(option);
     if (option) {
-      this.input.writeValue(option.label);
+      this.input.writeValue(this.kalClearOnPick ? '' : option.label);
     }
     this.close();
+  }
+
+  ngOnInit(): void {
+    this.input.autocomplete = 'off';
   }
 
   ngOnDestroy() {
