@@ -23,7 +23,6 @@ import { buildProviders, FormElementComponent } from '../../utils/forms/form-ele
 @Component({
   selector: 'kal-slider',
   templateUrl: './kal-slider.component.html',
-  styleUrls: ['./kal-slider.sass'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: buildProviders(KalSliderComponent)
@@ -57,6 +56,9 @@ export class KalSliderComponent extends FormElementComponent<number> implements 
 
   @Output()
   readonly valueChange: EventEmitter<number | null> = new EventEmitter<number | null>();
+
+  @Output()
+  readonly pointerDragging: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   @ViewChild('sliderWrapper') private sliderWrapper: ElementRef;
 
@@ -148,11 +150,12 @@ export class KalSliderComponent extends FormElementComponent<number> implements 
   }
 
   @HostListener('slide', ['$event'])
-  slide($event: HammerInput) {
+  slide($event: HammerInput & { isFinal: boolean }) {
 
     if (!this.isUpdatable) {
       return;
     }
+    this.pointerDragging.emit(!$event.isFinal);
 
     // Prevent the slide from selecting anything else.
     $event.preventDefault();
