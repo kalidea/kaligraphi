@@ -3,10 +3,10 @@ $kal-styles-nav: (
   'default': (
     'display': block,
     'width': 100%,
-    'height': 100vh,
+    'height': auto,
     'background-color': get("grey.wf800", $kal-palettes),
     'color': get("white", $kal-palettes),
-    'padding': 60px 0 0 72px,
+    'padding': 20px 0 0 10px,
     'logo': (
       'background-color': get("white", $kal-palettes),
       'padding': 10px,

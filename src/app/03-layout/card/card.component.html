@@ -1,0 +1,41 @@
+<h1>Card</h1>
+
+<div class="example">
+  <kal-card [dismissable]="dismissable" (dismissed)="dismissed()">
+    <kal-card-header>
+      <kal-card-on-title *ngIf="onTitle">{{ onTitle }}</kal-card-on-title>
+      <kal-card-title *ngIf="title">{{ title }}</kal-card-title>
+    </kal-card-header>
+
+    <kal-card-content>
+      My Content
+    </kal-card-content>
+
+    <kal-card-actions *ngIf="actions">
+      <kal-button kalTheme="tertiary">action1</kal-button>
+      <kal-button kalTheme="primary">action2</kal-button>
+    </kal-card-actions>
+
+  </kal-card>
+
+</div>
+
+<section class="configurator">
+
+  <kal-form-field>
+    <kal-input [(ngModel)]="title" label="Title"></kal-input>
+  </kal-form-field>
+
+  <kal-form-field>
+    <kal-input [(ngModel)]="onTitle" label="onTitle"></kal-input>
+  </kal-form-field>
+
+  <kal-form-field>
+    <kal-checkbox [(ngModel)]="dismissable" label="dismissable"></kal-checkbox>
+  </kal-form-field>
+
+  <kal-form-field>
+    <kal-checkbox [(ngModel)]="actions" label="actions"></kal-checkbox>
+  </kal-form-field>
+
+</section>
