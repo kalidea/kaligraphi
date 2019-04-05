@@ -19,8 +19,8 @@ export const kalExpansionAnimations: {
 
   /** Animation that expands and collapses the panel content. */
   bodyExpansion: trigger('bodyExpansion', [
-    state('collapsed, void', style({height: '0px', visibility: 'hidden'})),
-    state('expanded', style({height: '*', visibility: 'visible'})),
+    state('collapsed, void', style({height: '0px', visibility: 'hidden', overflow: 'hidden'})),
+    state('expanded', style({height: '*', visibility: 'visible', overflow: 'visible'})),
     transition('expanded <=> collapsed, void => collapsed',
       animate(EXPANSION_PANEL_ANIMATION_TIMING)),
   ])
