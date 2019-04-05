@@ -1,5 +1,4 @@
 import {
-  ChangeDetectorRef,
   Directive,
   ElementRef,
   EventEmitter,
@@ -28,7 +27,8 @@ import { KalThemeDirective } from '../../99-utility/directives/kal-theme/kal-the
 
 
 @Directive({
-  selector: 'kal-input[kalAutocomplete]'
+  selector: 'kal-input[kalAutocomplete]',
+  exportAs: 'kalAutocomplete'
 })
 export class KalAutocompleteDirective<T = string> implements OnDestroy {
 

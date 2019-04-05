@@ -50,6 +50,16 @@ export interface KalVirtualScrollConfig {
 })
 export class KalListComponent<T extends { id?: string }> implements CollectionViewer, OnInit, AfterViewInit, OnChanges, OnDestroy {
 
+  /**
+   * Results list
+   */
+  results: T[] = [];
+
+  /**
+   * @inheritDoc
+   */
+  viewChange: Observable<ListRange>;
+
   @Input() highlightedItem: T = null;
 
   /**
@@ -63,14 +73,13 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
   @Input() groupByFunction: (item: T) => string;
 
   /**
-   * Results list
+   * Function that disable rows in template
    */
-  results: T[] = [];
+  @Input() disableRowsFunction: (item: T) => (boolean) = null;
 
-  /**
-   * @inheritDoc
-   */
-  viewChange: Observable<ListRange>;
+  @Coerce('boolean')
+  @Input()
+  selectRowOnContentClick = false;
 
   /**
    * Triggered when selection has changed
@@ -91,14 +100,6 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
    * The reference to the element thats contains the kal list item directive
    */
   @ViewChildren(KalListItemSelectionDirective) children: QueryList<KalListItemSelectionDirective>;
-
-  /**
-   * Function that disable rows in template
-   */
-  @Input() disableRowsFunction: (item: T) => (boolean) = null;
-
-  @Coerce('boolean')
-  @Input() selectRowOnContentClick = false;
 
   private isInitialized = false;
 
@@ -126,10 +127,22 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
   @AutoUnsubscribe()
   private selectionSubscription: Subscription = Subscription.EMPTY;
 
+  private _dataSource: KalListDataSource<T> = null;
+
+  /**
+   * Selectable items (none, single, multiple)
+   */
+  private _selectionMode: KalListSelectionMode = KalListSelectionMode.Single;
+
+  private _selection: KalSelectionModel<T> = null;
+
+  /**
+   * The virtual scroll config
+   */
+  private _virtualScrollConfig: KalVirtualScrollConfig = null;
+
   constructor(private cdr: ChangeDetectorRef) {
   }
-
-  private _dataSource: KalListDataSource<T> = null;
 
   /**
    * Datasource to give items list to the component
@@ -156,11 +169,6 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
   /**
    * Selectable items (none, single, multiple)
    */
-  private _selectionMode: KalListSelectionMode = KalListSelectionMode.Single;
-
-  /**
-   * Selectable items (none, single, multiple)
-   */
   @Input()
   get selectionMode() {
     return this._selectionMode;
@@ -170,9 +178,6 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
 
     switch (value) {
       case KalListSelectionMode.Multiple:
-        this._selectionMode = value;
-        break;
-
       case KalListSelectionMode.None:
         this._selectionMode = value;
         break;
@@ -197,15 +202,13 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
 
   }
 
-  private _selection: KalSelectionModel<T> = null;
-
   @Input()
   get selection(): KalSelectionModel<T> {
     return this._selection;
   }
 
   set selection(value: KalSelectionModel<T>) {
-    if (value && (value.constructor.name === 'KalSelectionModel')) {
+    if (value && (value instanceof KalSelectionModel)) {
       this._selection = value;
 
       if (this.isInitialized) {
@@ -217,11 +220,6 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
       this.cdr.markForCheck();
     }
   }
-
-  /**
-   * The virtual scroll config
-   */
-  private _virtualScrollConfig: KalVirtualScrollConfig = null;
 
   @Input()
   get virtualScrollConfig(): KalVirtualScrollConfig {
