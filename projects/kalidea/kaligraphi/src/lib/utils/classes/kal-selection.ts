@@ -192,7 +192,7 @@ export class KalSelectionModel<T extends { id?: string }> extends SelectionModel
       numberOfItems: this.numberOfItems,
       added: this.added,
       removed: this.removed,
-      all: this._all,
+      all: this.all,
       numberOfSelectedItems: this.total
     };
   }
