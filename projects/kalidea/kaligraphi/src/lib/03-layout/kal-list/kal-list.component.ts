@@ -382,8 +382,8 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
   }
 
   private countItems() {
-    if (this._selection && this.results && this._selection.count < this.results.length) {
-      this._selection.count = this.results.length;
+    if (this._selection && this.results && this._selection.numberOfItems < this.results.length) {
+      this._selection.numberOfItems = this.results.length;
     }
   }
 
