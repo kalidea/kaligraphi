@@ -83,7 +83,7 @@ export class ListComponent implements OnInit {
       }
     );
 
-    this.listSelection = new KalSelectionModel({count: this.dataSource.length});
+    this.listSelection = new KalSelectionModel({numberOfItems: this.dataSource.length});
   }
 
   /**
