@@ -18,6 +18,7 @@
       flex-flow: row wrap
       align-items: center
       font-size: get("label.font-size", $theme-parameters)
+      min-height: 18px
       // cas du label vide
       &:empty
         display: inline-flex
@@ -53,7 +54,7 @@
         box-shadow:  get("label.after.box-shadow", $theme-parameters)
         font-size: get("label.after.font-size", $theme-parameters)
         font-weight: get("label.after.font-weight", $theme-parameters)
-        transition: left  500ms
+        transition: left  200ms
       span
         display: get("span.display", $theme-parameters)
         position: get("span.position", $theme-parameters)
@@ -65,7 +66,7 @@
         border-radius: get("span.border-radius", $theme-parameters)
         background-color: get("span.background-color", $theme-parameters)
         opacity: get("span.opacity", $theme-parameters)
-        transition: left  500ms
+        transition: left  200ms
     // Aspect before si "non coché"
     [type="checkbox"]:not(:checked) + label::before
       background-color: get("label.checkfalse.before.background-color", $theme-parameters)
