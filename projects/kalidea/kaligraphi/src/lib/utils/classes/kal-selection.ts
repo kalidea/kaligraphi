@@ -5,9 +5,9 @@ import { Observable, Subject } from 'rxjs';
 export class KalSelection<T extends { id?: string }> {
 
   /**
-   * Total of elements in list
+   * Number of elements in list
    */
-  count ? = 0;
+  numberOfItems ? = 0;
 
   /**
    * List of added elements
@@ -30,9 +30,9 @@ export class KalSelection<T extends { id?: string }> {
   multiple ? = false;
 
   /**
-   * Total selected elements
+   * Number of selected elements in list
    */
-  total ? = 0;
+  numberOfSelectedItems ? = 0;
 }
 
 class SubSelectionModel<T extends { id?: string }> extends SelectionModel<T> {
@@ -68,13 +68,13 @@ class SubSelectionModel<T extends { id?: string }> extends SelectionModel<T> {
 
 export class KalSelectionModel<T extends { id?: string }> extends SelectionModel<T> {
 
-  count = 0;
+  numberOfItems = 0;
 
-  private added: SubSelectionModel<T>;
+  private addedSelection: SubSelectionModel<T>;
 
-  private removed: SubSelectionModel<T>;
+  private removedSelection: SubSelectionModel<T>;
 
-  private all = false;
+  private _all = false;
 
   private isMultiple = false;
 
@@ -90,26 +90,26 @@ export class KalSelectionModel<T extends { id?: string }> extends SelectionModel
       added,
       all,
       removed,
-      count,
+      numberOfItems,
       multiple,
     } = {...new KalSelection(), ...params};
 
     this.initSelection(added.length > 1 || all ? true : multiple, added as T[], removed as T[]);
 
-    this.all = all;
-    this.count = count;
+    this._all = all;
+    this.numberOfItems = numberOfItems;
   }
 
   private initSelection(isMultiple: boolean, added: T[], removed: T[]) {
-    this.added = new SubSelectionModel<T>(isMultiple, [], true);
-    this.removed = new SubSelectionModel<T>(isMultiple, [], true);
+    this.addedSelection = new SubSelectionModel<T>(isMultiple, [], true);
+    this.removedSelection = new SubSelectionModel<T>(isMultiple, [], true);
 
     if (isMultiple) {
-      this.added.select(...(added as T[]));
-      this.removed.select(...(removed as T[]));
+      this.addedSelection.select(...(added as T[]));
+      this.removedSelection.select(...(removed as T[]));
     } else if (added.length > 0) {
-      this.added.select(added[0] as T);
-      this.all = false;
+      this.addedSelection.select(added[0] as T);
+      this._all = false;
     }
 
     this.isMultiple = isMultiple;
@@ -119,39 +119,39 @@ export class KalSelectionModel<T extends { id?: string }> extends SelectionModel
    * get number of selected items
    */
   get total(): number {
-    return this.all ? this.count - this.removed.selected.length : this.added.selected.length;
+    return this._all ? this.numberOfItems - this.removedSelection.selected.length : this.addedSelection.selected.length;
   }
 
   private get store(): SelectionModel<T> {
-    return this.all ? this.removed : this.added;
+    return this._all ? this.removedSelection : this.addedSelection;
   }
 
   select(item: T): void {
-    this.all ? this.removed.deselect(item) : this.added.select(item);
+    this._all ? this.removedSelection.deselect(item) : this.addedSelection.select(item);
     this.changes$.next(this.format());
   }
 
   deselect(item: T): void {
-    this.all ? this.removed.select(item) : this.added.deselect(item);
+    this._all ? this.removedSelection.select(item) : this.addedSelection.deselect(item);
     this.changes$.next(this.format());
   }
 
   toggle(item: T): void {
-    this.all ? this.removed.toggle(item) : this.added.toggle(item);
+    this._all ? this.removedSelection.toggle(item) : this.addedSelection.toggle(item);
     this.changes$.next(this.format());
   }
 
   selectAll() {
     this.clear({emitEvent: false});
-    this.all = true;
+    this._all = true;
 
     this.changes$.next(this.format());
   }
 
   clear({emitEvent}: {emitEvent: boolean} = {emitEvent: true}): void {
-    this.added.clear();
-    this.removed.clear();
-    this.all = false;
+    this.addedSelection.clear();
+    this.removedSelection.clear();
+    this._all = false;
 
     if (emitEvent) {
       this.changes$.next(this.format());
@@ -159,11 +159,19 @@ export class KalSelectionModel<T extends { id?: string }> extends SelectionModel
   }
 
   isSelected(item: T): boolean {
-    return this.all ? !this.removed.isSelected(item) : !!this.added.isSelected(item);
+    return this._all ? !this.removedSelection.isSelected(item) : !!this.addedSelection.isSelected(item);
   }
 
   isEmpty(): boolean {
-    return this.all ? this.count === this.removed.selected.length : this.added.isEmpty();
+    return this._all ? this.numberOfItems === this.removedSelection.selected.length : this.addedSelection.isEmpty();
+  }
+
+  get added(): T[] {
+    return this.addedSelection.selected;
+  }
+
+  get removed(): T[] {
+    return this.removedSelection.selected;
   }
 
   set multiple(isMultiple: boolean) {
@@ -175,13 +183,17 @@ export class KalSelectionModel<T extends { id?: string }> extends SelectionModel
     return this.isMultiple;
   }
 
+  get all(): boolean {
+    return this._all;
+  }
+
   format(): KalSelection<T> {
     return {
-      count: this.count,
-      added: this.added.selected,
-      removed: this.removed.selected,
-      all: this.all,
-      total: this.total
+      numberOfItems: this.numberOfItems,
+      added: this.added,
+      removed: this.removed,
+      all: this._all,
+      numberOfSelectedItems: this.total
     };
   }
 

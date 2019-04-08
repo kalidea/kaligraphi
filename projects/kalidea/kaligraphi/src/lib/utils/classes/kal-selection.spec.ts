@@ -135,7 +135,7 @@ describe('KalSelectionModel', () => {
   });
 
   it('should verify that the selection is empty (all: true)', () => {
-    const selection = new KalSelectionModel({multiple: true, all: true, count: items.length});
+    const selection = new KalSelectionModel({multiple: true, all: true, numberOfItems: items.length});
 
     expect(selection.isEmpty()).toBeFalsy();
 
@@ -154,7 +154,7 @@ describe('KalSelectionModel', () => {
   });
 
   it('should verify that the selection has value (all: true)', () => {
-    const selection = new KalSelectionModel({multiple: true, all: true, count: items.length});
+    const selection = new KalSelectionModel({multiple: true, all: true, numberOfItems: items.length});
 
     expect(selection.hasValue()).toBeTruthy();
 
@@ -205,7 +205,7 @@ describe('KalSelectionModel', () => {
   });
 
   it('should count items (all: false)', () => {
-    const selection = new KalSelectionModel({multiple: true, count: items.length});
+    const selection = new KalSelectionModel({multiple: true, numberOfItems: items.length});
 
     expect(selection.total).toEqual(0);
 
@@ -224,7 +224,7 @@ describe('KalSelectionModel', () => {
   });
 
   it('should count items (all: true)', () => {
-    const selection = new KalSelectionModel({multiple: true, count: items.length, all: true});
+    const selection = new KalSelectionModel({multiple: true, numberOfItems: items.length, all: true});
 
     expect(selection.total).toEqual(items.length);
 
@@ -241,7 +241,7 @@ describe('KalSelectionModel', () => {
   });
 
   it('should contains items', () => {
-    const selection = new KalSelectionModel({multiple: true, added: [items[0]], count: items.length});
+    const selection = new KalSelectionModel({multiple: true, added: [items[0]], numberOfItems: items.length});
 
     expect(selection.isSelected(items[0])).toBeTruthy('should contains first item');
     expect(selection.isSelected(cloneDeep(items[0]))).toBeTruthy('should contains first item cloned');
