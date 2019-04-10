@@ -97,6 +97,7 @@
   kal-select
     display: inline-block
     position: relative
+    width: 100%
     +kal-themed-select(get('form.elements.select.default', $kal-parameters))
     @each $key, $params in get('form.elements.select.alternates', $kal-parameters)
       &.kal-theme--#{$key}

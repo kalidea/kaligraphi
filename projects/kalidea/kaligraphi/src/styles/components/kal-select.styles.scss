@@ -4,7 +4,7 @@ $kal-styles-select: (
     'background-color': get('grey.wf100',$kal-palettes),
     'border': 1px solid get('grey.wf300',$kal-palettes),
     'border-radius': $kal-base-borderradius,
-    'padding': 10px 20px,
+    'padding': 12px 20px,
     'label': (
       'font-size': $kal-base-fontsize,
       'font-weight': 600,

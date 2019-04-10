@@ -22,6 +22,7 @@ $kal-styles-formfield: (
         'font-size': 15px,
         'color': get('grey.wf500', $kal-palettes),
         'margin': -10px 0 12px 0,
+        'width': 100%,
       ),
     ),
     'reverse': (
