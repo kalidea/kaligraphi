@@ -6,7 +6,12 @@
                [formControl]="control">
     </kal-rater>
 
-    <p>Current rating : {{ displayRating() }}</p>
+    <div class="technical-value">
+      <div class="technical-value__item">
+        <span>Current rating</span>
+        <span>{{ displayRating() }}</span>
+      </div>
+    </div>
   </article>
 </div>
 
