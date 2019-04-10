@@ -42,6 +42,7 @@ $kal-styles-checkbox: (
         'box-shadow': none,
         'font-size': 12px,
         'font-weight': bold,
+        'transition': left  $kal-base-transition-duration,
       ),
       'disabled' :(
         'color': get("grey.wf500", $kal-palettes),
@@ -88,6 +89,7 @@ $kal-styles-checkbox: (
       'border-radius': 50%,
       'background-color': transparent,
       'opacity': 1,
+      'transition': left  $kal-base-transition-duration,
       'checktrue':(
         'top': -7px,
         'left': -7px,
