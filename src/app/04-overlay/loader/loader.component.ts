@@ -11,9 +11,9 @@ export class LoaderComponent {
 
   loading = false;
 
-  width = 350;
+  width = 800;
 
-  height = 400;
+  height = 200;
 
   message = 'Chargement en cours';
 
