@@ -5,7 +5,9 @@ $kal-styles-tabs: (
       'color': get("grey.wf400", $kal-palettes),
       'background-color': get("grey.wf100", $kal-palettes),
       'border': 1px solid get("grey.wf200", $kal-palettes),
-      'padding': 24px 14px 20px 14px,
+      'padding': 16px 14px 14px 14px,
+      'font-size': 15px,
+      'font-weight': 600,
       'hover': (
         'color': get("black", $kal-palettes)
       ),

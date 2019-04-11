@@ -10,6 +10,9 @@ $kal-styles-datepicker: (
       'background-color': get("white", $kal-palettes),
       'border': 1px solid get("grey.wf300", $kal-palettes),
       'padding': 18px,
+      'width': 100%,
+      'max-width': 240px,
+      'min-width': 240px,
       'header':(
         'wrapper':(
           'display': flex,

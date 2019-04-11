@@ -9,7 +9,7 @@
       input
         font-family: get("text.font-family", $kal-parameters)
         font-size: get("text.font-size", $kal-parameters)
-        padding: get("form.padding", $kal-parameters)
+        padding: 12px 40px 12px 12px
         width: 100%
         color: get("palettes.grey.wf700", $kal-parameters)
         background-color: get("palettes.grey.wf100", $kal-parameters)
@@ -33,8 +33,10 @@
         + kal-icon
           position: absolute
           color: get("palettes.grey.wf700", $kal-parameters)
+          top: 50%
           right: 12px
-          font-size: 80%
+          transform: translate(0,-50%)
+          font-size: 120%
           cursor: pointer
     &.kal-theme--reverse
       div > input
@@ -49,8 +51,12 @@
           + kal-icon
             color: get("palettes.grey.wf700", $kal-parameters)
             cursor: none
-        &::placeholder
-          color: get("palettes.grey.wf200", $kal-parameters)
+        &::placeholder, &:-ms-input-placeholder
+          color: get("palettes.grey.wf700", $kal-parameters)
         // clearable icon
         + kal-icon
           color: get("palettes.grey.wf200", $kal-parameters)
+        div
+          color: get("palettes.white", $kal-parameters)
+          &:-webkit-autofill
+            -webkit-box-shadow: 0 0 0 1000px #7A7A7A inset

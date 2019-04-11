@@ -8,6 +8,9 @@
     background-color: get("calendar.background-color", $theme-parameters)
     border: get("calendar.border", $theme-parameters)
     padding: get("calendar.padding", $theme-parameters)
+    width: get("calendar.width", $theme-parameters)
+    max-width: get("calendar.max-width", $theme-parameters)
+    min-width: get("calendar.min-width", $theme-parameters)
     kal-datepicker-header
       .kal-datepicker-header__wrapper
         display: get("calendar.header.wrapper.display", $theme-parameters)
@@ -65,6 +68,7 @@
           column-width: get("multi-view.wrapper.month.column-width", $theme-parameters)
           height: get("multi-view.wrapper.month.height", $theme-parameters)
         .kal-datepicker-multi-view__month, .kal-datepicker-multi-view__year
+          height: 205px
           div
             border-radius: get("multi-view.wrapper.month.div.border-radius", $theme-parameters)
             padding: get("multi-view.wrapper.month.div.padding", $theme-parameters)

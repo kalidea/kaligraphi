@@ -12,8 +12,12 @@
         [kalTheme]="themes"
         [clearable]="true"></kal-input>
     </kal-form-field>
-
-    selected : {{ result | json }}
+    <div class="technical-value">
+      <div class="technical-value__item">
+        <span>selected </span>
+        <span>{{ result | json }}</span>
+      </div>
+    </div>
   </article>
 
 </section>
