@@ -187,13 +187,18 @@ export class KalSelectionModel<T extends { id?: string }> extends SelectionModel
     return this._all;
   }
 
+  toJSON(): KalSelection<T> {
+    return this.format();
+  }
+
   format(): KalSelection<T> {
     return {
       numberOfItems: this.numberOfItems,
       added: this.added,
       removed: this.removed,
       all: this.all,
-      numberOfSelectedItems: this.total
+      numberOfSelectedItems: this.total,
+      multiple: this.multiple
     };
   }
 
