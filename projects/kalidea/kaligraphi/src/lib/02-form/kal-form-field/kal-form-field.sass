@@ -1,6 +1,11 @@
 =kal-themed-form-field($theme-parameters)
+
     .kal-form-field__wrapper
       background-color: get('wrapper.background-color', $theme-parameters)
+      &.without-label
+        > .kal-form-field__wrapper
+          > .kal-form-field__label
+            display: none
       &.kal-form-field--error
         .kal-form-field__label
           color: get('wrapper.error.color', $theme-parameters)
@@ -13,7 +18,10 @@
         color:  get('wrapper.label.color', $theme-parameters)
         line-height: get('wrapper.label.line-height', $theme-parameters)
         padding: get('wrapper.label.padding', $theme-parameters)
-
+        &.kal-form-field--error
+          color: #D45F3C
+          + kal-textarea textarea
+            border: 1px solid #D45F3C
         &.kal-form-field--required::after
           content: get('wrapper.label.required.content', $theme-parameters)
 
@@ -21,6 +29,7 @@
         font-size: get('wrapper.legend.font-size', $theme-parameters)
         color: get('wrapper.legend.color', $theme-parameters)
         margin: get('wrapper.legend.margin', $theme-parameters)
+        width: get('wrapper.legend.width', $theme-parameters)
     &.kal-theme--reverse
       .kal-form-field__wrapper
         background-color: get('reverse.wrapper.background-color', $theme-parameters)
@@ -31,4 +40,6 @@
 
 =kal-form-field($kal-parameters)
   kal-form-field
+    display: block
+    margin-bottom: 24px
     +kal-themed-form-field(get('form.elements.formfield.default', $kal-parameters))

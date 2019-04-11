@@ -12,8 +12,16 @@
         [type]="type"
         [clearable]="clearable"
         [placeholder]="placeholder"></kal-input>
-      value: {{ controlChange.value}}<br/>
-      icon clicked: {{ lastIconClicked }}
+      <div class="technical-value">
+        <div class="technical-value__item">
+          <span>value</span>
+          <span>{{ controlChange.value}}</span>
+        </div>
+        <div class="technical-value__item">
+          <span>icon clicked</span>
+          <span>{{ lastIconClicked }}</span>
+        </div>
+      </div>
     </kal-form-field>
   </article>
 
@@ -28,8 +36,16 @@
         [type]="type"
         [clearable]="clearable"
         [placeholder]="placeholder"></kal-input>
-      value: {{ controlBlur.value}}<br/>
-      icon clicked: {{ lastIconClicked }}
+      <div class="technical-value">
+        <div class="technical-value__item">
+          <span>value</span>
+          <span>{{ controlBlur.value}}</span>
+        </div>
+        <div class="technical-value__item">
+          <span>icon clicked</span>
+          <span>{{ lastIconClicked }}</span>
+        </div>
+      </div>
     </kal-form-field>
   </article>
 </section>

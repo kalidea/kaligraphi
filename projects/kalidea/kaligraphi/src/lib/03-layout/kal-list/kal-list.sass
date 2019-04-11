@@ -1,5 +1,10 @@
 =kal-list($kal-parameters)
+  $color-highlight: #fdf6ed
+  $color-selected: $color-highlight
   kal-list
+    &.has-selected-element
+      kal-checkbox
+        visibility: visible
     &:focus
       outline: none
     .kal-list__group
@@ -13,11 +18,11 @@
       justify-content: space-between
       align-items: center
       background-color: get("palettes.white", $kal-parameters)
-      padding: 0 18px
-      min-height: 48px
       cursor: pointer
       transition: background-color .1s ease
       border: 1px solid transparent
+      min-height: auto
+      padding: 0
       &:disabled, &.kal-list__item--disabled
         background-color: get("palettes.grey.wf100", $kal-parameters)
         .kal-list__content
@@ -25,20 +30,26 @@
       .kal-list__content
         display: flex
         flex: 1
+        flex-flow: row wrap
+        align-items: center
+        justify-content: flex-start
       .kal-list__icon
         color: get("palettes.grey.wf300", $kal-parameters)
-        transition: font-size .1s ease
+        font-size: 24px
+        margin: 10px 0
       &:not(.kal-list__item--disabled)
         &:hover, &.kal-list__item--hover
-          background-color: get("palettes.orange.lighter", $kal-parameters)
+          background-color: $color-highlight
           transition: font-size .1s ease
+          kal-checkbox
+            visibility: visible
           .kal-list__icon
             color: get("palettes.orange.normal", $kal-parameters)
             font-size: 24px
         &.kal-list__item--highlighted
-          background-color: get("palettes.orange.light", $kal-parameters)
+          background-color: $color-highlight
         &.kal-list__item--selected, &:focus
-          border: 1px solid get("palettes.orange.normal", $kal-parameters)
+          background-color: $color-selected
           .kal-list__icon
             color: get("palettes.orange.normal", $kal-parameters)
             font-size: 24px
@@ -47,3 +58,8 @@
       width: 100%
       height: 1px
       margin: 0
+    .kal-list__row:nth-child(1) .kal-list__separate
+      display: none
+    kal-checkbox
+      visibility: hidden
+      padding: 0 7px 0 7px

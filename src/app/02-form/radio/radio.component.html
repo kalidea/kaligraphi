@@ -12,8 +12,16 @@
       <kal-radio value="test3" [kalTheme]="themes">test3</kal-radio>
       <kal-radio value="test4" [kalTheme]="themes">test4</kal-radio>
     </kal-radio-group>
-    <p>The value of the form control : {{ control.value }}</p>
-    <p>The id of the selected radio button : {{ id }}</p>
+    <div class="technical-value">
+      <div class="technical-value__item">
+        <span>The value of the form control</span>
+        <span>{{ control.value }}</span>
+      </div>
+      <div class="technical-value__item">
+        <span>The id of the selected radio button</span>
+        <span>{{ id }}</span>
+      </div>
+    </div>
   </article>
 </div>
 

@@ -2,23 +2,32 @@
 
 <div class="example">
 
-  <div>
-    <p>
-      <kal-button kalTheme="secondary" (click)="openDialog()">Open Dialog</kal-button>
-    </p>
-    <blockquote *ngIf="result">
-      result: {{ result | json }}
-    </blockquote>
-  </div>
+  <article>
 
-  <div>
-    <p>
-      <kal-button kalTheme="secondary" (click)="openConfirmDialog()">Open confirm Dialog</kal-button>
-    </p>
-    <blockquote *ngIf="resultConfirm">
-      result: {{ resultConfirm | json }}
-    </blockquote>
-  </div>
+      <kal-button kalTheme="primary" (click)="openDialog()">Open Dialog</kal-button>
+
+      <div class="technical-value" *ngIf="result">
+        <div class="technical-value__item">
+          <span>result </span>
+          <span>{{ result | json }}</span>
+        </div>
+      </div>
+
+  </article>
+
+  <article>
+    
+    <kal-button kalTheme="primary" (click)="openConfirmDialog()">Open confirm Dialog</kal-button>
+
+      <div class="technical-value"  *ngIf="resultConfirm">
+        <div class="technical-value__item">
+          <span>result </span>
+          <span>{{ resultConfirm | json }}</span>
+        </div>
+      </div>
+
+  </article>
+
 </div>
 
 <div class="configurator">

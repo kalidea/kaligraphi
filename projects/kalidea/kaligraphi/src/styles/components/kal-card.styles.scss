@@ -7,6 +7,7 @@ $kal-styles-card: (
     'flex-direction': column,
     'background-color': get("white", $kal-palettes),
     'position': relative,
+    'max-width': 85%,
     'header':(
       'display': flex,
       'flex-direction': column,
@@ -31,14 +32,26 @@ $kal-styles-card: (
         'position': absolute,
         'top': 24px,
         'right': 24px,
+        'button':(
+          'padding': 2px,
+        ),
         'icon':(
           'margin': 0,
           'font-size': 24px,
         ),
       ),
     ),
+    'undertitle': (
+      'line-height': 18px,
+      'font-size': 13px,
+      'color': get("grey.wf600", $kal-palettes),
+      'margin-bottom': 24px,
+    ),
     'actions':(
-      'padding-top': 24px,
+      'padding-top': 14px,
+      'all':(
+        'margin-right': 24px,
+      ),
     ),
   ),
   'alternates': (

@@ -1,4 +1,32 @@
 
 =kal-textarea($parameters)
   kal-textarea
-    +kal-generic-form($parameters)
+    display: block
+    width: 100%
+    textarea
+      width: 100%
+      padding: 12px
+      border-radius: 3px
+      border: 1px solid get("palettes.grey.wf200", $kal-parameters)
+      background-color: get("palettes.grey.wf100", $kal-parameters)
+      font-size: inherit
+    &:not(:disabled), &[disabled="false"]
+      textarea
+        &:active, &:focus
+          border-color: get("palettes.grey.wf500", $kal-parameters)
+    &:disabled, &[disabled="true"]
+      textarea
+        color: get("palettes.grey.wf500", $kal-parameters)
+        cursor: not-allowed
+    &.kal-theme--reverse
+      textarea
+        background-color: get("palettes.grey.wf500", $kal-parameters)
+        border-color: get("palettes.grey.wf500", $kal-parameters)
+        color: get("palettes.grey.wf100", $kal-parameters)
+      &:not(:disabled), &[disabled="false"]
+        textarea
+          &:active, &:focus
+            border-color: get("palettes.grey.wf200", $kal-parameters)
+      &:disabled, &[disabled="true"]
+        textarea
+          color: get("palettes.grey.wf700", $kal-parameters)

@@ -1,50 +1,52 @@
 <h1>Stepper</h1>
 
 <div class="example">
-<kal-stepper [linear]="linear" orientation="horizontal" (selectionChange)="selectionUpdated($event)" #stepper>
+  <article>
+    <kal-stepper [linear]="linear" orientation="horizontal" (selectionChange)="selectionUpdated($event)" #stepper>
 
-  <kal-step [stepControl]="firstFormGroup">
+      <kal-step [stepControl]="firstFormGroup">
 
-    <ng-template kalStepLabel> First step</ng-template>
+        <ng-template kalStepLabel> First step</ng-template>
 
-    <form [formGroup]="firstFormGroup">
+        <form [formGroup]="firstFormGroup">
 
-      <kal-input formControlName="email"></kal-input>
-      <div>
-        <button (click)="stepper.next()" [disabled]="firstFormGroup.invalid">Next 1</button>
-      </div>
-    </form>
+          <kal-input formControlName="email"></kal-input>
+          <div>
+            <button (click)="stepper.next()" [disabled]="firstFormGroup.invalid">Next 1</button>
+          </div>
+        </form>
 
-  </kal-step>
+      </kal-step>
 
-  <kal-step [stepControl]="secondFormGroup">
+      <kal-step [stepControl]="secondFormGroup">
 
-    <ng-template kalStepLabel>Second Step</ng-template>
+        <ng-template kalStepLabel>Second Step</ng-template>
 
-    <form [formGroup]="secondFormGroup">
-      <kal-input formControlName="firstname"></kal-input>
-      <div>
-        <button (click)="stepper.previous()">Previous 2</button>
-        <button (click)="stepper.next()">Next 2</button>
-      </div>
-    </form>
+        <form [formGroup]="secondFormGroup">
+          <kal-input formControlName="firstname"></kal-input>
+          <div>
+            <button (click)="stepper.previous()">Previous 2</button>
+            <button (click)="stepper.next()">Next 2</button>
+          </div>
+        </form>
 
-  </kal-step>
+      </kal-step>
 
-  <kal-step>
+      <kal-step>
 
-    <ng-template kalStepLabel>Third Step</ng-template>
+        <ng-template kalStepLabel>Third Step</ng-template>
 
-    <p>
-      Thanks for your subscription
-    </p>
+        <p>
+          Thanks for your subscription
+        </p>
 
-    <div>
-      <button (click)="stepper.previous()">Previous 3</button>
-    </div>
+        <div>
+          <button (click)="stepper.previous()">Previous 3</button>
+        </div>
 
-  </kal-step>
-</kal-stepper>
+      </kal-step>
+    </kal-stepper>
+  </article>
 </div>
 
 <div class="configurator">
