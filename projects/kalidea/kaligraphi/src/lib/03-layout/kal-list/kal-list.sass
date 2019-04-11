@@ -1,4 +1,6 @@
 =kal-list($kal-parameters)
+  $color-highlight: #fdf6ed
+  $color-highlight: $color-selected
   kal-list
     &.has-selected-element
       kal-checkbox
@@ -37,7 +39,7 @@
         margin: 10px 0
       &:not(.kal-list__item--disabled)
         &:hover, &.kal-list__item--hover
-          background-color: #fdf6ed
+          background-color: $color-highlight
           transition: font-size .1s ease
           kal-checkbox
             visibility: visible
@@ -45,9 +47,9 @@
             color: get("palettes.orange.normal", $kal-parameters)
             font-size: 24px
         &.kal-list__item--highlighted
-          background-color: #fdf6ed
+          background-color: $color-highlight
         &.kal-list__item--selected, &:focus
-          background-color: #fdf6ed
+          background-color: $color-selected
           .kal-list__icon
             color: get("palettes.orange.normal", $kal-parameters)
             font-size: 24px
