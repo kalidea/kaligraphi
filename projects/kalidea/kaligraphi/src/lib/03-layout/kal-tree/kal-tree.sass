@@ -9,7 +9,7 @@ kal-tree
     padding: 12px 18px
     position: relative
     &:not(:last-child)
-      border-bottom: 1px solid #D6D6D6
+      border-bottom: 1px solid get("grey.wf200", $kal-palettes)
     > div
       display: flex
       flex-direction: column
@@ -24,14 +24,14 @@ kal-tree
         font-weight: normal
         font-size: 15px
       kal-tree-node:first-child
-        border-top: 1px solid #D6D6D6
+        border-top: 1px solid get("grey.wf200", $kal-palettes)
     kal-icon
       cursor: pointer
       position: absolute
       right: 0
-      color: #B8B8B8
+      color: get("grey.wf300", $kal-palettes)
     &.kal-selected
-      background: #F5F5F5
+      background: get("grey.wf100", $kal-palettes)
 
 .cdk-drag-animating
   transition: transform 150ms cubic-bezier(0, 0, 0.2, 1)

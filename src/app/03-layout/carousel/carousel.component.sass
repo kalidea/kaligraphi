@@ -1,25 +1,22 @@
 
 $arrow-width: 20px
 $height: 200px
-
+$arrow-color: #ccc
 kal-carousel
   height: $height
   position: relative
   display: block
-
   .container
     display: flex
     overflow: hidden
-
-
   a
     position: absolute
     width: $arrow-width
     top: 0
     bottom: 0
-    background: #CCC
-    border: 1px solid #CCC
-    color: #FFF
+    background: $arrow-color
+    border: 1px solid $arrow-color
+    color: #FFFFFF
     display: flex
     &::before
       align-self: center
@@ -28,21 +25,17 @@ kal-carousel
       width: 100%
     &:hover
       background: white
-      border: 1px solid #CCC
+      border: 1px solid $arrow-color
       &::before
-        color: #CCC
-
+        color: $arrow-color
   a.previous
     left: -#{$arrow-width + 2}
     &::before
       content: '<'
-
   a.next
     right: -#{$arrow-width + 2}
     &::before
       content: '>'
-
-
   article
     box-sizing: border-box
     background-position: center center
@@ -50,5 +43,5 @@ kal-carousel
     display: inline-block
     flex: 0 0 calc(100%/4)
     height: $height
-    border: 2px solid #FFF
+    border: 2px solid #FFFFFF
     position: relative
