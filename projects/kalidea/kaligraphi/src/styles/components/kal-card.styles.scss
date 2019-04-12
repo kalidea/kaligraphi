@@ -53,6 +53,22 @@ $kal-styles-card: (
         'margin-right': 24px,
       ),
     ),
+    'reverse' :(
+      'border': 1px solid get("grey.wf600", $kal-palettes),
+      'background-color': get("grey.wf800", $kal-palettes),
+      'ontitle':(
+        'color': get("grey.wf500", $kal-palettes),
+      ),
+      'title':(
+        'color': get("grey.wf100", $kal-palettes),
+      ),
+      'undertitle': (
+        'color': get("grey.wf200", $kal-palettes),
+      ),
+      'content':(
+      'color': get("grey.wf100", $kal-palettes)
+      ),
+    ),
   ),
   'alternates': (
   ),

@@ -45,7 +45,18 @@
       padding-top: get("actions.padding-top", $theme-parameters)
       > *
         margin-right: get("actions.all.margin-right", $theme-parameters)
-
+    // Variante couleur
+    &.kal-theme--reverse
+      border: get("reverse.border", $theme-parameters)
+      background-color: get("reverse.background-color", $theme-parameters)
+      kal-card-on-title
+        color: get("reverse.ontitle.color", $theme-parameters)
+      kal-card-title
+        color: get("reverse.title.color", $theme-parameters)
+      .kal-card-under-title
+        color: get("reverse.undertitle.color", $theme-parameters)
+      kal-card-content
+        color: get("reverse.content.color", $theme-parameters)
 =kal-card($kal-parameters)
   kal-card
     +kal-themed-card(get('card.default', $kal-parameters))
