@@ -18,7 +18,9 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
   /**
    * Is the field required
    */
-  @Input() required = false;
+  @Coerce('boolean')
+  @Input()
+  required = false;
 
   /**
    * placeholder for this form element
