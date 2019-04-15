@@ -77,7 +77,7 @@ export class KalInputComponent extends FormElementComponent<string> implements O
   /**
    * Reference to native input
    */
-  @ViewChild('input') inputElement: ElementRef;
+  @ViewChild('input') inputElement: ElementRef<HTMLInputElement>;
 
   @AutoUnsubscribe()
   private controlValueChangedSubscription = Subscription.EMPTY;
