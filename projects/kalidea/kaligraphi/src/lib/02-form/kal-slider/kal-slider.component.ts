@@ -13,7 +13,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { END, HOME, LEFT_ARROW, RIGHT_ARROW, } from '@angular/cdk/keycodes';
-import { isNil } from 'lodash';
+import { isNil } from 'lodash/isNil';
 
 import { HammerInput } from '../../utils/gestures/gesture-annotations';
 import { clamp } from '../../utils/helpers/numbers';

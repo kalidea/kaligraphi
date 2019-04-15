@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit, ViewChild, ViewEncapsulatio
 import { DataSource } from '@angular/cdk/collections';
 import { KalListComponent, KalSelectionModel } from '@kalidea/kaligraphi';
 import { Observable, of } from 'rxjs';
-import { range } from 'lodash';
+import { range } from 'lodash/range';
 
 @Component({
   selector: 'app-list',

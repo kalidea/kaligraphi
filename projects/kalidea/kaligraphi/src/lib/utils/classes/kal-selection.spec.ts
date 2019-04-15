@@ -1,4 +1,5 @@
-import { cloneDeep, range } from 'lodash';
+import { cloneDeep } from 'lodash/cloneDeep';
+import { range } from 'lodash/range';
 import { KalSelectionModel } from './kal-selection';
 
 const items = range(0, 4).map(id => ({id: '' + id}));

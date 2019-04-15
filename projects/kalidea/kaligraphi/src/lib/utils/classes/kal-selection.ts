@@ -1,5 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { isNil } from 'lodash';
+import { isNil } from 'lodash/isNil';
 import { Observable, Subject } from 'rxjs';
 
 export class KalSelection<T extends { id?: string }> {
