@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
   Injector,
   Input,
@@ -10,6 +11,7 @@ import {
   OnDestroy,
   Output,
   SimpleChanges,
+  ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 import { AbstractControl, FormControl, NgControl } from '@angular/forms';
@@ -71,6 +73,11 @@ export class KalInputComponent extends FormElementComponent<string> implements O
   @Input()
   @Coerce('boolean')
   clearable = false;
+
+  /**
+   * Reference to native input
+   */
+  @ViewChild('input') inputElement: ElementRef;
 
   @AutoUnsubscribe()
   private controlValueChangedSubscription = Subscription.EMPTY;
@@ -156,6 +163,10 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     if (this.formatOnBlur) {
       this.control.patchValue(this.formater.toUser(this.value), {emitEvent: false});
     }
+  }
+
+  blur() {
+    this.inputElement.nativeElement.blur();
   }
 
   private updateStatus() {
