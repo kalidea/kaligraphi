@@ -346,6 +346,10 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
     return this.disableRowsFunction ? this.disableRowsFunction(item) : false;
   }
 
+  ngClass(item: T): any {
+    return this.row && this.row.ngClass ? this.row.ngClass(item) : null;
+  }
+
   /**
    * Reset the selected item
    */

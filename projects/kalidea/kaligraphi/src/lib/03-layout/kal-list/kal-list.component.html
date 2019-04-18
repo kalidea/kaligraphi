@@ -38,7 +38,7 @@
 
     <div kalListItemSelection
          class="kal-list__item"
-         [ngClass]="row.ngClass(item)"
+         [ngClass]="ngClass(item)"
          [disabled]="isRowDisabled(item)"
          [class.kal-list__item--selected]="isRowSelected(item)"
          [class.kal-list__item--disabled]="isRowDisabled(item)"
