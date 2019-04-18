@@ -346,6 +346,9 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
     return this.disableRowsFunction ? this.disableRowsFunction(item) : false;
   }
 
+  /**
+   * Class to add to the list item
+   */
   ngClass(item: T): any {
     return this.row && this.row.ngClass ? this.row.ngClass(item) : null;
   }
