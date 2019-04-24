@@ -130,7 +130,7 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
       event.stopPropagation();
       this.autocompleteComponent.onKeydown(event);
 
-    } else if ([SPACE, ENTER].indexOf(keyCode) >= 0) {
+    } else if ([ENTER].indexOf(keyCode) >= 0) {
       // space or enter, emit selected option
       this.notifySelectionUpdate(this.autocompleteComponent.selectedOption);
 

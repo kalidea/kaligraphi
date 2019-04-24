@@ -7,7 +7,6 @@ $kal-styles-card: (
     'flex-direction': column,
     'background-color': get("white", $kal-palettes),
     'position': relative,
-    'max-width': 85%,
     'header':(
       'display': flex,
       'flex-direction': column,
@@ -27,6 +26,7 @@ $kal-styles-card: (
       'font-weight': 600,
       'line-height': 36px,
       'font-size': 27px,
+      'padding-right': 30px,
       'color': get("grey.wf800", $kal-palettes),
       'close':(
         'position': absolute,
@@ -51,6 +51,22 @@ $kal-styles-card: (
       'padding-top': 14px,
       'all':(
         'margin-right': 24px,
+      ),
+    ),
+    'reverse' :(
+      'border': 1px solid get("grey.wf600", $kal-palettes),
+      'background-color': get("grey.wf800", $kal-palettes),
+      'ontitle':(
+        'color': get("grey.wf500", $kal-palettes),
+      ),
+      'title':(
+        'color': get("grey.wf100", $kal-palettes),
+      ),
+      'undertitle': (
+        'color': get("grey.wf200", $kal-palettes),
+      ),
+      'content':(
+      'color': get("grey.wf100", $kal-palettes)
       ),
     ),
   ),

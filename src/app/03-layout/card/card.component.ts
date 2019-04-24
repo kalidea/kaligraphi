@@ -8,6 +8,8 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 })
 export class CardComponent implements OnInit {
 
+  themes = [];
+
   dismissable = false;
 
   actions = true;
