@@ -1,6 +1,8 @@
 =kal-list($kal-parameters)
-  $color-highlight: #fdf6ed
+  $color-highlight: hsla(32,76,55, .15)
   $color-selected: $color-highlight
+  $color-highlight-reverse: rgb(61,49,34)
+  $color-selected-reverse: $color-highlight-reverse
   kal-list
     &.has-selected-element
       kal-checkbox
@@ -63,3 +65,19 @@
     kal-checkbox
       visibility: hidden
       padding: 0 7px 0 7px
+    &.kal-theme--reverse
+      .kal-list__item
+        background-color: get("palettes.grey.wf800", $kal-parameters)
+        &:disabled, &.kal-list__item--disabled
+          background-color: get("palettes.grey.wf800", $kal-parameters)
+        .kal-list__content
+          color: get("palettes.grey.wf100", $kal-parameters)
+        &:not(.kal-list__item--disabled)
+          &:hover, &.kal-list__item--hover
+            background-color: $color-highlight-reverse
+          &.kal-list__item--highlighted
+            background-color: $color-highlight-reverse
+          &.kal-list__item--selected, &:focus
+            background-color: $color-selected-reverse
+      .kal-list__separate
+        background-color: get("palettes.grey.wf200", $kal-parameters)
