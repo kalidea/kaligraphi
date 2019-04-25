@@ -42,6 +42,7 @@ $kal-styles-checkbox: (
         'font-size': 12px,
         'font-weight': bold,
         'transition': none,
+        'line-height': 0
       ),
       'disabled' :(
         'color': get("grey.wf500", $kal-palettes),
