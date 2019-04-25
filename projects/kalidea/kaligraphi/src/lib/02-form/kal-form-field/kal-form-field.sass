@@ -1,11 +1,10 @@
 =kal-themed-form-field($theme-parameters)
-
+    &.without-label
+      > .kal-form-field__wrapper
+        > .kal-form-field__label
+          display: none
     .kal-form-field__wrapper
       background-color: get('wrapper.background-color', $theme-parameters)
-      &.without-label
-        > .kal-form-field__wrapper
-          > .kal-form-field__label
-            display: none
       &.kal-form-field--error
         .kal-form-field__label
           color: get('wrapper.error.color', $theme-parameters)
