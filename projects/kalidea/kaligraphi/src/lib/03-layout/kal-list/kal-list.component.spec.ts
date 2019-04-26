@@ -205,7 +205,10 @@ describe('TestListItemComponent', () => {
       }
     );
 
-    expect(listInstances.selection.format()).toEqual(new KalSelectionModel({added: [...component.dataSource.listItem], numberOfItems: 3}).format());
+    expect(listInstances.selection.format()).toEqual(new KalSelectionModel({
+      added: [...component.dataSource.listItem],
+      numberOfItems: 3
+    }).format());
   });
 
   it('should clear the selection', () => {
