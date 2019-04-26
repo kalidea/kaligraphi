@@ -12,10 +12,9 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
-import { AbstractControl, FormControl, NgControl } from '@angular/forms';
+import { AbstractControl, FormControl } from '@angular/forms';
 import { FormHooks } from '@angular/forms/src/model';
 import { of, Subscription } from 'rxjs';
-import { startWith } from 'rxjs/operators';
 
 import { InputFormater } from './format/input-formater';
 import { KalFormaterService } from './kal-formater.service';
@@ -75,9 +74,6 @@ export class KalInputComponent extends FormElementComponent<string> implements O
   @AutoUnsubscribe()
   private controlValueChangedSubscription = Subscription.EMPTY;
 
-  @AutoUnsubscribe()
-  private controlStatusChangedSubscription = Subscription.EMPTY;
-
   constructor(private cdr: ChangeDetectorRef,
               private injector: Injector,
               private formaters: KalFormaterService) {
@@ -97,13 +93,6 @@ export class KalInputComponent extends FormElementComponent<string> implements O
    */
   get formater(): InputFormater {
     return this.formaters.get(this.type);
-  }
-
-  private get superControl() {
-    if (this.ngControl && this.ngControl.control) {
-      return this.ngControl.control;
-    }
-    return null;
   }
 
   clearField() {
@@ -158,14 +147,8 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     }
   }
 
-  private updateStatus() {
-    if (this.superControl.disabled !== this.control.disabled) {
-      this.superControl.enabled ? this.control.enable() : this.control.disable();
-      this.setDisabledState(this.superControl.enabled === true);
-    }
-  }
-
   ngOnDestroy(): void {
+    super.ngOnDestroy();
     this.cdr.detach();
   }
 
@@ -177,21 +160,7 @@ export class KalInputComponent extends FormElementComponent<string> implements O
   ngAfterContentInit(): void {
 
     // ngControl for formControl does not contain `control` on ngOnInit
-    this.ngControl = this.injector.get(NgControl, null);
-
-    // grab updateOn property from control
-    if (this.superControl) {
-      this.updateOnEvent = this.superControl.updateOn;
-    }
-
-    this.control = new FormControl(this.value, {updateOn: this.updateOnEvent});
-
-    // update disabled state
-    if (this.superControl) {
-      this.controlStatusChangedSubscription = this.superControl.statusChanges
-        .pipe(startWith(1))
-        .subscribe(() => this.updateStatus());
-    }
+    this.control = this.createControlAndSubscriptions(this.injector);
 
     this.controlValueChangedSubscription = this.control.valueChanges.subscribe(value => {
       // notify parent for validation

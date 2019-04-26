@@ -1,4 +1,5 @@
 import {
+  AfterContentInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -7,10 +8,11 @@ import {
   HostListener,
   Injector,
   Input,
-  OnInit,
+  OnDestroy,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { FormHooks } from '@angular/forms/src/model';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { ESCAPE } from '@angular/cdk/keycodes';
@@ -39,7 +41,7 @@ export type KalCalendarView = 'month' | 'multi';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: buildProviders(KalDatepickerComponent)
 })
-export class KalDatepickerComponent extends FormElementComponent<KalDate> implements OnInit {
+export class KalDatepickerComponent extends FormElementComponent<KalDate> implements AfterContentInit, OnDestroy {
 
   /**
    * Reference to calendar template.
@@ -61,7 +63,11 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
    */
   currentView: KalCalendarView = 'month';
 
-  control = new FormControl(null, {updateOn: 'blur'});
+
+  /**
+   * base control
+   */
+  control: FormControl;
 
   /**
    * Current displayed date.
@@ -95,6 +101,9 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
    */
   @AutoUnsubscribe()
   private escapeKeySubscription = Subscription.EMPTY;
+
+  @AutoUnsubscribe()
+  private valueChangeSubscription = Subscription.EMPTY;
 
   /**
    * Overlay reference.
@@ -201,7 +210,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
 
   @HostListener('click', ['$event'])
   open($event = false) {
-    if ($event === false || this.openOnClick) {
+    if (!this.disabled && ($event === false || this.openOnClick)) {
       if (!this.overlayRef.hasAttached()) {
         this.overlayRef.attach(this.datepickerCalendar);
       }
@@ -232,18 +241,19 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
    * @inheritDoc
    */
   writeValue(value: KalDateType) {
+    if (this.control) {
+      // transform given value as date
+      const kalDate = coerceKalDateProperty(value);
 
-    // transform given value as date
-    const kalDate = coerceKalDateProperty(value);
+      super.writeValue(kalDate);
 
-    super.writeValue(kalDate);
+      // if we get a `null` from the parent we should empty the input
+      // and not display the current date
+      this.setInputValue(value ? kalDate : null, {emitEvent: false});
 
-    // if we get a `null` from the parent we should empty the input
-    // and not display the current date
-    this.setInputValue(value ? kalDate : null, {emitEvent: false});
-
-    // store the date
-    this.currentDate = kalDate;
+      // store the date
+      this.currentDate = kalDate;
+    }
   }
 
   /**
@@ -278,13 +288,8 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
         filter(event => event.keyCode === ESCAPE)
       )
       .subscribe(() => this.close());
-  }
 
-  ngOnInit() {
-    this.createOverlay();
-    this.initSubscriptions();
-
-    this.control.valueChanges.pipe(
+    this.valueChangeSubscription = this.control.valueChanges.pipe(
       map(value => coerceKalDateProperty(value)), // transform as date
       map(date => date.valid ? date : null), // remove invalid date
       tap((date: KalDate) => {
@@ -304,4 +309,15 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     ).subscribe();
   }
 
+  ngOnDestroy() {
+    super.ngOnDestroy();
+  }
+
+  ngAfterContentInit(): void {
+
+    this.control = this.createControlAndSubscriptions(this.injector, 'blur');
+
+    this.createOverlay();
+    this.initSubscriptions();
+  }
 }
