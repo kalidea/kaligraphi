@@ -474,6 +474,7 @@ export class KalSelectComponent
   }
 
   ngOnDestroy() {
+    super.ngOnDestroy();
     if (this.overlayRef) {
       this.overlayRef.dispose();
     }
