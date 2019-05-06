@@ -9,6 +9,8 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
 })
 export class LoaderComponent {
 
+  reverse = false;
+
   loading = false;
 
   width = 800;

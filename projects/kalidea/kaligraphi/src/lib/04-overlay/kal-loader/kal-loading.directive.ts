@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostBinding, Injector, Input, OnDestroy, ViewContainerRef } from '@angular/core';
+import { Directive, ElementRef, HostBinding, Injector, Input, OnDestroy, Optional, Self, ViewContainerRef } from '@angular/core';
 import { Overlay, OverlayConfig, OverlayRef, PositionStrategy } from '@angular/cdk/overlay';
 import { ComponentPortal, PortalInjector } from '@angular/cdk/portal';
 
@@ -6,6 +6,7 @@ import { KalLoaderComponent } from './kal-loader.component';
 import { KalLoaderData } from './kal-loader-data';
 
 import { Coerce } from '../../utils/decorators/coerce';
+import { KalThemeDirective } from '../../99-utility/directives/kal-theme/kal-theme.directive';
 
 @Directive({
   selector: '[kalLoading]'
@@ -35,7 +36,8 @@ export class KalLoadingDirective implements OnDestroy {
   constructor(private elementRef: ElementRef,
               private viewContainerRef: ViewContainerRef,
               private injector: Injector,
-              private overlay: Overlay) {
+              private overlay: Overlay,
+              @Optional() @Self() private kalTheme: KalThemeDirective) {
   }
 
   @Input('kalLoading')
@@ -57,6 +59,7 @@ export class KalLoadingDirective implements OnDestroy {
   private createInjector() {
     const injectionTokens = new WeakMap<any, any>([
       [KalLoaderData, {message: this.kalLoadingMessage}],
+      [KalThemeDirective, this.kalTheme]
     ]);
     return new PortalInjector(this.injector, injectionTokens);
   }
