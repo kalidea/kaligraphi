@@ -9,6 +9,7 @@
       [kalLoadingMessage]="message"
       [style.width.px]="width"
       [style.height.px]="height"
+      [kalTheme]="reverse ? 'reverse' : ''"
     >
       <div>
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui dicta minus molestiae vel beatae natus eveniet
@@ -26,6 +27,13 @@
 
 
 <div class="configurator">
+
+  <kal-form-field>
+    <kal-checkbox
+      label="Reverse"
+      [(ngModel)]="reverse">
+    </kal-checkbox>
+  </kal-form-field>
 
   <kal-form-field>
     <kal-input label="text" [(ngModel)]="message"></kal-input>
