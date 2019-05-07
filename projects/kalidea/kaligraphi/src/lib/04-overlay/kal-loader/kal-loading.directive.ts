@@ -1,18 +1,21 @@
 import { Directive, ElementRef, HostBinding, Injector, Input, OnDestroy, Optional, Self, ViewContainerRef } from '@angular/core';
 import { Overlay, OverlayConfig, OverlayRef, PositionStrategy } from '@angular/cdk/overlay';
 import { ComponentPortal, PortalInjector } from '@angular/cdk/portal';
+import { Subscription, timer } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 import { KalLoaderComponent } from './kal-loader.component';
 import { KalLoaderData } from './kal-loader-data';
 
 import { Coerce } from '../../utils/decorators/coerce';
 import { KalThemeDirective } from '../../99-utility/directives/kal-theme/kal-theme.directive';
+import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 
 @Directive({
-  selector: '[kalLoading]'
+  selector: '[kalLoading]',
+  exportAs: 'kalLoading'
 })
 export class KalLoadingDirective implements OnDestroy {
-
   /**
    * message to display in overlay
    */
@@ -26,12 +29,22 @@ export class KalLoadingDirective implements OnDestroy {
   readonly couldBeInLoadingState = true;
 
   /**
+   * delay before display loader ( in ms )
+   */
+  @Input()
+  @Coerce('number')
+  kalLoadingDelay = 300;
+
+  /**
    * add class to element while loading
    */
   @HostBinding('class.kal-loading-is-loading')
   _loading = false;
 
   private overlayRef: OverlayRef;
+
+  @AutoUnsubscribe()
+  private subscription = Subscription.EMPTY;
 
   constructor(private elementRef: ElementRef,
               private viewContainerRef: ViewContainerRef,
@@ -43,14 +56,27 @@ export class KalLoadingDirective implements OnDestroy {
   @Input('kalLoading')
   @Coerce('boolean')
   set loading(loading: boolean) {
-    if (loading === true) {
-      this.attachLoaderContent();
-    } else if (this._loading === true) {
-      // remove previous overlay to rebuild positions list according to new size of HtmlElement
-      // in case of resize
-      this.getOverlayRef().detach();
+
+    if (this._loading) {  // currently loading
+
+      if (loading) {
+        // nothing to do
+      } else {
+        this.getOverlayRef().detach();
+        this._loading = false;
+      }
+
+    } else { // not loading
+
+      if (loading) {
+        // schedule display
+        this.scheduleLoaderDisplay();
+      } else {
+        // remove scheduled display
+        this.subscription.unsubscribe();
+      }
+
     }
-    this._loading = loading;
   }
 
   /**
@@ -58,8 +84,7 @@ export class KalLoadingDirective implements OnDestroy {
    */
   private createInjector() {
     const injectionTokens = new WeakMap<any, any>([
-      [KalLoaderData, {message: this.kalLoadingMessage}],
-      [KalThemeDirective, this.kalTheme]
+      [KalLoaderData, {message: this.kalLoadingMessage}]
     ]);
     return new PortalInjector(this.injector, injectionTokens);
   }
@@ -70,7 +95,10 @@ export class KalLoadingDirective implements OnDestroy {
   private attachLoaderContent() {
     const injector = this.createInjector();
     const portal = new ComponentPortal(KalLoaderComponent, this.viewContainerRef, injector);
-    this.getOverlayRef().attach(portal);
+    const attachment = this.getOverlayRef().attach(portal);
+    if (this.kalTheme) {
+      attachment.instance.classes = this.kalTheme.kalThemeAsClassNames.join(' ');
+    }
   }
 
   /**
@@ -113,8 +141,19 @@ export class KalLoadingDirective implements OnDestroy {
       this.overlayRef.detach();
     });
 
-    this.overlayRef.detach();
     return this.overlayRef;
+  }
+
+  private scheduleLoaderDisplay() {
+    this.subscription.unsubscribe();
+    this.subscription = timer(this.kalLoadingDelay)
+      .pipe(
+        tap(() => {
+          this.attachLoaderContent();
+          this._loading = true;
+        })
+      )
+      .subscribe();
   }
 
   ngOnDestroy(): void {
