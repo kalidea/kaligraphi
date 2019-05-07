@@ -241,9 +241,14 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
    * @inheritDoc
    */
   writeValue(value: KalDateType) {
+    // transform given value as date
+    const kalDate = coerceKalDateProperty(value);
+
+    // store the date
+    this.currentDate = kalDate;
+
+    // update control only if provided
     if (this.control) {
-      // transform given value as date
-      const kalDate = coerceKalDateProperty(value);
 
       super.writeValue(kalDate);
 
@@ -251,8 +256,6 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
       // and not display the current date
       this.setInputValue(value ? kalDate : null, {emitEvent: false});
 
-      // store the date
-      this.currentDate = kalDate;
     }
   }
 
