@@ -15,7 +15,7 @@ export class KalLoaderComponent {
   message: string;
 
   @HostBinding('attr.class')
-  private _classes = '';
+  _classes = '';
 
   constructor(private readonly data: KalLoaderData,
               private readonly cdr: ChangeDetectorRef) {

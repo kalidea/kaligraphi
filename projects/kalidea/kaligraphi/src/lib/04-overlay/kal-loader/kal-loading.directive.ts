@@ -46,11 +46,11 @@ export class KalLoadingDirective implements OnDestroy {
   @AutoUnsubscribe()
   private subscription = Subscription.EMPTY;
 
-  constructor(private elementRef: ElementRef,
-              private viewContainerRef: ViewContainerRef,
-              private injector: Injector,
-              private overlay: Overlay,
-              @Optional() @Self() private kalTheme: KalThemeDirective) {
+  constructor(private readonly elementRef: ElementRef,
+              private readonly viewContainerRef: ViewContainerRef,
+              private readonly injector: Injector,
+              private readonly overlay: Overlay,
+              @Optional() @Self() private readonly kalTheme: KalThemeDirective) {
   }
 
   @Input('kalLoading')
