@@ -458,10 +458,10 @@ MIT
 
 @kalidea/kaligraphi
 
-@angular/cdk/scrolling
-
 @angular/forms
 MIT
+
+@angular/cdk/scrolling
 
 zone.js
 MIT
