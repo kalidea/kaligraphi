@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, Component, HostBinding, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding, ViewEncapsulation } from '@angular/core';
 
 import { KalLoaderData } from './kal-loader-data';
-import { KalThemeDirective } from '../../99-utility/directives/kal-theme/kal-theme.directive';
 
 @Component({
   selector: 'kal-loader',
@@ -15,16 +14,16 @@ export class KalLoaderComponent {
 
   message: string;
 
+  @HostBinding('attr.class')
+  _classes = '';
+
   constructor(private readonly data: KalLoaderData,
-              private kalTheme: KalThemeDirective) {
+              private readonly cdr: ChangeDetectorRef) {
     this.message = this.data.message;
   }
 
-  @HostBinding('class')
-  get classes() {
-    if (this.kalTheme) {
-      return this.kalTheme.kalThemeAsClassNames.join(' ');
-    }
+  set classes(classes) {
+    this._classes = classes;
+    this.cdr.markForCheck();
   }
-
 }
