@@ -59,9 +59,8 @@ export class KalLoadingDirective implements OnDestroy {
 
     if (this._loading) {  // currently loading
 
-      if (loading) {
-        // nothing to do
-      } else {
+      // new state is "not loading", we should remove overlay
+      if (!loading) {
         this.getOverlayRef().detach();
         this._loading = false;
       }
