@@ -1,10 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { KalCheckboxComponent } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-checkbox/kal-checkbox.component';
 import { FormElementComponent } from 'projects/kalidea/kaligraphi/src/lib/utils';
+import { KalCheckboxModule } from './kal-checkbox.module';
 
 describe('KalCheckboxComponent', () => {
   let component: KalCheckboxComponent;
@@ -120,5 +121,43 @@ describe('KalCheckboxComponent', () => {
     component.disabled = false;
 
     expect(component.control.disabled).toBeFalsy();
+  });
+
+});
+
+
+const checkboxId = 'my_checkbox';
+
+@Component({
+  selector: 'kal-test',
+  template: `<kal-checkbox id="${checkboxId}"></kal-checkbox>`
+})
+class TestComponent {
+
+}
+
+describe('KalCheckboxComponent with id provided', () => {
+  let fixture: ComponentFixture<TestComponent>;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [KalCheckboxModule],
+      declarations: [
+        TestComponent,
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
+    })
+      .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(TestComponent);
+    fixture.detectChanges();
+
+  });
+
+  it('should not duplicate id attribute', () => {
+    const HTMLElementsWithSameId = (fixture.nativeElement as HTMLElement).querySelectorAll('#' + checkboxId);
+    expect(HTMLElementsWithSameId.length).toEqual(1);
   });
 });
