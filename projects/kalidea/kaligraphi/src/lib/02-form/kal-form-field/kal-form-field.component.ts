@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs';
 import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 import { KalCheckboxComponent } from '../kal-checkbox/kal-checkbox.component';
 import { FormElementComponent } from '../../utils/forms/form-element.component';
+import { KalFormFieldLabelDirective } from './kal-form-field-label.directive';
 
 @Component({
   selector: 'kal-form-field',
@@ -49,6 +50,9 @@ export class KalFormFieldComponent implements AfterContentInit {
 
   @ContentChild(forwardRef(() => FormElementComponent))
   formElement: FormElementComponent;
+
+  @ContentChild(KalFormFieldLabelDirective)
+  labelTemplate;
 
   @AutoUnsubscribe()
   private statusChange: Subscription;

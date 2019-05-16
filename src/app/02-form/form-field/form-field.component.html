@@ -10,6 +10,18 @@
     </kal-input>
   </kal-form-field>
 
+  <kal-form-field>
+
+    <ng-template kalFormFieldLabel>
+      Input label ( with template provided with kalFormFieldLabelDirective ) <kal-icon>settings</kal-icon>
+    </ng-template>
+
+    <kal-input [formControl]="control1"
+               [kalTheme]="themes"
+               label="Input label"
+               required="true">
+    </kal-input>
+  </kal-form-field>
 
   <kal-form-field>
     <kal-select tabindex="1"
