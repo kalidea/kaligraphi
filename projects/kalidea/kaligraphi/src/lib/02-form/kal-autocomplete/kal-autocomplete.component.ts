@@ -89,12 +89,16 @@ export class KalAutocompleteComponent<T> implements AfterViewInit {
    * select option
    */
   select(option: KalAutocompleteOption<T>) {
+    if (option.disabled) {
+      return;
+    }
+
     this.selectionSubject.next(option);
     this.selectionSubject.complete();
   }
 
   private initKeyManager() {
-    this.keyManager = new ActiveDescendantKeyManager<KalOptionComponent>(this.optionsComponent)
+    this.keyManager = new ActiveDescendantKeyManager<KalOptionComponent>(this.optionsComponent.filter(opt => !opt.disabled))
       .withVerticalOrientation()
       .withWrap()
       .withTypeAhead(0);

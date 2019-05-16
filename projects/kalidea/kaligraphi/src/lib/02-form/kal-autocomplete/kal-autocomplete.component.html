@@ -2,6 +2,7 @@
   <li *ngFor="let option of options">
     <kal-option [value]="option"
                 [label]="option.label"
+                [disabled]="option.disabled"
                 (selectionChange)="select(option)"
                 (click)="select(option)">
       {{ option.label }}
