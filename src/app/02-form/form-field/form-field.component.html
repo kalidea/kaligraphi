@@ -1,21 +1,9 @@
 <h1>Form-field</h1>
 
-<div class="example" [class.reverse]="reverse">
+<div [class.reverse]="reverse" class="example">
+
 
   <kal-form-field [legend]="legend">
-    <kal-input label="Input label"
-               required="true"
-               [kalTheme]="themes"
-               [formControl]="control1">
-    </kal-input>
-  </kal-form-field>
-
-  <kal-form-field>
-
-    <ng-template kalFormFieldLabel>
-      Input label ( with template provided with kalFormFieldLabelDirective ) <kal-icon>settings</kal-icon>
-    </ng-template>
-
     <kal-input [formControl]="control1"
                [kalTheme]="themes"
                label="Input label"
@@ -24,11 +12,29 @@
   </kal-form-field>
 
   <kal-form-field>
-    <kal-select tabindex="1"
+
+    <ng-template kalFormFieldLabel>
+      <div style="display: flex; justify-content: space-between; width: 100%">
+        <span>Input label with kalFormFieldLabelDirective</span>
+        <kal-icon>settings</kal-icon>
+      </div>
+      &nbsp;<br />
+    </ng-template>
+
+    <kal-input [formControl]="control2"
+               [kalTheme]="themes"
+               [errorsMessage]="{'email': 'this is not a valid email'}"
+               label="Input label"
+               required="true">
+    </kal-input>
+  </kal-form-field>
+
+  <kal-form-field>
+    <kal-select [kalTheme]="themes"
                 label="Select label"
-                [kalTheme]="themes"
+                placeholder="Select items"
                 required
-                placeholder="Select items">
+                tabindex="1">
       <kal-option value="1">1</kal-option>
       <kal-option value="2">2</kal-option>
       <kal-option value="3">3</kal-option>
@@ -43,8 +49,8 @@
   <kal-checkbox [(ngModel)]="reverse" label="reverse"></kal-checkbox>
   <kal-form-field>
     <kal-input
-      label="legend"
       [(ngModel)]="legend"
+      label="legend"
     ></kal-input>
   </kal-form-field>
 </div>

@@ -73,12 +73,12 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
   /**
    * output for value change
    */
-  @Output() valueChange: EventEmitter<T> = new EventEmitter<T>();
+  @Output() valueChanges: EventEmitter<T> = new EventEmitter<T>();
 
   /**
    * output for value change
    */
-  @Output() inputChange: EventEmitter<SimpleChanges> = new EventEmitter<SimpleChanges>();
+  @Output() inputChanges: EventEmitter<SimpleChanges> = new EventEmitter<SimpleChanges>();
 
   /**
    * ngControl of this form element
@@ -228,15 +228,15 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
    * @inheritDoc
    */
   ngOnChanges(changes: SimpleChanges): void {
-    this.inputChange.emit(changes);
+    this.inputChanges.emit(changes);
   }
 
   /**
    * @inheritDoc
    */
   ngOnDestroy(): void {
-    this.valueChange.complete();
-    this.inputChange.complete();
+    this.valueChanges.complete();
+    this.inputChanges.complete();
   }
 
 }

@@ -351,7 +351,7 @@ export class KalSelectComponent
 
     if (withNotify) {
       super.notifyUpdate(this.selectedValue);
-      this.valueChange.emit(this.selectedValue);
+      this.valueChanges.emit(this.selectedValue);
     }
 
     this.cdr.markForCheck();
@@ -370,7 +370,7 @@ export class KalSelectComponent
 
     if (withNotify) {
       super.notifyUpdate(this.selectedValue);
-      this.valueChange.emit(this.selectedValue);
+      this.valueChanges.emit(this.selectedValue);
     }
 
     this.cdr.markForCheck();

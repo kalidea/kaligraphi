@@ -109,7 +109,7 @@ export class KalCheckboxComponent extends FormElementComponent<boolean> implemen
       super.notifyUpdate(checked);
 
       // emit the form control value
-      this.valueChange.emit(checked);
+      this.valueChanges.emit(checked);
     });
   }
 

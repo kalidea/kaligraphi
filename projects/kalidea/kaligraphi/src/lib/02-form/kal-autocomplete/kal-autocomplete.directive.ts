@@ -174,7 +174,7 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
 
     // watch for input change
     const valueChangeSubscription = this.input
-      .valueChange
+      .valueChanges
       .pipe(startWith(this.input.value))
       .subscribe(expression => {
         this.updateOptionsList(expression);

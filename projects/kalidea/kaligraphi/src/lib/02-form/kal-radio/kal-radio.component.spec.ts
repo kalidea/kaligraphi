@@ -29,7 +29,7 @@ class TestRadioGroupWithControlComponent {
   template: `
     <kal-radio-group [value]="value"
                      [disabled]="disabled"
-                     (valueChange)="displayValue($event)">
+                     (valueChanges)="displayValue($event)">
       <kal-radio value="test1">
         TEST 1
       </kal-radio>

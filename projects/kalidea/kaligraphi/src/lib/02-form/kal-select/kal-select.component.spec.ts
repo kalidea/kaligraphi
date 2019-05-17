@@ -114,7 +114,7 @@ describe('TestSelectComponent', () => {
     // });
 
     it('should select an option in option list', () => {
-      const spy = spyOn(component.select.valueChange, 'emit');
+      const spy = spyOn(component.select.valueChanges, 'emit');
       trigger.click();
       const options = fixture.debugElement.query(By.css('.kal-option__selection')).nativeElement;
       options.click();
@@ -127,7 +127,7 @@ describe('TestSelectComponent', () => {
     });
 
     it('should emit an event when selection change', () => {
-      const spy = spyOn(component.select.valueChange, 'emit');
+      const spy = spyOn(component.select.valueChanges, 'emit');
 
       component.select.open();
       const options = fixture.debugElement.query(By.css('.kal-option__selection')).nativeElement;
@@ -146,7 +146,7 @@ describe('TestSelectComponent', () => {
     });
 
     it('should select multiple option in option list', () => {
-      const spy = spyOn(component.select.valueChange, 'emit');
+      const spy = spyOn(component.select.valueChanges, 'emit');
       component.select.multiple = true;
 
       trigger.click();

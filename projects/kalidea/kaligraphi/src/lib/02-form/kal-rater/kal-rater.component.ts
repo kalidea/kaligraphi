@@ -99,7 +99,7 @@ export class KalRaterComponent extends FormElementComponent<number> implements O
    */
   notifyUpdate(newValue: number): void {
     super.notifyUpdate(newValue);
-    this.valueChange.emit(newValue);
+    this.valueChanges.emit(newValue);
     this.rateValue = newValue;
   }
 

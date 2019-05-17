@@ -5,15 +5,43 @@ import {
   Component,
   ContentChild,
   forwardRef,
+  Inject,
+  InjectionToken,
   Input,
+  Optional,
   ViewEncapsulation
 } from '@angular/core';
+import { KeyValue } from '@angular/common';
 import { Subscription } from 'rxjs';
 
 import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 import { KalCheckboxComponent } from '../kal-checkbox/kal-checkbox.component';
 import { FormElementComponent } from '../../utils/forms/form-element.component';
 import { KalFormFieldLabelDirective } from './kal-form-field-label.directive';
+
+export interface KalFormFieldOptions {
+
+  /**
+   * declare errors Array
+   * { "maxLength": "value {actualLength} exceed maximal {requiredLength}"}
+   */
+  errors?: { [key: string]: string };
+
+  /**
+   * show error
+   */
+  showError?: boolean;
+
+  /**
+   * show error when the form field is displayed
+   */
+  showErrorAtDisplay?: boolean;
+}
+
+/** InjectionToken that can be used to specify the global form field errors. */
+export const KAL_FORM_FIELDS_GLOBAL_OPTIONS =
+  new InjectionToken<KalFormFieldOptions>('KAL_FORM_FIELDS_GLOBAL_OPTIONS');
+
 
 @Component({
   selector: 'kal-form-field',
@@ -55,12 +83,37 @@ export class KalFormFieldComponent implements AfterContentInit {
   labelTemplate;
 
   @AutoUnsubscribe()
-  private statusChange: Subscription;
+  private subscriptionsList: Subscription[] = [];
 
-  @AutoUnsubscribe()
-  private inputChange: Subscription;
+  constructor(private cdr: ChangeDetectorRef,
+              @Optional() @Inject(KAL_FORM_FIELDS_GLOBAL_OPTIONS) private formFieldOptions: KalFormFieldOptions) {
+    this.formFieldOptions = formFieldOptions || {};
+  }
 
-  constructor(private cdr: ChangeDetectorRef) {
+  get showError() {
+    return !!this.formFieldOptions.showError;
+  }
+
+  get errors() {
+    return this.formElement.errors;
+  }
+
+  getErrorMessage({key, value: parameters}: KeyValue<string, any>) {
+    const messagesList = Object.assign({}, this.formFieldOptions.errors, this.formElement.errorsMessage);
+    let message = messagesList[key] || '';
+
+    if (parameters) {
+      Object.keys(parameters).forEach(parameterName => {
+        message = message.replace('{' + parameterName + '}', parameters[parameterName]);
+      });
+    }
+
+    // replace {value} by actual value
+    if (this.formElement.ngControl) {
+      message = message.replace('{value}', this.formElement.ngControl.value);
+    }
+
+    return message;
   }
 
   private configureFormField() {
@@ -74,7 +127,7 @@ export class KalFormFieldComponent implements AfterContentInit {
   }
 
   private checkErrorAndDirtyness() {
-    this.hasError = this.formElement.dirty && this.formElement.hasError;
+    this.hasError = (!!this.formFieldOptions.showErrorAtDisplay || this.formElement.dirty) && this.formElement.hasError;
   }
 
   ngAfterContentInit(): void {
@@ -83,14 +136,20 @@ export class KalFormFieldComponent implements AfterContentInit {
       this.configureFormField();
 
       // watch input change
-      this.inputChange = this.formElement.inputChange
+      const inputChanges = this.formElement.inputChanges
         .subscribe(() => this.configureFormField());
 
-      this.statusChange = this.formElement.statusChange.subscribe(data => {
-        this.checkErrorAndDirtyness();
-        this.cdr.markForCheck();
-      });
+      const valueChanges = this.formElement.valueChanges
+        .subscribe(() => this.cdr.markForCheck());
+
+      const stateChanges = this.formElement.statusChange
+        .subscribe(data => {
+          this.checkErrorAndDirtyness();
+          this.cdr.markForCheck();
+        });
+
+      this.subscriptionsList.push(inputChanges, valueChanges, stateChanges);
+
     }
   }
-
 }

@@ -19,4 +19,11 @@
   <div *ngIf="legend" class="kal-form-field__legend">{{ legend }}</div>
   <ng-content></ng-content>
 
+  <!--  display errors -->
+  <ul *ngIf="showError && hasError" [class.kal-form-field--errors-list]="true">
+    <li *ngFor="let error of errors|keyvalue">
+      {{ getErrorMessage(error) }}
+    </li>
+  </ul>
+
 </div>

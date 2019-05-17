@@ -157,7 +157,7 @@ export class KalRadioGroupComponent extends FormElementComponent<any> implements
    * Emit an event with the selected radio buttons component and its value
    */
   emitChangeEvent() {
-    this.valueChange.emit(new KalRadioChange(this.selected, this.value));
+    this.valueChanges.emit(new KalRadioChange(this.selected, this.value));
   }
 
   /**
