@@ -20,7 +20,7 @@
   <ng-content></ng-content>
 
   <!--  display errors -->
-  <ul *ngIf="showError && hasError" [class.kal-form-field--errors-list]="true">
+  <ul *ngIf="showError && hasError" class="kal-form-field--errors-list">
     <li *ngFor="let error of errors|keyvalue">
       {{ getErrorMessage(error) }}
     </li>
