@@ -5,7 +5,9 @@ import {
   ContentChildren,
   EventEmitter,
   forwardRef,
-  Inject, Injector,
+  HostBinding,
+  Inject,
+  Injector,
   Input,
   OnDestroy,
   OnInit,
@@ -217,24 +219,23 @@ export class KalRadioComponent implements OnInit, OnDestroy {
   @Input() name: string;
 
   /**
-   * The position of the label after or before the radio button. Defaults to after
+   * The unique id
    */
-  labelRadioPosition: 'before' | 'after';
+  @Input() id = uniqid('kal-radio-button-id-');
 
   /**
    * Triggered when the radio button value has changed
    */
   @Output() valueChange = new EventEmitter<KalRadioChange>();
 
-  /**
-   * The unique id of the radio button
-   */
-  private readonly uniqueId = uniqid('kal-radio-button-id-');
+  // empty id attribute
+  @HostBinding('attr.id')
+  attributeId = null;
 
   /**
-   * The unique id
+   * The position of the label after or before the radio button. Defaults to after
    */
-  @Input() id = this.uniqueId;
+  labelRadioPosition: 'before' | 'after';
 
   /**
    * Is the radio button checked
@@ -250,12 +251,6 @@ export class KalRadioComponent implements OnInit, OnDestroy {
    * Is the radio disabled
    */
   private disabledRadio = false;
-
-  /**
-   * Unregister function for radioDispatcher
-   */
-  private removeUniqueSelectionListener: () => void = () => {
-  }
 
   constructor(@Optional() @Inject(forwardRef(() => KalRadioGroupComponent)) radioGroup: KalRadioGroupComponent,
               private radioDispatcher: UniqueSelectionDispatcher,
@@ -357,6 +352,18 @@ export class KalRadioComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Unregister function for radioDispatcher
+   */
+  private removeUniqueSelectionListener: () => void = () => {};
+
+  /**
+   * Emit an event with the radio buttons component and its value
+   */
+  private emitChangeEvent() {
+    this.valueChange.emit(new KalRadioChange(this, this.value));
+  }
+
   ngOnInit() {
     if (this.radioGroup) {
       this.name = this.radioGroup.name;
@@ -366,13 +373,6 @@ export class KalRadioComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.removeUniqueSelectionListener();
-  }
-
-  /**
-   * Emit an event with the radio buttons component and its value
-   */
-  private emitChangeEvent() {
-    this.valueChange.emit(new KalRadioChange(this, this.value));
   }
 
 }

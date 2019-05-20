@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  HostBinding,
   Input,
   OnChanges,
   OnDestroy,
@@ -34,6 +35,10 @@ export class KalCheckboxComponent extends FormElementComponent<boolean> implemen
    * Subscription of the valueChanges control
    */
   controlSubscription: Subscription;
+
+  // empty id attribute
+  @HostBinding('attr.id')
+  attributeId = null;
 
   private _value = false;
 
