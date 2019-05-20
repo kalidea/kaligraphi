@@ -66,6 +66,11 @@ export class KalMonthCalendarComponent implements OnInit {
     return this.datepicker.currentDate;
   }
 
+  set currentDate(date: KalDate) {
+    this.displayedDate = date;
+    this.cdr.markForCheck();
+  }
+
   /**
    * Whether we should add a `hidden` class to our button.
    * It allows us to hide the days of the previous month.
@@ -93,7 +98,8 @@ export class KalMonthCalendarComponent implements OnInit {
   /**
    * Handles when a new date is selected.
    */
-  pickDate(date: KalDate): void {
+  pickDate($event: MouseEvent, date: KalDate): void {
+    $event.stopPropagation();
     this.datePicked.emit(date);
   }
 

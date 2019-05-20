@@ -5,7 +5,7 @@
              [label]="label"
              [placeholder]="placeholder"
              [formControl]="control"
-             (iconClicked)="open()">
+             (iconClicked)="open($event, 'icon')">
   </kal-input>
 
   <ng-template cdkPortal #datepickerCalendar="cdkPortal">

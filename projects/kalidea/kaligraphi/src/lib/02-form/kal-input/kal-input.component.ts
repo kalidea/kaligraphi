@@ -62,7 +62,7 @@ export class KalInputComponent extends FormElementComponent<string> implements O
    */
   @Input() icon: string;
 
-  @Output() readonly iconClicked = new EventEmitter();
+  @Output() readonly iconClicked = new EventEmitter<MouseEvent>();
 
   /**
    * event to trigger change
@@ -112,8 +112,8 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     }
   }
 
-  customIconClicked() {
-    this.iconClicked.emit();
+  customIconClicked($event: MouseEvent) {
+    this.iconClicked.emit($event);
   }
 
   /**
