@@ -17,6 +17,7 @@ import {
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { ESCAPE } from '@angular/cdk/keycodes';
+import { DOCUMENT } from '@angular/common';
 import { FormControl, NgControl } from '@angular/forms';
 import { fromEvent, merge, Observable, of, Subscription } from 'rxjs';
 import { filter, map, take, tap } from 'rxjs/operators';
@@ -28,7 +29,6 @@ import { KalDatepickerHeaderComponent } from './kal-datepicker-header/kal-datepi
 import { buildProviders, FormElementComponent } from '../../utils/forms/form-element.component';
 import { Coerce } from '../../utils/decorators/coerce';
 import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
-import { DOCUMENT } from '@angular/common';
 import { KalInputComponent } from '../kal-input/kal-input.component';
 
 /**
@@ -245,9 +245,6 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
         this.clickOutsideSubscription = this.getOutsideClickStream()
           .pipe(take(1)) // take next outside click only
           .subscribe(() => this.close());
-
-        // restore focus on input field
-        this.kalInput.inputElement.nativeElement.focus();
       }
     }
   }
