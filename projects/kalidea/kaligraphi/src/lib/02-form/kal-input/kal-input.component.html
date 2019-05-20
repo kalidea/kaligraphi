@@ -2,9 +2,9 @@
 
   <input #input
     [id]="id"
-    [title]="label"
+    [attr.title]="label"
     [type]="htmlInputType"
-    [name]="name"
+    [attr.name]="name"
     [attr.placeholder]="placeholder"
     [attr.autocomplete]="autocomplete"
     (blur)="formatValue()"

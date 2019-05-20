@@ -4,7 +4,7 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  EventEmitter,
+  EventEmitter, HostBinding,
   Injector,
   Input,
   OnChanges,
@@ -77,6 +77,10 @@ export class KalInputComponent extends FormElementComponent<string> implements O
    * Reference to native input
    */
   @ViewChild('input') inputElement: ElementRef<HTMLInputElement>;
+
+  // empty id attribute
+  @HostBinding('attr.id')
+  attributeId = null;
 
   @AutoUnsubscribe()
   private controlValueChangedSubscription = Subscription.EMPTY;

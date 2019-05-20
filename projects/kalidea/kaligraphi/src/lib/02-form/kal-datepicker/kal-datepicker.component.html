@@ -1,6 +1,8 @@
 <div class="kal-datepicker__input">
 
   <kal-input icon="event_note"
+             [id]="id + '_input'"
+             [label]="label"
              [placeholder]="placeholder"
              [formControl]="control"
              (iconClicked)="open()">
