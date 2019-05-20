@@ -6,19 +6,20 @@ import {
   ElementRef,
   forwardRef,
   HostListener,
+  Inject,
   Injector,
   Input,
   OnDestroy,
+  Optional,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { FormHooks } from '@angular/forms/src/model';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { FormControl, NgControl } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { filter, map, tap } from 'rxjs/operators';
+import { fromEvent, merge, Observable, of, Subscription } from 'rxjs';
+import { filter, map, take, tap } from 'rxjs/operators';
 import { DateTime } from 'luxon';
 
 import { coerceKalDateProperty, KalDate, KalDateType } from './kal-date';
@@ -27,6 +28,8 @@ import { KalDatepickerHeaderComponent } from './kal-datepicker-header/kal-datepi
 import { buildProviders, FormElementComponent } from '../../utils/forms/form-element.component';
 import { Coerce } from '../../utils/decorators/coerce';
 import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
+import { DOCUMENT } from '@angular/common';
+import { KalInputComponent } from '../kal-input/kal-input.component';
 
 /**
  * Possible views for the calendar.
@@ -57,6 +60,11 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
    * Reference to `KalDatepickerHeaderComponent`.
    */
   @ViewChild(forwardRef(() => KalDatepickerHeaderComponent)) datePickerHeader: KalDatepickerHeaderComponent;
+
+  /**
+   * reference to the kal input
+   */
+  @ViewChild(KalInputComponent) kalInput: KalInputComponent;
 
   /**
    * Whether the calendar is in month view.
@@ -97,13 +105,16 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   private backdropClickSubscription = Subscription.EMPTY;
 
   /**
-   * Subscription to `overlayRef.keydownEvents()` with `ESC` key.
+   * Subscriptions to watch.
    */
   @AutoUnsubscribe()
-  private escapeKeySubscription = Subscription.EMPTY;
+  private subscriptions: Subscription[] = [];
 
+  /**
+   * watch subscription outside datepicker
+   */
   @AutoUnsubscribe()
-  private valueChangeSubscription = Subscription.EMPTY;
+  private clickOutsideSubscription = Subscription.EMPTY;
 
   /**
    * Overlay reference.
@@ -117,7 +128,8 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   constructor(private overlay: Overlay,
               private elementRef: ElementRef<HTMLElement>,
               private cdr: ChangeDetectorRef,
-              private injector: Injector) {
+              private injector: Injector,
+              @Optional() @Inject(DOCUMENT) private _document: any) {
     super();
   }
 
@@ -197,6 +209,14 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     return this.currentDate && this.currentDate.valid;
   }
 
+  getOverlayRef(): OverlayRef {
+    if (!this.overlayRef) {
+      this.createOverlay();
+    }
+
+    return this.overlayRef;
+  }
+
   /**
    * Switch between views to display.
    */
@@ -209,16 +229,36 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   }
 
   @HostListener('click', ['$event'])
-  open($event = false) {
-    if (!this.disabled && ($event === false || this.openOnClick)) {
-      if (!this.overlayRef.hasAttached()) {
-        this.overlayRef.attach(this.datepickerCalendar);
+  @HostListener('focus')
+  open($event: MouseEvent = null, origin: 'icon' | 'mouse' = 'mouse') {
+    // stop propagation of this event
+    if ($event) {
+      $event.stopPropagation();
+    }
+
+    // should we open overlay ?
+    if (!this.disabled && (origin === 'icon' || this.openOnClick)) {
+      if (!this.getOverlayRef().hasAttached()) {
+        this.getOverlayRef().attach(this.datepickerCalendar);
+
+        // watch for click outside
+        this.clickOutsideSubscription = this.getOutsideClickStream()
+          .pipe(take(1)) // take next outside click only
+          .subscribe(() => this.close());
+
+        // restore focus on input field
+        this.kalInput.inputElement.nativeElement.focus();
       }
     }
   }
 
+  @HostListener('keydown.tab')
   close() {
-    this.overlayRef.detach();
+    if (this.overlayRef && this.overlayRef.hasAttached()) {
+      this.overlayRef.detach();
+    }
+
+    this.clickOutsideSubscription.unsubscribe();
 
     // Set the current view to `month` because if the datepicker is
     // closed then opened it will keep its last view.
@@ -272,27 +312,53 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     }
   }
 
+  private getOutsideClickStream(): Observable<any> {
+    if (!this._document) {
+      return of(null);
+    }
+
+    return merge(
+      fromEvent<MouseEvent>(this._document, 'click'),
+      fromEvent<TouchEvent>(this._document, 'touchend')
+    )
+      .pipe(filter(event => {
+        const clickTarget = event.target as HTMLElement;
+
+        const hasAttached = this.overlayRef.hasAttached();
+        const datepickerContentClicked = this.elementRef.nativeElement.contains(clickTarget);
+        const datepickerItselfClicked = clickTarget === this.elementRef.nativeElement;
+        const overlayContentClicked = (!!this.overlayRef && this.overlayRef.overlayElement.contains(clickTarget));
+
+        return hasAttached && !datepickerContentClicked && !datepickerItselfClicked && !overlayContentClicked;
+      }));
+  }
+
   private createOverlay(): void {
     this.overlayRef = this.overlay.create({
       positionStrategy: this.positionStrategy,
-      hasBackdrop: true,
       width: '240px',
-      backdropClass: 'cdk-overlay-transparent-backdrop'
-    });
-  }
-
-  private initSubscriptions(): void {
-    this.backdropClickSubscription = this.overlayRef.backdropClick().subscribe(() => {
-      this.close();
     });
 
-    this.escapeKeySubscription = this.overlayRef.keydownEvents()
+    // watch escape key
+    const escapeKeySubscription = this.overlayRef.keydownEvents()
       .pipe(
         filter(event => event.keyCode === ESCAPE)
       )
       .subscribe(() => this.close());
 
-    this.valueChangeSubscription = this.control.valueChanges.pipe(
+    this.subscriptions.push(escapeKeySubscription);
+  }
+
+  ngOnDestroy() {
+    super.ngOnDestroy();
+  }
+
+  ngAfterContentInit(): void {
+
+    this.control = this.createControlAndSubscriptions(this.injector, 'change');
+
+    // watch value changes
+    const valueChangesSubscription = this.control.valueChanges.pipe(
       map(value => coerceKalDateProperty(value)), // transform as date
       map(date => date.valid ? date : null), // remove invalid date
       tap((date: KalDate) => {
@@ -307,20 +373,17 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
           date = new KalDate();
         }
 
+        if (this.monthCalendar) {
+          this.monthCalendar.currentDate = date;
+        }
+
         this.currentDate = date;
       })
     ).subscribe();
-  }
+    this.subscriptions.push(valueChangesSubscription);
 
-  ngOnDestroy() {
-    super.ngOnDestroy();
-  }
-
-  ngAfterContentInit(): void {
-
-    this.control = this.createControlAndSubscriptions(this.injector, 'blur');
-
-    this.createOverlay();
-    this.initSubscriptions();
+    const focusOnKalInputSubscription = fromEvent<MouseEvent>(this.kalInput.inputElement.nativeElement, 'focus')
+      .subscribe(() => this.open());
+    this.subscriptions.push(focusOnKalInputSubscription);
   }
 }

@@ -16,7 +16,7 @@
   </kal-icon>
 
   <kal-icon *ngIf="icon && !clearable"
-            (click)="customIconClicked()">
+            (click)="customIconClicked($event)">
     {{ icon }}
   </kal-icon>
 
