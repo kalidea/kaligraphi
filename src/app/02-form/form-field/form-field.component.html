@@ -3,7 +3,7 @@
 <div [class.reverse]="reverse" class="example">
 
 
-  <kal-form-field [legend]="legend">
+  <kal-form-field [legend]="legend" [kalTheme]="themes">
     <kal-input [formControl]="control1"
                [kalTheme]="themes"
                label="Input label"
@@ -11,7 +11,7 @@
     </kal-input>
   </kal-form-field>
 
-  <kal-form-field>
+  <kal-form-field [kalTheme]="themes">
 
     <ng-template kalFormFieldLabel>
       <div style="display: flex; justify-content: space-between; width: 100%">
@@ -29,7 +29,7 @@
     </kal-input>
   </kal-form-field>
 
-  <kal-form-field>
+  <kal-form-field [kalTheme]="themes">
     <kal-select [kalTheme]="themes"
                 label="Select label"
                 placeholder="Select items"
@@ -47,6 +47,7 @@
 <div class="configurator">
 
   <kal-checkbox [(ngModel)]="reverse" label="reverse"></kal-checkbox>
+
   <kal-form-field>
     <kal-input
       [(ngModel)]="legend"
