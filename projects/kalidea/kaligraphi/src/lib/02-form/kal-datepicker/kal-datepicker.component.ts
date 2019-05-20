@@ -352,7 +352,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
 
   ngAfterContentInit(): void {
 
-    this.control = this.createControlAndSubscriptions(this.injector, 'change');
+    this.control = this.createControlAndSubscriptions(this.injector, 'blur');
 
     // watch value changes
     const valueChangesSubscription = this.control.valueChanges.pipe(
