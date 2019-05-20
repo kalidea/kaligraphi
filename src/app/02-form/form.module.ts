@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { KaligraphiModule } from '@kalidea/kaligraphi';
+import { KAL_FORM_FIELDS_GLOBAL_OPTIONS, KalFormFieldOptions, KaligraphiModule } from '@kalidea/kaligraphi';
 
 import { FormRoutingModule } from 'src/app/02-form/form-routing.module';
 import { AutocompleteComponent } from 'src/app/02-form/autocomplete/autocomplete.component';
@@ -38,6 +38,20 @@ import { TextareaComponent } from './textarea/textarea.component';
     SelectComponent,
     SliderComponent,
     TextareaComponent
-  ]
+  ],
+  providers: [
+    {
+      provide: KAL_FORM_FIELDS_GLOBAL_OPTIONS,
+      useValue: {
+        showError: true,
+        showErrorAtDisplay: true,
+        errors: {
+          'email': 'email "{value}" is not an email',
+          'maxlength': '{value} length {actualLength} exceed maximal {requiredLength}'
+        }
+      } as KalFormFieldOptions
+    }
+  ],
 })
-export class FormModule { }
+export class FormModule {
+}

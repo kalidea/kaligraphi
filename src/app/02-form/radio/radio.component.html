@@ -6,7 +6,7 @@
                      [labelPosition]="labelPosition"
                      [kalTheme]="themes"
                      [disabled]="disabled"
-                     (valueChange)="displayValue($event)">
+                     (valueChanges)="displayValue($event)">
       <kal-radio value="test1" [kalTheme]="themes">test1</kal-radio>
       <kal-radio value="test2" [kalTheme]="themes">test2</kal-radio>
       <kal-radio value="test3" [kalTheme]="themes">test3</kal-radio>
@@ -46,7 +46,7 @@
   </kal-form-field>
 
   <kal-form-field>
-    <kal-select label="edit value" (valueChange)="changeRadioValueWithControl($event)">
+    <kal-select label="edit value" (valueChanges)="changeRadioValueWithControl($event)">
       <kal-option value="test1">test1</kal-option>
       <kal-option value="test2">test2</kal-option>
       <kal-option value="test3">test3</kal-option>

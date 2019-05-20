@@ -300,7 +300,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
         super.notifyUpdate(date);
 
         // emit value
-        this.valueChange.emit(date);
+        this.valueChanges.emit(date);
 
         // if there's no date we should apply one manually so the datepicker can open at the current date
         if (date === null) {
