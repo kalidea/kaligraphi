@@ -127,22 +127,10 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
   @AutoUnsubscribe()
   private selectionSubscription: Subscription = Subscription.EMPTY;
 
-  private _dataSource: KalListDataSource<T> = null;
-
-  /**
-   * Selectable items (none, single, multiple)
-   */
-  private _selectionMode: KalListSelectionMode = KalListSelectionMode.Single;
-
-  private _selection: KalSelectionModel<T> = null;
-
-  /**
-   * The virtual scroll config
-   */
-  private _virtualScrollConfig: KalVirtualScrollConfig = null;
-
   constructor(private cdr: ChangeDetectorRef) {
   }
+
+  private _dataSource: KalListDataSource<T> = null;
 
   /**
    * Datasource to give items list to the component
@@ -165,6 +153,11 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
       }
     }
   }
+
+  /**
+   * Selectable items (none, single, multiple)
+   */
+  private _selectionMode: KalListSelectionMode = KalListSelectionMode.Single;
 
   /**
    * Selectable items (none, single, multiple)
@@ -202,6 +195,8 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
 
   }
 
+  private _selection: KalSelectionModel<T> = null;
+
   @Input()
   get selection(): KalSelectionModel<T> {
     return this._selection;
@@ -216,10 +211,17 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
       }
 
       this.selectionChanges();
-
-      this.cdr.markForCheck();
+    } else if (this.isInitialized) {
+      this._selection.clear();
+      this.activeItem(null);
     }
+    this.cdr.markForCheck();
   }
+
+  /**
+   * The virtual scroll config
+   */
+  private _virtualScrollConfig: KalVirtualScrollConfig = null;
 
   @Input()
   get virtualScrollConfig(): KalVirtualScrollConfig {
@@ -235,6 +237,15 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
     } else {
       this._virtualScrollConfig = null;
     }
+
+    if (this.isInitialized) {
+      if (!value) {
+        this.createKeyManager();
+      } else {
+        this.keyManager = null;
+      }
+    }
+
     this.cdr.markForCheck();
   }
 
@@ -430,6 +441,10 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
       });
   }
 
+  private createKeyManager() {
+    this.keyManager = new ActiveDescendantKeyManager<KalListItemSelectionDirective>(this.children).withVerticalOrientation();
+  }
+
   ngOnInit(): void {
     if (!this._selection) {
       this._selection = new KalSelectionModel<T>({
@@ -445,7 +460,7 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
 
   ngAfterViewInit() {
     if (!this.virtualScrollConfig) {
-      this.keyManager = new ActiveDescendantKeyManager<KalListItemSelectionDirective>(this.children).withVerticalOrientation();
+      this.createKeyManager();
     }
   }
 
