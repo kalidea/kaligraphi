@@ -1,11 +1,13 @@
 import { Directive, HostBinding, Input } from '@angular/core';
 import { Highlightable } from '@angular/cdk/a11y';
+import { Coerce } from 'src/lib/utils';
 
 @Directive({
   selector: '[kalListItemSelection]'
 })
 export class KalListItemSelectionDirective implements Highlightable {
 
+  @Coerce('boolean')
   @Input()
   kalListItemSelection = true;
 
@@ -22,7 +24,7 @@ export class KalListItemSelectionDirective implements Highlightable {
    * Add the kal-list-item-highlighted class to the current item when it is focus
    */
   setActiveStyles(): void {
-    this.hightlighted = this.kalListItemSelection ? true : false;
+    this.hightlighted = this.kalListItemSelection;
   }
 
   /**
