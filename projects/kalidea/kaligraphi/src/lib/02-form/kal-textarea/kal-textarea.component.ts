@@ -7,7 +7,9 @@ import {
   OnDestroy,
   ViewEncapsulation
 } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
+
 import { buildProviders, FormElementComponent } from '../../utils/forms/form-element.component';
 import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 
@@ -22,10 +24,9 @@ import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 export class KalTextareaComponent extends FormElementComponent<string> implements OnDestroy, AfterContentInit {
 
   /**
-   * Subscription of formControl
+   * form control for this component
    */
-  @AutoUnsubscribe()
-  private subscription: Subscription = Subscription.EMPTY;
+  control: FormControl;
 
   constructor(private cdr: ChangeDetectorRef,
               private injector: Injector) {
@@ -36,8 +37,8 @@ export class KalTextareaComponent extends FormElementComponent<string> implement
    * @inheritDoc
    */
   writeValue(value: string) {
-    if (this.superControl) {
-      this.superControl.patchValue(value, {emitEvent: false});
+    if (this.control) {
+      this.control.patchValue(value, {emitEvent: false});
       this.cdr.markForCheck();
     }
   }
@@ -45,7 +46,7 @@ export class KalTextareaComponent extends FormElementComponent<string> implement
   ngAfterContentInit(): void {
 
     // ngControl for formControl does not contain `control` on ngOnInit
-    this.createControlAndSubscriptions(this.injector);
+    this.control = this.createControlAndSubscriptions(this.injector);
   }
 
   ngOnDestroy() {
