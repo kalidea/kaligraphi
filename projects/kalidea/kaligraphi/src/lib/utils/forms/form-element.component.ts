@@ -176,7 +176,7 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
     }
   }
 
-  protected get superControl(): AbstractControl {
+  get superControl(): AbstractControl {
     if (this.ngControl && this.ngControl.control) {
       return this.ngControl.control;
     }
