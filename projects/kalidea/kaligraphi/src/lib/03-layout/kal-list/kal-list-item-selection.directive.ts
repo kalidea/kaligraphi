@@ -1,6 +1,6 @@
 import { Directive, HostBinding, Input } from '@angular/core';
 import { Highlightable } from '@angular/cdk/a11y';
-import { Coerce } from 'src/lib/utils';
+import { Coerce } from '../../utils';
 
 @Directive({
   selector: '[kalListItemSelection]'
