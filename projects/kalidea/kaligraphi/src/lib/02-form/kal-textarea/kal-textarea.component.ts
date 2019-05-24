@@ -1,13 +1,15 @@
 import {
+  AfterContentInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  Injector,
   OnDestroy,
-  OnInit,
   ViewEncapsulation
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
+
 import { buildProviders, FormElementComponent } from '../../utils/forms/form-element.component';
 import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 
@@ -19,20 +21,15 @@ import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: buildProviders(KalTextareaComponent)
 })
-export class KalTextareaComponent extends FormElementComponent<string> implements OnInit, OnDestroy {
+export class KalTextareaComponent extends FormElementComponent<string> implements OnDestroy, AfterContentInit {
 
   /**
-   * Form control
+   * form control for this component
    */
-  formControl = new FormControl('');
+  control: FormControl;
 
-  /**
-   * Subscription of formControl
-   */
-  @AutoUnsubscribe()
-  private subscription: Subscription = Subscription.EMPTY;
-
-  constructor(private cdr: ChangeDetectorRef) {
+  constructor(private cdr: ChangeDetectorRef,
+              private injector: Injector) {
     super();
   }
 
@@ -40,16 +37,16 @@ export class KalTextareaComponent extends FormElementComponent<string> implement
    * @inheritDoc
    */
   writeValue(value: string) {
-    this.formControl.patchValue(value, {emitEvent: false});
-    this.cdr.markForCheck();
+    if (this.control) {
+      this.control.patchValue(value, {emitEvent: false});
+      this.cdr.markForCheck();
+    }
   }
 
-  ngOnInit() {
-    this.subscription = this.formControl.valueChanges.subscribe(
-      value => {
-        this.notifyUpdate(value);
-      }
-    );
+  ngAfterContentInit(): void {
+
+    // ngControl for formControl does not contain `control` on ngOnInit
+    this.control = this.createControlAndSubscriptions(this.injector);
   }
 
   ngOnDestroy() {
