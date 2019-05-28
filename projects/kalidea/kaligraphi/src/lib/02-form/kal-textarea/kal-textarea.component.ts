@@ -22,11 +22,13 @@ import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
   providers: buildProviders(KalTextareaComponent)
 })
 export class KalTextareaComponent extends FormElementComponent<string> implements OnDestroy, AfterContentInit {
-
   /**
    * form control for this component
    */
   control: FormControl;
+
+  @AutoUnsubscribe()
+  subscription: Subscription = Subscription.EMPTY;
 
   constructor(private cdr: ChangeDetectorRef,
               private injector: Injector) {
@@ -47,6 +49,12 @@ export class KalTextareaComponent extends FormElementComponent<string> implement
 
     // ngControl for formControl does not contain `control` on ngOnInit
     this.control = this.createControlAndSubscriptions(this.injector);
+
+    this.subscription = this.control.valueChanges.subscribe(
+      value => {
+        this.notifyUpdate(value);
+      }
+    );
   }
 
   ngOnDestroy() {
