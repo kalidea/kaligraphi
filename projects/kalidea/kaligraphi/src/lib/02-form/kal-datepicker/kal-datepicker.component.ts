@@ -333,6 +333,9 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   private createOverlay(): void {
     this.overlayRef = this.overlay.create({
       positionStrategy: this.positionStrategy,
+      scrollStrategy: this.overlay.scrollStrategies.reposition({
+        autoClose: true
+      }),
       width: '240px',
     });
 
