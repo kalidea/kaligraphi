@@ -93,8 +93,13 @@ export class KalMenuTriggerForDirective implements OnDestroy {
     return this.overlay
       .position()
       .flexibleConnectedTo(this.elementRef)
+      .withPush(true)
+      .withFlexibleDimensions(false)
       .withPositions([
-        {originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top'}
+        {originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top'}, // bottom
+        {originX: 'start', originY: 'top', overlayX: 'start', overlayY: 'bottom'}, // top
+        {originX: 'start', originY: 'center', overlayX: 'end', overlayY: 'center'}, // left
+        {originX: 'end', originY: 'center', overlayX: 'start', overlayY: 'center'}, // right
       ]);
   }
 
