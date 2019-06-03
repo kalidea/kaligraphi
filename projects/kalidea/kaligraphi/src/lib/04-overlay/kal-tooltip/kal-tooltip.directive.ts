@@ -141,8 +141,8 @@ export class KalTooltipDirective implements OnDestroy {
       .flexibleConnectedTo(this.elementRef)
       .withPush(false)
       .withPositions([
-        kalPositions.top,
         kalPositions.bottom,
+        kalPositions.top,
         kalPositions.left,
         kalPositions.right,
       ]);
