@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
 
 import { KalMenuComponent } from './kal-menu.component';
 import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
+import { kalPositions } from '../../utils/helpers/positions';
 
 @Directive({
   selector: '[kalMenuTriggerFor]'
@@ -96,10 +97,10 @@ export class KalMenuTriggerForDirective implements OnDestroy {
       .withPush(true)
       .withFlexibleDimensions(false)
       .withPositions([
-        {originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top'}, // bottom
-        {originX: 'start', originY: 'top', overlayX: 'start', overlayY: 'bottom'}, // top
-        {originX: 'start', originY: 'center', overlayX: 'end', overlayY: 'center'}, // left
-        {originX: 'end', originY: 'center', overlayX: 'start', overlayY: 'center'}, // right
+        kalPositions.bottom,
+        kalPositions.top,
+        kalPositions.left,
+        kalPositions.right,
       ]);
   }
 
