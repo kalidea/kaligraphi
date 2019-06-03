@@ -5,7 +5,18 @@
     <kal-button
       [kalTheme]="themes"
       kalTooltip="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam minima neque pariatur placeat similique. "
-    >Bouton avec tooltip</kal-button>
+    >Button with string tooltip</kal-button>
+
+    <kal-button [kalTheme]="themes" kalTooltip>
+      <ng-template kalTooltipContent>
+        <h2>Lorem ipsum dolor sit amet</h2>
+        <ul>
+          <li>consectetur adipisicing elit. </li>
+          <li>Ipsam minima neque pariatur placeat similique.</li>
+        </ul>
+      </ng-template>
+      Button with html tooltip
+    </kal-button>
   </article>
 </div>
 
