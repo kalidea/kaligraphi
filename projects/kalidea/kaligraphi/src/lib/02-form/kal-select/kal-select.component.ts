@@ -219,7 +219,9 @@ export class KalSelectComponent
    * Select an option by his value
    */
   select(value: any, withNotify = false): void {
-    if (this.isMultiple && value instanceof Array) {
+    if (value === null) {
+      this.reset();
+    } else if (this.isMultiple && value instanceof Array) {
       const multipleOptions = this.options.filter((item) => value.indexOf(item.value) >= 0);
       this.multipleOptionSelected(multipleOptions, withNotify);
     } else {
@@ -235,7 +237,10 @@ export class KalSelectComponent
    * Reset selection
    */
   reset(): void {
-    this.selection.map(o => o.active = false);
+    this.selection.map(o => {
+      o.active = false;
+      o.isHighlighted = false;
+    });
     this.selection = [];
     this.cdr.markForCheck();
   }
