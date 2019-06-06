@@ -1,0 +1,35 @@
+<div class="kal-select-virtual-scroll__trigger" [id]="id">
+  <div (click)="open()" (focus)="open()">
+    <input
+      class="kal-select-virtual-scroll__input"
+      type="text"
+      [formControl]="searchControl"
+      placeholder="{{ label }}"
+    />
+  </div>
+
+  <ng-template cdkPortal #optionsPortal="cdkPortal">
+    <cdk-virtual-scroll-viewport
+      [itemSize]="virtualScrollConfig.itemSize"
+      class="kal-select__overlay"
+      [style.height.px]="virtualScrollHeight"
+    >
+      <div *ngIf="!options.length" class="kal-select-virtual-scroll__option">
+        No results found...
+      </div>
+
+      <div
+        *cdkVirtualFor="let option of options"
+        class="kal-select-virtual-scroll__option"
+        (click)="select(option)"
+      >
+        <div
+          [class.active]="isActive(option)"
+          class="kal-select-virtual-scroll__option-selection"
+        >
+          {{ option.label }}
+        </div>
+      </div>
+    </cdk-virtual-scroll-viewport>
+  </ng-template>
+</div>

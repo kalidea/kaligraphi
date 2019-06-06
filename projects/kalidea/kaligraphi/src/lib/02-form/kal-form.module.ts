@@ -15,6 +15,7 @@ import { KalRaterModule } from './kal-rater/kal-rater.module';
 import { KalSelectModule } from './kal-select/kal-select.module';
 import { KalSliderModule } from './kal-slider/kal-slider.module';
 import { KalTextareaModule } from './kal-textarea/kal-textarea.module';
+import { KalSelectVirtualScrollModule } from './kal-select-virtual-scroll/kal-select-virtual-scroll.module';
 
 export * from './kal-autocomplete/kal-autocomplete.module';
 export * from './kal-button/kal-button.module';
@@ -29,6 +30,7 @@ export * from './kal-rater/kal-rater.module';
 export * from './kal-select/kal-select.module';
 export * from './kal-slider/kal-slider.module';
 export * from './kal-textarea/kal-textarea.module';
+export * from './kal-select-virtual-scroll/kal-select-virtual-scroll.module';
 
 const exports = [
   KalAutocompleteModule,
@@ -44,6 +46,7 @@ const exports = [
   KalSelectModule,
   KalSliderModule,
   KalTextareaModule,
+  KalSelectVirtualScrollModule,
 ];
 
 @NgModule({

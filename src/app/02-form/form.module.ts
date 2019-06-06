@@ -16,6 +16,7 @@ import { RaterComponent } from 'src/app/02-form/rater/rater.component';
 import { SelectComponent } from 'src/app/02-form/select/select.component';
 import { SliderComponent } from 'src/app/02-form/slider/slider.component';
 import { TextareaComponent } from './textarea/textarea.component';
+import { SelectVirtualScrollComponent } from './select-virtual-scroll/select-virtual-scroll.component';
 
 @NgModule({
   imports: [
@@ -37,7 +38,8 @@ import { TextareaComponent } from './textarea/textarea.component';
     RaterComponent,
     SelectComponent,
     SliderComponent,
-    TextareaComponent
+    TextareaComponent,
+    SelectVirtualScrollComponent
   ],
   providers: [
     {
