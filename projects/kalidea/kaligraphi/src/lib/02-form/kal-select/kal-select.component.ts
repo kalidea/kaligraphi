@@ -227,7 +227,7 @@ export class KalSelectComponent
       if (optionSelect) {
         this.keyManager.setActiveItem(optionSelect);
         this.optionSelected(this.keyManager.activeItem, withNotify);
-      } else {
+      } else if (value === null) {
         this.reset();
       }
     }
