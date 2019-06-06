@@ -219,9 +219,7 @@ export class KalSelectComponent
    * Select an option by his value
    */
   select(value: any, withNotify = false): void {
-    if (value === null) {
-      this.reset();
-    } else if (this.isMultiple && value instanceof Array) {
+    if(this.isMultiple && value instanceof Array) {
       const multipleOptions = this.options.filter((item) => value.indexOf(item.value) >= 0);
       this.multipleOptionSelected(multipleOptions, withNotify);
     } else {
@@ -229,6 +227,8 @@ export class KalSelectComponent
       if (optionSelect) {
         this.keyManager.setActiveItem(optionSelect);
         this.optionSelected(this.keyManager.activeItem, withNotify);
+      } else {
+        this.reset();
       }
     }
   }
