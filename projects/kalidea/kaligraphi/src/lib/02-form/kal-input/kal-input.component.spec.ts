@@ -151,9 +151,9 @@ describe('KalInputComponent', () => {
 
     component.inputComponent.clearable = true;
 
-    fixture.detectChanges();
-
     component.value = text;
+
+    fixture.detectChanges();
 
     expect(component.inputComponent.value).toEqual(text);
 
@@ -176,10 +176,14 @@ describe('KalInputComponent', () => {
 
     component.value = text;
 
+    fixture.detectChanges();
+
     expect(fixture.debugElement.query(By.css('.counter'))).toBeTruthy();
     expect(fixture.debugElement.query(By.css('.counter')).nativeElement.textContent.trim()).toEqual(`${text.length} / ${max}`);
 
     component.value += text;
+
+    fixture.detectChanges();
 
     expect(fixture.debugElement.query(By.css('.counter')).nativeElement.textContent.trim()).toEqual(`${text.length * 2} / ${max}`);
   });

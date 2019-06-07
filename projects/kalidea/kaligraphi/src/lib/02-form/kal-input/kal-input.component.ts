@@ -130,7 +130,7 @@ export class KalInputComponent extends FormElementComponent<string> implements O
 
       super.writeValue(value);
 
-      this.cdr.detectChanges();
+      this.cdr.markForCheck();
     }
   }
 
