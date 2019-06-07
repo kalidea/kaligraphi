@@ -237,7 +237,7 @@ export class KalSelectComponent
    * Reset selection
    */
   reset(): void {
-    this.selection.map(o => {
+    this.selection.forEach(o => {
       o.active = false;
       o.isHighlighted = false;
     });
