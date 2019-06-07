@@ -34,7 +34,7 @@ class TestSelectVirtualScrollComponent {
   ]);
 }
 
-fdescribe('TestSelectVirtualScrollComponent', () => {
+describe('TestSelectVirtualScrollComponent', () => {
 
   describe('KalSelectVirtualScrollComponent', () => {
     let component: TestSelectVirtualScrollComponent;
@@ -97,6 +97,20 @@ fdescribe('TestSelectVirtualScrollComponent', () => {
       fixture.detectChanges();
       const placeHolder = fixture.debugElement.query(By.css('.kal-select-virtual-scroll__input'));
       expect(placeHolder.nativeElement.placeholder).toEqual('');
+    });
+
+    it('should have 3 item in options with no search term', () => {
+      expect(component.selectVirtualScroll.options.length).toBe(3);
+    });
+
+    it('should have 1 item in options with \'1\' as search term', () => {
+      component.selectVirtualScroll.searchControl.patchValue('1');
+      expect(component.selectVirtualScroll.options.length).toBe(1);
+    });
+
+    it('should have 0 item in options with \'aaa\' as search term', () => {
+      component.selectVirtualScroll.searchControl.patchValue('aaa');
+      expect(component.selectVirtualScroll.options.length).toBe(0);
     });
 
   });
