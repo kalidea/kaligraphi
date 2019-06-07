@@ -16,7 +16,7 @@ import { TemplatePortal } from '@angular/cdk/portal';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { Subscription, Observable, combineLatest, of } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { filter, map, startWith } from 'rxjs/operators';
 import { AutoUnsubscribe, buildProviders, FormElementComponent } from '../../utils';
 
 export interface KalVirtualScrollConfig {
@@ -40,7 +40,7 @@ const defaultVirtualScrollConfig: KalVirtualScrollConfig = {
   providers: buildProviders(KalSelectVirtualScrollComponent)
 })
 export class KalSelectVirtualScrollComponent<T extends {id: number, label: string }>
-  extends FormElementComponent<any>
+  extends FormElementComponent
   implements OnInit, CollectionViewer {
 
   options: T[] = [];
@@ -66,7 +66,7 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
   /**
    * control used to filter options
    */
-  searchControl = new FormControl('');
+  searchControl = new FormControl();
 
   /**
    * Overlay Reference
@@ -96,7 +96,6 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
     private cdr: ChangeDetectorRef
   ) {
     super();
-    window[`kalVSSelect`] = this;
   }
 
 
@@ -109,7 +108,7 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
   get dataSource(): KalSelectDataSource<T> {
      return this._dataSource;
   }
-  set dataSource( dataSource: KalSelectDataSource<T>){
+  set dataSource( dataSource: KalSelectDataSource<T>) {
     if (dataSource !== this._dataSource) {
       this.destroyDataSourceSubscription();
       this._dataSource = dataSource;
@@ -165,10 +164,29 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
     }
   }
 
-  select(option) {
+  /**
+   * Whether or not the overlay panel is open
+   */
+  get panelOpen(): boolean {
+    return this.isPanelOpen;
+  }
+
+  /**
+   * Select the given option
+   */
+  select(option: T) {
     this.selected = option;
+    this.searchControl.patchValue(option.label);
     this.selectChange.emit(option.id);
     this.close();
+  }
+
+  /**
+   * Reset selection
+   */
+  reset() {
+    this.selected = null;
+    this.cdr.markForCheck();
   }
 
   /**
@@ -189,7 +207,7 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
   }
 
   close(): void {
-    if (this.overlayRef){
+    if (this.overlayRef) {
       this.overlayRef.detach();
     }
     this.isPanelOpen = false;
@@ -231,17 +249,16 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
     return option.id === this.selected.id;
   }
 
-  get label() {
-    return this.selected ? this.selected.label : 'Select...';
+  get label(): string {
+    return this.selected ? this.selected.label : !this.placeholder ? '' : this.placeholder;
   }
 
   private setOptions( dataSource$: Observable<T[] | ReadonlyArray<T>>) {
-    this.subscription = combineLatest( dataSource$, this.searchControl.valueChanges
-      ).pipe(
-        map( ([items, term]: [T[], string]) => {
-          return items.filter( item => item.label.includes(term));
-        })
-      ).subscribe(
+    this.subscription = combineLatest( dataSource$, this.searchControl.valueChanges.pipe(startWith(''))).pipe(
+      map( ([items, term]: [T[], string]) => {
+        return items.filter( item => item.label.includes(term));
+      })
+    ).subscribe(
       (items: T[] ) => {
         this.options = items !== undefined ? items : [];
         this.cdr.markForCheck();
@@ -263,13 +280,13 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
     this.selected = null;
     this.subscription.unsubscribe();
 
-    if (this.dataSource && (this.dataSource as DataSource<T>).connect instanceof Function){
+    if (this.dataSource && (this.dataSource as DataSource<T>).connect instanceof Function) {
       (this.dataSource as DataSource<T>).disconnect(this);
     }
   }
 
   ngOnInit() {
-    if (this.selected !== undefined) {
+    if (!!this.selected && !!this.selected.id) {
       this.selected = this.options.find(
         currentOption => currentOption.id === this.selected.id
       );

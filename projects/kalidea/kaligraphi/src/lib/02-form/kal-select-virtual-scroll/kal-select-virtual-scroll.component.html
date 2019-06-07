@@ -1,12 +1,14 @@
-<div class="kal-select-virtual-scroll__trigger" [id]="id">
-  <div (click)="open()" (focus)="open()">
+<div class="kal-select-virtual-scroll__trigger"
+  [id]="id"
+  (click)="open()"
+  (focus)="open()">
     <input
       class="kal-select-virtual-scroll__input"
       type="text"
       [formControl]="searchControl"
       [placeholder]="label"
     />
-  </div>
+</div>
 
   <ng-template cdkPortal #optionsPortal="cdkPortal">
     <cdk-virtual-scroll-viewport
@@ -32,4 +34,3 @@
       </div>
     </cdk-virtual-scroll-viewport>
   </ng-template>
-</div>

@@ -13,14 +13,14 @@ export class SelectVirtualScrollComponent implements OnInit {
   constructor() {
   }
 
-  buildOptions(){
+  buildOptions() {
     this.options = [];
     for (let i = 0; i < 500; i++) {
       this.options.push({ id : i, label: `option : ${i}`});
     }
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.buildOptions();
   }
 }
