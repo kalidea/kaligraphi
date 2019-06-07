@@ -227,6 +227,8 @@ export class KalSelectComponent
       if (optionSelect) {
         this.keyManager.setActiveItem(optionSelect);
         this.optionSelected(this.keyManager.activeItem, withNotify);
+      } else if (value === null) {
+        this.reset();
       }
     }
   }
@@ -235,7 +237,10 @@ export class KalSelectComponent
    * Reset selection
    */
   reset(): void {
-    this.selection.map(o => o.active = false);
+    this.selection.forEach(o => {
+      o.active = false;
+      o.isHighlighted = false;
+    });
     this.selection = [];
     this.cdr.markForCheck();
   }
