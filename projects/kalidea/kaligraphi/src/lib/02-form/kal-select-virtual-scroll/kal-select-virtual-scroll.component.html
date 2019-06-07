@@ -4,7 +4,7 @@
       class="kal-select-virtual-scroll__input"
       type="text"
       [formControl]="searchControl"
-      placeholder="{{ label }}"
+      [placeholder]="label"
     />
   </div>
 
@@ -15,7 +15,7 @@
       [style.height.px]="virtualScrollHeight"
     >
       <div *ngIf="!options.length" class="kal-select-virtual-scroll__option">
-        No results found...
+        {{noSearchResult}}
       </div>
 
       <div

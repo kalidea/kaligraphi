@@ -1,12 +1,23 @@
-import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, Input, Output, EventEmitter, HostListener, ElementRef, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { AutoUnsubscribe, buildProviders, FormElementComponent } from '../../utils';
-import { Subscription, Observable, combineLatest, of } from 'rxjs';
+import {
+  Component,
+  OnInit,
+  ViewEncapsulation,
+  ChangeDetectionStrategy,
+  Input,
+  Output,
+  EventEmitter,
+  HostListener,
+  ElementRef,
+  ViewChild,
+  ChangeDetectorRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { debounceTime, filter, distinctUntilChanged, startWith, map } from 'rxjs/operators';
-import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { DataSource, CollectionViewer, ListRange } from '@angular/cdk/collections';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { ESCAPE } from '@angular/cdk/keycodes';
-import { DataSource, CollectionViewer, ListRange } from '@angular/cdk/collections';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { Subscription, Observable, combineLatest, of } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
+import { AutoUnsubscribe, buildProviders, FormElementComponent } from '../../utils';
 
 export interface KalVirtualScrollConfig {
   itemSize: number;
@@ -42,8 +53,12 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
   @ViewChild('optionsPortal') optionsPortal: TemplatePortal<any>;
 
   @Input() labelKey = 'label';
+
   @Input() idKey = 'id';
+
   @Input() selected;
+
+  @Input() noSearchResult = 'No results found';
 
   @Output() readonly selectChange = new EventEmitter();
 
@@ -55,7 +70,7 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
   /**
    * control used to filter options
    */
-  searchControl = new FormControl();
+  searchControl = new FormControl('');
 
   /**
    * Overlay Reference
@@ -77,8 +92,7 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
    */
   isFocused: boolean;
 
-  // @AutoUnsubscribe() private subscription: Subscription = Subscription.EMPTY;
-  @AutoUnsubscribe() private dataSourceSubscription: Subscription = Subscription.EMPTY;
+  @AutoUnsubscribe() private subscription: Subscription = Subscription.EMPTY;
 
   constructor(
     private elementRef: ElementRef,
@@ -105,7 +119,7 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
       this._dataSource = dataSource;
     }
 
-    if (dataSource){
+    if (dataSource) {
       this.observeDataSource();
     } else {
       this.options = [];
@@ -132,12 +146,6 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
     } else {
       this._virtualScrollConfig = defaultVirtualScrollConfig;
     }
-    // if (this.isInitialized) {
-    //   if (!value) {
-    //     this.createKeyManager();
-    //   } else {
-    //     this.keyManager = null;
-    //   }
   }
 
   get virtualScrollHeight(): number {
@@ -160,17 +168,6 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
       this.isFocused = true;
     }
   }
-
-  // /**
-  //  * Filter the options
-  //  * @param value term used for filtering
-  //  */
-  // search(value: string) {
-  //   this.options = this.originalOptions.filter(
-  //     // todo create an interface wrapping the object targetted by the option
-  //     option => option[this.labelKey].includes(value)
-  //   );
-  // }
 
   select(option) {
     this.selected = option;
@@ -243,17 +240,15 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
   }
 
   private setOptions( dataSource$: Observable<T[] | ReadonlyArray<T>>) {
-    this.dataSourceSubscription = combineLatest( dataSource$, this.searchControl.valueChanges
+    this.subscription = combineLatest( dataSource$, this.searchControl.valueChanges
       ).pipe(
         map( ([items, term]: [T[], string]) => {
-          console.log(`filtering options ${items} with ${term}`);
           return items.filter( item => item.label.includes(term));
         })
       ).subscribe(
       (items: T[] ) => {
         this.options = items !== undefined ? items : [];
         this.cdr.markForCheck();
-        console.log(this.options);
       }
     );
   }
@@ -270,7 +265,7 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
 
   private destroyDataSourceSubscription() {
     this.selected = null;
-    this.dataSourceSubscription.unsubscribe();
+    this.subscription.unsubscribe();
 
     if (this.dataSource && (this.dataSource as DataSource<T>).connect instanceof Function){
       (this.dataSource as DataSource<T>).disconnect(this);
@@ -278,20 +273,10 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
   }
 
   ngOnInit() {
-    // this.originalOptions = [...this.options];
     if (this.selected !== undefined) {
       this.selected = this.options.find(
         currentOption => currentOption[this.idKey] === this.selected
       );
     }
-
-    this.searchControl.setValue('');
-    // this.subscription = this.searchControl.valueChanges.pipe(
-    //   startWith(''),
-    //   debounceTime(300),
-    //   distinctUntilChanged(),
-    // ).subscribe((term) => {
-    //   console.log(`term "${term}"`);
-    // });
   }
 }
