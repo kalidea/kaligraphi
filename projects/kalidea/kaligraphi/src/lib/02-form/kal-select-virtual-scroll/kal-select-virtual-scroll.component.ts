@@ -52,11 +52,7 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
    */
   @ViewChild('optionsPortal') optionsPortal: TemplatePortal<any>;
 
-  @Input() labelKey = 'label';
-
-  @Input() idKey = 'id';
-
-  @Input() selected;
+  @Input() selected: T;
 
   @Input() noSearchResult = 'No results found';
 
@@ -171,7 +167,7 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
 
   select(option) {
     this.selected = option;
-    this.selectChange.emit(option[this.idKey]);
+    this.selectChange.emit(option.id);
     this.close();
   }
 
@@ -232,11 +228,11 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
     if (!this.selected) {
       return false;
     }
-    return option[this.idKey] === this.selected[this.idKey];
+    return option.id === this.selected.id;
   }
 
   get label() {
-    return this.selected ? this.selected[this.labelKey] : 'Select...';
+    return this.selected ? this.selected.label : 'Select...';
   }
 
   private setOptions( dataSource$: Observable<T[] | ReadonlyArray<T>>) {
@@ -275,7 +271,7 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
   ngOnInit() {
     if (this.selected !== undefined) {
       this.selected = this.options.find(
-        currentOption => currentOption[this.idKey] === this.selected
+        currentOption => currentOption.id === this.selected.id
       );
     }
   }
