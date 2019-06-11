@@ -1,5 +1,5 @@
 import { Component, DebugElement, ViewChild } from '@angular/core';
-import { async, ComponentFixture, TestBed, flush, fakeAsync,  } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, flush, fakeAsync, tick,  } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { of, animationFrameScheduler } from 'rxjs';
@@ -92,6 +92,7 @@ describe('TestSelectVirtualScrollComponent', () => {
       finishInit(fixture);
       const options = overlayContainerElement.querySelectorAll('.kal-select-virtual-scroll__option');
       expect(options.length).toBe(3, 'it should have 3 option displayed');
+      component.selectVirtualScroll.options.map( o => expect(overlayContainerElement.textContent).toContain(o.label));
     }));
 
     it('should have 1 item rendered in overlay with \'1\' as search term', fakeAsync(() => {
@@ -125,6 +126,35 @@ describe('TestSelectVirtualScrollComponent', () => {
       fixture.detectChanges();
       expect(selectOverlay.clientHeight)
         .toBe(component.selectVirtualScroll.virtualScrollConfig.itemSize, 'should be the height of 1 item');
+    }));
+
+    it('should select the clicked option', fakeAsync( () => {
+      trigger.click();
+      finishInit(fixture);
+      const option = overlayContainerElement.querySelector<HTMLElement>('.kal-select-virtual-scroll__option');
+
+      option.click();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(overlayContainerElement.textContent).toEqual('');
+      expect(fixture.componentInstance.selectVirtualScroll.panelOpen).toBeFalsy();
+      expect(component.selectVirtualScroll.selected).toBe(component.selectVirtualScroll.options[0]);
+    }));
+
+    it('should emit option id when selected', fakeAsync(() => {
+      const spy = spyOn(component.selectVirtualScroll.selectChange, 'emit');
+
+      trigger.click();
+      finishInit(fixture);
+      const optionElement = overlayContainerElement.querySelector<HTMLElement>('.kal-select-virtual-scroll__option');
+
+      optionElement.click();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      const option = component.selectVirtualScroll.selected;
+      expect(spy).toHaveBeenCalledWith(option.id);
     }));
   });
 });
@@ -196,6 +226,7 @@ describe('TestSelectVirtualScrollComponent', () => {
       finishInit(fixture);
       const optionsRendered = overlayContainerElement.querySelectorAll('.kal-select-virtual-scroll__option');
       expect(optionsRendered.length).toBe(10);
+      optionsRendered.forEach((option, i) => expect(option.textContent).toContain(component.selectVirtualScroll.options[i].label));
     }));
 
     it('should have an overlay height matching the default height', fakeAsync(() => {
