@@ -27,8 +27,8 @@ export interface KalVirtualScrollConfig {
 type KalSelectDataSource<T> = DataSource<T> | Observable<T[]> | T[];
 
 const defaultVirtualScrollConfig: KalVirtualScrollConfig = {
-  itemSize: 30,
-  height: 250
+  itemSize: 27,
+  height: 270
 };
 
 @Component({
@@ -88,7 +88,8 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
    */
   isFocused: boolean;
 
-  @AutoUnsubscribe() private subscription: Subscription = Subscription.EMPTY;
+  @AutoUnsubscribe()
+  private subscription: Subscription = Subscription.EMPTY;
 
   constructor(
     private elementRef: ElementRef,

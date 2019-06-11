@@ -13,7 +13,9 @@
   <ng-template cdkPortal #optionsPortal="cdkPortal">
     <cdk-virtual-scroll-viewport
       [itemSize]="virtualScrollConfig.itemSize"
-      class="kal-select__overlay"
+      minBufferPx="0"
+      maxBufferPx="0"
+      class="kal-select-virtual-scroll__overlay"
       [style.height.px]="virtualScrollHeight"
     >
       <div *ngIf="!options.length" class="kal-select-virtual-scroll__option">
