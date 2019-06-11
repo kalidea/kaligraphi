@@ -25,7 +25,7 @@
       <div
         *cdkVirtualFor="let option of options"
         class="kal-select-virtual-scroll__option"
-        (click)="select(option)"
+        (click)="select(option.id)"
       >
         <div
           [class.active]="isActive(option)"

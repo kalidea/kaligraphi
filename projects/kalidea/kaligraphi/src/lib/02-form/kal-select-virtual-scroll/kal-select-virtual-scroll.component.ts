@@ -61,7 +61,7 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
   /**
    * Copy of the options
    */
-  originalOptions: any[];
+  originalOptions: T[];
 
   /**
    * control used to filter options
@@ -175,10 +175,10 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
   /**
    * Select the given option
    */
-  select(option: T) {
-    this.selected = option;
-    this.searchControl.patchValue(option.label);
-    this.selectChange.emit(option.id);
+  select(optionId: number) {
+    this.selected = this.originalOptions.find( o => o.id === optionId);
+    this.searchControl.patchValue(this.label);
+    this.selectChange.emit(this.selected.id);
     this.close();
   }
 
@@ -257,6 +257,7 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
   private setOptions( dataSource$: Observable<T[] | ReadonlyArray<T>>) {
     this.subscription = combineLatest( dataSource$, this.searchControl.valueChanges.pipe(startWith(''))).pipe(
       map( ([items, term]: [T[], string]) => {
+        this.originalOptions = items || [];
         return items.filter( item => item.label.includes(term));
       })
     ).subscribe(

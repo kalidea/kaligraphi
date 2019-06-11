@@ -74,16 +74,19 @@ describe('TestSelectVirtualScrollComponent', () => {
 
     it('should have 3 item in options with no search term', () => {
       expect(component.selectVirtualScroll.options.length).toBe(3);
+      expect(component.selectVirtualScroll.originalOptions.length).toBe(3);
     });
 
     it('should have 1 item in options with \'1\' as search term', () => {
       component.selectVirtualScroll.searchControl.patchValue('1');
       expect(component.selectVirtualScroll.options.length).toBe(1);
+      expect(component.selectVirtualScroll.originalOptions.length).toBe(3);
     });
 
     it('should have 0 item in options with \'aaa\' as search term', () => {
       component.selectVirtualScroll.searchControl.patchValue('aaa');
       expect(component.selectVirtualScroll.options.length).toBe(0);
+      expect(component.selectVirtualScroll.originalOptions.length).toBe(3);
     });
 
     it('should have 3 item rendered in overlay', fakeAsync(() => {
@@ -247,6 +250,13 @@ describe('TestSelectVirtualScrollComponent', () => {
         .toBe(component.selectVirtualScroll.virtualScrollConfig.itemSize, 'should be the height of 1 item');
     }));
 
+    it('should select an option in option list by select method', () => {
+      component.selectVirtualScroll.searchControl.patchValue('aaa');
+      component.selectVirtualScroll.select(2);
+      const selectedOption = component.selectVirtualScroll.selected;
+
+      expect(selectedOption).toBe(component.selectVirtualScroll.options.find( o => o.id === 2));
+    });
 
   });
 });
@@ -313,7 +323,7 @@ class TestSelectVirtualScrollLotsOfDataComponent {
     Array(500).fill(0).map((v, i) => {
       return {
         id: i,
-        label: `item ${i}`
+        label: `Item ${i}`
       };
     })
   );
