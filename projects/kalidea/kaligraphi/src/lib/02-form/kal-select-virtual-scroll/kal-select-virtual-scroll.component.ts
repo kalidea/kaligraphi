@@ -9,7 +9,8 @@ import {
   HostListener,
   ElementRef,
   ViewChild,
-  ChangeDetectorRef } from '@angular/core';
+  ChangeDetectorRef,
+  HostBinding} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { DataSource, CollectionViewer, ListRange } from '@angular/cdk/collections';
 import { TemplatePortal } from '@angular/cdk/portal';
@@ -52,9 +53,18 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
    */
   @ViewChild('optionsPortal') optionsPortal: TemplatePortal<any>;
 
+  @ViewChild('input') input:  ElementRef<HTMLInputElement>;
+
   @Input() selected: T;
 
   @Input() noSearchResult = 'No results found';
+
+  /**
+   * tab index for this element
+   */
+  @Input()
+  @HostBinding('attr.tabIndex')
+  tabIndex: number = null;
 
   @Output() readonly selectChange = new EventEmitter();
 
@@ -161,6 +171,7 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
   focus(): void {
     if (!this.disabled) {
       this.elementRef.nativeElement.focus();
+      this.input.nativeElement.focus();
       this.isFocused = true;
     }
   }
@@ -207,6 +218,9 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
     this.isPanelOpen = true;
   }
 
+  /**
+   * close the select overlay
+   */
   close(): void {
     if (this.overlayRef) {
       this.overlayRef.detach();

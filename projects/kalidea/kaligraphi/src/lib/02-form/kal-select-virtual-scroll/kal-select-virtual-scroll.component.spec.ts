@@ -159,6 +159,15 @@ describe('TestSelectVirtualScrollComponent', () => {
       const option = component.selectVirtualScroll.selected;
       expect(spy).toHaveBeenCalledWith(option.id);
     }));
+
+
+    it('should reset the select', () => {
+      component.selectVirtualScroll.select(2);
+      expect(component.selectVirtualScroll.selected).toBe(component.selectVirtualScroll.originalOptions.find((o, index) => index === 1));
+      component.selectVirtualScroll.reset();
+      expect(component.selectVirtualScroll.selected).toBeNull();
+    });
+
   });
 });
 
@@ -257,6 +266,35 @@ describe('TestSelectVirtualScrollComponent', () => {
 
       expect(selectedOption).toBe(component.selectVirtualScroll.options.find( o => o.id === 2));
     });
+
+    it('should reset the select', () => {
+      component.selectVirtualScroll.select(2);
+      expect(component.selectVirtualScroll.selected).toBe(component.selectVirtualScroll.originalOptions.find((o, index) => index === 2));
+      component.selectVirtualScroll.reset();
+      expect(component.selectVirtualScroll.selected).toBeNull();
+    });
+
+    it('should scroll without creating new htmlNodes', fakeAsync(() => {
+      component.selectVirtualScroll.open();
+      finishInit(fixture);
+
+      const overlay = fixture.debugElement.query(By.css('.kal-select-virtual-scroll__overlay'));
+      expect(overlay).toBeTruthy('overlay should open');
+      const optionBeforeScrolling = overlay.query(By.css('.kal-select-virtual-scroll__option')).nativeElement.textContent;
+
+      (overlay.nativeElement as HTMLElement).scrollBy({top: 270});
+      const scrollEvent =  document.createEvent('CustomEvent');
+      scrollEvent.initEvent('scroll');
+      overlay.nativeElement.dispatchEvent(scrollEvent);
+
+      tick(60);
+      fixture.detectChanges();
+
+      expect((overlay.nativeElement as HTMLElement).scrollTop).toEqual(270, 'overlay should offset');
+      const optionAfterScrolling = overlay.query(By.css('.kal-select-virtual-scroll__option')).nativeElement.textContent;
+      expect(optionAfterScrolling).not.toEqual(optionBeforeScrolling);
+      expect(overlay.queryAll(By.css('.kal-select-virtual-scroll__option')).length).toBe(10, 'with no buffer, length should not change');
+    }));
 
   });
 });

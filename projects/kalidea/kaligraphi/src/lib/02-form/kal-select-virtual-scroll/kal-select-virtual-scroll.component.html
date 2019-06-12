@@ -1,10 +1,10 @@
 <div class="kal-select-virtual-scroll__trigger"
   [id]="id"
-  (click)="open()"
-  (focus)="open()">
-    <input
+  (click)="open()">
+    <input #input
       class="kal-select-virtual-scroll__input"
       type="text"
+      (focus)="open()"
       [formControl]="searchControl"
       [placeholder]="label"
     />
