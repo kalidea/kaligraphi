@@ -54,8 +54,6 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
    */
   @ViewChild('optionsPortal') optionsPortal: TemplatePortal<any>;
 
-  @ViewChild('input') input:  ElementRef<HTMLInputElement>;
-
   @Input() selected: T;
 
   @Input() noSearchResult = 'No results found';
@@ -171,7 +169,6 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
   @HostListener('focus')
   focus(): void {
     if (!this.disabled) {
-      this.input.nativeElement.focus();
       this.elementRef.nativeElement.focus();
       this.isFocused = true;
     }

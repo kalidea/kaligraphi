@@ -39,19 +39,28 @@ describe('TestSelectVirtualScrollComponent', () => {
       overlayContainerElement = overlayContainer.getContainerElement();
     });
 
+    afterEach(() => {
+      fixture.componentInstance.selectVirtualScroll.ngOnDestroy();
+      overlayContainer.ngOnDestroy();
+    });
+
     it('should create', () => {
       expect(component).toBeTruthy();
     });
 
-    it('should open the panel when trigger is clicked', (done) => {
-      expect(component.selectVirtualScroll.panelOpen).toBeFalsy();
+    it('should open the panel when open function is called', fakeAsync(() => {
+      expect(component.selectVirtualScroll.panelOpen).toBeFalsy('panel should be close before opening');
+      component.selectVirtualScroll.open();
+      finishInit(fixture);
+      expect(component.selectVirtualScroll.panelOpen).toBeTruthy('panel should be open after opening');
+    }));
+
+    it('should open the panel when trigger is clicked', fakeAsync(() => {
+      expect(component.selectVirtualScroll.panelOpen).toBeFalsy('panel should be close before opening');
       trigger.click();
-      fixture.detectChanges();
-      fixture.whenStable().then(() => {
-        expect(component.selectVirtualScroll.panelOpen).toBeTruthy();
-        done();
-      });
-    });
+      finishInit(fixture);
+      expect(component.selectVirtualScroll.panelOpen).toBeTruthy();
+    }));
 
     it('should close the panel when a click occurs outside the panel', () => {
       trigger.click();
@@ -91,7 +100,7 @@ describe('TestSelectVirtualScrollComponent', () => {
 
     it('should have 3 item rendered in overlay', fakeAsync(() => {
       component.selectVirtualScroll.searchControl.patchValue('');
-      component.selectVirtualScroll.open();
+      trigger.click();
       finishInit(fixture);
       const options = overlayContainerElement.querySelectorAll('.kal-select-virtual-scroll__option');
       expect(options.length).toBe(3, 'it should have 3 option displayed');
@@ -100,7 +109,7 @@ describe('TestSelectVirtualScrollComponent', () => {
 
     it('should have 1 item rendered in overlay with \'1\' as search term', fakeAsync(() => {
       component.selectVirtualScroll.searchControl.patchValue('1');
-      component.selectVirtualScroll.open();
+      trigger.click();
       finishInit(fixture);
       const options = overlayContainerElement.querySelectorAll('.kal-select-virtual-scroll__option');
       expect(options.length).toBe(1, 'it should have 1 option displayed');
@@ -108,7 +117,7 @@ describe('TestSelectVirtualScrollComponent', () => {
 
     it('should have an option with a message for when there is no items in options', fakeAsync(() => {
       component.selectVirtualScroll.searchControl.patchValue('aaa');
-      component.selectVirtualScroll.open();
+      trigger.click();
       finishInit(fixture);
       const options = overlayContainerElement.querySelectorAll('.kal-select-virtual-scroll__option');
       expect(options.length).toBe(1, 'it should have 1 option displayed');
@@ -117,7 +126,7 @@ describe('TestSelectVirtualScrollComponent', () => {
 
     it('should update the overlay height if there is less than 10 item', fakeAsync(() => {
       component.selectVirtualScroll.searchControl.patchValue('');
-      component.selectVirtualScroll.open();
+      trigger.click();
       finishInit(fixture);
       const selectOverlay = overlayContainerElement.querySelector('.kal-select-virtual-scroll__overlay');
       expect(selectOverlay.clientHeight)

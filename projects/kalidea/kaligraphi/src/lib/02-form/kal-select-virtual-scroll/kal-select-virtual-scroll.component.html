@@ -1,14 +1,14 @@
-<div class="kal-select-virtual-scroll__trigger"
+
+<input #input
+  class="kal-select-virtual-scroll__trigger kal-select-virtual-scroll__input"
   [id]="id"
-  (click)="open()">
-    <input #input
-      class="kal-select-virtual-scroll__input"
-      type="text"
-      (focus)="open()"
-      [formControl]="searchControl"
-      [placeholder]="label"
-    />
-</div>
+  (click)="open()"
+  type="text"
+  [formControl]="searchControl"
+  [placeholder]="label"
+  (focus)="open()"
+  autocomplete="off"
+/>
 
   <ng-template cdkPortal #optionsPortal="cdkPortal">
     <cdk-virtual-scroll-viewport

@@ -1,11 +1,6 @@
 =kal-themed-select-virtual-scroll($theme-parameters)
   .kal-select-virtual-scroll__trigger
     display: flex
-    align-items: center
-    background-color: get('background-color', $theme-parameters)
-    border: get('border', $theme-parameters)
-    border-radius: get('border-radius', $theme-parameters)
-    padding: get('padding', $theme-parameters)
 
     .kal-select-virtual-scroll__triggervalue, .kal-select-virtual-scroll__placeholder
       display: inline-block
@@ -17,22 +12,23 @@
         padding: get('icon.padding', $theme-parameters)
         font-size: get('icon.font-size', $theme-parameters)
 
-    .kal-select-virtual-scroll__input
-      font-family: get("text.font-family", $kal-parameters)
-      font-size: get("text.font-size", $kal-parameters)
-      width: 100%
-      color: get("palettes.grey.wf700", $kal-parameters)
-      background-color: get('background-color', $theme-parameters)
-      padding: 0
-      border: none
-      // Status
-      &::placeholder
-        font-style: italic
-        color: get("palettes.grey.wf600", $kal-parameters)
-      + kal-icon
-        color: get('icon.color', $theme-parameters)
-        padding: get('icon.padding', $theme-parameters)
-        font-size: get('icon.font-size', $theme-parameters)
+  .kal-select-virtual-scroll__input
+    font-family: get("text.font-family", $kal-parameters)
+    font-size: get("text.font-size", $kal-parameters)
+    width: 100%
+    color: get("palettes.grey.wf700", $kal-parameters)
+    background-color: get('background-color', $theme-parameters)
+    border: get('border', $theme-parameters)
+    border-radius: get('border-radius', $theme-parameters)
+    padding: get('padding', $theme-parameters)
+
+    &::placeholder
+      font-style: italic
+      color: get("palettes.grey.wf600", $kal-parameters)
+    + kal-icon
+      color: get('icon.color', $theme-parameters)
+      padding: get('icon.padding', $theme-parameters)
+      font-size: get('icon.font-size', $theme-parameters)
 
 
     > div:nth-child(1)
