@@ -10,7 +10,8 @@ import {
   ElementRef,
   ViewChild,
   ChangeDetectorRef,
-  HostBinding} from '@angular/core';
+  HostBinding,
+  OnDestroy} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { DataSource, CollectionViewer, ListRange } from '@angular/cdk/collections';
 import { TemplatePortal } from '@angular/cdk/portal';
@@ -42,7 +43,7 @@ const defaultVirtualScrollConfig: KalVirtualScrollConfig = {
 })
 export class KalSelectVirtualScrollComponent<T extends {id: number, label: string }>
   extends FormElementComponent
-  implements OnInit, CollectionViewer {
+  implements OnInit, OnDestroy, CollectionViewer {
 
   options: T[] = [];
 
@@ -170,8 +171,8 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
   @HostListener('focus')
   focus(): void {
     if (!this.disabled) {
-      this.elementRef.nativeElement.focus();
       this.input.nativeElement.focus();
+      this.elementRef.nativeElement.focus();
       this.isFocused = true;
     }
   }
@@ -205,11 +206,13 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
    * Open the overlay select
    */
   open(): void {
-    if (  this.disabled || !this.options || this.isPanelOpen) {
+    if (this.disabled || !this.options || this.isPanelOpen) {
       return;
     }
 
-    this.focus();
+    if (!this.isFocused) {
+      this.focus();
+    }
 
     if (!this.overlayRef) {
       this.createOverlay();
@@ -307,5 +310,13 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
         currentOption => currentOption.id === this.selected.id
       );
     }
+  }
+
+  ngOnDestroy() {
+    super.ngOnDestroy();
+    if (this.overlayRef) {
+      this.overlayRef.dispose();
+    }
+    this.subscription.unsubscribe();
   }
 }
