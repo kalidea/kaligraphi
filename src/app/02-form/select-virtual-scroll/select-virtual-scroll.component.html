@@ -1,6 +1,18 @@
 <h1>Select with virtual Scroll</h1>
 
 <div class="exemple">
-  <kal-select-virtual-scroll [dataSource]="options">
+  <kal-select-virtual-scroll [dataSource]="options"  [kalTheme]="themes">
   </kal-select-virtual-scroll>
+</div>
+
+
+<div class="configurator">
+
+  <kal-form-field>
+    <kal-select label="themes" [multiple]="true" [(ngModel)]="themes">
+      <kal-option value="">default</kal-option>
+      <kal-option value="secondary">secondary</kal-option>
+      <kal-option value="reverse">reverse</kal-option>
+    </kal-select>
+  </kal-form-field>
 </div>

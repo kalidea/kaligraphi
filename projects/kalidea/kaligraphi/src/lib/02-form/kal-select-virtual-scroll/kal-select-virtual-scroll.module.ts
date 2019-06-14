@@ -6,6 +6,7 @@ import { PortalModule } from '@angular/cdk/portal';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 
 import { KalSelectVirtualScrollComponent } from './kal-select-virtual-scroll.component';
+import { KalUtilityModule } from '../../99-utility/kal-utility.module';
 
 const exports = [
   KalSelectVirtualScrollComponent
@@ -17,7 +18,8 @@ const exports = [
     ReactiveFormsModule,
     ScrollingModule,
     OverlayModule,
-    PortalModule
+    PortalModule,
+    KalUtilityModule,
   ],
   exports : [...exports],
   declarations: [...exports]

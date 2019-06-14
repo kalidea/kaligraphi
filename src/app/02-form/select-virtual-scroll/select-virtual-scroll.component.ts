@@ -10,6 +10,8 @@ export class SelectVirtualScrollComponent implements OnInit {
 
   options: { id: number, label: string }[] = [];
 
+  themes = [];
+
   constructor() {
   }
 

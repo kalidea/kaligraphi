@@ -6,12 +6,14 @@ import {
   Input,
   Output,
   EventEmitter,
+  Host,
+  HostBinding,
   HostListener,
   ElementRef,
   ViewChild,
   ChangeDetectorRef,
-  HostBinding,
-  OnDestroy} from '@angular/core';
+  OnDestroy,
+  Optional} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { DataSource, CollectionViewer, ListRange } from '@angular/cdk/collections';
 import { TemplatePortal } from '@angular/cdk/portal';
@@ -19,6 +21,8 @@ import { ESCAPE } from '@angular/cdk/keycodes';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { Subscription, Observable, combineLatest, of } from 'rxjs';
 import { filter, map, startWith } from 'rxjs/operators';
+
+import { KalThemeDirective } from '../../99-utility/directives/kal-theme/kal-theme.directive';
 import { AutoUnsubscribe, buildProviders, FormElementComponent } from '../../utils';
 import { KalDataSourceManager } from '../../utils/classes/kal-data-source-manager';
 
@@ -104,7 +108,8 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
   constructor(
     private elementRef: ElementRef,
     private overlay: Overlay,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    @Optional() @Host() private themeDirective: KalThemeDirective
   ) {
     super();
   }
@@ -173,6 +178,17 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
   }
 
   /**
+   * Blur the select Element
+   */
+    @HostListener('blur')
+    blur(): void {
+      if (!this.isPanelOpen) {
+        this.isFocused = false;
+        this.close();
+      }
+    }
+
+  /**
    * Whether or not the overlay panel is open
    */
   get panelOpen(): boolean {
@@ -224,6 +240,14 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
       this.overlayRef.detach();
     }
     this.isPanelOpen = false;
+  }
+
+
+  /**
+   * get themes applied on host
+   */
+  get theme() {
+    return this.themeDirective ? this.themeDirective.rawThemes : '';
   }
 
   /**

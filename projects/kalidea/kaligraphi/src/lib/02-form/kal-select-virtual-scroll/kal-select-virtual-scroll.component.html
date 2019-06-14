@@ -17,6 +17,7 @@
       maxBufferPx="0"
       class="kal-select-virtual-scroll__overlay"
       [style.height.px]="virtualScrollHeight"
+      [kalTheme]="theme"
     >
       <div *ngIf="!options.length" class="kal-select-virtual-scroll__option">
         {{noSearchResult}}
