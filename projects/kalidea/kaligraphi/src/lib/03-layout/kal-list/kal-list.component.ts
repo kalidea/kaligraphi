@@ -27,6 +27,7 @@ import { KalListItemSelectionDirective } from './kal-list-item-selection.directi
 import { KalSelectionModel } from '../../utils/classes/kal-selection';
 import { Coerce } from '../../utils/decorators/coerce';
 import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
+import { KalDataSourceManager } from '../../utils/classes/kal-data-source-manager';
 
 enum KalListSelectionMode {
   None = 'none',
@@ -130,27 +131,24 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
   constructor(private cdr: ChangeDetectorRef) {
   }
 
-  private _dataSource: KalListDataSource<T> = null;
+  private _dataSourceManager = new KalDataSourceManager<T>(this);
 
   /**
    * Datasource to give items list to the component
    */
   @Input()
   get dataSource(): KalListDataSource<T> {
-    return this._dataSource;
+    return this._dataSourceManager.dataSource;
   }
 
   set dataSource(dataSource: KalListDataSource<T>) {
-    if (dataSource !== this._dataSource) {
-      this.destroySubscription();
-      this._dataSource = dataSource;
-
-      if (dataSource) {
-        this.observeDataSource();
-      } else {
-        this.results = [];
-        this.cdr.markForCheck();
-      }
+    this._dataSourceManager.dataSource = dataSource;
+    this.subscription.unsubscribe();
+    if (dataSource) {
+      this.setResults(this._dataSourceManager.observable);
+    } else {
+      this.results = [];
+      this.cdr.markForCheck();
     }
   }
 

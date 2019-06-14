@@ -20,6 +20,7 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { Subscription, Observable, combineLatest, of } from 'rxjs';
 import { filter, map, startWith } from 'rxjs/operators';
 import { AutoUnsubscribe, buildProviders, FormElementComponent } from '../../utils';
+import { KalDataSourceManager } from '../../utils/classes/kal-data-source-manager';
 
 export interface KalVirtualScrollConfig {
   itemSize: number;
@@ -110,25 +111,22 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
 
 
   /**
-   * The select dataSource for options
-   */
-  private _dataSource: KalSelectDataSource<T>;
+  * DataSourceManager
+  */
+  private _dataSourceManager = new KalDataSourceManager<T>(this);
 
   @Input()
   get dataSource(): KalSelectDataSource<T> {
-     return this._dataSource;
+     return this._dataSourceManager.dataSource;
   }
   set dataSource( dataSource: KalSelectDataSource<T>) {
-    if (dataSource !== this._dataSource) {
-      this.destroyDataSourceSubscription();
-      this._dataSource = dataSource;
-    }
-
+    this._dataSourceManager.dataSource = dataSource;
+    this.subscription.unsubscribe();
     if (dataSource) {
-      this.observeDataSource();
+      this.setOptions(this._dataSourceManager.observable);
     } else {
       this.options = [];
-      this.cdr.markForCheck();
+      this.originalOptions = [];
     }
   }
 
@@ -280,25 +278,6 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
         this.cdr.markForCheck();
       }
     );
-  }
-
-  private observeDataSource() {
-    if ((this.dataSource as DataSource<T>).connect instanceof Function) {
-      this.setOptions( (this.dataSource as DataSource<T>).connect(this));
-    } else if ( this.dataSource instanceof Observable) {
-      this.setOptions((this.dataSource as Observable<T[]>));
-    } else if ( Array.isArray(this.dataSource)) {
-      this.setOptions(of(this.dataSource as T[]));
-    }
-  }
-
-  private destroyDataSourceSubscription() {
-    this.selected = null;
-    this.subscription.unsubscribe();
-
-    if (this.dataSource && (this.dataSource as DataSource<T>).connect instanceof Function) {
-      (this.dataSource as DataSource<T>).disconnect(this);
-    }
   }
 
   ngOnInit() {
