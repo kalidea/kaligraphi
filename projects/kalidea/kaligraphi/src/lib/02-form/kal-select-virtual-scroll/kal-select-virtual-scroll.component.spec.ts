@@ -39,11 +39,6 @@ describe('TestSelectVirtualScrollComponent', () => {
       overlayContainerElement = overlayContainer.getContainerElement();
     });
 
-    afterEach(() => {
-      fixture.componentInstance.selectVirtualScroll.ngOnDestroy();
-      overlayContainer.ngOnDestroy();
-    });
-
     it('should create', () => {
       expect(component).toBeTruthy();
     });
