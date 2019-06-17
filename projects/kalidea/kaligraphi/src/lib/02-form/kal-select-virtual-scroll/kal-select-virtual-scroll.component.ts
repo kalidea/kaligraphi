@@ -18,13 +18,15 @@ import { FormControl } from '@angular/forms';
 import { DataSource, CollectionViewer, ListRange } from '@angular/cdk/collections';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { ESCAPE } from '@angular/cdk/keycodes';
-import { Overlay, OverlayRef } from '@angular/cdk/overlay';
-import { Subscription, Observable, combineLatest, of } from 'rxjs';
+import { OverlayRef } from '@angular/cdk/overlay';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { Subscription, Observable, combineLatest } from 'rxjs';
 import { filter, map, startWith } from 'rxjs/operators';
 
-import { KalThemeDirective } from '../../99-utility/directives/kal-theme/kal-theme.directive';
 import { AutoUnsubscribe, buildProviders, FormElementComponent } from '../../utils';
 import { KalDataSourceManager } from '../../utils/classes/kal-data-source-manager';
+import { KalThemeDirective } from '../../99-utility/directives/kal-theme/kal-theme.directive';
+import { KalOverlayService } from '../../99-utility/services/kal-overlay.service';
 
 export interface KalVirtualScrollConfig {
   itemSize: number;
@@ -58,6 +60,11 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
    * Overlay Portal Options
    */
   @ViewChild('optionsPortal') optionsPortal: TemplatePortal<any>;
+
+  /**
+   * Virtual Scroll Viewport
+   */
+  @ViewChild(CdkVirtualScrollViewport) cdkVirtualScrollViewport: CdkVirtualScrollViewport;
 
   @Input() selected: T;
 
@@ -106,9 +113,10 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
   private subscription: Subscription = Subscription.EMPTY;
 
   constructor(
-    private elementRef: ElementRef,
-    private overlay: Overlay,
+    private elementRef: ElementRef<HTMLElement>,
+    // private overlay: Overlay,
     private cdr: ChangeDetectorRef,
+    private kalOverlay: KalOverlayService,
     @Optional() @Host() private themeDirective: KalThemeDirective
   ) {
     super();
@@ -132,6 +140,7 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
     } else {
       this.options = [];
       this.originalOptions = [];
+      this.cdr.markForCheck();
     }
   }
 
@@ -254,20 +263,11 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
    * create overlayRef
    */
   private createOverlay() {
-    const positionStrategy = this.overlay
-      .position()
-      .flexibleConnectedTo(this.elementRef)
-      .withPositions([
-        {originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top'}
-      ]);
-
-    this.overlayRef = this.overlay.create({
-      positionStrategy,
-      hasBackdrop: true,
-      backdropClass: 'kal-overlay__transparent',
-      width: this.elementRef.nativeElement.getBoundingClientRect().width,
-      scrollStrategy: this.overlay.scrollStrategies.reposition()
-    });
+    this.overlayRef = this.kalOverlay.createOverlay(
+      this.kalOverlay.getOverlayConfig(
+        this.kalOverlay.getFlexiblePositionStrategy(this.elementRef),
+        this.elementRef.nativeElement.getBoundingClientRect().width,
+    ));
 
     this.overlayRef.backdropClick().subscribe(() => {
       this.isFocused = false;
@@ -299,6 +299,9 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
     ).subscribe(
       (items: T[] ) => {
         this.options = items !== undefined ? items : [];
+        if (!!this.cdkVirtualScrollViewport && this.isPanelOpen) {
+          this.cdkVirtualScrollViewport.checkViewportSize();
+        }
         this.cdr.markForCheck();
       }
     );

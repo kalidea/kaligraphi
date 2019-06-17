@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { KalClickOutsideDirective } from './directives/kal-click-outside/kal-click-outside.directive';
 import { KalAutofocusDirective } from './directives/kal-autofocus/kal-autofocus.directive';
 import { KalThemeDirective } from './directives/kal-theme/kal-theme.directive';
+import { KalOverlayService } from './services/kal-overlay.service';
 
 export * from './directives/kal-click-outside/kal-click-outside.directive';
 export * from './directives/kal-autofocus/kal-autofocus.directive';
@@ -13,7 +14,11 @@ export * from './directives/kal-theme/kal-theme.directive';
 const exports = [
   KalClickOutsideDirective,
   KalAutofocusDirective,
-  KalThemeDirective
+  KalThemeDirective,
+];
+
+const providers = [
+  KalOverlayService,
 ];
 
 @NgModule({
@@ -21,7 +26,8 @@ const exports = [
     CommonModule
   ],
   exports: exports,
-  declarations: exports
+  declarations: exports,
+  providers
 })
 export class KalUtilityModule {
 }
