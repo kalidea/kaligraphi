@@ -1,6 +1,7 @@
 import {
   Component,
   ComponentRef,
+  ContentChild,
   Directive,
   ElementRef,
   HostListener,
@@ -11,19 +12,23 @@ import {
   Optional,
   ViewContainerRef
 } from '@angular/core';
-import { ComponentPortal, PortalInjector } from '@angular/cdk/portal';
+import { CdkPortal, ComponentPortal, PortalInjector } from '@angular/cdk/portal';
 import { Overlay, OverlayConfig, OverlayRef, PositionStrategy } from '@angular/cdk/overlay';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import { animate, AnimationEvent, state, style, transition, trigger } from '@angular/animations';
 
 import { fromEvent } from 'rxjs/internal/observable/fromEvent';
 import { filter, take } from 'rxjs/operators';
-import { Subject, Subscription } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 
 import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 import { KalThemeDirective } from '../../99-utility/directives/kal-theme/kal-theme.directive';
+import { KalTooltipContentDirective } from './kal-tooltip-content.directive';
+import { kalPositions } from '../../utils/helpers/positions';
 
 export class KalTooltipConfig {
-  content: string;
+  content?: string;
+
+  contentAsTemplate?: CdkPortal;
 
   theme?: string | string[];
 }
@@ -33,7 +38,11 @@ export class KalTooltipConfig {
 })
 export class KalTooltipDirective implements OnDestroy {
 
-  @Input() kalTooltip: string;
+  @Input()
+  kalTooltip: string;
+
+  @ContentChild(KalTooltipContentDirective)
+  contentAsTemplate: CdkPortal;
 
   private overlayRef: OverlayRef;
 
@@ -58,9 +67,10 @@ export class KalTooltipDirective implements OnDestroy {
     if (!this.hasAttached()) {
       const injector = new PortalInjector(this.injector, new WeakMap([
         [KalTooltipConfig, {
+          contentAsTemplate: this.contentAsTemplate,
           content: this.kalTooltip,
           theme: this.theme ? this.theme.rawThemes : ''
-        }]
+        } as KalTooltipConfig]
       ]));
       const portal = new ComponentPortal(KalTooltipComponent, this.viewContainerRef, injector);
       this.componentRef = this.getOverlayRef().attach(portal);
@@ -131,10 +141,10 @@ export class KalTooltipDirective implements OnDestroy {
       .flexibleConnectedTo(this.elementRef)
       .withPush(false)
       .withPositions([
-        {originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top'},
-        {originX: 'end', originY: 'bottom', overlayX: 'end', overlayY: 'top'},
-        {originX: 'start', originY: 'top', overlayX: 'start', overlayY: 'bottom'},
-        {originX: 'end', originY: 'top', overlayX: 'end', overlayY: 'bottom'}
+        kalPositions.bottom,
+        kalPositions.top,
+        kalPositions.left,
+        kalPositions.right,
       ]);
   }
 
@@ -146,7 +156,7 @@ export class KalTooltipDirective implements OnDestroy {
 
 }
 
-const ANIMATION_TIMINGS = '400ms cubic-bezier(0.25, 0.8, 0.25, 1)';
+const ANIMATION_TIMINGS = '300ms cubic-bezier(0.25, 0.8, 0.25, 1)';
 
 @Component({
   selector: 'kal-tooltip',
@@ -156,6 +166,9 @@ const ANIMATION_TIMINGS = '400ms cubic-bezier(0.25, 0.8, 0.25, 1)';
       [@slideContent]="animationState"
       (@slideContent.done)="animationDone($event)">
       {{ content }}
+      <ng-container *ngIf="contentAsTemplate?.templateRef as template">
+        <ng-container *ngTemplateOutlet="template"></ng-container>
+      </ng-container>
     </div>
   `,
   animations: [
@@ -175,23 +188,27 @@ export class KalTooltipComponent implements OnDestroy {
   constructor(@Inject(KalTooltipConfig) private readonly config: KalTooltipConfig) {
   }
 
-  get animationEnd$() {
+  get animationEnd$(): Observable<boolean> {
     return this.animationEndSubject$.asObservable();
   }
 
-  get content() {
+  get content(): string {
     return this.config.content;
   }
 
-  get theme() {
+  get contentAsTemplate(): CdkPortal {
+    return this.config.contentAsTemplate;
+  }
+
+  get theme(): string | string[] {
     return this.config.theme;
   }
 
-  close() {
+  close(): void {
     this.animationState = 'leave';
   }
 
-  animationDone({toState}) {
+  animationDone({toState}: AnimationEvent): void {
     if (toState === 'leave') {
       this.animationEndSubject$.next(true);
       this.animationEndSubject$.complete();

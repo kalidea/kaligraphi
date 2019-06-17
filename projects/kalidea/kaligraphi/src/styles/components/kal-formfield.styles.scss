@@ -4,6 +4,8 @@ $kal-styles-formfield: (
       'background-color': get('white', $kal-palettes),
       'error': (
         'color': get('red.normal', $kal-palettes),
+        'font-size': 13px,
+        'padding': 6px 10px,
         'input':(
           'border': 1px solid get('red.normal', $kal-palettes),
         ),

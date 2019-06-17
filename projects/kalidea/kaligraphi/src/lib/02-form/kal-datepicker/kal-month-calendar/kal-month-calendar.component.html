@@ -8,10 +8,9 @@
   <button *ngFor="let date of datesList"
           type="button"
           [class.hidden]="isDateHidden(date)"
-          [kalAutofocus]="isDaySelected(date)"
           [class.selected]="isDaySelected(date)"
           [disabled]="shouldDisable(date)"
-          (click)="pickDate(date)">
+          (click)="pickDate($event, date)">
     {{ date.getDay() }}
   </button>
 

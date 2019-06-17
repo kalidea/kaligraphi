@@ -4,7 +4,7 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  EventEmitter,
+  EventEmitter, HostBinding,
   Injector,
   Input,
   OnChanges,
@@ -62,7 +62,7 @@ export class KalInputComponent extends FormElementComponent<string> implements O
    */
   @Input() icon: string;
 
-  @Output() readonly iconClicked = new EventEmitter();
+  @Output() readonly iconClicked = new EventEmitter<MouseEvent>();
 
   /**
    * event to trigger change
@@ -77,6 +77,10 @@ export class KalInputComponent extends FormElementComponent<string> implements O
    * Reference to native input
    */
   @ViewChild('input') inputElement: ElementRef<HTMLInputElement>;
+
+  // empty id attribute
+  @HostBinding('attr.id')
+  attributeId = null;
 
   @AutoUnsubscribe()
   private controlValueChangedSubscription = Subscription.EMPTY;
@@ -108,8 +112,8 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     }
   }
 
-  customIconClicked() {
-    this.iconClicked.emit();
+  customIconClicked($event: MouseEvent) {
+    this.iconClicked.emit($event);
   }
 
   /**
@@ -126,7 +130,7 @@ export class KalInputComponent extends FormElementComponent<string> implements O
 
       super.writeValue(value);
 
-      this.cdr.detectChanges();
+      this.cdr.markForCheck();
     }
   }
 
@@ -137,7 +141,7 @@ export class KalInputComponent extends FormElementComponent<string> implements O
   notifyUpdate(value) {
     this.value = value;
 
-    this.valueChange.emit(value);
+    this.valueChanges.emit(value);
 
     // notify parent
     super.notifyUpdate(this.formater.toCode(value));

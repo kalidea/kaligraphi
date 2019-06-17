@@ -73,12 +73,12 @@ describe('KalCheckboxComponent', () => {
 
   it('should emit an event with the form control value when the value changes', () => {
     const spyNotif = spyOn(FormElementComponent.prototype, 'notifyUpdate');
-    spyOn(component.valueChange, 'emit');
+    spyOn(component.valueChanges, 'emit');
 
     component.control.patchValue(true);
 
     expect(spyNotif).toHaveBeenCalledWith(true);
-    expect(component.valueChange.emit).toHaveBeenCalledWith(true);
+    expect(component.valueChanges.emit).toHaveBeenCalledWith(true);
   });
 
   it('should update the form control value when a new value is set', () => {

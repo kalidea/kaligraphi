@@ -2,10 +2,13 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { KalFormFieldComponent } from './kal-form-field.component';
+import { KalFormFieldLabelDirective } from './kal-form-field-label.directive';
+
 export * from './kal-form-field.component';
 
 const exports = [
-  KalFormFieldComponent
+  KalFormFieldComponent,
+  KalFormFieldLabelDirective
 ];
 
 @NgModule({

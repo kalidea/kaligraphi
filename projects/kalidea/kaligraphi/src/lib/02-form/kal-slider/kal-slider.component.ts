@@ -55,7 +55,7 @@ export class KalSliderComponent extends FormElementComponent<number> implements 
   color: string;
 
   @Output()
-  readonly valueChange: EventEmitter<number | null> = new EventEmitter<number | null>();
+  readonly valueChanges: EventEmitter<number | null> = new EventEmitter<number | null>();
 
   @Output()
   readonly pointerDragging: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -80,7 +80,7 @@ export class KalSliderComponent extends FormElementComponent<number> implements 
     if (this.value !== closestValue) {
       this._value = closestValue;
       super.notifyUpdate(this.value);
-      this.valueChange.emit(this.value);
+      this.valueChanges.emit(this.value);
       this.cdr.markForCheck();
     }
   }

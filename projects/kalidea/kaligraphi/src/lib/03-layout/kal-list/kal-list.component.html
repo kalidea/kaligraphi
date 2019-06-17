@@ -36,7 +36,7 @@
       <div class="kal-list__separate"></div>
     </ng-template>
 
-    <div kalListItemSelection
+    <div [kalListItemSelection]="!virtualScrollConfig"
          class="kal-list__item"
          [ngClass]="row?.ngClass ? row.ngClass(item) : null"
          [disabled]="isRowDisabled(item)"

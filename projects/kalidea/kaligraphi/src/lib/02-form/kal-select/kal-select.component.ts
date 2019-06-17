@@ -227,6 +227,8 @@ export class KalSelectComponent
       if (optionSelect) {
         this.keyManager.setActiveItem(optionSelect);
         this.optionSelected(this.keyManager.activeItem, withNotify);
+      } else if (value === null) {
+        this.reset();
       }
     }
   }
@@ -235,7 +237,10 @@ export class KalSelectComponent
    * Reset selection
    */
   reset(): void {
-    this.selection.map(o => o.active = false);
+    this.selection.forEach(o => {
+      o.active = false;
+      o.isHighlighted = false;
+    });
     this.selection = [];
     this.cdr.markForCheck();
   }
@@ -351,7 +356,7 @@ export class KalSelectComponent
 
     if (withNotify) {
       super.notifyUpdate(this.selectedValue);
-      this.valueChange.emit(this.selectedValue);
+      this.valueChanges.emit(this.selectedValue);
     }
 
     this.cdr.markForCheck();
@@ -370,7 +375,7 @@ export class KalSelectComponent
 
     if (withNotify) {
       super.notifyUpdate(this.selectedValue);
-      this.valueChange.emit(this.selectedValue);
+      this.valueChanges.emit(this.selectedValue);
     }
 
     this.cdr.markForCheck();
