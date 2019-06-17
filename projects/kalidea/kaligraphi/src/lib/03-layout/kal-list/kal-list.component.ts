@@ -28,6 +28,7 @@ import { KalSelectionModel } from '../../utils/classes/kal-selection';
 import { Coerce } from '../../utils/decorators/coerce';
 import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 import { KalDataSourceManager } from '../../utils/classes/kal-data-source-manager';
+import { KalVirtualScrollConfig } from '../../utils/classes/kal-virtual-scroll-config';
 
 enum KalListSelectionMode {
   None = 'none',
@@ -36,11 +37,6 @@ enum KalListSelectionMode {
 }
 
 type KalListDataSource<T> = DataSource<T> | Observable<T[]> | T[];
-
-export interface KalVirtualScrollConfig {
-  itemSize: number;
-  height: number;
-}
 
 @Component({
   selector: 'kal-list',

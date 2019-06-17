@@ -27,17 +27,15 @@ import { AutoUnsubscribe, buildProviders, FormElementComponent } from '../../uti
 import { KalDataSourceManager } from '../../utils/classes/kal-data-source-manager';
 import { KalThemeDirective } from '../../99-utility/directives/kal-theme/kal-theme.directive';
 import { KalOverlayService } from '../../99-utility/services/kal-overlay.service';
-
-export interface KalVirtualScrollConfig {
-  itemSize: number;
-  height: number;
-}
+import { KalVirtualScrollConfig } from '../../utils/classes/kal-virtual-scroll-config';
 
 type KalSelectDataSource<T> = DataSource<T> | Observable<T[]> | T[];
 
 const defaultVirtualScrollConfig: KalVirtualScrollConfig = {
   itemSize: 27,
-  height: 270
+  height: 270,
+  minBufferPx: 0,
+  maxBufferPx: 0,
 };
 
 @Component({
@@ -155,14 +153,11 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
   }
 
   set virtualScrollConfig(value: KalVirtualScrollConfig) {
-    if (value) {
-      this._virtualScrollConfig = {
-        height: value.height || defaultVirtualScrollConfig.height,
-        itemSize: value.itemSize || defaultVirtualScrollConfig.itemSize
-      };
-    } else {
-      this._virtualScrollConfig = defaultVirtualScrollConfig;
-    }
+    this._virtualScrollConfig = {
+      ...defaultVirtualScrollConfig,
+      height: value.height || defaultVirtualScrollConfig.height,
+      itemSize: value.itemSize || defaultVirtualScrollConfig.itemSize
+    };
   }
 
   get virtualScrollHeight(): number {
