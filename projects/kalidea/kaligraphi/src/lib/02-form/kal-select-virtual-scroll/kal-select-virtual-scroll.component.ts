@@ -263,11 +263,7 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
    * create overlayRef
    */
   private createOverlay() {
-    this.overlayRef = this.kalOverlay.createOverlay(
-      this.kalOverlay.getOverlayConfig(
-        this.kalOverlay.getFlexiblePositionStrategy(this.elementRef),
-        this.elementRef.nativeElement.getBoundingClientRect().width,
-    ));
+    this.overlayRef = this.kalOverlay.createFlexibleOverlay(this.elementRef);
 
     this.overlayRef.backdropClick().subscribe(() => {
       this.isFocused = false;

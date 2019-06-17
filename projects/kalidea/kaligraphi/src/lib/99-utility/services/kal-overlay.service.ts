@@ -20,16 +20,25 @@ export class KalOverlayService {
     return this.overlay.create(overlayConfig);
   }
 
-  getFlexiblePositionStrategy(elementRef: ElementRef,
-    positions: ConnectedPosition[] = [ {originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top'}] ): PositionStrategy {
-      return this.overlay.position()
+  createFlexibleOverlay(elementRef: ElementRef<HTMLElement>) {
+    return  this.createOverlay(
+      this.getOverlayConfig(
+        this.getFlexiblePositionStrategy(elementRef),
+        elementRef.nativeElement.getBoundingClientRect().width
+      )
+    );
+  }
+
+  getFlexiblePositionStrategy(elementRef: ElementRef<HTMLElement>,
+    positions: ConnectedPosition[] = [{ originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top' }]): PositionStrategy {
+    return this.overlay.position()
       .flexibleConnectedTo(elementRef)
       .withPositions(positions);
   }
 
   getOverlayConfig(positionStrategy: PositionStrategy, width: number): OverlayConfig {
-   return {
-      ...  this.defaultConfig,
+    return {
+      ...this.defaultConfig,
       positionStrategy,
       width
     };
