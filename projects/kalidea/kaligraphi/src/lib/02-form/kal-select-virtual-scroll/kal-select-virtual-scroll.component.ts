@@ -110,9 +110,11 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
   @AutoUnsubscribe()
   private subscription: Subscription = Subscription.EMPTY;
 
+  @AutoUnsubscribe()
+  private overlaySubscriptions: Subscription = Subscription.EMPTY;
+
   constructor(
     private elementRef: ElementRef<HTMLElement>,
-    // private overlay: Overlay,
     private cdr: ChangeDetectorRef,
     private kalOverlay: KalOverlayService,
     @Optional() @Host() private themeDirective: KalThemeDirective
@@ -260,14 +262,16 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
   private createOverlay() {
     this.overlayRef = this.kalOverlay.createFlexibleOverlay(this.elementRef);
 
-    this.overlayRef.backdropClick().subscribe(() => {
+    this.overlaySubscriptions = this.overlayRef.backdropClick().subscribe(() => {
       this.isFocused = false;
       this.close();
     });
 
-    this.overlayRef.keydownEvents()
+    this.overlaySubscriptions.add(
+      this.overlayRef.keydownEvents()
       .pipe(filter(event => event.keyCode === ESCAPE))
-      .subscribe(() => this.close());
+      .subscribe(() => this.close())
+    );
   }
 
   isActive(option) {
@@ -283,7 +287,7 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
 
   private setOptions( dataSource$: Observable<T[] | ReadonlyArray<T>>) {
     this.subscription = combineLatest( dataSource$, this.searchControl.valueChanges.pipe(startWith(''))).pipe(
-      map( ([items, term]: [T[], string]) => {
+      map(([items, term]: [T[], string]) => {
         this.originalOptions = items || [];
         return items.filter( item => item.label.includes(term));
       })
@@ -291,9 +295,11 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
       (items: T[] ) => {
         this.options = items !== undefined ? items : [];
         if (!!this.cdkVirtualScrollViewport && this.isPanelOpen) {
+          this.cdr.detectChanges();
           this.cdkVirtualScrollViewport.checkViewportSize();
+        } else {
+          this.cdr.markForCheck();
         }
-        this.cdr.markForCheck();
       }
     );
   }
