@@ -417,16 +417,6 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
     );
   }
 
-  private observeDataSource() {
-    if ((this.dataSource as DataSource<T>).connect instanceof Function) {
-      this.setResults((this.dataSource as DataSource<T>).connect(this));
-    } else if (this.dataSource instanceof Observable) {
-      this.setResults((this.dataSource as Observable<T[]>));
-    } else if (Array.isArray(this.dataSource)) {
-      this.setResults(of(this.dataSource as T[]));
-    }
-  }
-
   private selectionChanges() {
     this.selectionSubscription.unsubscribe();
     this.selectionSubscription = this.selection.changes.subscribe(
