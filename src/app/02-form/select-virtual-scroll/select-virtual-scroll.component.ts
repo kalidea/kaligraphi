@@ -1,5 +1,4 @@
 import { OnInit, Component, ViewEncapsulation, ChangeDetectionStrategy, ViewChild } from '@angular/core';
-import { KalSelectVirtualScrollComponent } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-select-virtual-scroll/kal-select-virtual-scroll.component';
 
 @Component({
   selector: 'app-select-virtual-scroll',

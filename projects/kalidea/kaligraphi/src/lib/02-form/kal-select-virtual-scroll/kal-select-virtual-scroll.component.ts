@@ -16,20 +16,21 @@ import {
   Optional,
   Injector} from '@angular/core';
 import { FormControl, NgControl } from '@angular/forms';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { DataSource, CollectionViewer, ListRange } from '@angular/cdk/collections';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayRef } from '@angular/cdk/overlay';
+
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { Subscription, Observable, combineLatest } from 'rxjs';
-import { filter, map, startWith, debounce, debounceTime } from 'rxjs/operators';
+import { filter, map, startWith} from 'rxjs/operators';
 
 import { AutoUnsubscribe, buildProviders, FormElementComponent } from '../../utils';
 import { KalDataSourceManager } from '../../utils/classes/kal-data-source-manager';
 import { KalThemeDirective } from '../../99-utility/directives/kal-theme/kal-theme.directive';
 import { KalOverlayService } from '../../99-utility/services/kal-overlay.service';
 import { KalVirtualScrollConfig } from '../../utils/classes/kal-virtual-scroll-config';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 type KalSelectDataSource<T> = DataSource<T> | Observable<T[]> | T[];
 
@@ -234,14 +235,10 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
    * Select the given option
    */
   select(values: any) {
-    if (values === undefined || values === null) {
-      return;
-    }
-    if (this.multiple && this.value instanceof Array) {
-      const ids = this.value as number[];
-      ids.map( id => this.selectMultiple(id, false));
+    if (this.multiple && values instanceof Array) {
+      (values as number[]).map( id => this.selectMultiple(id, false));
       this.valueChanges.emit(this.selectedOptions.map(o => o.id));
-    } else {
+    } else if(values !== undefined && values !== null) {
       const optionId = values instanceof Array ? values[0] : values;
       if (this.multiple) {
         this.selectMultiple(optionId);
