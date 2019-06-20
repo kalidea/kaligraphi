@@ -9,7 +9,6 @@ export class KalOverlayService {
   private readonly defaultConfig: OverlayConfig = {
     backdropClass: 'kal-overlay__transparent',
     hasBackdrop: true,
-    scrollStrategy: this.overlay.scrollStrategies.reposition(),
   };
 
   constructor(private overlay: Overlay) {
@@ -40,7 +39,8 @@ export class KalOverlayService {
     return {
       ...this.defaultConfig,
       positionStrategy,
-      width
+      width,
+      scrollStrategy: this.overlay.scrollStrategies.reposition()
     };
   }
 }
