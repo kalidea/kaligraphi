@@ -136,19 +136,19 @@ export class KalFormFieldComponent implements AfterContentInit {
       this.configureFormField();
 
       // watch input change
-      const inputChanges = this.formElement.inputChanges
-        .subscribe(() => this.configureFormField());
-
-      const valueChanges = this.formElement.valueChanges
-        .subscribe(() => this.cdr.markForCheck());
-
-      const stateChanges = this.formElement.statusChange
-        .subscribe(data => {
-          this.checkErrorAndDirtyness();
-          this.cdr.markForCheck();
-        });
-
-      this.subscriptionsList.push(inputChanges, valueChanges, stateChanges);
+      this.subscriptionsList.push(
+        merge(
+          this.formElement.inputChanges,
+          this.formElement.valueChanges,
+          this.formElement.statusChange
+        )
+          .pipe(
+            startWith(true)
+          )
+          .subscribe(() => {
+            this.configureFormField();
+          })
+      );
 
     }
   }

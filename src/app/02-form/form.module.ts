@@ -44,7 +44,7 @@ import { TextareaComponent } from './textarea/textarea.component';
       provide: KAL_FORM_FIELDS_GLOBAL_OPTIONS,
       useValue: {
         showError: true,
-        showErrorAtDisplay: true,
+        showErrorAtDisplay: false,
         errors: {
           'email': 'email "{value}" is not an email',
           'maxlength': '{value} length {actualLength} exceed maximal {requiredLength}'
