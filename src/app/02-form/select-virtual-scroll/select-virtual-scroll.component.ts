@@ -1,4 +1,5 @@
-import { OnInit, Component, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
+import { OnInit, Component, ViewEncapsulation, ChangeDetectionStrategy, ViewChild } from '@angular/core';
+import { KalSelectVirtualScrollComponent } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-select-virtual-scroll/kal-select-virtual-scroll.component';
 
 @Component({
   selector: 'app-select-virtual-scroll',
@@ -12,17 +13,21 @@ export class SelectVirtualScrollComponent implements OnInit {
 
   themes = [];
 
+  multiple: boolean;
+
+  selection;
+
   constructor() {
   }
 
-  buildOptions() {
+  buildOptions(count: number) {
     this.options = [];
-    for (let i = 0; i < 500; i++) {
+    for (let i = 0; i < count; i++) {
       this.options.push({ id : i, label: `option : ${i}`});
     }
   }
 
   ngOnInit() {
-    this.buildOptions();
+    this.buildOptions(50);
   }
 }

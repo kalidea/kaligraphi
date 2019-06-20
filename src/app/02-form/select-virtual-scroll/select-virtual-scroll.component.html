@@ -1,10 +1,23 @@
 <h1>Select with virtual Scroll</h1>
 
 <div class="exemple">
-  <kal-select-virtual-scroll [dataSource]="options"  [kalTheme]="themes" tabindex="1">
+  <kal-select-virtual-scroll #kal
+    [dataSource]="options"
+    [kalTheme]="themes"
+    tabindex="1"
+    [multiple]="multiple"
+    [(ngModel)]="selection"
+    >
   </kal-select-virtual-scroll>
-</div>
 
+  <div class="technical-value">
+    <div class="technical-value__item">
+      <span>selection</span>
+      <span>{{ selection | json}}</span>
+    </div>
+  </div>
+
+</div>
 
 <div class="configurator">
 
@@ -15,4 +28,12 @@
       <kal-option value="reverse">reverse</kal-option>
     </kal-select>
   </kal-form-field>
+  <kal-form-field>
+      <kal-checkbox [(ngModel)]="multiple" label="multiple selection"></kal-checkbox>
+  </kal-form-field>
+  <kal-form-field>
+    <kal-input label="change number of items" type="number" (valueChanges)="buildOptions($event)">
+    </kal-input>
+  </kal-form-field>
+
 </div>

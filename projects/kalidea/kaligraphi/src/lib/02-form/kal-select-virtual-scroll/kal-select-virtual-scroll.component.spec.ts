@@ -150,7 +150,7 @@ describe('TestSelectVirtualScrollComponent', () => {
     }));
 
     it('should emit option id when selected', fakeAsync(() => {
-      const spy = spyOn(component.selectVirtualScroll.selectChange, 'emit');
+      const spy = spyOn(component.selectVirtualScroll.valueChanges, 'emit');
 
       trigger.click();
       finishInit(fixture);
@@ -267,7 +267,6 @@ describe('TestSelectVirtualScrollComponent', () => {
       component.selectVirtualScroll.searchControl.patchValue('aaa');
       component.selectVirtualScroll.select(2);
       const selectedOption = component.selectVirtualScroll.selected;
-
       expect(selectedOption).toBe(component.selectVirtualScroll.options.find( o => o.id === 2));
     });
 
@@ -298,6 +297,25 @@ describe('TestSelectVirtualScrollComponent', () => {
       const optionAfterScrolling = overlay.query(By.css('.kal-select-virtual-scroll__option')).nativeElement.textContent;
       expect(optionAfterScrolling).not.toEqual(optionBeforeScrolling);
       expect(overlay.queryAll(By.css('.kal-select-virtual-scroll__option')).length).toBe(10, 'with no buffer, length should not change');
+    }));
+
+    it('should select multiple option in list', fakeAsync(() => {
+      const spy = spyOn(component.selectVirtualScroll.valueChanges, 'emit');
+      component.selectVirtualScroll.multiple = true;
+
+      trigger.click();
+      finishInit(fixture);
+
+      const options = fixture.debugElement.queryAll(By.css('.kal-select-virtual-scroll__option-selection'));
+      options.map(o => o.nativeElement.click());
+      const selectedOptions = component.selectVirtualScroll.selected;
+
+      fixture.detectChanges();
+
+      expect(selectedOptions.length).toEqual(10, 'should select only those displayed by the virtual scroll');
+      expect(options.filter( o => o.classes['kal-select-virtual-scroll__option-selection--active']).length).toEqual(10);
+      expect(component.selectVirtualScroll.panelOpen).toBeTruthy();
+      expect(spy).toHaveBeenCalledWith(component.selectVirtualScroll.selected.map( o => o.id));
     }));
 
   });
