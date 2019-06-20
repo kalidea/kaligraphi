@@ -1,5 +1,8 @@
 =kal-input($parameters)
   kal-input
+
+    &:not([disabled]) input.ng-invalid
+      border-color: get("palettes.red.normal", $kal-parameters)
     > div
       position: relative
       display: flex
@@ -24,8 +27,6 @@
           + kal-icon
             color: get("palettes.grey.wf500", $kal-parameters)
             cursor: not-allowed
-        &.ng-invalid
-          border-color: get("palettes.red.normal", $kal-parameters)
         &::placeholder
           font-style: italic
           color: get("palettes.grey.wf600", $kal-parameters)

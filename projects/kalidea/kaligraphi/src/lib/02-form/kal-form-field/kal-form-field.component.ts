@@ -12,7 +12,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { KeyValue } from '@angular/common';
-import { Subscription } from 'rxjs';
+import { merge, Subscription } from 'rxjs';
+import { startWith } from 'rxjs/operators';
 
 import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 import { KalCheckboxComponent } from '../kal-checkbox/kal-checkbox.component';

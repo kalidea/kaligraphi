@@ -3,7 +3,7 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { AbstractControl, FormHooks } from '@angular/forms/src/model';
 import { FormControl, NG_ASYNC_VALIDATORS, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { distinctUntilChanged, startWith } from 'rxjs/operators';
+import { distinctUntilChanged, map } from 'rxjs/operators';
 
 import { FormControlAccessComponent } from './form-control-access.component';
 import { uniqid } from '../helpers/uniq';
@@ -176,6 +176,10 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
     }
   }
 
+  get valueChange() {
+    return this.ngControl.valueChanges.pipe(distinctUntilChanged());
+  }
+
   get superControl(): AbstractControl {
     if (this.ngControl && this.ngControl.control) {
       return this.ngControl.control;
@@ -204,24 +208,23 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
 
     this.ngControl = injector.get(NgControl, null);
 
-    let disabled = this.disabled;
-    let updateOn: FormHooks = this.updateOnEvent;
-    let value = this.value;
+
+    let control: FormControl;
 
     if (!this.superControl) {
-      return new FormControl({value, disabled}, {updateOn});
+      const {value, disabled, updateOnEvent: updateOn} = this;
+      control = new FormControl({value, disabled}, {updateOn});
+    } else {
+      control = this.superControl as FormControl;
     }
 
-    ({disabled, updateOn, value} = this.superControl);
-    updateOn = updateOnOverride || updateOn; // override value
-    const control = new FormControl({value, disabled}, {updateOn});
-
-    // don't forget to implement super.ngOnDestroy on child element
-    this.controlStatusChangedSubscription = this.superControl.statusChanges
-      .pipe(startWith(1))
-      .subscribe(() => this.updateStatus(control));
+    control.valueChanges
+      .pipe(
+        map((changes) => this.valueChanges.emit(changes))
+      ).subscribe();
 
     return control;
+
   }
 
   /**

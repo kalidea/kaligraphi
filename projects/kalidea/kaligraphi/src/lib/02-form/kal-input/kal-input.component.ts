@@ -120,13 +120,11 @@ export class KalInputComponent extends FormElementComponent<string> implements O
    * @inheritDoc
    */
   writeValue(value) {
-    this.value = value;
-
     if (this.control) {
       value = this.formater.toUser(value);
 
-      this.value = value;
-      this.control.setValue(value, {emitEvent: false});
+      // update displayed value
+      this.inputElement.nativeElement.value = value;
 
       super.writeValue(value);
 
@@ -139,12 +137,12 @@ export class KalInputComponent extends FormElementComponent<string> implements O
    * overload notifyupdate
    */
   notifyUpdate(value) {
-    this.value = value;
+    value = this.formater.toCode(value);
 
     this.valueChanges.emit(value);
 
     // notify parent
-    super.notifyUpdate(this.formater.toCode(value));
+    super.notifyUpdate(value);
     this.cdr.detectChanges();
   }
 
@@ -154,7 +152,7 @@ export class KalInputComponent extends FormElementComponent<string> implements O
 
   formatValue() {
     if (this.formatOnBlur) {
-      this.control.patchValue(this.formater.toUser(this.value), {emitEvent: false});
+      this.control.patchValue(this.formater.toUser(this.control.value), {emitEvent: false});
     }
   }
 
@@ -176,11 +174,6 @@ export class KalInputComponent extends FormElementComponent<string> implements O
 
     // ngControl for formControl does not contain `control` on ngOnInit
     this.control = this.createControlAndSubscriptions(this.injector);
-
-    this.controlValueChangedSubscription = this.control.valueChanges.subscribe(value => {
-      // notify parent for validation
-      this.notifyUpdate(value);
-    });
 
   }
 }
