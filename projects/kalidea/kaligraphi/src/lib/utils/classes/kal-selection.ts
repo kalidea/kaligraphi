@@ -50,7 +50,7 @@ class SubSelectionModel<T extends { id?: string }> extends SelectionModel<T> {
   }
 
   select(...items: T[]): void {
-    const filteredItems = items.filter(item => !this.isSelected(item));
+    const filteredItems = items.filter(item => !!item && !this.isSelected(item));
     super.select(...filteredItems);
   }
 
