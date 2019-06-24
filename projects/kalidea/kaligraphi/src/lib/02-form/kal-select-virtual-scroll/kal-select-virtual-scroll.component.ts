@@ -238,7 +238,7 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
     if (this.multiple && values instanceof Array) {
       (values as number[]).map( id => this.selectMultiple(id, false));
       this.valueChanges.emit(this.selectedOptions.map(o => o.id));
-    } else if(values !== undefined && values !== null) {
+    } else if (!!values) {
       const optionId = values instanceof Array ? values[0] : values;
       if (this.multiple) {
         this.selectMultiple(optionId);
@@ -255,7 +255,6 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
     const option = this.originalOptions.find( o => o.id === optionId);
     this.selectedOptions = option ? [option] : [];
     this.searchControl.patchValue(this.label);
-    this.valueChanges.emit();
 
     if (withNotify) {
       this.notifyUpdate(this.selectedOptions[0].id);
@@ -306,6 +305,10 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
     if (!this.overlayRef) {
       this.createOverlay();
     }
+    this.overlayRef.updateSize({
+      width: this.elementRef.nativeElement.getBoundingClientRect().width
+    });
+
     this.overlayRef.attach(this.optionsPortal);
     this.isPanelOpen = true;
   }
@@ -366,7 +369,8 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
       map(([items, term]: [T[], string]) => {
         if (this.originalOptions !== items) {
           this.originalOptions = items || [];
-        if (this.ngControl) {
+
+          if (this.ngControl) {
             this.select(this.ngControl.value);
           }
         }
