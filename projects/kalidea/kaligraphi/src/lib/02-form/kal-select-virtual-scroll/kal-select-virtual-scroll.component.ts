@@ -238,7 +238,7 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
     if (this.multiple && values instanceof Array) {
       (values as number[]).map( id => this.selectMultiple(id, false));
       this.valueChanges.emit(this.selectedOptions.map(o => o.id));
-    } else if (!!values) {
+    } else if (values !== null && values !== undefined) {
       const optionId = values instanceof Array ? values[0] : values;
       if (this.multiple) {
         this.selectMultiple(optionId);
