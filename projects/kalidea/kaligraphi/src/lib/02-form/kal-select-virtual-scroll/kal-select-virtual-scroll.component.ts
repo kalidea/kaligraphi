@@ -236,8 +236,7 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
    */
   select(values: any) {
     if (this.multiple && values instanceof Array) {
-      (values as number[]).map( id => this.selectMultiple(id, false));
-      this.valueChanges.emit(this.selectedOptions.map(o => o.id));
+      this.selectListMultiple(values);
     } else if (values !== null && values !== undefined) {
       const optionId = values instanceof Array ? values[0] : values;
       if (this.multiple) {
@@ -251,7 +250,7 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
   /**
    * Select an option when not on multiple mode
    */
-  selectSimple(optionId, withNotify = true) {
+  selectSimple(optionId: number, withNotify = true) {
     const option = this.originalOptions.find( o => o.id === optionId);
     this.selectedOptions = option ? [option] : [];
     this.searchControl.patchValue(this.label);
@@ -267,7 +266,7 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
   /**
    * Select an option when on multiple mode
    */
-  selectMultiple(optionId, withNotify = true) {
+  selectMultiple(optionId: number, withNotify = true) {
     const option = this.originalOptions.find( o => o.id === optionId);
     const index  = this.selectedOptions.indexOf(option);
     if ( index !== -1) {
@@ -277,9 +276,31 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
       this.selectedOptions.sort((a, b) => this.originalOptions.indexOf(a) - this.originalOptions.indexOf(b));
     }
     if (withNotify) {
-      super.notifyUpdate(this.selectedOptions.map( o => o.id));
-      this.valueChanges.emit(this.selectedOptions.map( o => o.id));
+      this.notifyMultiple();
     }
+  }
+
+  /**
+   * Select a list of option when in multiple mode
+   */
+  selectListMultiple(optionIds: number[], withNotify = true) {
+    if (!this.isMultiple){
+      return;
+    }
+
+    optionIds.map( id => this.selectMultiple(id, false));
+
+    if (withNotify) {
+      this.notifyMultiple();
+    }
+  }
+
+  /**
+   * Notify changes
+   */
+  notifyMultiple() {
+    super.notifyUpdate(this.selectedOptions.map( o => o.id));
+    this.valueChanges.emit(this.selectedOptions.map(o => o.id));
   }
 
   /**
