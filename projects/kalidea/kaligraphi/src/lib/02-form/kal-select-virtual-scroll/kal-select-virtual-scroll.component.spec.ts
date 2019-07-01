@@ -103,17 +103,17 @@ describe('TestSelectVirtualScrollComponent', () => {
     }));
 
     it('should have 1 item rendered in overlay with \'1\' as search term', fakeAsync(() => {
-      component.selectVirtualScroll.searchControl.patchValue('1');
       trigger.click();
       finishInit(fixture);
+      component.selectVirtualScroll.searchControl.patchValue('1');
       const options = overlayContainerElement.querySelectorAll('.kal-select-virtual-scroll__option');
       expect(options.length).toBe(1, 'it should have 1 option displayed');
     }));
 
     it('should have an option with a message for when there is no items in options', fakeAsync(() => {
-      component.selectVirtualScroll.searchControl.patchValue('aaa');
       trigger.click();
       finishInit(fixture);
+      component.selectVirtualScroll.searchControl.patchValue('aaa');
       const options = overlayContainerElement.querySelectorAll('.kal-select-virtual-scroll__option');
       expect(options.length).toBe(1, 'it should have 1 option displayed');
       expect(options.item(0).textContent).toContain('No results found');
@@ -253,8 +253,8 @@ describe('TestSelectVirtualScrollComponent', () => {
     }));
 
     it('should have an overlay height reduced if there is less than 10 item', fakeAsync(() => {
-      component.selectVirtualScroll.searchControl.patchValue('aaa');
       component.selectVirtualScroll.open();
+      component.selectVirtualScroll.searchControl.patchValue('aaa');
       finishInit(fixture);
       const selectOverlay = overlayContainerElement.querySelector('.kal-select-virtual-scroll__overlay');
       expect(selectOverlay.clientHeight)

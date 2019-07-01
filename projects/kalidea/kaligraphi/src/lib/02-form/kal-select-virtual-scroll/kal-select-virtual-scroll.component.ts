@@ -24,7 +24,7 @@ import { OverlayRef } from '@angular/cdk/overlay';
 
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { Subscription, Observable, combineLatest } from 'rxjs';
-import { filter, map, startWith} from 'rxjs/operators';
+import { filter, map, startWith, tap} from 'rxjs/operators';
 
 import { AutoUnsubscribe, buildProviders, FormElementComponent } from '../../utils';
 import { KalDataSourceManager } from '../../utils/classes/kal-data-source-manager';
@@ -253,7 +253,12 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
   selectSimple(optionId: number, withNotify = true) {
     const option = this.originalOptions.find( o => o.id === optionId);
     this.selectedOptions = option ? [option] : [];
-    this.searchControl.patchValue(this.label);
+
+    if (this.selectedOptions.length === 0) {
+      this.searchControl.patchValue('');
+    } else {
+      this.searchControl.patchValue(this.selectedLabel);
+    }
 
     if (withNotify) {
       this.notifyUpdate(this.selectedOptions[0].id);
@@ -332,6 +337,7 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
 
     this.overlayRef.attach(this.optionsPortal);
     this.isPanelOpen = true;
+    this.searchControl.patchValue('');
   }
 
   /**
@@ -342,6 +348,10 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
       this.overlayRef.detach();
     }
     this.isPanelOpen = false;
+
+    if (this.selectedOptions.length > 0){
+      this.searchControl.patchValue(this.selectedLabel);
+    }
   }
 
 
@@ -377,7 +387,7 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
     return !!this.selectedOptions.find(o => option.id === o.id);
   }
 
-  get label(): string {
+  get selectedLabel(): string {
     if (this.selected) {
       return this.multiple ? (this.selected as T[]).map(option => option.label).join(', ') : (this.selected as T).label;
     } else {
@@ -387,7 +397,7 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
 
   private setOptions( dataSource$: Observable<T[] | ReadonlyArray<T>>) {
     this.subscription = combineLatest( dataSource$, this.searchControl.valueChanges.pipe(startWith(''))).pipe(
-      map(([items, term]: [T[], string]) => {
+      tap(([items]: [T[], string]) => {
         if (this.originalOptions !== items) {
           this.originalOptions = items || [];
 
@@ -395,6 +405,8 @@ export class KalSelectVirtualScrollComponent<T extends {id: number, label: strin
             this.select(this.ngControl.value);
           }
         }
+      }),
+      map(([items, term]: [T[], string]) => {
         return items.filter( item => item.label.includes(term));
       })
     ).subscribe(
