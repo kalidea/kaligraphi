@@ -27,6 +27,8 @@ import { KalListItemSelectionDirective } from './kal-list-item-selection.directi
 import { KalSelectionModel } from '../../utils/classes/kal-selection';
 import { Coerce } from '../../utils/decorators/coerce';
 import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
+import { KalDataSourceManager } from '../../utils/classes/kal-data-source-manager';
+import { KalVirtualScrollConfig } from '../../utils/classes/kal-virtual-scroll-config';
 
 enum KalListSelectionMode {
   None = 'none',
@@ -35,11 +37,6 @@ enum KalListSelectionMode {
 }
 
 type KalListDataSource<T> = DataSource<T> | Observable<T[]> | T[];
-
-export interface KalVirtualScrollConfig {
-  itemSize: number;
-  height: number;
-}
 
 @Component({
   selector: 'kal-list',
@@ -130,27 +127,24 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
   constructor(private cdr: ChangeDetectorRef) {
   }
 
-  private _dataSource: KalListDataSource<T> = null;
+  private _dataSourceManager = new KalDataSourceManager<T>(this);
 
   /**
    * Datasource to give items list to the component
    */
   @Input()
   get dataSource(): KalListDataSource<T> {
-    return this._dataSource;
+    return this._dataSourceManager.dataSource;
   }
 
   set dataSource(dataSource: KalListDataSource<T>) {
-    if (dataSource !== this._dataSource) {
-      this.destroySubscription();
-      this._dataSource = dataSource;
-
-      if (dataSource) {
-        this.observeDataSource();
-      } else {
-        this.results = [];
-        this.cdr.markForCheck();
-      }
+    this._dataSourceManager.dataSource = dataSource;
+    this.subscription.unsubscribe();
+    if (dataSource) {
+      this.setResults(this._dataSourceManager.observable);
+    } else {
+      this.results = [];
+      this.cdr.markForCheck();
     }
   }
 
@@ -421,16 +415,6 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
         this.cdr.markForCheck();
       }
     );
-  }
-
-  private observeDataSource() {
-    if ((this.dataSource as DataSource<T>).connect instanceof Function) {
-      this.setResults((this.dataSource as DataSource<T>).connect(this));
-    } else if (this.dataSource instanceof Observable) {
-      this.setResults((this.dataSource as Observable<T[]>));
-    } else if (Array.isArray(this.dataSource)) {
-      this.setResults(of(this.dataSource as T[]));
-    }
   }
 
   private selectionChanges() {

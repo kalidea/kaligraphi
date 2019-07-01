@@ -28,6 +28,7 @@ export class AppComponent {
     {label: 'radio', route: '/form/radio'},
     {label: 'rater', route: '/form/rater'},
     {label: 'select', route: '/form/select'},
+    {label: 'select-virtual-scroll', route: '/form/select-virtual-scroll'},
     {label: 'slider', route: '/form/slider'},
     {label: 'textarea', route: '/form/textarea'},
 

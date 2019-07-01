@@ -1,0 +1,128 @@
+=kal-themed-select-virtual-scroll($theme-parameters)
+  .kal-select-virtual-scroll__trigger
+    display: flex
+
+  .kal-select-virtual-scroll__input
+    font-family: get("text.font-family", $kal-parameters)
+    font-size: get('label.font-size', $theme-parameters)
+    font-weight: get('label.font-weight', $theme-parameters)
+    width: 100%
+    color: get('label.color', $theme-parameters)
+    background-color: get('background-color', $theme-parameters)
+    border: get('border', $theme-parameters)
+    border-radius: get('border-radius', $theme-parameters)
+    padding: get('padding', $theme-parameters)
+
+    &::placeholder
+      font-style: italic
+      color: get("palettes.grey.wf600", $kal-parameters)
+    + kal-icon
+      color: get('icon.color', $theme-parameters)
+      padding: get('icon.padding', $theme-parameters)
+      font-size: get('icon.font-size', $theme-parameters)
+
+
+    > div:nth-child(1)
+      flex: 1
+
+  &:not([disabled="true"])
+    &:focus, &:active
+      .kal-select-virtual-scroll__input
+        border-color:  get('active.border-color', $theme-parameters)
+    &:hover
+      cursor: pointer
+  &[disabled="true"]
+    cursor: not-allowed
+    .kal-select-virtual-scroll__input
+      color: get('disabled.label.color', $theme-parameters)
+      + kal-icon
+        color: get('disabled.icon.color', $theme-parameters)
+  .kal-select-virtual-scroll__overlay
+    background-color: get('overlay.background-color', $theme-parameters)
+    color: get('overlay.color', $theme-parameters)
+    border: get('overlay.border', $theme-parameters)
+    border-radius:  get('overlay.border-radius', $theme-parameters)
+
+  &.kal-theme--reverse
+    .kal-select-virtual-scroll__input
+      background-color:  get('reverse.background-color', $theme-parameters)
+      border-color:  get('reverse.border-color', $theme-parameters)
+      color:  get('reverse.label.color', $theme-parameters)
+      + kal-icon
+        color: get('reverse.icon.color', $theme-parameters)
+    &:not([disabled="true"])
+      &:focus, &:active
+        .kal-select-virtual-scroll__input
+          border-color:  get('reverse.active.border-color', $theme-parameters)
+    &[disabled="true"]
+      .kal-select-virtual-scroll__input
+        color:  get('reverse.disabled.label.color', $theme-parameters)
+        + kal-icon
+          color: get('reverse.disabled.icon.color', $theme-parameters)
+
+=kal-themed-select-virtual-scroll__overlay($theme-parameters)
+  background-color: get('overlay.background-color', $theme-parameters)
+  color: get('overlay.color', $theme-parameters)
+  border: get('overlay.border', $theme-parameters)
+  border-radius:  get('overlay.border-radius', $theme-parameters)
+  padding: get('overlay.padding', $theme-parameters)
+  width: get('overlay.width', $theme-parameters)
+  height: 5rem
+  .kal-select-virtual-scroll__option .kal-select-virtual-scroll__option-selection
+    color: get('overlay.option.color', $theme-parameters)
+    &[disabled="true"]
+      color: get('overlay.option.disabled.color', $theme-parameters)
+
+  &.kal-theme--reverse
+    background-color: get('reverse.overlay.background-color', $theme-parameters)
+    color:  get('reverse.overlay.color', $theme-parameters)
+    border: get('reverse.overlay.border', $theme-parameters)
+    .kal-select-virtual-scroll__option .kal-select-virtual-scroll__option-selection
+      color:  get('reverse.overlay.option.color', $theme-parameters)
+      &:not([disabled="true"]), &:not(.kal-select-virtual-scroll__option-selection--disabled)
+        &:hover, &:focus, &:active, &.kal-select-virtual-scroll__option-selection--active
+          color: get('reverse.overlay.option.active.color', $theme-parameters)
+      &[disabled="true"], &--disabled
+        cursor: not-allowed
+        color: get('overlay.option.disabled.color', $theme-parameters)
+
+=kal-themed-select-virtual-scroll__option($kal-parameters)
+  display: flex
+  flex-flow: column nowrap
+  padding: 0 18px
+  .kal-select-virtual-scroll__option-selection
+    display: flex
+    flex-flow: row nowrap
+    justify-content: flex-start
+    align-items: center
+    padding: 5px 0
+    &:not([disabled]):not(.kal-select-virtual-scroll__option-selection--disabled)
+      &.kal-select-virtual-scroll__option-selection--highlighted,
+      &.kal-select-virtual-scroll__option-selection--active,
+      &:hover,
+      &:active,
+      &:focus
+        cursor: pointer
+        font-weight: 500
+    &--disabled, &[disabled]
+      cursor: not-allowed
+      color: get("palettes.grey.wf300", $kal-parameters)
+
+
+=kal-select-virtual-scroll($kal-parameters)
+  .kal-select-virtual-scroll__option
+      +kal-themed-select-virtual-scroll__option($kal-parameters)
+  .kal-select-virtual-scroll__overlay
+    +kal-themed-select-virtual-scroll__overlay(get('form.elements.select.default', $kal-parameters))
+    @each $key, $params in get('form.elements.select.alternates', $kal-parameters)
+      &.kal-theme--#{$key}
+        +kal-themed-select-virtual-scroll__overlay($params)
+  kal-select-virtual-scroll
+    display: inline-block
+    position: relative
+    width: 100%
+    +kal-themed-select-virtual-scroll(get('form.elements.select.default', $kal-parameters))
+    @each $key, $params in get('form.elements.select.alternates', $kal-parameters)
+      &.kal-theme--#{$key}
+        +kal-themed-select-virtual-scroll($params)
+

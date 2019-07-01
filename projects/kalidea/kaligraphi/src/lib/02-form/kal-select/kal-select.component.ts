@@ -16,7 +16,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
@@ -28,6 +28,7 @@ import { merge, Subscription } from 'rxjs';
 import { KalOptionComponent } from '../kal-option/kal-option.component';
 import { KalThemeDirective } from '../../99-utility/directives/kal-theme/kal-theme.directive';
 import { buildProviders, FormElementComponent } from '../../utils/forms/form-element.component';
+import { KalOverlayService } from '../../99-utility/services/kal-overlay.service';
 
 @Component({
   selector: 'kal-select',
@@ -86,10 +87,10 @@ export class KalSelectComponent
    */
   private subscriptionsList: Subscription[] = [];
 
-  constructor(private overlay: Overlay,
-              private elementRef: ElementRef<HTMLElement>,
+  constructor(private elementRef: ElementRef<HTMLElement>,
               private cdr: ChangeDetectorRef,
               private injector: Injector,
+              private kalOverlay: KalOverlayService,
               @Optional() @Host() private themeDirective: KalThemeDirective) {
     super();
   }
@@ -316,20 +317,7 @@ export class KalSelectComponent
    * create overlayRef
    */
   private createOverlay() {
-    const positionStrategy = this.overlay
-      .position()
-      .flexibleConnectedTo(this.elementRef)
-      .withPositions([
-        {originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top'}
-      ]);
-
-    this.overlayRef = this.overlay.create({
-      positionStrategy,
-      hasBackdrop: true,
-      backdropClass: 'kal-overlay__transparent',
-      width: this.elementRef.nativeElement.getBoundingClientRect().width,
-      scrollStrategy: this.overlay.scrollStrategies.reposition()
-    });
+    this.overlayRef = this.kalOverlay.createFlexibleOverlay(this.elementRef);
 
     this.overlayRef.backdropClick().subscribe(() => {
       this.isFocused = false;
