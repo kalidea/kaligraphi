@@ -206,15 +206,16 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
 
     let disabled = this.disabled;
     let updateOn: FormHooks = this.updateOnEvent;
-    let value = this.value;
 
     if (!this.superControl) {
-      return new FormControl({value, disabled}, {updateOn});
+      return new FormControl({value: this.value, disabled}, {updateOn});
     }
 
-    ({disabled, updateOn, value} = this.superControl);
+    ({disabled, updateOn} = this.superControl);
     updateOn = updateOnOverride || updateOn; // override value
-    const control = new FormControl({value, disabled}, {updateOn});
+
+    // we're not taking the value of the superControl because it was formatted in the current component
+    const control = new FormControl({value: this.value, disabled}, {updateOn});
 
     // don't forget to implement super.ngOnDestroy on child element
     this.controlStatusChangedSubscription = this.superControl.statusChanges
