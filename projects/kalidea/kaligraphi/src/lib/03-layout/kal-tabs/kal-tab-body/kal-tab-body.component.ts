@@ -33,7 +33,7 @@ export class KalTabBodyComponent implements AfterViewInit {
   /**
    * The reference to the cdk portal outlet
    */
-  @ViewChild(CdkPortalOutlet) portalOutlet: CdkPortalOutlet;
+  @ViewChild(CdkPortalOutlet, {static: true}) portalOutlet: CdkPortalOutlet;
 
   constructor(private cdr: ChangeDetectorRef,
               @Optional() @Inject(forwardRef(() => KalTabGroupComponent)) public tabGroup: KalTabGroupComponent) {

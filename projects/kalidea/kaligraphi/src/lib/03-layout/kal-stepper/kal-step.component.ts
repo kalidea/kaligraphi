@@ -12,7 +12,7 @@ import { KalStepLabelDirective } from './kal-step-label.directive';
 })
 export class KalStepComponent extends CdkStep {
 
-  @ContentChild(KalStepLabelDirective) stepLabel: KalStepLabelDirective;
+  @ContentChild(KalStepLabelDirective, {static: false}) stepLabel: KalStepLabelDirective;
 
   constructor(@Inject(forwardRef(() => KalStepperComponent)) stepper: KalStepperComponent) {
     super(stepper);

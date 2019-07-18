@@ -56,7 +56,7 @@ export class ListComponent implements OnInit {
 
   selectRowOnContentClick = false;
 
-  @ViewChild(KalListComponent) kalListComponent: KalListComponent<{ id: string, name: string, disabled: boolean }>;
+  @ViewChild(KalListComponent, { static: true }) kalListComponent: KalListComponent<{ id: string, name: string, disabled: boolean }>;
 
   constructor() {
   }

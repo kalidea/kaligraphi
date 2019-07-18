@@ -13,7 +13,7 @@ import { KalThemeDirective } from './kal-theme.directive';
 export class TestComponent {
   themes: string|string[] = '';
 
-  @ViewChild('div') div: ElementRef;
+  @ViewChild('div', {static: true}) div: ElementRef;
 }
 
 describe('KalThemeDirective', () => {

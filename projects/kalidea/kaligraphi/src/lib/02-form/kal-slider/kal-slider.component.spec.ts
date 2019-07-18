@@ -150,7 +150,7 @@ export class KalTestComponent {
 
   to = 10;
 
-  @ViewChild(KalSliderComponent) slider: KalSliderComponent;
+  @ViewChild(KalSliderComponent, {static: true}) slider: KalSliderComponent;
 }
 
 describe('KalSliderComponent view', () => {

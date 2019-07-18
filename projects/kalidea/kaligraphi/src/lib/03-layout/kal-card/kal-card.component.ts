@@ -15,13 +15,14 @@ import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 
 @Component({
   selector: 'kal-card',
-  template: `<ng-content></ng-content>`,
+  template: `
+    <ng-content></ng-content>`,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class KalCardComponent extends KalCardDismissable implements AfterContentInit, OnChanges {
 
-  @ContentChild(KalCardTitleComponent) title: KalCardTitleComponent;
+  @ContentChild(KalCardTitleComponent, {static: true}) title: KalCardTitleComponent;
 
   @AutoUnsubscribe()
   private dismissSubscription = Subscription.EMPTY;

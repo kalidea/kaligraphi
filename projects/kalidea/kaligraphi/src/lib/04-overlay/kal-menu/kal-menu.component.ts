@@ -40,7 +40,7 @@ export class KalMenuComponent implements AfterContentInit, OnDestroy {
 
   @ContentChildren(KalOptionComponent) options: QueryList<KalOptionComponent>;
 
-  @ViewChild(TemplateRef) templateRef: TemplateRef<any>;
+  @ViewChild(TemplateRef, { static: true }) templateRef: TemplateRef<any>;
 
   /** Event emitted when the menu is closed. */
   @Output() readonly closed: EventEmitter<void | 'click' | 'keydown' | 'tab' | 'pick'> =

@@ -76,10 +76,10 @@ export class KalFormFieldComponent implements AfterContentInit {
    */
   @Input() legend: string;
 
-  @ContentChild(forwardRef(() => FormElementComponent))
+  @ContentChild(forwardRef(() => FormElementComponent), {static: false})
   formElement: FormElementComponent;
 
-  @ContentChild(KalFormFieldLabelDirective)
+  @ContentChild(KalFormFieldLabelDirective, {static: true})
   labelTemplate;
 
   @AutoUnsubscribe()

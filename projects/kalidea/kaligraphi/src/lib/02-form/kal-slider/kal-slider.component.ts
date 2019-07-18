@@ -60,7 +60,7 @@ export class KalSliderComponent extends FormElementComponent<number> implements 
   @Output()
   readonly pointerDragging: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  @ViewChild('sliderWrapper') private sliderWrapper: ElementRef;
+  @ViewChild('sliderWrapper', {static: true}) private sliderWrapper: ElementRef;
 
   private _value = 0;
 

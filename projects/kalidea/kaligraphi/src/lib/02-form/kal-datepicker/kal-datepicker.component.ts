@@ -49,22 +49,22 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   /**
    * Reference to calendar template.
    */
-  @ViewChild('datepickerCalendar') datepickerCalendar: TemplatePortal<any>;
+  @ViewChild('datepickerCalendar', {static: true}) datepickerCalendar: TemplatePortal<any>;
 
   /**
    * Reference to `KalMonthCalendarComponent`.
    */
-  @ViewChild(KalMonthCalendarComponent) monthCalendar: KalMonthCalendarComponent;
+  @ViewChild(KalMonthCalendarComponent, {static: false}) monthCalendar: KalMonthCalendarComponent;
 
   /**
    * Reference to `KalDatepickerHeaderComponent`.
    */
-  @ViewChild(forwardRef(() => KalDatepickerHeaderComponent)) datePickerHeader: KalDatepickerHeaderComponent;
+  @ViewChild(forwardRef(() => KalDatepickerHeaderComponent), {static: false}) datePickerHeader: KalDatepickerHeaderComponent;
 
   /**
    * reference to the kal input
    */
-  @ViewChild(KalInputComponent) kalInput: KalInputComponent;
+  @ViewChild(KalInputComponent, {static: true}) kalInput: KalInputComponent;
 
   /**
    * Whether the calendar is in month view.

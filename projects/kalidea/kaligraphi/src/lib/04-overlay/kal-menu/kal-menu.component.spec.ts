@@ -26,7 +26,7 @@ import { KalOptionModule } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal
   `
 })
 class TestComponent {
-  @ViewChild('menu') menu: KalMenuComponent;
+  @ViewChild('menu', {static: true}) menu: KalMenuComponent;
 
   mainOutput($event) {}
 
