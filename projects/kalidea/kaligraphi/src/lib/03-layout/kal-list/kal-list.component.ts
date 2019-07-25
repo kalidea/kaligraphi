@@ -22,8 +22,9 @@ import { CollectionViewer, DataSource, ListRange } from '@angular/cdk/collection
 import { Observable, of, Subscription } from 'rxjs';
 import { isNil } from 'lodash';
 
-import { KalListItemDirective } from './kal-list-item.directive';
-import { KalListItemSelectionDirective } from './kal-list-item-selection.directive';
+import { KalListItemDirective } from './directives/kal-list-item.directive';
+import { KalListItemLastDirective } from './directives/kal-list-item-last.directive';
+import { KalListItemSelectionDirective } from './directives/kal-list-item-selection.directive';
 import { KalSelectionModel } from '../../utils/classes/kal-selection';
 import { Coerce } from '../../utils/decorators/coerce';
 import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
@@ -95,6 +96,11 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
    * Row template
    */
   @ContentChild(KalListItemDirective) row: KalListItemDirective;
+
+  /**
+   * last element template
+   */
+  @ContentChild(KalListItemLastDirective) lastItemTemplate: KalListItemLastDirective;
 
   /**
    * The reference to the element thats contains the kal list item directive
@@ -462,6 +468,8 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
     if (!this.virtualScrollConfig) {
       this.createKeyManager();
     }
+
+    console.log(this.lastItemTemplate);
   }
 
   ngOnChanges(changes: SimpleChanges): void {

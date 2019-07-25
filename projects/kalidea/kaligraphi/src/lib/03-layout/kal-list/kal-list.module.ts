@@ -6,16 +6,19 @@ import { KalIconModule } from '../../01-typography/kal-icon/kal-icon.module';
 import { KalCheckboxModule } from '../../02-form/kal-checkbox/kal-checkbox.module';
 
 import { KalListComponent } from './kal-list.component';
-import { KalListItemDirective } from './kal-list-item.directive';
-import { KalListItemSelectionDirective } from './kal-list-item-selection.directive';
+import { KalListItemDirective } from './directives/kal-list-item.directive';
+import { KalListItemLastDirective } from './directives/kal-list-item-last.directive';
+import { KalListItemSelectionDirective } from './directives/kal-list-item-selection.directive';
 
 export * from './kal-list.component';
-export * from './kal-list-item.directive';
-export * from './kal-list-item-selection.directive';
+export * from './directives/kal-list-item.directive';
+export * from './directives/kal-list-item-last.directive';
+export * from './directives/kal-list-item-selection.directive';
 
 const exports = [
   KalListComponent,
   KalListItemDirective,
+  KalListItemLastDirective,
   KalListItemSelectionDirective
 ];
 

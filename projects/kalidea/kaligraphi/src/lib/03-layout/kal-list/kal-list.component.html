@@ -25,7 +25,7 @@
 
   </ng-template>
 
-  <ng-template #rowTemplate let-item="item" let-i="i">
+  <ng-template #rowTemplate let-item="item" let-i="i" let-first="first" let-last="last">
 
     <div *ngIf="containsGroupByFunction(item, i); else separator"
          class="kal-list__group">
@@ -58,6 +58,8 @@
         <ng-container *ngTemplateOutlet="row.view; context: {
         item: item,
         index: i,
+        first: first,
+        last: last,
         selected: isRowSelected(item),
         disabled: isRowDisabled(item),
         highlighted: isHighlighted(item)
@@ -73,5 +75,9 @@
     </div>
 
   </ng-template>
+
+  coucou
+
+  <ng-container *ngTemplateOutlet="lastItemTemplate ? lastItemTemplate.view : null"></ng-container>
 
 </ng-container>
