@@ -230,8 +230,6 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     this.datePickerHeader.markForCheck();
   }
 
-  @HostListener('click', ['$event'])
-  @HostListener('focus')
   open($event: MouseEvent = null, origin: 'icon' | 'mouse' = 'mouse') {
     // stop propagation of this event
     if ($event) {
