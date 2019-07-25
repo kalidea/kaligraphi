@@ -468,8 +468,6 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
     if (!this.virtualScrollConfig) {
       this.createKeyManager();
     }
-
-    console.log(this.lastItemTemplate);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
