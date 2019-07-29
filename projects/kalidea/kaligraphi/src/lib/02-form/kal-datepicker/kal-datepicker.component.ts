@@ -197,8 +197,10 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     return this.overlay
       .position()
       .flexibleConnectedTo(this.elementRef)
+      .withPush(false)
       .withPositions([
-        {originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top'}
+        {originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top'},
+        {originX: 'start', originY: 'top', overlayX: 'start', overlayY: 'bottom'}
       ]);
   }
 
@@ -228,8 +230,6 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     this.datePickerHeader.markForCheck();
   }
 
-  @HostListener('click', ['$event'])
-  @HostListener('focus')
   open($event: MouseEvent = null, origin: 'icon' | 'mouse' = 'mouse') {
     // stop propagation of this event
     if ($event) {
@@ -249,7 +249,9 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     }
   }
 
+  @HostListener('keydown.shift.tab')
   @HostListener('keydown.tab')
+  @HostListener('keydown.enter')
   close() {
     if (this.overlayRef && this.overlayRef.hasAttached()) {
       this.overlayRef.detach();
@@ -333,9 +335,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   private createOverlay(): void {
     this.overlayRef = this.overlay.create({
       positionStrategy: this.positionStrategy,
-      scrollStrategy: this.overlay.scrollStrategies.reposition({
-        autoClose: true
-      }),
+      scrollStrategy: this.overlay.scrollStrategies.close({threshold: 300}),
       width: '240px',
     });
 
