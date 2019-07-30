@@ -25,6 +25,13 @@ export function AutoUnsubscribe() {
     if (!target[decoratorSubscriptionsListKey]) {
       const original = target.ngOnDestroy;
 
+      if (!original) {
+        throw new Error(
+          `autoUnsubscribe rxjs operator: ngOnDestroy lifecycle hook is required in ${target.constructor.name}
+        order to work in aot build. Please read issue https://github.com/angular/angular/issues/16023')`
+        );
+      }
+
       // autoUnsubscribe
       target.ngOnDestroy = function () {
         target[decoratorSubscriptionsListKey].forEach((property) => {

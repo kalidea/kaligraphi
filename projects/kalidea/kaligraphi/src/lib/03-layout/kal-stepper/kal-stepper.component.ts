@@ -13,11 +13,8 @@ import {
 } from '@angular/core';
 import { CdkStepper, StepperOrientation } from '@angular/cdk/stepper';
 import { FocusableOption } from '@angular/cdk/a11y';
-import { Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-
 import { KalStepComponent } from './kal-step.component';
-import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 
 
 // bug in cdk, should provide this class ourselves
@@ -55,9 +52,6 @@ export class KalStepperComponent extends CdkStepper implements AfterContentInit 
   @ContentChildren(KalStepHeaderDirective)
   _stepHeader: QueryList<KalStepHeaderDirective>;
 
-  @AutoUnsubscribe()
-  private subscription = Subscription.EMPTY;
-
   @Input()
   @HostBinding('attr.aria-orientation')
   get orientation() {
@@ -69,7 +63,7 @@ export class KalStepperComponent extends CdkStepper implements AfterContentInit 
   }
 
   ngAfterContentInit(): void {
-    this.subscription = this._steps.changes.pipe(
+    this._steps.changes.pipe(
       takeUntil(this._destroyed)
     ).subscribe(() => this._stateChanged());
   }
