@@ -1,8 +1,7 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewEncapsulation } from '@angular/core';
-import { KalDialogConfig, KalDialogService } from '@kalidea/kaligraphi';
-
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { AutoUnsubscribe, KalDialogConfig, KalDialogService } from '@kalidea/kaligraphi';
+import { Subscription } from 'rxjs';
 import { ExampleDialogData, OverviewExampleDialogComponent } from 'src/app/dialogs/overview-example-dialog.components';
-
 
 @Component({
   selector: 'app-dialog',
@@ -11,12 +10,12 @@ import { ExampleDialogData, OverviewExampleDialogComponent } from 'src/app/dialo
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DialogComponent {
+export class DialogComponent implements OnDestroy {
+
   /**
    * result of dialog after closing
    */
   result: any;
-
   /**
    * result of dialog after closing
    */
@@ -31,6 +30,9 @@ export class DialogComponent {
    * is this modal dismissable
    */
   hasBackdrop = true;
+
+  @AutoUnsubscribe()
+  private subscriptionsList: Subscription[] = [];
 
   constructor(private dialogService: KalDialogService, private cdr: ChangeDetectorRef) {
   }
@@ -58,10 +60,10 @@ export class DialogComponent {
     });
     const dialogRef = this.dialogService.open(OverviewExampleDialogComponent, config);
 
-    dialogRef.afterClosed.subscribe(result => {
+    this.subscriptionsList.push(dialogRef.afterClosed.subscribe(result => {
       this.resultConfirm = result;
       this.cdr.markForCheck();
-    });
+    }));
   }
 
   /**
@@ -82,10 +84,13 @@ export class DialogComponent {
 
     const dialogRef = this.dialogService.open(OverviewExampleDialogComponent, config);
 
-    dialogRef.afterClosed.subscribe(result => {
+    this.subscriptionsList.push(dialogRef.afterClosed.subscribe(result => {
       this.result = result;
       this.cdr.markForCheck();
-    });
+    }));
+  }
+
+  ngOnDestroy(): void {
   }
 
 }

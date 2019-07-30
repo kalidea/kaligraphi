@@ -15,6 +15,7 @@ import { Subscription } from 'rxjs';
 
 import { buildProviders, FormElementComponent } from '../../utils/forms/form-element.component';
 import { Coerce } from '../../utils/decorators/coerce';
+import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 
 @Component({
   selector: 'kal-checkbox',
@@ -34,6 +35,7 @@ export class KalCheckboxComponent extends FormElementComponent<boolean> implemen
   /**
    * Subscription of the valueChanges control
    */
+  @AutoUnsubscribe()
   controlSubscription: Subscription;
 
   // empty id attribute
@@ -124,9 +126,6 @@ export class KalCheckboxComponent extends FormElementComponent<boolean> implemen
   }
 
   ngOnDestroy(): void {
-    if (this.controlSubscription) {
-      this.controlSubscription.unsubscribe();
-    }
   }
 
 }

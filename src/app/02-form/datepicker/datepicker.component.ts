@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors } from '@angular/forms';
-import { KalDate } from '@kalidea/kaligraphi';
+import { AutoUnsubscribe, KalDate } from '@kalidea/kaligraphi';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-datepicker',
@@ -9,7 +10,7 @@ import { KalDate } from '@kalidea/kaligraphi';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DatepickerComponent implements OnInit {
+export class DatepickerComponent implements OnInit, OnDestroy {
 
   reverse = false;
 
@@ -26,6 +27,9 @@ export class DatepickerComponent implements OnInit {
   openOnClick = true;
 
   updateDate: String;
+
+  @AutoUnsubscribe()
+  private subscription = Subscription.EMPTY;
 
   constructor(private fb: FormBuilder) {
   }
@@ -52,7 +56,7 @@ export class DatepickerComponent implements OnInit {
       maxDate: []
     });
 
-    this.dateValidatorForm.valueChanges.subscribe(
+    this.subscription = this.dateValidatorForm.valueChanges.subscribe(
       formValues => {
         this.control.clearValidators();
 
@@ -67,6 +71,9 @@ export class DatepickerComponent implements OnInit {
         this.control.updateValueAndValidity();
       }
     );
+  }
+
+  ngOnDestroy(): void {
   }
 }
 

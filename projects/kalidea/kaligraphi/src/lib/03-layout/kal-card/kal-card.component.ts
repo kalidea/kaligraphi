@@ -4,6 +4,7 @@ import {
   Component,
   ContentChild,
   OnChanges,
+  OnDestroy,
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
@@ -20,7 +21,7 @@ import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalCardComponent extends KalCardDismissable implements AfterContentInit, OnChanges {
+export class KalCardComponent extends KalCardDismissable implements AfterContentInit, OnChanges, OnDestroy {
 
   @ContentChild(KalCardTitleComponent, {static: true}) title: KalCardTitleComponent;
 
@@ -51,6 +52,9 @@ export class KalCardComponent extends KalCardDismissable implements AfterContent
 
   ngOnChanges(changes: SimpleChanges): void {
     this.updateTitle();
+  }
+
+  ngOnDestroy(): void {
   }
 
 }
