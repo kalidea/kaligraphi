@@ -94,7 +94,7 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
   /**
    * Row template
    */
-  @ContentChild(KalListItemDirective) row: KalListItemDirective;
+  @ContentChild(KalListItemDirective, {static: true}) row: KalListItemDirective;
 
   /**
    * The reference to the element thats contains the kal list item directive

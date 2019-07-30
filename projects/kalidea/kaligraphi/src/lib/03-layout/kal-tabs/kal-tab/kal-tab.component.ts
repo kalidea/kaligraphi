@@ -46,12 +46,12 @@ export class KalTabComponent {
   /**
    * Template label of the header
    */
-  @ContentChild(KalTabLabelDirective) templateLabel: KalTabLabelDirective;
+  @ContentChild(KalTabLabelDirective, {static: true}) templateLabel: KalTabLabelDirective;
 
   /**
    * The reference to the template portal
    */
-  @ViewChild('tabContent') tabContent: TemplatePortal<any>;
+  @ViewChild('tabContent', {static: true}) tabContent: TemplatePortal<any>;
 
   /**
    * Is a tab selected

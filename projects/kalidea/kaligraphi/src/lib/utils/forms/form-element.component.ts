@@ -1,7 +1,6 @@
 import { EventEmitter, forwardRef, HostBinding, Injector, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { AbstractControl, FormHooks } from '@angular/forms/src/model';
-import { FormControl, NG_ASYNC_VALIDATORS, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
+import { AbstractControl, FormControl, NG_ASYNC_VALIDATORS, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, startWith } from 'rxjs/operators';
 
@@ -9,6 +8,7 @@ import { FormControlAccessComponent } from './form-control-access.component';
 import { uniqid } from '../helpers/uniq';
 import { Coerce } from '../decorators/coerce';
 import { AutoUnsubscribe } from '../decorators/auto-unsubscribe';
+import { FormHooks } from '../forms/form-hooks';
 
 export class FormElementComponent<T = string> extends FormControlAccessComponent<T> implements OnChanges, OnDestroy {
 

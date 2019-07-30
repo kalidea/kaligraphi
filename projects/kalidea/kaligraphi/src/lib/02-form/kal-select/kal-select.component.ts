@@ -49,7 +49,7 @@ export class KalSelectComponent
   /**
    * Overlay Portal Options
    */
-  @ViewChild('optionsPortal') optionsPortal: TemplatePortal<any>;
+  @ViewChild('optionsPortal', {static: true}) optionsPortal: TemplatePortal<any>;
 
   /**
    * Whether the component is in multiple selection mode
