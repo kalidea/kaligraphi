@@ -23,10 +23,10 @@ export function AutoUnsubscribe() {
 
     // init : add property to store subscriptions
     if (!target[decoratorSubscriptionsListKey]) {
-      const original = target.constructor.prototype.ngOnDestroy;
+      const original = target.ngOnDestroy;
 
       // autoUnsubscribe
-      target.constructor.prototype.ngOnDestroy = function () {
+      target.ngOnDestroy = function () {
         target[decoratorSubscriptionsListKey].forEach((property) => {
           const subscriptions: Subscription[] = Array.isArray(this[property]) ? this[property] : [this[property]];
 

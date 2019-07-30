@@ -5,14 +5,17 @@ import {
   forwardRef,
   Host,
   Inject,
+  OnDestroy,
   OnInit,
   Optional,
   TemplateRef,
   ViewContainerRef
 } from '@angular/core';
 import { animate, AnimationBuilder, AnimationFactory, AnimationPlayer, style } from '@angular/animations';
+import { Subscription } from 'rxjs';
 
 import { KalCarouselComponent, KalCarouselItemStatus } from './kal-carousel.component';
+import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 
 class CarouselContext<T> {
   /** item value. */
@@ -40,11 +43,14 @@ const prefix = 'kalCarouselItem';
   selector: '[' + prefix + ']',
   exportAs: prefix,
 })
-export class KalCarouselItemDirective<T> implements OnInit {
+export class KalCarouselItemDirective<T> implements OnInit, OnDestroy {
 
   private player: AnimationPlayer;
 
   private animationRunning = false;
+
+  @AutoUnsubscribe()
+  private subscription = Subscription.EMPTY;
 
   constructor(
     private viewContainerRef: ViewContainerRef,
@@ -184,10 +190,13 @@ export class KalCarouselItemDirective<T> implements OnInit {
   }
 
   ngOnInit(): void {
-    this.carousel
+    this.subscription = this.carousel
       .updateView$
       .subscribe((status: KalCarouselItemStatus) => {
         this.render(status);
       });
+  }
+
+  ngOnDestroy(): void {
   }
 }

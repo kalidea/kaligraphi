@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  OnDestroy,
   QueryList,
   ViewChildren,
   ViewEncapsulation
@@ -21,7 +22,7 @@ import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalAutocompleteComponent<T> implements AfterViewInit {
+export class KalAutocompleteComponent<T> implements AfterViewInit, OnDestroy {
 
   private selectionSubject = new Subject<KalAutocompleteOption<T>>();
 
@@ -111,5 +112,8 @@ export class KalAutocompleteComponent<T> implements AfterViewInit {
         this.initKeyManager();
       });
 
+  }
+
+  ngOnDestroy(): void {
   }
 }
