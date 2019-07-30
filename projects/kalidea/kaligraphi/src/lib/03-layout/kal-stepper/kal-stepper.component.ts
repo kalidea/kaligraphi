@@ -74,7 +74,4 @@ export class KalStepperComponent extends CdkStepper implements AfterContentInit 
     ).subscribe(() => this._stateChanged());
   }
 
-  ngOnDestroy(): void {
-  }
-
 }
