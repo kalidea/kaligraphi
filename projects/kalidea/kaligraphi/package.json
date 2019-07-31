@@ -16,7 +16,7 @@
     "@angular/core": "~8.1.2",
     "@angular/forms": "~8.1.2",
     "rxjs": "~6.3.3",
-    "lodash": "^4.17.11",
+    "lodash-es": "^4.17.15",
     "luxon": "^1.4.4"
   }
 }
