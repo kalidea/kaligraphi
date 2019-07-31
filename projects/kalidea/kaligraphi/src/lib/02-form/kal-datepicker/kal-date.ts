@@ -1,5 +1,4 @@
-import { isString } from 'util';
-import { isEmpty } from 'lodash';
+import isEmpty from 'lodash-es/isEmpty';
 import { DateObjectUnits, DateTime, Duration, DurationObject, Interval } from 'luxon';
 
 export type KalDateType = string | DateTime | Date | KalDate;
@@ -51,7 +50,7 @@ export class KalDate {
       date = DateTime.fromJSDate(rawDate);
     } else if (isEmpty(rawDate)) {
       date = DateTime.invalid('empty date');
-    } else if (isString(rawDate)) {
+    } else if (rawDate + '' === rawDate) { // string compare
       if (!format) {
         throw new Error('You should provide a date format');
       }
