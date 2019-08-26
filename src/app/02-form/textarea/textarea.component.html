@@ -12,7 +12,8 @@
 <div class="configurator">
 
   <kal-form-field>
-    <kal-select placeholder="themes" multiple="true" [(ngModel)]="themes" label="themes">
+    <kal-select placeholder="themes" [(ngModel)]="themes" label="themes">
+      <kal-option value="">none</kal-option>
       <kal-option value="reverse">reverse</kal-option>
     </kal-select>
   </kal-form-field>
