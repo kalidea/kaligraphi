@@ -1,7 +1,7 @@
 import { SelectionModel } from '@angular/cdk/collections';
+import { Observable, Subject } from 'rxjs';
 import isNil from 'lodash-es/isNil';
 import xor from 'lodash-es/xor';
-import { Observable, Subject } from 'rxjs';
 
 export class KalSelection<T extends { id?: string }> {
 
