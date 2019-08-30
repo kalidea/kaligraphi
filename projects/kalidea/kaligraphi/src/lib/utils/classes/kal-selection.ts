@@ -126,13 +126,13 @@ export class KalSelectionModel<T extends { id?: string }> extends SelectionModel
     return this._all ? this.removedSelection : this.addedSelection;
   }
 
-  select(...items: T[]): void {
-    this._all ? this.removedSelection.deselect(...items) : this.addedSelection.select(...items);
+  select(...selectedItems: T[]): void {
+    this._all ? this.removedSelection.deselect(...selectedItems) : this.addedSelection.select(...selectedItems);
     this.changes$.next(this.format());
   }
 
-  deselect(...items: T[]): void {
-    this._all ? this.removedSelection.select(...items) : this.addedSelection.deselect(...items);
+  deselect(...deselectedItems: T[]): void {
+    this._all ? this.removedSelection.select(...deselectedItems) : this.addedSelection.deselect(...deselectedItems);
     this.changes$.next(this.format());
   }
 
