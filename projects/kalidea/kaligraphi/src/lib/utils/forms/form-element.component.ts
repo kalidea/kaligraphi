@@ -198,10 +198,12 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
   setDisabledState(isDisabled: boolean): void {
     this.disabled = isDisabled;
 
-    if (isDisabled) {
-      this.control.disable({emitEvent: false});
-    } else {
-      this.control.enable({emitEvent: false});
+    if (this.control) {
+      if (isDisabled) {
+        this.control.disable({emitEvent: false});
+      } else {
+        this.control.enable({emitEvent: false});
+      }
     }
   }
 
