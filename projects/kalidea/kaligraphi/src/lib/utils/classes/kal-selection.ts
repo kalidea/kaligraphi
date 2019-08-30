@@ -1,5 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import isNil from 'lodash-es/isNil';
+import xor from 'lodash-es/xor';
 import { Observable, Subject } from 'rxjs';
 
 export class KalSelection<T extends { id?: string }> {
@@ -58,7 +59,9 @@ class SubSelectionModel<T extends { id?: string }> extends SelectionModel<T> {
     const filteredItems = [];
 
     items.forEach(item => {
-      filteredItems.push(this.getItem(item));
+      if (item && this.isSelected(item)) {
+        filteredItems.push(this.getItem(item));
+      }
     });
 
     super.deselect(...filteredItems);
@@ -79,8 +82,6 @@ export class KalSelectionModel<T extends { id?: string }> extends SelectionModel
   private isMultiple = false;
 
   private readonly changes$: Subject<KalSelection<T>> = new Subject<KalSelection<T>>();
-
-  // changed: Subject<KalSelection<T>>;
 
   constructor(params?: KalSelection<T>) {
     super();
@@ -126,13 +127,20 @@ export class KalSelectionModel<T extends { id?: string }> extends SelectionModel
     return this._all ? this.removedSelection : this.addedSelection;
   }
 
-  select(...selectedItems: T[]): void {
-    this._all ? this.removedSelection.deselect(...selectedItems) : this.addedSelection.select(...selectedItems);
-    this.changes$.next(this.format());
+  select(...items: T[]): void {
+    this.editSelection('select', ...items);
   }
 
-  deselect(...deselectedItems: T[]): void {
-    this._all ? this.removedSelection.select(...deselectedItems) : this.addedSelection.deselect(...deselectedItems);
+  deselect(...items: T[]): void {
+    this.editSelection('deselect', ...items);
+  }
+
+  private editSelection(action: 'select' | 'deselect', ...items: T[]) {
+    const actionName = !this._all ? action : xor([action], ['select', 'deselect'])[0];
+    const collection: SubSelectionModel<T> = this._all ? this.removedSelection : this.addedSelection;
+
+    collection[actionName](...items);
+
     this.changes$.next(this.format());
   }
 
