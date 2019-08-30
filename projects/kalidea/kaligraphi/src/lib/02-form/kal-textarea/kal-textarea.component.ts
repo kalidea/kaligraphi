@@ -25,10 +25,6 @@ import { Coerce } from '../../utils/decorators/coerce';
 })
 export class KalTextareaComponent extends FormElementComponent<string> implements OnDestroy, AfterContentInit {
 
-  /**
-   * form control for this component
-   */
-  control: FormControl;
   @AutoUnsubscribe()
   subscription: Subscription = Subscription.EMPTY;
 
@@ -50,17 +46,6 @@ export class KalTextareaComponent extends FormElementComponent<string> implement
 
     if (this.control) {
       this.setDisabledState(this._disabled);
-    }
-  }
-
-  /**
-   * @inheritDoc
-   */
-  setDisabledState(disabled: boolean) {
-    if (disabled) {
-      this.control.disable({emitEvent: false});
-    } else {
-      this.control.enable({emitEvent: false});
     }
   }
 

@@ -1,4 +1,14 @@
-import { EventEmitter, forwardRef, HostBinding, Injector, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
+import {
+  EventEmitter,
+  forwardRef,
+  HostBinding,
+  Injector,
+  Input,
+  OnChanges,
+  OnDestroy,
+  Output,
+  SimpleChanges
+} from '@angular/core';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { AbstractControl, FormControl, NG_ASYNC_VALIDATORS, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
@@ -33,7 +43,6 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
    * id of this form element
    */
   @Input() id = uniqid('form-');
-
   /**
    * name of this form element
    */
@@ -57,7 +66,6 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
   @Input()
   @Coerce('boolean')
   readonly: boolean;
-
 
   /**
    * event to trigger change
@@ -85,6 +93,7 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
    */
   public ngControl: NgControl;
 
+  public control: FormControl;
   /**
    * is this form element disabled
    */
@@ -188,6 +197,12 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
    */
   setDisabledState(isDisabled: boolean): void {
     this.disabled = isDisabled;
+
+    if (isDisabled) {
+      this.control.disable({emitEvent: false});
+    } else {
+      this.control.enable({emitEvent: false});
+    }
   }
 
 
@@ -214,14 +229,14 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
 
     ({disabled, updateOn, value} = this.superControl);
     updateOn = updateOnOverride || updateOn; // override value
-    const control = new FormControl({value, disabled}, {updateOn});
+    this.control = new FormControl({value, disabled}, {updateOn});
 
     // don't forget to implement super.ngOnDestroy on child element
     this.controlStatusChangedSubscription = this.superControl.statusChanges
       .pipe(startWith(1))
-      .subscribe(() => this.updateStatus(control));
+      .subscribe(() => this.updateStatus(this.control));
 
-    return control;
+    return this.control;
   }
 
   /**
