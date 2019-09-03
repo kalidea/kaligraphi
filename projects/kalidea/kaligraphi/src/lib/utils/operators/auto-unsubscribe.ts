@@ -2,7 +2,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 export const autoUnsubscribe = (componentInstance) => <T>(source: BehaviorSubject<T>) => {
-  const destroy = 'autoUnsubscribeDestroy';
+  const destroy = '_autoUnsubscribeDestroy';
   const original = componentInstance.ngOnDestroy;
 
   if (!original) {
