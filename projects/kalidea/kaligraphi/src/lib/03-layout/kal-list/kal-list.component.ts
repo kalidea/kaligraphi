@@ -20,7 +20,7 @@ import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
 import { ENTER, SPACE } from '@angular/cdk/keycodes';
 import { CollectionViewer, DataSource, ListRange } from '@angular/cdk/collections';
 import { Observable, of, Subscription } from 'rxjs';
-import { isNil } from 'lodash';
+import isNil from 'lodash-es/isNil';
 
 import { KalListItemDirective } from './kal-list-item.directive';
 import { KalListItemSelectionDirective } from './kal-list-item-selection.directive';
@@ -94,7 +94,7 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
   /**
    * Row template
    */
-  @ContentChild(KalListItemDirective) row: KalListItemDirective;
+  @ContentChild(KalListItemDirective, {static: true}) row: KalListItemDirective;
 
   /**
    * The reference to the element thats contains the kal list item directive

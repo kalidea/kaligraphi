@@ -15,7 +15,6 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { AbstractControl, FormControl } from '@angular/forms';
-import { FormHooks } from '@angular/forms/src/model';
 import { of, Subscription } from 'rxjs';
 
 import { InputFormater } from './format/input-formater';
@@ -23,6 +22,7 @@ import { KalFormaterService } from './kal-formater.service';
 import { buildProviders, FormElementComponent } from '../../utils/forms/form-element.component';
 import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 import { Coerce } from '../../utils/decorators/coerce';
+import { FormHooks } from '../../utils/forms/form-hooks';
 
 
 @Component({
@@ -76,7 +76,7 @@ export class KalInputComponent extends FormElementComponent<string> implements O
   /**
    * Reference to native input
    */
-  @ViewChild('input') inputElement: ElementRef<HTMLInputElement>;
+  @ViewChild('input', {static: true}) inputElement: ElementRef<HTMLInputElement>;
 
   // empty id attribute
   @HostBinding('attr.id')

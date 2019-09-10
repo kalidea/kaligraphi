@@ -5,7 +5,6 @@
   <article>
 
     <kal-list
-      #kalListItem
       tabindex="1"
       [icon]="icon"
       [selection]="listSelection"
@@ -28,7 +27,7 @@
     <div class="technical-value">
       <div class="technical-value__item">
         <span>Selected value</span>
-        <span>{{ selectedValue | json }}</span>
+        <span>{{ listSelection.format() | json }}</span>
       </div>
     </div>
 

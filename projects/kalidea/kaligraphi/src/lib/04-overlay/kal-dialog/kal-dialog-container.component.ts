@@ -22,7 +22,7 @@ import { KalDialogRef } from './kal-dialog-ref';
 export class KalDialogContainerComponent {
 
   /** The portal outlet inside of this container into which the dialog content will be loaded. */
-  @ViewChild(CdkPortalOutlet) portalOutlet: CdkPortalOutlet;
+  @ViewChild(CdkPortalOutlet, {static: true}) portalOutlet: CdkPortalOutlet;
 
   private dialogRef: KalDialogRef<any>;
 

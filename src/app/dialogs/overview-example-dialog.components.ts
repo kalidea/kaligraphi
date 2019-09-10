@@ -1,5 +1,6 @@
-import { Component, Inject } from '@angular/core';
-import { KAL_DIALOG_DATA, KalDialogConfig, KalDialogRef, KalDialogService } from '@kalidea/kaligraphi';
+import { Component, Inject, OnDestroy } from '@angular/core';
+import { AutoUnsubscribe, KAL_DIALOG_DATA, KalDialogConfig, KalDialogRef, KalDialogService } from '@kalidea/kaligraphi';
+import { Subscription } from 'rxjs';
 
 /**
  * type of data
@@ -49,7 +50,7 @@ export let counter = 0;
   `,
 })
 
-export class OverviewExampleDialogComponent {
+export class OverviewExampleDialogComponent implements OnDestroy {
 
   /**
    * id of dialog
@@ -60,6 +61,9 @@ export class OverviewExampleDialogComponent {
    * result of the closed dialog
    */
   result: number;
+
+  @AutoUnsubscribe()
+  private subscription = Subscription.EMPTY;
 
   constructor(
     private dialogRef: KalDialogRef<OverviewExampleDialogComponent>,
@@ -93,7 +97,7 @@ export class OverviewExampleDialogComponent {
 
     const dialogRef = this.dialogService.open(OverviewExampleDialogComponent, config);
 
-    dialogRef.afterClosed.subscribe(result => {
+    this.subscription = dialogRef.afterClosed.subscribe(result => {
       if (result) {
         this.result = result.closed;
       }
@@ -105,6 +109,9 @@ export class OverviewExampleDialogComponent {
    */
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  ngOnDestroy(): void {
   }
 
 }

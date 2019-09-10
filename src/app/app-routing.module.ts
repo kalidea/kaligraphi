@@ -4,19 +4,19 @@ import { Routes, RouterModule } from '@angular/router';
 const routes: Routes = [
   {
     path: 'typography',
-    loadChildren: './01-typography/typography.module#TypographyModule',
+    loadChildren: () => import('./01-typography/typography.module').then(m => m.TypographyModule),
   },
   {
     path: 'form',
-    loadChildren: './02-form/form.module#FormModule',
+    loadChildren: () => import('./02-form/form.module').then(m => m.FormModule),
   },
   {
     path: 'layout',
-    loadChildren: './03-layout/layout.module#LayoutModule',
+    loadChildren: () => import('./03-layout/layout.module').then(m => m.LayoutModule),
   },
   {
     path: 'overlay',
-    loadChildren: './04-overlay/overlay.module#OverlayModule',
+    loadChildren: () => import('./04-overlay/overlay.module').then(m => m.OverlayModule),
   },
 ];
 

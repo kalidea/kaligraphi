@@ -41,9 +41,9 @@ class TestComponent {
 
   clearable = false;
 
-  @ViewChild('inputChange') inputComponent: KalInputComponent;
+  @ViewChild('inputChange', {static: true}) inputComponent: KalInputComponent;
 
-  @ViewChild('inputBlur') inputComponentBlur: KalInputComponent;
+  @ViewChild('inputBlur', {static: true}) inputComponentBlur: KalInputComponent;
 
   get valueChanges() {
     return this.inputControl.valueChanges;

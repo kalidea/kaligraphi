@@ -1,5 +1,5 @@
 // hack for rollup bug: https://github.com/ng-packagr/ng-packagr/issues/217
-import {memoize} from 'lodash';
+import memoize from 'lodash-es/memoize';
 
 export function Memoize(config?: {resolver}) {
   return function (target, key, descriptor) {

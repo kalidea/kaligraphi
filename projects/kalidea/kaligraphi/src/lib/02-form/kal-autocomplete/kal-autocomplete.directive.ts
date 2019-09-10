@@ -158,7 +158,7 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
   }
 
   @HostListener('focusin')
-  private open() {
+  open() {
 
     this.close();
 

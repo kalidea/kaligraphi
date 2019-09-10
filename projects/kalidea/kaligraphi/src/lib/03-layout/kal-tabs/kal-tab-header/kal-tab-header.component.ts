@@ -45,7 +45,7 @@ export class KalTabHeaderComponent implements AfterViewInit, Highlightable {
   /**
    * The reference to the cdk portal outlet
    */
-  @ViewChild(CdkPortalOutlet) portalOutlet: CdkPortalOutlet;
+  @ViewChild(CdkPortalOutlet, {static: false}) portalOutlet: CdkPortalOutlet;
 
   constructor(private cdr: ChangeDetectorRef,
               @Optional() @Inject(forwardRef(() => KalTabGroupComponent)) public tabGroup: KalTabGroupComponent) {

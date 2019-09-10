@@ -8,6 +8,7 @@ import {
   Inject,
   InjectionToken,
   Input,
+  OnDestroy,
   Optional,
   ViewEncapsulation
 } from '@angular/core';
@@ -49,7 +50,7 @@ export const KAL_FORM_FIELDS_GLOBAL_OPTIONS =
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalFormFieldComponent implements AfterContentInit {
+export class KalFormFieldComponent implements AfterContentInit, OnDestroy {
 
   /**
    * Does the field has an error
@@ -76,10 +77,10 @@ export class KalFormFieldComponent implements AfterContentInit {
    */
   @Input() legend: string;
 
-  @ContentChild(forwardRef(() => FormElementComponent))
+  @ContentChild(forwardRef(() => FormElementComponent), {static: false})
   formElement: FormElementComponent;
 
-  @ContentChild(KalFormFieldLabelDirective)
+  @ContentChild(KalFormFieldLabelDirective, {static: true})
   labelTemplate;
 
   @AutoUnsubscribe()
@@ -151,5 +152,8 @@ export class KalFormFieldComponent implements AfterContentInit {
       this.subscriptionsList.push(inputChanges, valueChanges, stateChanges);
 
     }
+  }
+
+  ngOnDestroy(): void {
   }
 }

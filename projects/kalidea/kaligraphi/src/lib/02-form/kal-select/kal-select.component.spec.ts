@@ -246,7 +246,7 @@ describe('TestSelectComponent', () => {
     </kal-select>`
 })
 class TestSelectComponent {
-  @ViewChild(KalSelectComponent) select: KalSelectComponent;
+  @ViewChild(KalSelectComponent, {static: true}) select: KalSelectComponent;
 
   @ViewChildren(KalOptionComponent) options: QueryList<KalOptionComponent>;
 }
@@ -259,7 +259,7 @@ class TestSelectComponent {
     </kal-select>`
 })
 class TestSelectOneComponent {
-  @ViewChild(KalSelectComponent) select: KalSelectComponent;
+  @ViewChild(KalSelectComponent, {static: true}) select: KalSelectComponent;
 
   @ViewChildren(KalOptionComponent) options: QueryList<KalOptionComponent>;
 }

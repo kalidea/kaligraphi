@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit, ViewChild, ViewEncapsulatio
 import { DataSource } from '@angular/cdk/collections';
 import { KalListComponent, KalSelectionModel } from '@kalidea/kaligraphi';
 import { Observable, of } from 'rxjs';
-import { range } from 'lodash';
+import range from 'lodash-es/range';
 
 @Component({
   selector: 'app-list',
@@ -30,11 +30,6 @@ export class ListComponent implements OnInit {
   disableRowsFunction = null;
 
   /**
-   * selected value
-   */
-  selectedValue;
-
-  /**
    * items selectionMode
    */
   selectionMode = 'single';
@@ -42,7 +37,7 @@ export class ListComponent implements OnInit {
   /**
    * The list selection
    */
-  listSelection = null;
+  listSelection: KalSelectionModel<{id: string}> = null;
 
   /**
    * The virtual scroll config
@@ -56,13 +51,12 @@ export class ListComponent implements OnInit {
 
   selectRowOnContentClick = false;
 
-  @ViewChild(KalListComponent) kalListComponent: KalListComponent<{ id: string, name: string, disabled: boolean }>;
+  @ViewChild(KalListComponent, { static: true }) kalListComponent: KalListComponent<{ id: string, name: string, disabled: boolean }>;
 
   constructor() {
   }
 
   selectRow($event: KalSelectionModel<{ id: string }>) {
-    this.selectedValue = $event.format();
     this.kalListComponent.highlightedItem = null;
   }
 
@@ -101,7 +95,7 @@ export class ListComponent implements OnInit {
   }
 
   selectAll() {
-    if (this.selectedValue && this.selectedValue.all) {
+    if (this.listSelection && this.listSelection.format().all) {
       this.kalListComponent.clear();
     } else {
       this.kalListComponent.selectAll();
@@ -111,19 +105,19 @@ export class ListComponent implements OnInit {
   selectMultipleRows() {
     this.icon = 'keyboard_arrow_right';
     this.selectionMode = 'multiple';
-    this.selectedValue = null;
+    this.listSelection.clear();
   }
 
   unselectRows() {
     this.icon = null;
     this.selectionMode = 'none';
-    this.selectedValue = null;
+    this.listSelection.clear();
   }
 
   selectSingleRow() {
     this.icon = 'keyboard_arrow_right';
     this.selectionMode = null;
-    this.selectedValue = null;
+    this.listSelection.clear();
   }
 
   changeSelection() {
