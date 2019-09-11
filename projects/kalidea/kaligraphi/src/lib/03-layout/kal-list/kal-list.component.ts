@@ -19,7 +19,7 @@ import {
 import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
 import { ENTER, SPACE } from '@angular/cdk/keycodes';
 import { CollectionViewer, DataSource, ListRange } from '@angular/cdk/collections';
-import { Observable, of, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
 import isNil from 'lodash-es/isNil';
 
 import { KalListItemDirective } from './kal-list-item.directive';
@@ -27,6 +27,7 @@ import { KalListItemSelectionDirective } from './kal-list-item-selection.directi
 import { KalSelectionModel } from '../../utils/classes/kal-selection';
 import { Coerce } from '../../utils/decorators/coerce';
 import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
+import { max, tap } from 'rxjs/operators';
 
 enum KalListSelectionMode {
   None = 'none',
@@ -51,83 +52,76 @@ export interface KalVirtualScrollConfig {
 export class KalListComponent<T extends { id?: string }> implements CollectionViewer, OnInit, AfterViewInit, OnChanges, OnDestroy {
 
   /**
-   * Results list
-   */
-  results: T[] = [];
-
-  /**
    * @inheritDoc
    */
   viewChange: Observable<ListRange>;
-
   @Input() highlightedItem: T = null;
-
   /**
    * The icon to display in all templates
    */
   @Input() icon = 'keyboard_arrow_right';
-
   /**
    * Function that group items in listing
    */
   @Input() groupByFunction: (item: T) => string;
-
   /**
    * Function that disable rows in template
    */
   @Input() disableRowsFunction: (item: T) => (boolean) = null;
-
   @Coerce('boolean')
   @Input()
   selectRowOnContentClick = false;
-
   /**
    * Triggered when selection has changed
    */
   @Output() readonly selectionChange: EventEmitter<KalSelectionModel<T>> = new EventEmitter<KalSelectionModel<T>>();
-
   /**
    * Triggered when an item has been highlighted
    */
   @Output() readonly highlighted: EventEmitter<T> = new EventEmitter<T>();
-
   /**
    * Row template
    */
   @ContentChild(KalListItemDirective, {static: true}) row: KalListItemDirective;
-
   /**
    * The reference to the element thats contains the kal list item directive
    */
   @ViewChildren(KalListItemSelectionDirective) children: QueryList<KalListItemSelectionDirective>;
-
   private isInitialized = false;
-
   /**
    * Manages keyboard events for options in the panel
    */
   private keyManager: ActiveDescendantKeyManager<KalListItemSelectionDirective> = null;
-
   /**
    * Whether or not the select is focus
    */
   private isFocused: boolean;
-
   /**
    * The selected item index
    */
   private selectedItemIndex: number;
-
   /**
    * The subscription
    */
   @AutoUnsubscribe()
   private subscription: Subscription = Subscription.EMPTY;
-
   @AutoUnsubscribe()
   private selectionSubscription: Subscription = Subscription.EMPTY;
 
   constructor(private cdr: ChangeDetectorRef) {
+  }
+
+  /**
+   * Results list
+   */
+  private _results: T[] | DataSource<T> = [];
+
+  get results() {
+    return this._results;
+  }
+
+  set results(datasource: T[] | DataSource<T>) {
+    this._results = datasource;
   }
 
   private _dataSource: KalListDataSource<T> = null;
@@ -249,6 +243,10 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
     this.cdr.markForCheck();
   }
 
+  get hasConnect(): boolean {
+    return (this.dataSource as DataSource<T>).connect instanceof Function;
+  }
+
   /**
    * manage focus and blur event on listelement
    */
@@ -276,7 +274,7 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
 
     if (isOpenKey && this.keyManager.activeItem) {
       event.preventDefault();
-      const itemToSelect = this.results.find((item, i) => !!(i === this.keyManager.activeItemIndex));
+      const itemToSelect = (this.results as T[]).find((item, i) => !!(i === this.keyManager.activeItemIndex));
       this.selectItem(itemToSelect);
     } else {
       this.keyManager.onKeydown(event);
@@ -329,8 +327,10 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
 
     if (!this.isRowDisabled(item) && this._selectionMode !== KalListSelectionMode.None) {
 
-      this.selectedItemIndex = this.results.findIndex(row => row === item);
-      this.activeItem(this.selectedItemIndex);
+      if (!this.hasConnect) {
+        this.selectedItemIndex = (this.results as T[]).findIndex(row => row === item);
+        this.activeItem(this.selectedItemIndex);
+      }
 
       if (this._selectionMode === KalListSelectionMode.Multiple || !this._selection.isSelected(item)) {
 
@@ -393,8 +393,21 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
   }
 
   private countItems() {
-    if (this._selection && this.results && this._selection.numberOfItems < this.results.length) {
-      this._selection.numberOfItems = this.results.length;
+    let numberOfItems = new BehaviorSubject(0);
+
+    if (this.hasConnect && this.dataSource['total']) {
+      numberOfItems = this.dataSource['total'];
+    } else if (this.results) {
+      numberOfItems.next((this.results as T[]).length);
+    }
+
+    if (this._selection) {
+      numberOfItems.pipe(
+        tap(value => {
+          console.log(value, this._selection.numberOfItems);
+          this._selection.numberOfItems = Math.max(value, this._selection.numberOfItems);
+        })
+      ).subscribe();
     }
   }
 
@@ -424,8 +437,10 @@ export class KalListComponent<T extends { id?: string }> implements CollectionVi
   }
 
   private observeDataSource() {
-    if ((this.dataSource as DataSource<T>).connect instanceof Function) {
-      this.setResults((this.dataSource as DataSource<T>).connect(this));
+    if (this.hasConnect) {
+      this.keyManager = null;
+      this.results = this.dataSource as DataSource<T>;
+      this.countItems();
     } else if (this.dataSource instanceof Observable) {
       this.setResults((this.dataSource as Observable<T[]>));
     } else if (Array.isArray(this.dataSource)) {

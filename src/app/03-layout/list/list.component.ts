@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { DataSource } from '@angular/cdk/collections';
+import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { KalListComponent, KalSelectionModel } from '@kalidea/kaligraphi';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import range from 'lodash-es/range';
+import { delay, take, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-list',
@@ -37,7 +38,7 @@ export class ListComponent implements OnInit {
   /**
    * The list selection
    */
-  listSelection: KalSelectionModel<{id: string}> = null;
+  listSelection: KalSelectionModel<{ id: string }> = null;
 
   /**
    * The virtual scroll config
@@ -51,7 +52,7 @@ export class ListComponent implements OnInit {
 
   selectRowOnContentClick = false;
 
-  @ViewChild(KalListComponent, { static: true }) kalListComponent: KalListComponent<{ id: string, name: string, disabled: boolean }>;
+  @ViewChild(KalListComponent, {static: true}) kalListComponent: KalListComponent<{ id: string, name: string, disabled: boolean }>;
 
   constructor() {
   }
@@ -95,11 +96,12 @@ export class ListComponent implements OnInit {
   }
 
   selectAll() {
-    if (this.listSelection && this.listSelection.format().all) {
-      this.kalListComponent.clear();
-    } else {
-      this.kalListComponent.selectAll();
-    }
+    console.log(this.listSelection);
+    // if (this.listSelection && this.listSelection.format().all) {
+    //   this.kalListComponent.clear();
+    // } else {
+    //   this.kalListComponent.selectAll();
+    // }
   }
 
   selectMultipleRows() {
@@ -109,9 +111,10 @@ export class ListComponent implements OnInit {
   }
 
   unselectRows() {
-    this.icon = null;
-    this.selectionMode = 'none';
-    this.listSelection.clear();
+    this.listSelection = new KalSelectionModel<{id: string}>({added: [{id: '1'}, {id: '2'}], numberOfItems: 15000000});
+    // this.icon = null;
+    // this.selectionMode = 'none';
+    // this.listSelection.clear();
   }
 
   selectSingleRow() {
@@ -126,31 +129,89 @@ export class ListComponent implements OnInit {
 
   ngOnInit(): void {
     this.selectionMode = 'multiple';
-    this.listSelection = new KalSelectionModel<{ id: string }>({added: [{id: '1'}, {id: '2'}], all: false});
+    this.listSelection = new KalSelectionModel<{ id: string }>({added: [{id: '1'}, {id: '2'}, {id: '850'}], all: false});
   }
 
 }
 
-class TestDataSource implements DataSource<{ id: string, name: string }> {
+const list = (page: number, countElements: number) => {
+  console.log(page, countElements);
+
+  const listItem = [];
+  const countElement = ((page - 1) * countElements) + 1;
+
+  for (let i = countElement; i <= countElement + countElements; i++) {
+    listItem.push(
+      {
+        id: '' + i,
+        name: 'rTest' + i,
+        disabled: i === 1
+      },
+    );
+  }
+
+  return of({data: listItem, meta: {total: 150000}}).pipe(delay(1000));
+};
+
+class TestDataSource<T> implements DataSource<{ id: string, name: string }> {
+
+  private datastream: BehaviorSubject<T[]> = new BehaviorSubject([]);
+  private total: BehaviorSubject<number> = new BehaviorSubject(0);
+  private page = 1;
+  private countElement = 500;
+
+  constructor() {
+    this.list.pipe(
+      take(1),
+      tap(({data, meta}) => {
+        this.cachedData = data;
+        this.total.next(meta.total);
+      })).subscribe();
+  }
+
+  private _cachedData: T[] = [];
+
+  set cachedData(values: T[]) {
+    this._cachedData.push(...values);
+    this.datastream.next(this._cachedData);
+  }
+
+  get displayedElement(): number {
+    return this.page * this.countElement;
+  }
+
+  get list(): Observable<{ data, meta }> {
+    return list(this.page, this.countElement);
+  }
 
   /**
    * Return an observable that contains the items list
    */
-  connect(): Observable<any> {
-    const listItem = [];
-    for (let i = 1; i <= 500; i++) {
-      listItem.push(
-        {
-          id: '' + i,
-          name: 'rTest' + i,
-          disabled: i === 1
-        },
-      );
-    }
+  connect(collectionViewer: CollectionViewer): Observable<any> {
 
-    return of(listItem);
+    collectionViewer.viewChange.pipe(
+      tap(value => {
+        if (value.end > this.displayedElement) {
+          this.page += 1;
+          this.changePage();
+        }
+      })
+    ).subscribe();
+
+    return this.datastream;
   }
 
-  disconnect() {
+  changePage() {
+    console.log(this.page);
+    this.list.pipe(
+      take(1),
+      tap(({data}) => {
+        console.log(data);
+          this.cachedData = data;
+        }
+      )).subscribe();
+  }
+
+  disconnect(collectionViewer: CollectionViewer) {
   }
 }
