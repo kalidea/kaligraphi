@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { KalListComponent, KalSelectionModel } from '@kalidea/kaligraphi';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
 import range from 'lodash-es/range';
 import { delay, take, tap } from 'rxjs/operators';
 
@@ -68,7 +68,7 @@ export class ListComponent implements OnInit {
   changeDataSource() {
     this.virtualScrollConfig = null;
 
-    this.dataSource = range(1, 5).map(
+    this.dataSource = range(1, 20000).map(
       index => {
         return {
           id: '' + index,
@@ -96,12 +96,11 @@ export class ListComponent implements OnInit {
   }
 
   selectAll() {
-    console.log(this.listSelection);
-    // if (this.listSelection && this.listSelection.format().all) {
-    //   this.kalListComponent.clear();
-    // } else {
-    //   this.kalListComponent.selectAll();
-    // }
+    if (this.listSelection && this.listSelection.format().all) {
+      this.kalListComponent.clear();
+    } else {
+      this.kalListComponent.selectAll();
+    }
   }
 
   selectMultipleRows() {
@@ -111,10 +110,9 @@ export class ListComponent implements OnInit {
   }
 
   unselectRows() {
-    this.listSelection = new KalSelectionModel<{id: string}>({added: [{id: '1'}, {id: '2'}], numberOfItems: 15000000});
-    // this.icon = null;
-    // this.selectionMode = 'none';
-    // this.listSelection.clear();
+    this.icon = null;
+    this.selectionMode = 'none';
+    this.listSelection.clear();
   }
 
   selectSingleRow() {
@@ -129,18 +127,18 @@ export class ListComponent implements OnInit {
 
   ngOnInit(): void {
     this.selectionMode = 'multiple';
-    this.listSelection = new KalSelectionModel<{ id: string }>({added: [{id: '1'}, {id: '2'}, {id: '850'}], all: false});
+    this.listSelection = new KalSelectionModel<{ id: string }>({added: [{id: '1'}, {id: '2'}], all: false});
   }
 
 }
 
-const list = (page: number, countElements: number) => {
-  console.log(page, countElements);
-
+const list = (page: number, numberOfElements: number) => {
   const listItem = [];
-  const countElement = ((page - 1) * countElements) + 1;
+  const startElement = ((page - 1) * numberOfElements) + 1;
+  const total = 1000;
+  const numberOfTotalElements = Math.min(total, startElement + numberOfElements);
 
-  for (let i = countElement; i <= countElement + countElements; i++) {
+  for (let i = startElement; i <= numberOfTotalElements; i++) {
     listItem.push(
       {
         id: '' + i,
@@ -150,26 +148,33 @@ const list = (page: number, countElements: number) => {
     );
   }
 
-  return of({data: listItem, meta: {total: 150000}}).pipe(delay(1000));
+  return of({data: listItem, meta: {total}}).pipe(delay(1000));
 };
 
 class TestDataSource<T> implements DataSource<{ id: string, name: string }> {
 
+  private subscriptionsList: Subscription[] = [];
   private datastream: BehaviorSubject<T[]> = new BehaviorSubject([]);
   private total: BehaviorSubject<number> = new BehaviorSubject(0);
   private page = 1;
   private countElement = 500;
 
   constructor() {
-    this.list.pipe(
-      take(1),
-      tap(({data, meta}) => {
-        this.cachedData = data;
-        this.total.next(meta.total);
-      })).subscribe();
+    this.subscriptionsList.push(
+      this.list.pipe(
+        take(1),
+        tap(({data, meta}) => {
+          this.cachedData = data;
+          this.total.next(meta.total);
+        })).subscribe()
+    );
   }
 
   private _cachedData: T[] = [];
+
+  get cachedData(): T[] {
+    return this._cachedData;
+  }
 
   set cachedData(values: T[]) {
     this._cachedData.push(...values);
@@ -188,30 +193,36 @@ class TestDataSource<T> implements DataSource<{ id: string, name: string }> {
    * Return an observable that contains the items list
    */
   connect(collectionViewer: CollectionViewer): Observable<any> {
-
-    collectionViewer.viewChange.pipe(
-      tap(value => {
-        if (value.end > this.displayedElement) {
-          this.page += 1;
-          this.changePage();
-        }
-      })
-    ).subscribe();
+    this.subscriptionsList.push(
+      collectionViewer.viewChange.pipe(
+        tap(value => {
+          if (value.end > this.displayedElement && this.cachedData.length <= this.total.getValue()) {
+            this.page += 1;
+            this.changePage();
+          }
+        })
+      ).subscribe()
+    );
 
     return this.datastream;
   }
 
   changePage() {
-    console.log(this.page);
-    this.list.pipe(
-      take(1),
-      tap(({data}) => {
-        console.log(data);
-          this.cachedData = data;
-        }
-      )).subscribe();
+    this.subscriptionsList.push(
+      this.list.pipe(
+        take(1),
+        tap(({data}) => {
+            this.cachedData = data;
+          }
+        )).subscribe()
+    );
   }
 
   disconnect(collectionViewer: CollectionViewer) {
+    this.subscriptionsList.forEach(subscription => {
+      if (subscription) {
+        subscription.unsubscribe();
+      }
+    });
   }
 }
