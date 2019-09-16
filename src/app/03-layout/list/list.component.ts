@@ -96,12 +96,11 @@ export class ListComponent implements OnInit {
   }
 
   selectAll() {
-    this.dataSource = new TestDataSource();
-    // if (this.listSelection && this.listSelection.format().all) {
-    //   this.kalListComponent.clear();
-    // } else {
-    //   this.kalListComponent.selectAll();
-    // }
+    if (this.listSelection && this.listSelection.format().all) {
+      this.kalListComponent.clear();
+    } else {
+      this.kalListComponent.selectAll();
+    }
   }
 
   selectMultipleRows() {
@@ -158,7 +157,7 @@ class TestDataSource<T> implements DataSource<{ id: string, name: string }> {
   private datastream: BehaviorSubject<T[]> = new BehaviorSubject([]);
   private total: BehaviorSubject<number> = new BehaviorSubject(0);
   private page = 1;
-  private countElement = 2;
+  private countElement = 500;
 
   constructor() {
     this.subscriptionsList.push(

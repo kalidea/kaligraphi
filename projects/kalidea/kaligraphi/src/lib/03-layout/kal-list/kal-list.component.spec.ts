@@ -172,24 +172,6 @@ class TestListItemWithObservableComponent {
     },
   ]);
 
-  // dataSource = [
-  //   {
-  //     id: '1',
-  //     name: 'Item 1',
-  //     disabled: true,
-  //   },
-  //   {
-  //     id: '2',
-  //     name: 'Item 2',
-  //     disabled: false,
-  //   },
-  //   {
-  //     id: '3',
-  //     name: 'Item 3',
-  //     disabled: false,
-  //   },
-  // ];
-
   selectRow($event) {
   }
 
