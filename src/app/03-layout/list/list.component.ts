@@ -96,11 +96,12 @@ export class ListComponent implements OnInit {
   }
 
   selectAll() {
-    if (this.listSelection && this.listSelection.format().all) {
-      this.kalListComponent.clear();
-    } else {
-      this.kalListComponent.selectAll();
-    }
+    this.dataSource = new TestDataSource();
+    // if (this.listSelection && this.listSelection.format().all) {
+    //   this.kalListComponent.clear();
+    // } else {
+    //   this.kalListComponent.selectAll();
+    // }
   }
 
   selectMultipleRows() {
@@ -136,7 +137,7 @@ const list = (page: number, numberOfElements: number) => {
   const listItem = [];
   const startElement = ((page - 1) * numberOfElements) + 1;
   const total = 1000;
-  const numberOfTotalElements = Math.min(total, startElement + numberOfElements);
+  const numberOfTotalElements = Math.min(total, page * numberOfElements);
 
   for (let i = startElement; i <= numberOfTotalElements; i++) {
     listItem.push(
@@ -157,16 +158,11 @@ class TestDataSource<T> implements DataSource<{ id: string, name: string }> {
   private datastream: BehaviorSubject<T[]> = new BehaviorSubject([]);
   private total: BehaviorSubject<number> = new BehaviorSubject(0);
   private page = 1;
-  private countElement = 500;
+  private countElement = 2;
 
   constructor() {
     this.subscriptionsList.push(
-      this.list.pipe(
-        take(1),
-        tap(({data, meta}) => {
-          this.cachedData = data;
-          this.total.next(meta.total);
-        })).subscribe()
+      this.changePage().subscribe()
     );
   }
 
@@ -198,6 +194,7 @@ class TestDataSource<T> implements DataSource<{ id: string, name: string }> {
         tap(value => {
           if (value.end > this.displayedElement && this.cachedData.length <= this.total.getValue()) {
             this.page += 1;
+            this.subscriptionsList.push(this.changePage().subscribe());
             this.changePage();
           }
         })
@@ -207,15 +204,14 @@ class TestDataSource<T> implements DataSource<{ id: string, name: string }> {
     return this.datastream;
   }
 
-  changePage() {
-    this.subscriptionsList.push(
-      this.list.pipe(
-        take(1),
-        tap(({data}) => {
-            this.cachedData = data;
-          }
-        )).subscribe()
-    );
+  changePage(): Observable<any> {
+    return this.list.pipe(
+      take(1),
+      tap(({data, meta}) => {
+          this.cachedData = data;
+          this.total.next(meta.total);
+        }
+      ));
   }
 
   disconnect(collectionViewer: CollectionViewer) {

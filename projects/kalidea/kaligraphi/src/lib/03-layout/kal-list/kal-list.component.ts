@@ -61,11 +61,6 @@ export class KalListComponent<T extends { id?: string }>
   @Input() icon = 'keyboard_arrow_right';
 
   /**
-   * Function that group items in listing
-   */
-  @Input() groupByFunction: (item: T) => string;
-
-  /**
    * Function that disable rows in template
    */
   @Input() disableRowsFunction: (item: T) => (boolean) = null;
@@ -113,7 +108,26 @@ export class KalListComponent<T extends { id?: string }>
   @AutoUnsubscribe()
   private countSubscription: Subscription = Subscription.EMPTY;
 
+  private groupedByParams: { previous: T, slug: string } = {previous: null, slug: ''};
+
   constructor(private cdr: ChangeDetectorRef) {
+  }
+
+  private _groupByFunction: (item: T) => string;
+
+  /**
+   * Function that group items in listing
+   */
+  @Input()
+
+  get groupByFunction() {
+    return this._groupByFunction;
+  }
+
+  set groupByFunction(value) {
+    this.groupedByParams = {previous: null, slug: ''};
+    this._groupByFunction = value;
+    this.cdr.markForCheck();
   }
 
   private _dataSource: KalListDataSource<T> = null;
@@ -309,11 +323,25 @@ export class KalListComponent<T extends { id?: string }>
   /**
    * Check if items need to be grouped
    */
-  containsGroupByFunction(item: T, index: number): boolean {
-    const previousItem = this.results[index - 1] as T;
+  getSlugName(currentItem): string {
+    if (!this.groupByFunction) {
+      return null;
+    }
 
-    return this.groupByFunction
-      && (!previousItem || this.groupByFunction(previousItem) !== this.groupByFunction(item));
+    // save current element for next iteration
+    const {previous, slug: previousSlug} = this.groupedByParams;
+    const currentSlug = this.groupByFunction(currentItem);
+
+    // calcul slug for previous and current element
+    this.groupedByParams.previous = currentItem;
+    this.groupedByParams.slug = currentSlug;
+
+    // if first element ( no previous ) display slug of current item
+    if (!previous || previousSlug !== currentSlug) {
+      return currentSlug;
+    } else {
+      return null;
+    }
   }
 
   /**
