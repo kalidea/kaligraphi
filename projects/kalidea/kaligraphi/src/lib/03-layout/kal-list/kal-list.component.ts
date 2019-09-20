@@ -360,7 +360,7 @@ export class KalListComponent<T extends { id?: string }>
   private countItems() {
     this.countSubscription.unsubscribe();
     let numberOfItems = new BehaviorSubject(0);
-    const total = (this.dataSource as DataSource<T> & { total?: BehaviorSubject<number> }).total;
+    const total = this.dataSource ? (this.dataSource as DataSource<T> & { total?: BehaviorSubject<number> }).total : 0;
 
     if (this.hasDataSource && total) {
       numberOfItems = total;

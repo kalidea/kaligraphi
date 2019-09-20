@@ -194,7 +194,6 @@ class TestDataSource<T> implements DataSource<{ id: string, name: string }> {
           if (value.end > this.displayedElement && this.cachedData.length <= this.total.getValue()) {
             this.page += 1;
             this.subscriptionsList.push(this.changePage().subscribe());
-            this.changePage();
           }
         })
       ).subscribe()
