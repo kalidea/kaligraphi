@@ -1,7 +1,5 @@
 <ng-container *ngIf="row">
 
-  <ng-container *ngIf="virtualScrollConfig; else noVirtualScroll">
-
     <cdk-virtual-scroll-viewport [style.height.px]="virtualScrollConfig.height"
                                  [itemSize]="virtualScrollConfig.itemSize">
 
@@ -13,30 +11,18 @@
 
     </cdk-virtual-scroll-viewport>
 
-  </ng-container>
-
-  <ng-template #noVirtualScroll>
-
-    <div *ngFor="let item of results; index as i" class="kal-list__row">
-
-      <ng-container *ngTemplateOutlet="rowTemplate; context: {item: item, i: i}"></ng-container>
-
-    </div>
-
-  </ng-template>
-
   <ng-template #rowTemplate let-item="item" let-i="i">
 
-    <div *ngIf="containsGroupByFunction(item, i); else separator"
+    <div *ngIf="getSlugName(item) as slug; else separator"
          class="kal-list__group">
-      <h2>{{ groupByFunction(item) }}</h2>
+      <h2>{{ slug }}</h2>
     </div>
 
     <ng-template #separator>
       <div class="kal-list__separate"></div>
     </ng-template>
 
-    <div [kalListItemSelection]="!virtualScrollConfig"
+    <div kalListItemSelection
          class="kal-list__item"
          [ngClass]="row?.ngClass ? row.ngClass(item) : null"
          [disabled]="isRowDisabled(item)"
