@@ -1,5 +1,7 @@
 <ng-container *ngIf="row">
 
+  <ng-container *ngIf="!disabledVirtualScroll || hasDataSource; else noVirtualScroll">
+
     <cdk-virtual-scroll-viewport [style.height.px]="virtualScrollConfig.height"
                                  [itemSize]="virtualScrollConfig.itemSize">
 
@@ -10,6 +12,18 @@
       </div>
 
     </cdk-virtual-scroll-viewport>
+
+  </ng-container>
+
+  <ng-template #noVirtualScroll>
+
+    <div *ngFor="let item of results; index as i" class="kal-list__row">
+
+      <ng-container *ngTemplateOutlet="rowTemplate; context: {item: item, i: i}"></ng-container>
+
+    </div>
+
+  </ng-template>
 
   <ng-template #rowTemplate let-item="item" let-i="i">
 
