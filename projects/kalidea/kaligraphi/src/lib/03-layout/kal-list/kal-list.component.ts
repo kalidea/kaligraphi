@@ -69,6 +69,10 @@ export class KalListComponent<T extends { id?: string }>
   @Input()
   selectRowOnContentClick = false;
 
+  @Coerce('boolean')
+  @Input()
+  disabledVirtualScroll = false;
+
   /**
    * Triggered when selection has changed
    */
