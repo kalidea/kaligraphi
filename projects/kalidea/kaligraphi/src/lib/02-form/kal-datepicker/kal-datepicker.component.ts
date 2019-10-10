@@ -351,6 +351,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
 
   ngOnDestroy() {
     super.ngOnDestroy();
+    this.close();
   }
 
   ngAfterContentInit(): void {
