@@ -38,23 +38,29 @@ export class KalRadioGroupComponent extends FormElementComponent<any> implements
    * The list of all radio buttons component
    */
   @ContentChildren(forwardRef(() => KalRadioComponent), {descendants: true}) radios: QueryList<KalRadioComponent>;
+
   @ViewChild('input', {static: true}) input: ElementRef<HTMLInputElement>;
+
   /**
    * The selected radio button
    */
   private selectedRadioButton: KalRadioComponent = null;
+
   /**
    * The value of the selected radio button
    */
   private radioValue: string;
+
   /**
    * The HTML name attribute that given to all radio button in the group template
    */
   private radioButtonName = `kal-radio-button-name-${this.id}`;
+
   /**
    * Is the radio button gorup disabled
    */
   private disabledGroup = false;
+
   /**
    * The position of label after or before the radio buttons. Defaults to after
    */
@@ -353,8 +359,7 @@ export class KalRadioComponent implements OnInit, OnDestroy {
   /**
    * Unregister function for radioDispatcher
    */
-  private removeUniqueSelectionListener: () => void = () => {
-  };
+  private removeUniqueSelectionListener: () => void = () => {};
 
   /**
    * Emit an event with the radio buttons component and its value
