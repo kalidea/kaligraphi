@@ -7,7 +7,7 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./input.component.sass'],
   encapsulation: ViewEncapsulation.None,
 })
-export class InputComponent implements OnInit {
+export class InputComponent {
 
   themes = [];
 
@@ -35,9 +35,6 @@ export class InputComponent implements OnInit {
   iconClicked($event) {
     console.log($event);
     this.lastIconClicked = $event;
-  }
-
-  ngOnInit() {
   }
 
   updateDisable($event) {
