@@ -2,7 +2,8 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ContentChildren, ElementRef,
+  ContentChildren,
+  ElementRef,
   EventEmitter,
   forwardRef,
   HostBinding,
@@ -13,7 +14,8 @@ import {
   OnInit,
   Optional,
   Output,
-  QueryList, ViewChild,
+  QueryList,
+  ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
@@ -27,7 +29,7 @@ import { uniqid } from '../../utils/helpers/uniq';
 @Component({
   selector: 'kal-radio-group',
   template: `
-    <ng-content></ng-content>`,
+      <ng-content></ng-content>`,
   providers: buildProviders(KalRadioGroupComponent),
 })
 export class KalRadioGroupComponent extends FormElementComponent<any> implements OnInit {
@@ -36,33 +38,27 @@ export class KalRadioGroupComponent extends FormElementComponent<any> implements
    * The list of all radio buttons component
    */
   @ContentChildren(forwardRef(() => KalRadioComponent), {descendants: true}) radios: QueryList<KalRadioComponent>;
-
+  @ViewChild('input', {static: true}) input: ElementRef<HTMLInputElement>;
   /**
    * The selected radio button
    */
   private selectedRadioButton: KalRadioComponent = null;
-
   /**
    * The value of the selected radio button
    */
   private radioValue: string;
-
   /**
    * The HTML name attribute that given to all radio button in the group template
    */
   private radioButtonName = `kal-radio-button-name-${this.id}`;
-
   /**
    * Is the radio button gorup disabled
    */
   private disabledGroup = false;
-
   /**
    * The position of label after or before the radio buttons. Defaults to after
    */
   private labelRadioPosition: 'before' | 'after' = 'after';
-
-  @ViewChild('input', {static: true}) input: ElementRef<HTMLInputElement>;
 
   constructor(private cdr: ChangeDetectorRef, private injector: Injector) {
     super();
@@ -357,7 +353,8 @@ export class KalRadioComponent implements OnInit, OnDestroy {
   /**
    * Unregister function for radioDispatcher
    */
-  private removeUniqueSelectionListener: () => void = () => {};
+  private removeUniqueSelectionListener: () => void = () => {
+  };
 
   /**
    * Emit an event with the radio buttons component and its value
