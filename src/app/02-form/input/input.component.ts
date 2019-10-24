@@ -9,7 +9,6 @@ import { FormControl } from '@angular/forms';
 })
 export class InputComponent implements OnInit {
 
-
   themes = [];
 
   type = 'text';

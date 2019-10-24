@@ -3,12 +3,13 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   Injector,
   Input,
   OnDestroy,
+  ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 import { buildProviders, FormElementComponent } from '../../utils/forms/form-element.component';
@@ -27,6 +28,8 @@ export class KalTextareaComponent extends FormElementComponent<string> implement
 
   @AutoUnsubscribe()
   subscription: Subscription = Subscription.EMPTY;
+
+  @ViewChild('textarea', {static: true}) textarea: ElementRef<HTMLTextAreaElement>;
 
   constructor(private cdr: ChangeDetectorRef,
               private injector: Injector) {
