@@ -2,7 +2,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ContentChildren,
+  ContentChildren, ElementRef,
   EventEmitter,
   forwardRef,
   HostBinding,
@@ -13,7 +13,7 @@ import {
   OnInit,
   Optional,
   Output,
-  QueryList,
+  QueryList, ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
@@ -61,6 +61,8 @@ export class KalRadioGroupComponent extends FormElementComponent<any> implements
    * The position of label after or before the radio buttons. Defaults to after
    */
   private labelRadioPosition: 'before' | 'after' = 'after';
+
+  @ViewChild('input', {static: true}) input: ElementRef<HTMLInputElement>;
 
   constructor(private cdr: ChangeDetectorRef, private injector: Injector) {
     super();

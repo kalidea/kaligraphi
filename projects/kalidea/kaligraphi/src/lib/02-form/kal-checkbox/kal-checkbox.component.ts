@@ -1,13 +1,13 @@
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component,
+  Component, ElementRef,
   HostBinding,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
-  SimpleChanges,
+  SimpleChanges, ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
@@ -41,6 +41,8 @@ export class KalCheckboxComponent extends FormElementComponent<boolean> implemen
   // empty id attribute
   @HostBinding('attr.id')
   attributeId = null;
+
+  @ViewChild('input', {static: true}) input: ElementRef<HTMLInputElement>;
 
   private _value = false;
 
