@@ -1,7 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { KAL_FORM_FIELDS_GLOBAL_OPTIONS, KalFormFieldOptions, KaligraphiModule } from '@kalidea/kaligraphi';
+import {
+  KAL_FORM_FIELDS_GLOBAL_OPTIONS,
+  KAL_INPUT_GLOBAL_OPTIONS,
+  KalFormFieldOptions,
+  KaligraphiModule,
+  KalInputOptions
+} from '@kalidea/kaligraphi';
 
 import { FormRoutingModule } from 'src/app/02-form/form-routing.module';
 import { AutocompleteComponent } from 'src/app/02-form/autocomplete/autocomplete.component';
@@ -15,7 +21,7 @@ import { RadioComponent } from 'src/app/02-form/radio/radio.component';
 import { RaterComponent } from 'src/app/02-form/rater/rater.component';
 import { SelectComponent } from 'src/app/02-form/select/select.component';
 import { SliderComponent } from 'src/app/02-form/slider/slider.component';
-import { TextareaComponent } from './textarea/textarea.component';
+import { TextareaComponent } from 'src/app/02-form/textarea/textarea.component';
 
 @NgModule({
   imports: [
@@ -50,6 +56,12 @@ import { TextareaComponent } from './textarea/textarea.component';
           'maxlength': '{value} length {actualLength} exceed maximal {requiredLength}'
         }
       } as KalFormFieldOptions
+    },
+    {
+      provide: KAL_INPUT_GLOBAL_OPTIONS,
+      useValue: {
+        clearable: false
+      } as KalInputOptions
     }
   ],
 })

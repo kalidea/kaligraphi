@@ -37,6 +37,7 @@ export interface KalFormFieldOptions {
    * show error when the form field is displayed
    */
   showErrorAtDisplay?: boolean;
+
 }
 
 /** InjectionToken that can be used to specify the global form field errors. */

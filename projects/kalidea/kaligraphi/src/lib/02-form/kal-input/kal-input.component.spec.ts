@@ -203,9 +203,22 @@ describe('KalInputComponent', () => {
     const spy = spyOn(kalInputInstance, 'clearField');
 
     component.clearable = true;
+    component.icon = null;
+
     fixture.detectChanges();
 
-    const icons = fixture.debugElement.queryAll(By.directive(KalIconComponent));
+    let icons = fixture.debugElement.queryAll(By.directive(KalIconComponent));
+
+    fixture.detectChanges();
+
+    expect(icons.length).toEqual(0);
+
+    component.inputControl.patchValue('test');
+
+    fixture.detectChanges();
+
+    icons = fixture.debugElement.queryAll(By.directive(KalIconComponent));
+
     expect(icons.length).toEqual(1);
 
     icons[0].nativeElement.click();
