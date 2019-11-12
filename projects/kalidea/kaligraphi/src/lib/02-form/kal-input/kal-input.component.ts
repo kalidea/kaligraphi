@@ -4,11 +4,15 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  EventEmitter, HostBinding,
+  EventEmitter,
+  HostBinding,
+  Inject,
+  InjectionToken,
   Injector,
   Input,
   OnChanges,
   OnDestroy,
+  Optional,
   Output,
   SimpleChanges,
   ViewChild,
@@ -24,6 +28,15 @@ import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 import { Coerce } from '../../utils/decorators/coerce';
 import { FormHooks } from '../../utils/forms/form-hooks';
 
+export interface KalInputOptions {
+
+  clearable?: boolean;
+
+}
+
+/** InjectionToken that can be used to specify the global input options. */
+export const KAL_INPUT_GLOBAL_OPTIONS =
+  new InjectionToken<KalInputOptions>('KAL_INPUT_GLOBAL_OPTIONS');
 
 @Component({
   selector: 'kal-input',
@@ -68,27 +81,34 @@ export class KalInputComponent extends FormElementComponent<string> implements O
    * event to trigger change
    */
   @Input() updateOnEvent: FormHooks = 'change';
-
-  @Input()
-  @Coerce('boolean')
-  clearable = false;
-
   /**
    * Reference to native input
    */
   @ViewChild('input', {static: true}) inputElement: ElementRef<HTMLInputElement>;
-
   // empty id attribute
   @HostBinding('attr.id')
   attributeId = null;
-
   @AutoUnsubscribe()
   private controlValueChangedSubscription = Subscription.EMPTY;
 
   constructor(private cdr: ChangeDetectorRef,
               private injector: Injector,
-              private formaters: KalFormaterService) {
+              private formaters: KalFormaterService,
+              @Optional() @Inject(KAL_INPUT_GLOBAL_OPTIONS) private inputOptions: KalInputOptions) {
     super();
+    this.clearable = this.inputOptions ? this.inputOptions.clearable : false;
+  }
+
+  private _clearable: boolean;
+
+  @Input()
+  @Coerce('boolean')
+  get clearable(): boolean {
+    return this._clearable && (this.control && !!this.control.value);
+  }
+
+  set clearable(value: boolean) {
+    this._clearable = value;
   }
 
   get htmlInputType() {
