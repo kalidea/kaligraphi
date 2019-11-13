@@ -3,10 +3,13 @@ import { By } from '@angular/platform-browser';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Component, LOCALE_ID, ViewChild } from '@angular/core';
 import localeFr from '@angular/common/locales/fr';
-
-import { KalInputComponent } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-input/kal-input.component';
-import { KalIconComponent, KalIconModule } from 'projects/kalidea/kaligraphi/src/lib/01-typography/kal-icon/kal-icon.module';
 import { registerLocaleData } from '@angular/common';
+import {
+  KalInputComponent,
+  KalInputOptions
+} from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-input/kal-input.component';
+import { KalIconComponent, KalIconModule } from 'projects/kalidea/kaligraphi/src/lib/01-typography/kal-icon/kal-icon.module';
+import { KAL_INPUT_GLOBAL_OPTIONS } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-input/kal-input.component';
 
 @Component({
   selector: 'kal-test',
@@ -55,6 +58,7 @@ class TestComponent {
 
   set value(value: any) {
     this.inputControl.patchValue(value);
+    this.inputControlBlur.patchValue(value, {emitEvent: false});
   }
 }
 
@@ -203,9 +207,22 @@ describe('KalInputComponent', () => {
     const spy = spyOn(kalInputInstance, 'clearField');
 
     component.clearable = true;
+    component.icon = null;
+
     fixture.detectChanges();
 
-    const icons = fixture.debugElement.queryAll(By.directive(KalIconComponent));
+    let icons = fixture.debugElement.queryAll(By.directive(KalIconComponent));
+
+    fixture.detectChanges();
+
+    expect(icons.length).toEqual(0);
+
+    component.inputControl.patchValue('test');
+
+    fixture.detectChanges();
+
+    icons = fixture.debugElement.queryAll(By.directive(KalIconComponent));
+
     expect(icons.length).toEqual(1);
 
     icons[0].nativeElement.click();
@@ -227,4 +244,59 @@ describe('KalInputComponent', () => {
   it('should transfert updateOn property from main control', () => {
     expect(component.inputComponentBlur.control.updateOn).toEqual(component.inputControlBlur.updateOn);
   });
+});
+
+describe('KalInputComponent with injected kal-input options', () => {
+  let component: TestComponent;
+  let fixture: ComponentFixture<TestComponent>;
+  let kalInputInstance;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      providers: [{
+        provide: KAL_INPUT_GLOBAL_OPTIONS,
+        useValue: {
+          clearable: true
+        } as KalInputOptions
+      }],
+      imports: [
+        ReactiveFormsModule,
+        KalIconModule
+      ],
+      declarations: [TestComponent, KalInputComponent]
+    })
+      .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(TestComponent);
+    component = fixture.componentInstance;
+    kalInputInstance = fixture.debugElement.query(By.directive(KalInputComponent)).injector.get(KalInputComponent);
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should add an icon to clear field', () => {
+    const text = 'abcdefgh';
+
+    component.value = text;
+    component.clearable = false;
+    component.icon = null;
+
+    fixture.detectChanges();
+
+    expect(component.inputComponentBlur.value).toEqual(text);
+
+    const icon = fixture.debugElement.query(By.directive(KalIconComponent));
+
+    expect(icon).toBeTruthy();
+
+    icon.nativeElement.click();
+
+    expect(component.inputComponentBlur.value).toEqual('');
+  });
+
 });

@@ -43,6 +43,7 @@
          [class.kal-list__item--selected]="isRowSelected(item)"
          [class.kal-list__item--disabled]="isRowDisabled(item)"
          [class.kal-list__item--highlighted]="isHighlighted(item)"
+         [class.kal-list-item--selectionNone]="selectionMode === 'none'"
          (click)="selectItem(item)">
 
       <div class="kal-list__content">
