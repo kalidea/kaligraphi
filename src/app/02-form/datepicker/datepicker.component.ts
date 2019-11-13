@@ -64,7 +64,7 @@ export class DatepickerComponent implements OnInit, OnDestroy {
           this.control.setValidators([minDateValidator(formValues.minDate), maxDateValidator(formValues.maxDate)]);
         } else if (formValues.minDate !== null) {
           this.control.setValidators([minDateValidator(formValues.minDate)]);
-        } else if (formValues.minDate !== null) {
+        } else if (formValues.maxDate !== null) {
           this.control.setValidators([maxDateValidator(formValues.maxDate)]);
         }
 
