@@ -62,8 +62,13 @@ export class KalMonthCalendarComponent implements OnInit {
     return datesList;
   }
 
+  /**
+   * Returns the date stored in the datepicker if it's valid else the current date.
+   * We should do this to still display something with the datepicker even if the given
+   * date is invalid.
+   */
   get currentDate(): KalDate {
-    return this.datepicker.currentDate;
+    return this.datepicker.currentDate.valid ? this.datepicker.currentDate : new KalDate();
   }
 
   set currentDate(date: KalDate) {

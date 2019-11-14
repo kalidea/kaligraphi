@@ -176,7 +176,16 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
    * Display the current period : month as string + year.
    */
   get currentPeriod(): string {
-    const date = this.monthCalendar ? this.monthCalendar.displayedDate : this.currentDate;
+    let date: KalDate = null;
+
+    if (this.monthCalendar) {
+      date = this.monthCalendar.displayedDate;
+    } else if (this.currentDate.valid) {
+      date = this.currentDate;
+    } else {
+      date = new KalDate();
+    }
+
     const month = date.getMonthAsString();
     return month ? month.charAt(0).toLocaleUpperCase() + month.slice(1) + ' ' + date.getYear() : '';
   }
@@ -255,6 +264,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   close() {
     if (this.overlayRef && this.overlayRef.hasAttached()) {
       this.overlayRef.detach();
+      console.log('on détache');
     }
 
     this.clickOutsideSubscription.unsubscribe();
