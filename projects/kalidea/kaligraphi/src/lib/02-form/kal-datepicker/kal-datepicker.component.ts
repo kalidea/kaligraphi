@@ -139,16 +139,18 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   @Input()
   @Coerce('number')
   get maxYear(): number {
-    if (this._maxYear && this.isCurrentDateValid && this.currentDate.getYear() <= this._maxYear) {
+    if (this._maxYear) {
       return this._maxYear;
+    } else if (this.isCurrentDateValid) {
+      return this.currentDate.getYear() + this.yearsIncrement;
     } else {
       return DateTime.local().year + this.yearsIncrement;
     }
   }
 
   set maxYear(maxYear: number) {
-    // check if year length is valid
-    if (('' + maxYear).length !== 4) {
+    // check if we have a value and year length is valid
+    if (maxYear && ('' + maxYear).length !== 4) {
       return;
     }
 
@@ -176,7 +178,16 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
    * Display the current period : month as string + year.
    */
   get currentPeriod(): string {
-    const date = this.monthCalendar ? this.monthCalendar.displayedDate : this.currentDate;
+    let date: KalDate = null;
+
+    if (this.monthCalendar) {
+      date = this.monthCalendar.displayedDate;
+    } else if (this.currentDate.valid) {
+      date = this.currentDate;
+    } else {
+      date = new KalDate();
+    }
+
     const month = date.getMonthAsString();
     return month ? month.charAt(0).toLocaleUpperCase() + month.slice(1) + ' ' + date.getYear() : '';
   }
