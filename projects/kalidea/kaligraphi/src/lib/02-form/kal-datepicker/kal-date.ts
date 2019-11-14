@@ -18,7 +18,7 @@ export class KalDate {
   private value: DateTime;
 
   constructor(date?: KalDateType, format = 'dd/MM/yyyy') {
-    if (arguments.length === 0 || date === null || date === '') {
+    if (arguments.length === 0 || date === null) {
       this.value = DateTime.local();
     } else {
       this.value = KalDate.getDate(date, format);

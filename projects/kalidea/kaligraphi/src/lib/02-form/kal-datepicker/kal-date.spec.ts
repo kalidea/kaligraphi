@@ -61,8 +61,8 @@ describe('KalDate class', () => {
 
     // empty string
     kalDate = new KalDate('');
-    expect(kalDate.valid).toBeTruthy();
-    expect(kalDate.toString()).toEqual(currentDate);
+    expect(kalDate.valid).toBeFalsy();
+    expect(kalDate.toString()).toEqual('');
   });
 
   it('should use current date if not provided', () => {

@@ -149,7 +149,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   }
 
   set maxYear(maxYear: number) {
-    // check if if we have a value and year length is valid
+    // check if we have a value and year length is valid
     if (maxYear && ('' + maxYear).length !== 4) {
       return;
     }
