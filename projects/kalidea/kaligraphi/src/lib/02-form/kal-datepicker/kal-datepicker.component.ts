@@ -139,16 +139,18 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   @Input()
   @Coerce('number')
   get maxYear(): number {
-    if (this._maxYear && this.isCurrentDateValid && this.currentDate.getYear() <= this._maxYear) {
+    if (this._maxYear) {
       return this._maxYear;
+    } else if (this.isCurrentDateValid) {
+      return this.currentDate.getYear() + this.yearsIncrement;
     } else {
       return DateTime.local().year + this.yearsIncrement;
     }
   }
 
   set maxYear(maxYear: number) {
-    // check if year length is valid
-    if (('' + maxYear).length !== 4) {
+    // check if if we have a value and year length is valid
+    if (maxYear && ('' + maxYear).length !== 4) {
       return;
     }
 
@@ -264,7 +266,6 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   close() {
     if (this.overlayRef && this.overlayRef.hasAttached()) {
       this.overlayRef.detach();
-      console.log('on détache');
     }
 
     this.clickOutsideSubscription.unsubscribe();
