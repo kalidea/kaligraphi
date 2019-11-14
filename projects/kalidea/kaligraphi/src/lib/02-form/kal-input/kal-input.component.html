@@ -10,12 +10,12 @@
     (blur)="formatValue()"
     [formControl]="control">
 
-  <kal-icon *ngIf="clearable"
+  <kal-icon *ngIf="shouldDisplayClearIcon"
             (click)="clearField()">
     clear
   </kal-icon>
 
-  <kal-icon *ngIf="icon && !clearable"
+  <kal-icon *ngIf="icon && !shouldDisplayClearIcon"
             (click)="customIconClicked($event)">
     {{ icon }}
   </kal-icon>
