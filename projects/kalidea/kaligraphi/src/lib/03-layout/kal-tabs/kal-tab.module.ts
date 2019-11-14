@@ -11,14 +11,10 @@ import { KalTabLabelDirective } from './kal-tab-label.directive';
 export * from './kal-tab/kal-tab.component';
 export * from './kal-tab-change';
 export * from './kal-tab-group/kal-tab-group.component';
-export * from './kal-tab-header/kal-tab-header.component';
-export * from './kal-tab-body/kal-tab-body.component';
 export * from './kal-tab-label.directive';
 
 const exports = [
   KalTabGroupComponent,
-  KalTabHeaderComponent,
-  KalTabBodyComponent,
   KalTabComponent,
   KalTabLabelDirective,
 ];
@@ -28,8 +24,12 @@ const exports = [
     CommonModule,
     PortalModule,
   ],
-  exports: exports,
-  declarations: exports
+  exports,
+  declarations: [
+    ...exports,
+    KalTabHeaderComponent,
+    KalTabBodyComponent
+  ]
 })
 export class KalTabModule {
 }
