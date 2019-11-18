@@ -13,6 +13,7 @@ import { delay, take, tap } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ListComponent implements OnInit {
+
   items = [];
 
   /**
@@ -52,17 +53,19 @@ export class ListComponent implements OnInit {
 
   selectRowOnContentClick = false;
 
+  highlightedItem = null;
+
   @ViewChild(KalListComponent, {static: true}) kalListComponent: KalListComponent<{ id: string, name: string, disabled: boolean }>;
 
   constructor() {
   }
 
   selectRow($event: KalSelectionModel<{ id: string }>) {
-    this.kalListComponent.highlightedItem = null;
+    this.listSelection = $event;
   }
 
-  highlightItem() {
-    this.listSelection = new KalSelectionModel();
+  highlightItem($event) {
+    this.highlightedItem = $event;
   }
 
   changeDataSource() {
