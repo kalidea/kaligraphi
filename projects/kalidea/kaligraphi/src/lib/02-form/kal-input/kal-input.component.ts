@@ -106,7 +106,7 @@ export class KalInputComponent extends FormElementComponent<string> implements O
   @Input()
   @Coerce('boolean')
   get clearable(): boolean {
-    return this._clearable && (this.control && !!this.control.value);
+    return this._clearable;
   }
 
   set clearable(value: boolean) {
@@ -126,6 +126,10 @@ export class KalInputComponent extends FormElementComponent<string> implements O
    */
   get formater(): InputFormater {
     return this.formaters.get(this.type);
+  }
+
+  get shouldDisplayClearIcon(): boolean {
+    return this._clearable && !this.disabled && (this.control && !!this.control.value);
   }
 
   clearField() {
