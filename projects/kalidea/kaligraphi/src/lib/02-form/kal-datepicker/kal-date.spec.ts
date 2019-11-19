@@ -64,4 +64,36 @@ describe('KalDate class', () => {
     expect(kalDate.toString()).toEqual(currentDate);
   });
 
+  it('should thow an error if there\'s no default parse format provided', () => {
+    // https://ajsblackbelt.wordpress.com/2014/05/18/jasmine-tests-expect-tothrow/
+    expect(() => new KalDate('18/11/2019', null)).toThrowError('You should provide a date format');
+  });
+
+  it('should handle comparison functions', () => {
+
+    // is same
+    expect(new KalDate('18/11/2019').isSame('18/11/2019')).toBeTruthy();
+    expect(new KalDate('18/11/2019').isSame(new KalDate('08/10/2019'))).toBeFalsy();
+
+    // is before
+    expect(new KalDate('18/11/2019').isBefore('19/11/2019')).toBeTruthy();
+    expect(new KalDate('18/11/2019').isBefore(new KalDate('01/01/2019'))).toBeFalsy();
+
+    // is after
+    expect(new KalDate('18/11/2019').isAfter('17/11/2019')).toBeTruthy();
+    expect(new KalDate('18/11/2019').isAfter(new KalDate('31/12/2019'))).toBeFalsy();
+
+    // is between
+    expect(new KalDate('18/11/2019').isBetween('01/11/2019', '31/12/2019')).toBeTruthy();
+    expect(new KalDate('18/11/2019').isBetween(new KalDate('19/11/2019'), new KalDate('31/11/2019'))).toBeFalsy();
+
+    // is between with exclusions
+    expect(new KalDate('18/11/2019').isBetween('18/11/2019', '19/11/2019', {start: true, end: false})).toBeFalsy();
+    expect(new KalDate('19/11/2019').isBetween('18/11/2019', '19/11/2019', {start: false, end: true})).toBeFalsy();
+
+    // is today
+    expect(new KalDate().isToday()).toBeTruthy();
+    expect(new KalDate('15/11/2019').isToday()).toBeFalsy();
+  });
+
 });
