@@ -7,9 +7,15 @@ import {
   Output,
   ViewEncapsulation
 } from '@angular/core';
-import { DateObjectUnits, Info } from 'luxon';
+import dayjs, { UnitType } from 'dayjs';
+import localeData from 'dayjs/plugin/localeData';
 
 import { KalDate } from '../kal-date';
+
+/**
+ * Configure DayJS
+ */
+dayjs.extend(localeData);
 
 @Component({
   selector: 'kal-datepicker-multi-view',
@@ -20,12 +26,6 @@ import { KalDate } from '../kal-date';
 })
 
 export class KalDatepickerMultiViewComponent implements AfterViewInit {
-
-  /**
-   * Returns an array of standalone short month names.
-   * @example ['Jan', 'Feb', ...]
-   */
-  readonly shortMonths = Info.months('short');
 
   @Input() displayedDate: KalDate;
 
@@ -50,6 +50,14 @@ export class KalDatepickerMultiViewComponent implements AfterViewInit {
     }
 
     return years;
+  }
+
+  /**
+   * Returns an array of standalone short month names.
+   * @example ['Jan', 'Feb', ...]
+   */
+  get shortMonths(): string[] {
+    return dayjs().localeData().monthsShort();
   }
 
   /**
