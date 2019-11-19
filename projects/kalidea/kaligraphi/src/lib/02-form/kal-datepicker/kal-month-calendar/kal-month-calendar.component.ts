@@ -16,6 +16,7 @@ import weekday from 'dayjs/plugin/weekday';
 
 import { KalDatepickerComponent } from '../kal-datepicker.component';
 import { KalDate } from '../kal-date';
+import { DateUnits } from '../kal-datepicker-multi-view/kal-datepicker-multi-view.component';
 import { capitalize } from '../../../utils/helpers/strings';
 import { move } from '../../../utils/helpers/arrays';
 
@@ -101,15 +102,15 @@ export class KalMonthCalendarComponent implements OnInit {
    * Change displayed month according to which arrow was clicked on datepicker header.
    */
   updateMonth(amount: number) {
-    this.displayedDate = this.displayedDate.add({months: amount});
+    this.displayedDate = this.displayedDate.add(amount, 'month');
     this.cdr.markForCheck();
   }
 
   /**
    * Change displayed month according to the selected month and the selected year.
    */
-  updateDate(dateUnit: DateObjectUnits) {
-    this.displayedDate = this.displayedDate.set(dateUnit);
+  updateDate(dateUnit: DateUnits) {
+    this.displayedDate = this.displayedDate.set(dateUnit.unit, dateUnit.value);
     this.cdr.markForCheck();
   }
 

@@ -12,6 +12,11 @@ import localeData from 'dayjs/plugin/localeData';
 
 import { KalDate } from '../kal-date';
 
+export interface DateUnits {
+  unit: UnitType;
+  value: number;
+}
+
 /**
  * Configure DayJS
  */
@@ -35,9 +40,9 @@ export class KalDatepickerMultiViewComponent implements AfterViewInit {
 
   /**
    * Emits event with which type of date was selected.
-   * Its type is `DateObjectUnits` but we're only using `month` and `year` in this type.
+   * Its type is `DateUnits` but in this case we're only using `month` and `year` for `DateUnits.unit` property.
    */
-  @Output() selectedDate = new EventEmitter<DateObjectUnits>();
+  @Output() selectedDate = new EventEmitter<DateUnits>();
 
   /**
    * Years to display.
@@ -63,7 +68,7 @@ export class KalDatepickerMultiViewComponent implements AfterViewInit {
   /**
    * Emits selected date object.
    */
-  selectDate(unit: DateObjectUnits): void {
+  selectDate(unit: DateUnits): void {
     this.selectedDate.emit(unit);
   }
 
