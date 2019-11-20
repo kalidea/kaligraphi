@@ -1,6 +1,7 @@
 import dayjs, { Dayjs, OpUnitType, UnitType } from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import isBetween from 'dayjs/plugin/isBetween';
+import { formatDate } from './kal-date-parser';
 
 export type KalDateType = string | Dayjs | Date | KalDate;
 
@@ -24,7 +25,7 @@ export class KalDate {
    */
   private value: Dayjs;
 
-  constructor(date?: KalDateType, format = 'DD/MM/YYYY') {
+  constructor(date?: KalDateType, format = 'dd/MM/yyyy') {
     if (arguments.length === 0 || date === null) {
       this.value = dayjs();
     } else {
@@ -50,17 +51,17 @@ export class KalDate {
    * Returns a DayJS object
    * @param format Date format to provide if date is a `string`
    */
-  private static getDate(rawDate: KalDateType, format = 'DD/MM/YYYY'): Dayjs {
+  private static getDate(rawDate: KalDateType, format = 'dd/MM/yyyy'): Dayjs {
     let date: Dayjs;
 
     if (rawDate instanceof Date) {
       date = dayjs(rawDate);
-    } else if (rawDate + '' === rawDate) { // string compare
+    } else if (rawDate + '' === rawDate) {
       if (!format) {
         throw new Error('You should provide a date format');
       }
 
-      date = dayjs(rawDate, format);
+      date = dayjs(rawDate, formatDate(format));
     } else if (rawDate instanceof KalDate) {
       date = (rawDate as KalDate).getDate();
     } else {
@@ -76,6 +77,19 @@ export class KalDate {
    */
   toDate(): Date | null {
     return this.valid ? this.getDate().toDate() : null;
+  }
+
+  /**
+   * Returns a string that contains the date formatted with the given format.
+   */
+  toFormat(format = 'dd/MM/yyyy'): string {
+    const date = this.getDate();
+
+    if (date && date.isValid()) {
+      return date.format(formatDate(format));
+    } else {
+      return '';
+    }
   }
 
   /**
@@ -146,16 +160,16 @@ export class KalDate {
   }
 
   /**
-   * Whether the current date is between the `start` a,d `end` dates.
+   * Whether the current date is between the `start` and `end` dates.
    * @see https://github.com/iamkun/dayjs/blob/dev/docs/en/Plugin.md#isbetween
    */
   isBetween(start: KalDateType,
             end: KalDateType,
-            exlusions = {start: false, end: false}): boolean {
+            exclusions = {start: false, end: false}): boolean {
     const startDate = coerceKalDateProperty(start).getDate();
     const endDate = coerceKalDateProperty(end).getDate();
 
-    const exclusionsString = (exlusions.start ? '(' : '[') + (exlusions.end ? ')' : ']');
+    const exclusionsString = (exclusions.start ? '(' : '[') + (exclusions.end ? ')' : ']');
 
     return this.value.isBetween(startDate, endDate, null, exclusionsString);
   }
@@ -172,13 +186,7 @@ export class KalDate {
    * convert this date to string
    */
   toString(): string {
-    const date = this.getDate();
-
-    if (date && date.isValid()) {
-      return date.format('DD/MM/YYYY');
-    } else {
-      return '';
-    }
+    return this.toFormat();
   }
 
 }
