@@ -8,7 +8,6 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import dayjs, { UnitType } from 'dayjs';
-import localeData from 'dayjs/plugin/localeData';
 
 import { KalDate } from '../kal-date';
 
@@ -16,11 +15,6 @@ export interface DateUnits {
   unit: UnitType;
   value: number;
 }
-
-/**
- * Configure DayJS
- */
-dayjs.extend(localeData);
 
 @Component({
   selector: 'kal-datepicker-multi-view',

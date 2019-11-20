@@ -11,7 +11,6 @@ import {
 } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import dayjs from 'dayjs';
-import localeData from 'dayjs/plugin/localeData';
 import weekday from 'dayjs/plugin/weekday';
 
 import { KalDatepickerComponent } from '../kal-datepicker.component';
@@ -23,7 +22,6 @@ import { move } from '../../../utils/helpers/arrays';
 /**
  * Configure DayJS
  */
-dayjs.extend(localeData);
 dayjs.extend(weekday);
 
 @Component({
@@ -67,7 +65,7 @@ export class KalMonthCalendarComponent implements OnInit {
    * @example ['M', 'T', ...]
    */
   get narrowWeekDays(): string[] {
-    const days: string[] = dayjs().localeData().weekdaysMin().map(day => capitalize(day).charAt(0));
+    const days: string[] = dayjs().localeData().weekdaysMin().map(day => day.charAt(0).toLocaleUpperCase());
     const firstDayOfWeek: number = dayjs().localeData().firstDayOfWeek();
 
     // Handle the display depending on the beginning of the week.
