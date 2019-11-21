@@ -3,11 +3,11 @@ import dayjs from 'dayjs';
 
 // config
 const dates = [
-  {format: 'DD/MM/YYYY', date: '08/09/2018'},
-  {format: 'DD/MM/YY', date: '08/09/18'},
-  {format: 'DD/M/YY', date: '08/9/18'},
-  {format: 'D/MM/YY', date: '8/09/18'},
-  {format: 'D/M/YY', date: '8/9/18'},
+  {format: 'dd/MM/yyyy', date: '08/09/2018'},
+  {format: 'dd/MM/yy', date: '08/09/18'},
+  {format: 'dd/M/yy', date: '08/9/18'},
+  {format: 'd/MM/yy', date: '8/09/18'},
+  {format: 'd/M/yy', date: '8/9/18'},
 ];
 
 describe('KalDate class', () => {
@@ -21,8 +21,8 @@ describe('KalDate class', () => {
       .toEqual(stringDate, 'should be able to parse string format');
 
     // DayJS format
-    const currentDateLuxon = dayjs(stringDate, 'DD/MM/YYYY');
-    expect(new KalDate(currentDateLuxon).toString())
+    const currentDateDayJS = dayjs(stringDate, 'DD/MM/YYYY');
+    expect(new KalDate(currentDateDayJS).toString())
       .toEqual(stringDate, 'should be able to parse luxon format');
 
     // KalDate format
