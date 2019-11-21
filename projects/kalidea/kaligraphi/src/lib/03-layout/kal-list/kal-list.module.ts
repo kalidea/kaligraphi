@@ -11,12 +11,10 @@ import { KalListItemSelectionDirective } from './kal-list-item-selection.directi
 
 export * from './kal-list.component';
 export * from './kal-list-item.directive';
-export * from './kal-list-item-selection.directive';
 
 const exports = [
   KalListComponent,
   KalListItemDirective,
-  KalListItemSelectionDirective
 ];
 
 @NgModule({
@@ -26,8 +24,11 @@ const exports = [
     ScrollingModule,
     KalCheckboxModule
   ],
-  declarations: exports,
-  exports: exports
+  declarations: [
+    ...exports,
+    KalListItemSelectionDirective
+  ],
+  exports
 })
 export class KalListModule {
 }
