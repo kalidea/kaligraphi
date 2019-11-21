@@ -280,6 +280,9 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     // Set the current view to `month` because if the datepicker is
     // closed then opened it will keep its last view.
     this.currentView = 'month';
+
+    // Reset displayed date to avoid keeping selected month and year in multiview.
+    this.monthCalendar.displayedDate = this.currentDate;
   }
 
   /**
