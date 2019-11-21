@@ -107,8 +107,8 @@ export class KalMonthCalendarComponent implements OnInit {
   /**
    * Change displayed month according to the selected month and the selected year.
    */
-  updateDate(dateUnit: DateUnits) {
-    this.displayedDate = this.displayedDate.set(dateUnit.unit, dateUnit.value);
+  updateDate({unit, value}: DateUnits) {
+    this.displayedDate = this.displayedDate.set(unit, value);
     this.cdr.markForCheck();
   }
 
