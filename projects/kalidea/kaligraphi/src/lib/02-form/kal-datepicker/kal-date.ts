@@ -1,7 +1,7 @@
 import dayjs, { Dayjs, OpUnitType, UnitType } from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import isBetween from 'dayjs/plugin/isBetween';
-import { formatDate } from './kal-date-parser';
+import { formatDate } from './kal-date-converter';
 
 export type KalDateType = string | Dayjs | Date | KalDate;
 

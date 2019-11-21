@@ -1,6 +1,6 @@
-import { formatDate } from './kal-date-parser';
+import { formatDate } from './kal-date-converter';
 
-describe('KalDateParser', () => {
+describe('KalDateConverter', () => {
 
   it('should parse years', () => {
     ['yy', 'yyyy'].forEach(format => {
