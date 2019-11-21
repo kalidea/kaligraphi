@@ -1,7 +1,15 @@
-import isEmpty from 'lodash-es/isEmpty';
-import { DateObjectUnits, DateTime, Duration, DurationObject, Interval } from 'luxon';
+import dayjs, { Dayjs, OpUnitType, UnitType } from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import isBetween from 'dayjs/plugin/isBetween';
+import { formatDate } from './kal-date-converter';
 
-export type KalDateType = string | DateTime | Date | KalDate;
+export type KalDateType = string | Dayjs | Date | KalDate;
+
+/**
+ * Configure DayJS
+ */
+dayjs.extend(customParseFormat);
+dayjs.extend(isBetween);
 
 /**
  * Helper
@@ -13,163 +21,172 @@ export function coerceKalDateProperty(rawDate: KalDateType): KalDate {
 export class KalDate {
 
   /**
-   * local moment value for this object
+   * Current DayJS class object.
    */
-  private value: DateTime;
+  private value: Dayjs;
 
   constructor(date?: KalDateType, format = 'dd/MM/yyyy') {
     if (arguments.length === 0 || date === null) {
-      this.value = DateTime.local();
+      this.value = dayjs();
     } else {
       this.value = KalDate.getDate(date, format);
     }
   }
 
   /**
-   * getter for validity of the current date
+   * Whether the KalDate is valid.
    */
-  get valid() {
-    return this.value && this.value.isValid;
+  get valid(): boolean {
+    return this.value && this.value.isValid();
   }
 
   /**
-   * parse rawDate and return a KalDate Object
+   * Parse a raw date and returns a KalDate object.
    */
   static parseDate(rawDate: KalDateType): KalDate {
     return new KalDate(rawDate);
   }
 
   /**
-   * Returns a luxon `DateTime` object
+   * Returns a DayJS object
    * @param format Date format to provide if date is a `string`
    */
-  private static getDate(rawDate: KalDateType, format = 'dd/MM/yyyy'): DateTime {
-    let date: DateTime;
+  private static getDate(rawDate: KalDateType, format = 'dd/MM/yyyy'): Dayjs {
+    let date: Dayjs;
 
     if (rawDate instanceof Date) {
-      date = DateTime.fromJSDate(rawDate);
-    } else if (isEmpty(rawDate)) {
-      date = DateTime.invalid('empty date');
-    } else if (rawDate + '' === rawDate) { // string compare
+      date = dayjs(rawDate);
+    } else if (rawDate + '' === rawDate) {
       if (!format) {
         throw new Error('You should provide a date format');
       }
 
-      date = DateTime.fromFormat(rawDate as string, format);
+      date = dayjs(rawDate, formatDate(format));
     } else if (rawDate instanceof KalDate) {
       date = (rawDate as KalDate).getDate();
     } else {
-      // else this is a luxon date
-      date = rawDate as DateTime;
+      // else this is a DayJS date
+      date = rawDate as Dayjs;
     }
 
     return date;
   }
 
   /**
-   * return JS Date format
+   * Return JS Date format
    */
-  toDate() {
-    return this.valid ? this.getDate().toJSDate() : null;
+  toDate(): Date | null {
+    return this.valid ? this.getDate().toDate() : null;
   }
 
   /**
-   * get day of the month from the current date
+   * Returns a string that contains the date formatted with the given format.
+   */
+  toFormat(format = 'dd/MM/yyyy'): string {
+    const date = this.getDate();
+
+    if (date && date.isValid()) {
+      return date.format(formatDate(format));
+    } else {
+      return '';
+    }
+  }
+
+  /**
+   * Get day.
    */
   getDay(): number {
-    return this.value.day;
-  }
-
-  getMonth(): number {
-    return this.value.month;
+    return this.value.date();
   }
 
   /**
-   * get year of the current date
+   * Get month.
+   */
+  getMonth(): number {
+    return this.value.month();
+  }
+
+  /**
+   * Get year.
    */
   getYear(): number {
-    return this.value.year;
+    return this.value.year();
   }
 
   /**
    * add {amount} {unit} to this date
    */
-  add(duration: Duration | number | DurationObject) {
-    this.value = this.value.plus(duration);
+  add(amount: number, unit: OpUnitType): KalDate {
+    this.value = this.value.add(amount, unit);
     return this;
   }
 
-  getMonthAsString(): string {
-    return this.value.monthLong;
-  }
-
   /**
-   * return moment representation of this object
+   * Returns DayJS representation of KalDate.
    */
-  getDate(): DateTime {
+  getDate(): Dayjs {
     return this.value;
   }
 
   /**
-   * return true if current date is same as provided dates
+   * Returns a boolean indicating whether the current date is the same as the supplied date.
    */
-  isSame(rawDate: KalDateType) {
-    const date = KalDate.getDate(rawDate);
-    return this.value.hasSame(date, 'days');
+  isSame(date: KalDateType, unit: OpUnitType = 'day'): boolean {
+    const comparisonDate = KalDate.getDate(date);
+    return this.value.isSame(comparisonDate, unit);
   }
 
   /**
-   * return true if current date is before provided date
+   * Returns a boolean indicating whether the current date is before the supplied date.
    */
-  isBefore(rawDate: KalDateType) {
-    const date: DateTime = KalDate.getDate(rawDate);
-    return this.value < date;
+  isBefore(date: KalDateType, unit: OpUnitType = 'day'): boolean {
+    const comparisonDate = KalDate.getDate(date);
+    return this.value.isBefore(comparisonDate, unit);
   }
 
   /**
-   * return true if current date is after provided date
+   * Returns a boolean indicating whether the current date is after the supplied date.
    */
-  isAfter(rawDate: KalDateType) {
-    const date: DateTime = KalDate.getDate(rawDate);
-    return this.value > date;
+  isAfter(date: KalDateType, unit: OpUnitType = 'day'): boolean {
+    const comparisonDate = KalDate.getDate(date);
+    return this.value.isAfter(comparisonDate, unit);
   }
 
   /**
    * return true if current date is today
    */
-  isToday() {
-    return this.value.hasSame(DateTime.local(), 'days');
+  isToday(): boolean {
+    return this.isSame(dayjs());
   }
 
   /**
-   * @see Moment.isBetween
+   * Whether the current date is between the `start` and `end` dates.
+   * @see https://github.com/iamkun/dayjs/blob/dev/docs/en/Plugin.md#isbetween
    */
   isBetween(start: KalDateType,
-            end: KalDateType) {
-    start = coerceKalDateProperty(start).getDate();
-    end = coerceKalDateProperty(end).getDate();
-    return Interval.fromDateTimes(start, end).contains(this.value);
+            end: KalDateType,
+            exclusions = {start: false, end: false}): boolean {
+    const startDate = coerceKalDateProperty(start).getDate();
+    const endDate = coerceKalDateProperty(end).getDate();
+
+    const exclusionsString = (exclusions.start ? '(' : '[') + (exclusions.end ? ')' : ']');
+
+    return this.value.isBetween(startDate, endDate, null, exclusionsString);
   }
 
   /**
    * set current date for this object
    */
-  set(dateUnit: DateObjectUnits): KalDate {
-    this.value = this.value.set(dateUnit);
+  set(unit: UnitType, value: number): KalDate {
+    this.value = this.value.set(unit, value);
     return this;
   }
 
   /**
    * convert this date to string
    */
-  toString() {
-    const date = this.getDate();
-
-    if (date && date.isValid) {
-      return date.toFormat('dd/MM/yyyy');
-    } else {
-      return '';
-    }
+  toString(): string {
+    return this.toFormat();
   }
 
 }
