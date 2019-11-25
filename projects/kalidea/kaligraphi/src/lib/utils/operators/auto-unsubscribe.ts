@@ -2,6 +2,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 export const autoUnsubscribe = (componentInstance) => <T>(source: BehaviorSubject<T>) => {
+  const destroy = '_autoUnsubscribeDestroy';
   const original = componentInstance.ngOnDestroy;
 
   if (!original) {
@@ -11,16 +12,16 @@ export const autoUnsubscribe = (componentInstance) => <T>(source: BehaviorSubjec
       );
   }
 
-  componentInstance['_destroy'] = new Subject();
+  componentInstance[destroy] = new Subject();
 
   componentInstance.ngOnDestroy = function () {
     if (original) {
       original.apply(this, arguments);
     }
 
-    componentInstance['_destroy'].next(true);
-    componentInstance['_destroy'].complete();
+    componentInstance[destroy].next(true);
+    componentInstance[destroy].complete();
   };
 
-  return source.pipe(takeUntil(componentInstance['_destroy']));
+  return source.pipe(takeUntil<T>(componentInstance[destroy]));
 };
