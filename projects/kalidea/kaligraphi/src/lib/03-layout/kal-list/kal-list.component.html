@@ -2,7 +2,7 @@
 
   <ng-container *ngIf="!disabledVirtualScroll || hasDataSource; else noVirtualScroll">
 
-    <cdk-virtual-scroll-viewport [style.height.px]="virtualScrollConfig.height"
+    <cdk-virtual-scroll-viewport [style.height]="virtualScrollConfig.height"
                                  [itemSize]="virtualScrollConfig.itemSize">
 
       <div *cdkVirtualFor="let item of results; index as i" class="kal-list__row">

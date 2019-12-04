@@ -35,7 +35,7 @@ type KalListDataSource<T> = DataSource<T> & { total?: BehaviorSubject<number> } 
 
 export interface KalVirtualScrollConfig {
   itemSize: number;
-  height: number;
+  height?: string;
 }
 
 @Component({
@@ -222,7 +222,7 @@ export class KalListComponent<T extends { id?: string }>
   /**
    * The virtual scroll config
    */
-  private _virtualScrollConfig: KalVirtualScrollConfig = {itemSize: 40, height: 500};
+  private _virtualScrollConfig: KalVirtualScrollConfig = {itemSize: 40};
 
   @Input()
   get virtualScrollConfig(): KalVirtualScrollConfig {
@@ -230,10 +230,10 @@ export class KalListComponent<T extends { id?: string }>
   }
 
   set virtualScrollConfig(value: KalVirtualScrollConfig) {
-    value = value || {itemSize: 40, height: 500};
+    value = value || {itemSize: 40};
 
     this._virtualScrollConfig = {
-      height: value.height || 500,
+      height: value.height || null,
       itemSize: value.itemSize || 40
     };
 
