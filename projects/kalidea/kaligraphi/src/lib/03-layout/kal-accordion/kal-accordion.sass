@@ -2,19 +2,36 @@
 =kal-accordion($parameters)
   kal-accordion
     kal-expansion-panel
+      display: block
+      padding: 8px
+      border-bottom: 1px solid get("palettes.grey.wf300",$kal-parameters)
       kal-expansion-panel-header
         display: flex
         flex-flow: row wrap
-        justify-content: flex-start
+        justify-content: space-between
         align-items: center
-
-        > span:nth-child(1)
-          flex: 1
         > span:nth-child(2)
           i
             color: get("palettes.grey.wf300",$kal-parameters)
-
-        &[aria-disabled="false"]:hover
+        &[aria-disabled="false"]:hover, &[aria-disabled="false"]:active, &[aria-disabled="false"]:focus
           cursor: pointer
+          color: get("palettes.orange.normal",$kal-parameters)
           i
             color: get("palettes.orange.normal",$kal-parameters)
+      > div
+        kal-expansion-panel-content
+          display: block
+          padding: 10px 0
+    &.kal-theme--bordered
+      kal-expansion-panel
+        border: 1px solid get("palettes.grey.wf300",$kal-parameters)
+        &:not(:last-child)
+          border-bottom: none
+    &.kal-theme--reverse
+      kal-expansion-panel
+        border-bottom: 1px solid get("palettes.grey.wf700",$kal-parameters)
+        kal-expansion-panel-header
+          > span:nth-child(2)
+            i
+              color: get("palettes.grey.wf600",$kal-parameters)
+      &.kal-theme--bordered
