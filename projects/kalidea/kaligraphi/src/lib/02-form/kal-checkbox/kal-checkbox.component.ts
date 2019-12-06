@@ -2,12 +2,14 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   HostBinding,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
   SimpleChanges,
+  ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
@@ -42,13 +44,13 @@ export class KalCheckboxComponent extends FormElementComponent<boolean> implemen
   @HostBinding('attr.id')
   attributeId = null;
 
-  private _value = false;
-
-  private _disabled = false;
+  @ViewChild('input', {static: true}) input: ElementRef<HTMLInputElement>;
 
   constructor(private cdr: ChangeDetectorRef) {
     super();
   }
+
+  private _value = false;
 
   get value() {
     return this._value;
@@ -64,6 +66,8 @@ export class KalCheckboxComponent extends FormElementComponent<boolean> implemen
 
     this.cdr.markForCheck();
   }
+
+  private _disabled = false;
 
   @Input()
   @Coerce('boolean')

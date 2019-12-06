@@ -21,15 +21,22 @@ import { DOCUMENT } from '@angular/common';
 import { FormControl, NgControl } from '@angular/forms';
 import { fromEvent, merge, Observable, of, Subscription } from 'rxjs';
 import { filter, map, take, tap } from 'rxjs/operators';
-import { DateTime } from 'luxon';
+import dayjs from 'dayjs';
+import localeData from 'dayjs/plugin/localeData';
 
 import { coerceKalDateProperty, KalDate, KalDateType } from './kal-date';
 import { KalMonthCalendarComponent } from './kal-month-calendar/kal-month-calendar.component';
 import { KalDatepickerHeaderComponent } from './kal-datepicker-header/kal-datepicker-header.component';
 import { buildProviders, FormElementComponent } from '../../utils/forms/form-element.component';
+import { KalInputComponent } from '../kal-input/kal-input.component';
 import { Coerce } from '../../utils/decorators/coerce';
 import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
-import { KalInputComponent } from '../kal-input/kal-input.component';
+import { capitalize } from '../../utils/helpers/strings';
+
+/**
+ * Configure DayJS
+ */
+dayjs.extend(localeData);
 
 /**
  * Possible views for the calendar.
@@ -139,16 +146,18 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   @Input()
   @Coerce('number')
   get maxYear(): number {
-    if (this._maxYear && this.isCurrentDateValid && this.currentDate.getYear() <= this._maxYear) {
+    if (this._maxYear) {
       return this._maxYear;
+    } else if (this.isCurrentDateValid) {
+      return this.currentDate.getYear() + this.yearsIncrement;
     } else {
-      return DateTime.local().year + this.yearsIncrement;
+      return dayjs().year() + this.yearsIncrement;
     }
   }
 
   set maxYear(maxYear: number) {
-    // check if year length is valid
-    if (('' + maxYear).length !== 4) {
+    // check if we have a value and year length is valid
+    if (maxYear && ('' + maxYear).length !== 4) {
       return;
     }
 
@@ -176,9 +185,18 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
    * Display the current period : month as string + year.
    */
   get currentPeriod(): string {
-    const date = this.monthCalendar ? this.monthCalendar.displayedDate : this.currentDate;
-    const month = date.getMonthAsString();
-    return month ? month.charAt(0).toLocaleUpperCase() + month.slice(1) + ' ' + date.getYear() : '';
+    let date: KalDate = null;
+
+    if (this.monthCalendar) {
+      date = this.monthCalendar.displayedDate;
+    } else if (this.currentDate.valid) {
+      date = this.currentDate;
+    } else {
+      date = new KalDate();
+    }
+
+    const month = dayjs().localeData().months()[date.getMonth()];
+    return month ? capitalize(month) + ' ' + date.getYear() : '';
   }
 
   /**
@@ -262,6 +280,11 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     // Set the current view to `month` because if the datepicker is
     // closed then opened it will keep its last view.
     this.currentView = 'month';
+
+    // Reset displayed date to avoid keeping selected month and year in multiview.
+    if (this.monthCalendar) {
+      this.monthCalendar.displayedDate = this.currentDate;
+    }
   }
 
   /**
@@ -351,6 +374,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
 
   ngOnDestroy() {
     super.ngOnDestroy();
+    this.close();
   }
 
   ngAfterContentInit(): void {

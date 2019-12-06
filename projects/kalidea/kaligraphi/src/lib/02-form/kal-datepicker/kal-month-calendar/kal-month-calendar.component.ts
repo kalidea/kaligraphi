@@ -10,10 +10,19 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
-import { DateObjectUnits, Info } from 'luxon';
+import dayjs from 'dayjs';
+import weekday from 'dayjs/plugin/weekday';
 
 import { KalDatepickerComponent } from '../kal-datepicker.component';
 import { KalDate } from '../kal-date';
+import { DateUnits } from '../kal-datepicker-multi-view/kal-datepicker-multi-view.component';
+import { capitalize } from '../../../utils/helpers/strings';
+import { move } from '../../../utils/helpers/arrays';
+
+/**
+ * Configure DayJS
+ */
+dayjs.extend(weekday);
 
 @Component({
   selector: 'kal-month-calendar',
@@ -23,12 +32,6 @@ import { KalDate } from '../kal-date';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class KalMonthCalendarComponent implements OnInit {
-
-  /**
-   * Returns an array of standalone narrowed weekdays.
-   * @example ['L', 'M', ...]
-   */
-  readonly narrowWeekDays = Info.weekdays('narrow');
 
   /**
    * Emits when a new date is selected.
@@ -45,25 +48,39 @@ export class KalMonthCalendarComponent implements OnInit {
    * Getter to display dates of displayed month.
    */
   get datesList(): KalDate[] {
-    const startMonth = this.displayedDate.getDate().startOf('month');
     const datesList: KalDate[] = [];
-    const startWeekOfMonth = startMonth.startOf('week');
-    const endWeek = startWeekOfMonth.endOf('month');
-
-    // Count days between the first weekday of the first monthday and the first monthday.
-    // We should add 1 because we want to include the last day in the computation
-    const countWeekDays = startMonth.weekday !== 1 ? (endWeek.day - startWeekOfMonth.day) + 1 : 0;
+    const firstDayOfCurrentMonth = this.displayedDate.getDate().startOf('month');
+    const firstDayOfLastWeekOfPreviousMonth = firstDayOfCurrentMonth.startOf('week');
 
     // create an array with all days in selected date month
-    for (let i = 0; i < (countWeekDays + startMonth.daysInMonth); i++) {
-      datesList.push(new KalDate(startWeekOfMonth.plus({days: i})));
+    for (let i = 0; i < (firstDayOfCurrentMonth.weekday() + firstDayOfCurrentMonth.daysInMonth()); i++) {
+      datesList.push(new KalDate(firstDayOfLastWeekOfPreviousMonth.add(i, 'day')));
     }
 
     return datesList;
   }
 
+  /**
+   * Returns an array of standalone narrowed weekdays.
+   * @example ['M', 'T', ...]
+   */
+  get narrowWeekDays(): string[] {
+    const days: string[] = dayjs().localeData().weekdaysMin().map(day => day.charAt(0).toLocaleUpperCase());
+    const firstDayOfWeek: number = dayjs().localeData().firstDayOfWeek();
+
+    // Handle the display depending on the beginning of the week.
+    // On european countries the week starts on `Monday` but on DayJS, days array starts with `Sunday`.
+    // We move `Sunday` at the end of the array if needed.
+    return firstDayOfWeek > 0 ? move(days, 0, days.length - 1) : days;
+  }
+
+  /**
+   * Returns the date stored in the datepicker if it's valid else the current date.
+   * We should do this to still display something with the datepicker even if the given
+   * date is invalid.
+   */
   get currentDate(): KalDate {
-    return this.datepicker.currentDate;
+    return this.datepicker.currentDate.valid ? this.datepicker.currentDate : new KalDate();
   }
 
   set currentDate(date: KalDate) {
@@ -83,15 +100,15 @@ export class KalMonthCalendarComponent implements OnInit {
    * Change displayed month according to which arrow was clicked on datepicker header.
    */
   updateMonth(amount: number) {
-    this.displayedDate = this.displayedDate.add({months: amount});
+    this.displayedDate = this.displayedDate.add(amount, 'month');
     this.cdr.markForCheck();
   }
 
   /**
    * Change displayed month according to the selected month and the selected year.
    */
-  updateDate(dateUnit: DateObjectUnits) {
-    this.displayedDate = this.displayedDate.set(dateUnit);
+  updateDate({unit, value}: DateUnits) {
+    this.displayedDate = this.displayedDate.set(unit, value);
     this.cdr.markForCheck();
   }
 

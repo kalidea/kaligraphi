@@ -2,6 +2,13 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewEncapsulatio
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { AutoUnsubscribe, KalDate } from '@kalidea/kaligraphi';
 import { Subscription } from 'rxjs';
+import dayjs from 'dayjs';
+import 'dayjs/locale/fr';
+
+/**
+ * Configure DayJS
+ */
+dayjs.locale('fr');
 
 @Component({
   selector: 'app-datepicker',
@@ -26,7 +33,7 @@ export class DatepickerComponent implements OnInit, OnDestroy {
 
   openOnClick = true;
 
-  updateDate: String;
+  updateDate: string;
 
   @AutoUnsubscribe()
   private subscription = Subscription.EMPTY;
@@ -64,7 +71,7 @@ export class DatepickerComponent implements OnInit, OnDestroy {
           this.control.setValidators([minDateValidator(formValues.minDate), maxDateValidator(formValues.maxDate)]);
         } else if (formValues.minDate !== null) {
           this.control.setValidators([minDateValidator(formValues.minDate)]);
-        } else if (formValues.minDate !== null) {
+        } else if (formValues.maxDate !== null) {
           this.control.setValidators([maxDateValidator(formValues.maxDate)]);
         }
 
@@ -85,9 +92,9 @@ export function minDateValidator(minDate: KalDate) {
 
     const minDateTime = minDate.getDate();
     const currentDateTime = (control.value as KalDate).getDate();
-    const diffBetweenDates = currentDateTime.diff(minDateTime, ['days']).toObject();
+    const diffBetweenDates = currentDateTime.diff(minDateTime, 'day');
 
-    return Math.trunc(diffBetweenDates.days) < 0 ? {'minDate': true} : null;
+    return Math.trunc(diffBetweenDates) < 0 ? {'minDate': true} : null;
   };
 }
 
@@ -99,8 +106,8 @@ export function maxDateValidator(maxDate: KalDate) {
 
     const maxDateTime = maxDate.getDate();
     const currentDateTime = (control.value as KalDate).getDate();
-    const diffBetweenDates = currentDateTime.diff(maxDateTime, ['days']).toObject();
+    const diffBetweenDates = currentDateTime.diff(maxDateTime, 'day');
 
-    return Math.trunc(diffBetweenDates.days) > 0 ? {'maxDate': true} : null;
+    return Math.trunc(diffBetweenDates) > 0 ? {'maxDate': true} : null;
   };
 }

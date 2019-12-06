@@ -1,7 +1,8 @@
-<div class="kal-option__selection" (click)="emitSelectionEvent()"
+<div class="kal-option__selection"
      [class.kal-option__selection--active]="active"
      [class.kal-option__selection--highlighted]="isHighlighted"
-     [class.kal-option__selection--disabled]="disabled">
+     [class.kal-option__selection--disabled]="disabled"
+     (click)="emitSelectionEvent($event)">
   <ng-content></ng-content>
 </div>
 

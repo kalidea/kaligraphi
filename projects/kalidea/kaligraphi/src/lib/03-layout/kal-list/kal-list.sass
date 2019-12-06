@@ -20,11 +20,12 @@
       justify-content: space-between
       align-items: center
       background-color: get("palettes.white", $kal-parameters)
-      cursor: pointer
       transition: background-color .1s ease
       border: 1px solid transparent
       min-height: auto
       padding: 0
+      &:not(.kal-list-item--selectionNone)
+        cursor: pointer
       &:disabled, &.kal-list__item--disabled
         background-color: get("palettes.grey.wf100", $kal-parameters)
         .kal-list__content
@@ -41,7 +42,7 @@
         color: get("palettes.grey.wf300", $kal-parameters)
         font-size: 24px
         margin: 10px 0
-      &:not(.kal-list__item--disabled)
+      &:not(.kal-list__item--disabled):not(.kal-list-item--selectionNone)
         &:hover, &.kal-list__item--hover
           background-color: $color-highlight
           transition: font-size .1s ease

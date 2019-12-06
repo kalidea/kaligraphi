@@ -3,6 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChildren,
+  ElementRef,
   EventEmitter,
   forwardRef,
   HostBinding,
@@ -14,6 +15,7 @@ import {
   Optional,
   Output,
   QueryList,
+  ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
@@ -27,7 +29,7 @@ import { uniqid } from '../../utils/helpers/uniq';
 @Component({
   selector: 'kal-radio-group',
   template: `
-    <ng-content></ng-content>`,
+      <ng-content></ng-content>`,
   providers: buildProviders(KalRadioGroupComponent),
 })
 export class KalRadioGroupComponent extends FormElementComponent<any> implements OnInit {
@@ -36,6 +38,8 @@ export class KalRadioGroupComponent extends FormElementComponent<any> implements
    * The list of all radio buttons component
    */
   @ContentChildren(forwardRef(() => KalRadioComponent), {descendants: true}) radios: QueryList<KalRadioComponent>;
+
+  @ViewChild('input', {static: true}) input: ElementRef<HTMLInputElement>;
 
   /**
    * The selected radio button
