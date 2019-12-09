@@ -1,51 +1,38 @@
-*
-  -ms-scrollbar-face-color: #ddd
-  -ms-scrollbar-arrow-color: #ddd
-  -ms-scrollbar-track-color: #ddd
-  -ms-scrollbar-shadow-color: #aaa
-  -ms-scrollbar-highlight-color: #aaa
-  -ms-scrollbar-3dlight-color: #aaa
-  -ms-scrollbar-darkshadow-color: #aaa
-  -ms-overflow-style: -ms-autohiding-scrollbar
-  &::-webkit-scrollbar // la barre entière.
-       width: 4px
-       background: #eee
-       border: 1px solid #eee
-       border-radius: 2px
-       -webkit-border-radius: 2px
-  &::-webkit-scrollbar-thumb // l'emplacement qui permet de déplacer la barre de défilement.
-      border-radius: 2px
-      -webkit-border-radius: 2px
-      background: rgba(178, 178, 178, 0.8)
-  &::-webkit-scrollbar-track // la piste (la zone de progression) de la barre de défilement
-      background: #eee
 #container
   display: flex
-  > nav
+  min-height: 100vh
+  .kal-nav
+    color: white
+    background-color: #242424
+    display: flex
+    flex-flow: column nowrap
+    justify-content: space-between
+    align-items: stretch
     padding: 20px
     height: 100vh
     overflow: hidden
     overflow-y: auto
     max-width: 250px
-    min-width: 190px
-    width: 18%
-    .kal-nav__logo
+    min-width: 250px
+    &__head
       margin: auto auto 20px auto
       img
         width: 100%
         height: auto
-    //kal-accordion
-    //  kal-expansion-panel
-    //    display: block
-    //    margin-bottom: 10px
-    //    kal-expansion-panel-header
-    //      color: #5C5C5C
-    //      text-transform: uppercase
-    //    kal-expansion-panel-content
-    //      kal-nav
-    //        padding: 10px
-  main
-    flex: 1 1 auto
-    padding: 40px 60px
+    &__main
+      flex: 1
+      width: 100%
+    &__foot
+      display: flex
+      flex-flow: row wrap
+      justify-items: center
+      align-items: center
+      margin: 20px 0
+      a
+        font-size: 11px
+        font-weight: lighter
+        color: #6a696b
+        &:hover
+          color: #f49231
 
 

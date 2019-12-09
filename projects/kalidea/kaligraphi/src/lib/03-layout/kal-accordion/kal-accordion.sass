@@ -29,9 +29,13 @@
           border-bottom: none
     &.kal-theme--reverse
       kal-expansion-panel
-        border-bottom: 1px solid get("palettes.grey.wf700",$kal-parameters)
+        border-bottom: 1px solid get("palettes.grey.wf600",$kal-parameters)
         kal-expansion-panel-header
           > span:nth-child(2)
             i
               color: get("palettes.grey.wf600",$kal-parameters)
       &.kal-theme--bordered
+        kal-expansion-panel
+          border: 1px solid get("palettes.grey.wf600",$kal-parameters)
+          &:not(:last-child)
+            border-bottom: none

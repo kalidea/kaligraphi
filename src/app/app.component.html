@@ -1,23 +1,32 @@
 <div id="container">
-  <nav>
 
-    <div class="kal-nav__logo">
+  <div class="kal-nav">
+
+    <div class="kal-nav__head">
       <img src="https://via.placeholder.com/150x100/E89536/FFFFFF?text=KALIGRAPHI" height="100"/>
     </div>
 
-    <kal-accordion [multi]="true">
-      <kal-expansion-panel *ngFor="let param of items">
-        <kal-expansion-panel-header><span>{{ param.key }}</span></kal-expansion-panel-header>
-        <kal-expansion-panel-content>
-          <kal-nav [items]="param.list"></kal-nav>
-        </kal-expansion-panel-content>
-      </kal-expansion-panel>
-    </kal-accordion>
+    <div class="kal-nav__main">
 
+      <kal-accordion [multi]="true" kalTheme="reverse bordered">
+        <kal-expansion-panel *ngFor="let param of items">
+          <kal-expansion-panel-header><span>{{ param.key }}</span></kal-expansion-panel-header>
+          <kal-expansion-panel-content>
+            <kal-nav [items]="param.list"></kal-nav>
+          </kal-expansion-panel-content>
+        </kal-expansion-panel>
+      </kal-accordion>
 
-  </nav>
+    </div>
+
+    <div class="kal-nav__foot">
+      <a href="https://github.com/kalidea/kaligraphi" target="_blank">Dépot Kalidea / Kaligraphi</a>
+    </div>
+
+  </div>
 
   <main>
     <router-outlet></router-outlet>
   </main>
+
 </div>
