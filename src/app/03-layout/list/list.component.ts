@@ -193,7 +193,7 @@ class TestDataSource<T> implements DataSource<{ id: string, name: string }> {
     this.subscriptionsList.push(
       collectionViewer.viewChange.pipe(
         tap(value => {
-            if (value.end >= this.displayedElement && this.cachedData.length <= this.total.getValue()) {
+          if (value.end >= this.displayedElement && this.cachedData.length <= this.total.getValue()) {
             this.page += 1;
             this.subscriptionsList.push(this.changePage().subscribe());
           }
