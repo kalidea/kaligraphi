@@ -78,7 +78,6 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
    */
   currentView: KalCalendarView = 'month';
 
-
   /**
    * base control
    */
@@ -102,6 +101,12 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   @Input()
   @Coerce('boolean')
   openOnClick = true;
+
+
+  /**
+   * is the datepicker open
+   */
+  private isOpen = false;
 
   private readonly yearsIncrement = 30;
 
@@ -248,6 +253,14 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     this.datePickerHeader.markForCheck();
   }
 
+  toggle() {
+    if (this.isOpen) {
+      this.close();
+    } else {
+      this.open(null, 'icon');
+    }
+  }
+
   open($event: MouseEvent = null, origin: 'icon' | 'mouse' = 'mouse') {
     // stop propagation of this event
     if ($event) {
@@ -264,6 +277,8 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
           .pipe(take(1)) // take next outside click only
           .subscribe(() => this.close());
       }
+
+      this.isOpen = true;
     }
   }
 
@@ -285,6 +300,8 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     if (this.monthCalendar) {
       this.monthCalendar.displayedDate = this.currentDate;
     }
+
+    this.isOpen = false;
   }
 
   /**
