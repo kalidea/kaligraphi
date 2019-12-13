@@ -102,12 +102,6 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   @Coerce('boolean')
   openOnClick = true;
 
-
-  /**
-   * is the datepicker open
-   */
-  private isOpen = false;
-
   private readonly yearsIncrement = 30;
 
   /**
@@ -254,7 +248,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   }
 
   toggle() {
-    if (this.isOpen) {
+    if (this.getOverlayRef().hasAttached()) {
       this.close();
     } else {
       this.open(null, 'icon');
@@ -277,8 +271,6 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
           .pipe(take(1)) // take next outside click only
           .subscribe(() => this.close());
       }
-
-      this.isOpen = true;
     }
   }
 
@@ -300,8 +292,6 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     if (this.monthCalendar) {
       this.monthCalendar.displayedDate = this.currentDate;
     }
-
-    this.isOpen = false;
   }
 
   /**
@@ -396,7 +386,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
 
   ngAfterContentInit(): void {
 
-    this.control = this.createControlAndSubscriptions(this.injector, 'change');
+    this.control = this.createControlAndSubscriptions(this.injector, 'blur');
 
     // watch value changes
     const valueChangesSubscription = this.control.valueChanges.pipe(
