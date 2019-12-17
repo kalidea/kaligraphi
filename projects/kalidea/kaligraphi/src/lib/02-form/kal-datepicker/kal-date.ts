@@ -189,4 +189,8 @@ export class KalDate {
     return this.toFormat();
   }
 
+  toJSON(): string {
+    return this.toString();
+  }
+
 }

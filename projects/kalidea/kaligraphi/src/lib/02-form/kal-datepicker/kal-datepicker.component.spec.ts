@@ -67,4 +67,10 @@ describe('KalDatepickerComponent', () => {
     expect(component.control.setValue).toHaveBeenCalledWith(kalDate.toString(), {emitEvent: true});
     expect(spyNotif).toHaveBeenCalled();
   });
+
+  it('should returns a right format when parsed to JSON', () => {
+    const date = new Date();
+    const kalDate = new KalDate(date);
+    expect(JSON.parse(JSON.stringify(kalDate))).toEqual(kalDate.toString());
+  });
 });
