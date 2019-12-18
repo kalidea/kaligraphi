@@ -2,17 +2,28 @@
 
 <div class="example">
   <article>
-    <kal-stepper [linear]="linear" orientation="horizontal" (selectionChange)="selectionUpdated($event)" #stepper>
+    <kal-stepper [linear]="linear"
+                 orientation="horizontal"
+                 (selectionChange)="selectionUpdated($event)"
+                 #stepper>
 
       <kal-step [stepControl]="firstFormGroup">
 
-        <ng-template kalStepLabel> First step</ng-template>
+        <ng-template kalStepLabel>
+          <kal-button [kalTheme]="stepper.selectedIndex === 0 ? 'primary' : 'tertiary'">
+            First step
+          </kal-button>
+        </ng-template>
 
         <form [formGroup]="firstFormGroup">
 
           <kal-input formControlName="email"></kal-input>
           <div>
-            <button (click)="stepper.next()" [disabled]="firstFormGroup.invalid">Next 1</button>
+            <kal-button (click)="stepper.next()"
+                        kalTheme="primary"
+                        [disabled]="linear && firstFormGroup.invalid">
+              Next 1
+            </kal-button>
           </div>
         </form>
 
@@ -20,13 +31,24 @@
 
       <kal-step [stepControl]="secondFormGroup">
 
-        <ng-template kalStepLabel>Second Step</ng-template>
+        <ng-template kalStepLabel>
+          <kal-button [kalTheme]="stepper.selectedIndex === 1 ? 'primary' : 'tertiary'">
+            Second Step
+          </kal-button>
+        </ng-template>
 
         <form [formGroup]="secondFormGroup">
           <kal-input formControlName="firstname"></kal-input>
           <div>
-            <button (click)="stepper.previous()">Previous 2</button>
-            <button (click)="stepper.next()">Next 2</button>
+            <kal-button (click)="stepper.previous()"
+                    kalTheme="tertiary">
+                    Previous 2
+            </kal-button>
+            <kal-button (click)="stepper.next()"
+                        kalTheme="primary"
+                        [disabled]="linear && firstFormGroup.invalid">
+              Next 2
+            </kal-button>
           </div>
         </form>
 
@@ -34,14 +56,21 @@
 
       <kal-step>
 
-        <ng-template kalStepLabel>Third Step</ng-template>
+        <ng-template kalStepLabel>
+          <kal-button [kalTheme]="stepper.selectedIndex === 2 ? 'primary' : 'tertiary'">
+            Third Step
+          </kal-button>
+        </ng-template>
 
         <p>
           Thanks for your subscription
         </p>
 
         <div>
-          <button (click)="stepper.previous()">Previous 3</button>
+          <kal-button (click)="stepper.previous()"
+                  kalTheme="tertiary">
+          Previous 3
+          </kal-button>
         </div>
 
       </kal-step>

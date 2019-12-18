@@ -1,5 +1,5 @@
-import { DateTime } from 'luxon';
 import { KalDate } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-datepicker/kal-date';
+import dayjs from 'dayjs';
 
 // config
 const dates = [
@@ -12,7 +12,7 @@ const dates = [
 
 describe('KalDate class', () => {
 
-  it('should parse all type of date', () => {
+  it('should parse all types of date', () => {
 
     const stringDate = '24/09/2018';
 
@@ -20,9 +20,9 @@ describe('KalDate class', () => {
     expect(new KalDate(stringDate).toString())
       .toEqual(stringDate, 'should be able to parse string format');
 
-    // luxon format
-    const currentDateLuxon = DateTime.fromFormat(stringDate, 'dd/MM/yyyy');
-    expect(new KalDate(currentDateLuxon).toString())
+    // DayJS format
+    const currentDateDayJS = dayjs(stringDate, 'DD/MM/YYYY');
+    expect(new KalDate(currentDateDayJS).toString())
       .toEqual(stringDate, 'should be able to parse luxon format');
 
     // KalDate format
@@ -43,33 +43,57 @@ describe('KalDate class', () => {
 
   it('should manage invalid date', () => {
 
-    // alpha char
-    let kalDate = new KalDate('aa');
-    expect(kalDate.valid).toBeFalsy();
-    expect(kalDate.toString()).toEqual('');
+    // Testing invalid values for parsing : alpha char, undefined, null
+    ['aa', undefined, ''].forEach(invalidValue => {
+      const kalDate = new KalDate(invalidValue);
+      expect(kalDate.valid).toBeFalsy();
+      expect(kalDate.toString()).toEqual('');
+    });
 
-    // undefined
-    kalDate = new KalDate(undefined);
-    expect(kalDate.valid).toBeFalsy();
-    expect(kalDate.toString()).toEqual('');
+    const currentDate = dayjs().format('DD/MM/YYYY');
+    const validKalDate = new KalDate(null);
+    expect(validKalDate.valid).toBeTruthy();
+    expect(validKalDate.toString()).toEqual(currentDate);
 
-    // null
-    const currentDate = DateTime.local().toFormat('dd/MM/yyyy');
-    kalDate = new KalDate(null);
-    expect(kalDate.valid).toBeTruthy();
-    expect(kalDate.toString()).toEqual(currentDate);
-
-    // empty string
-    kalDate = new KalDate('');
-    expect(kalDate.valid).toBeFalsy();
-    expect(kalDate.toString()).toEqual('');
   });
 
   it('should use current date if not provided', () => {
-    const currentDate = DateTime.local().toFormat('dd/MM/yyyy');
+    const currentDate = dayjs().format('DD/MM/YYYY');
     const kalDate = new KalDate();
     expect(kalDate.valid).toBeTruthy();
     expect(kalDate.toString()).toEqual(currentDate);
+  });
+
+  it('should thow an error if there\'s no default parse format provided', () => {
+    // https://ajsblackbelt.wordpress.com/2014/05/18/jasmine-tests-expect-tothrow/
+    expect(() => new KalDate('18/11/2019', null)).toThrowError('You should provide a date format');
+  });
+
+  it('should handle comparison functions', () => {
+
+    // is same
+    expect(new KalDate('18/11/2019').isSame('18/11/2019')).toBeTruthy();
+    expect(new KalDate('18/11/2019').isSame(new KalDate('08/10/2019'))).toBeFalsy();
+
+    // is before
+    expect(new KalDate('18/11/2019').isBefore('19/11/2019')).toBeTruthy();
+    expect(new KalDate('18/11/2019').isBefore(new KalDate('01/01/2019'))).toBeFalsy();
+
+    // is after
+    expect(new KalDate('18/11/2019').isAfter('17/11/2019')).toBeTruthy();
+    expect(new KalDate('18/11/2019').isAfter(new KalDate('31/12/2019'))).toBeFalsy();
+
+    // is between
+    expect(new KalDate('18/11/2019').isBetween('01/11/2019', '31/12/2019')).toBeTruthy();
+    expect(new KalDate('18/11/2019').isBetween(new KalDate('19/11/2019'), new KalDate('31/11/2019'))).toBeFalsy();
+
+    // is between with exclusions
+    expect(new KalDate('18/11/2019').isBetween('18/11/2019', '19/11/2019', {start: true, end: false})).toBeFalsy();
+    expect(new KalDate('19/11/2019').isBetween('18/11/2019', '19/11/2019', {start: false, end: true})).toBeFalsy();
+
+    // is today
+    expect(new KalDate().isToday()).toBeTruthy();
+    expect(new KalDate('15/11/2019').isToday()).toBeFalsy();
   });
 
 });

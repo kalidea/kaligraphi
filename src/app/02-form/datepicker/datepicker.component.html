@@ -24,7 +24,9 @@
     <kal-checkbox [(ngModel)]="openOnClick" label="open datepicker on input click"></kal-checkbox>
   </kal-form-field>
   <kal-form-field>
-    <kal-input [ngModel]="updateDate" (ngModelChange)="update($event)" [ngModelOptions]="{updateOn: 'blur'}" label="set date"></kal-input>
+    <kal-input [ngModel]="updateDate" (ngModelChange)="update($event)" [ngModelOptions]="{updateOn: 'blur'}"
+               label="set date">
+    </kal-input>
   </kal-form-field>
 
   <ng-container [formGroup]="dateValidatorForm">

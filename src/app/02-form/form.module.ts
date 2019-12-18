@@ -22,6 +22,16 @@ import { RaterComponent } from 'src/app/02-form/rater/rater.component';
 import { SelectComponent } from 'src/app/02-form/select/select.component';
 import { SliderComponent } from 'src/app/02-form/slider/slider.component';
 import { TextareaComponent } from 'src/app/02-form/textarea/textarea.component';
+import dayjs from 'dayjs';
+import localeData from 'dayjs/plugin/localeData';
+import weekday from 'dayjs/plugin/weekday';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+import isBetween from 'dayjs/plugin/isBetween';
+
+dayjs.extend(localeData);
+dayjs.extend(weekday);
+dayjs.extend(customParseFormat);
+dayjs.extend(isBetween);
 
 @NgModule({
   imports: [

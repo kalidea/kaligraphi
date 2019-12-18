@@ -7,9 +7,14 @@ import {
   Output,
   ViewEncapsulation
 } from '@angular/core';
-import { DateObjectUnits, Info } from 'luxon';
+import dayjs, { UnitType } from 'dayjs';
 
 import { KalDate } from '../kal-date';
+
+export interface DateUnits {
+  unit: UnitType;
+  value: number;
+}
 
 @Component({
   selector: 'kal-datepicker-multi-view',
@@ -21,12 +26,6 @@ import { KalDate } from '../kal-date';
 
 export class KalDatepickerMultiViewComponent implements AfterViewInit {
 
-  /**
-   * Returns an array of standalone short month names.
-   * @example ['Jan', 'Feb', ...]
-   */
-  readonly shortMonths = Info.months('short');
-
   @Input() displayedDate: KalDate;
 
   @Input() minYear: number;
@@ -35,9 +34,9 @@ export class KalDatepickerMultiViewComponent implements AfterViewInit {
 
   /**
    * Emits event with which type of date was selected.
-   * Its type is `DateObjectUnits` but we're only using `month` and `year` in this type.
+   * Its type is `DateUnits` but in this case we're only using `month` and `year` for `DateUnits.unit` property.
    */
-  @Output() selectedDate = new EventEmitter<DateObjectUnits>();
+  @Output() selectedDate = new EventEmitter<DateUnits>();
 
   /**
    * Years to display.
@@ -53,9 +52,17 @@ export class KalDatepickerMultiViewComponent implements AfterViewInit {
   }
 
   /**
+   * Returns an array of standalone short month names.
+   * @example ['Jan', 'Feb', ...]
+   */
+  get shortMonths(): string[] {
+    return dayjs().localeData().monthsShort();
+  }
+
+  /**
    * Emits selected date object.
    */
-  selectDate(unit: DateObjectUnits): void {
+  selectDate(unit: DateUnits): void {
     this.selectedDate.emit(unit);
   }
 
