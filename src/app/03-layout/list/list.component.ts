@@ -3,7 +3,7 @@ import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { KalListComponent, KalSelectionModel, KalVirtualScrollConfig } from '@kalidea/kaligraphi';
 import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
 import range from 'lodash-es/range';
-import { delay, take, tap } from 'rxjs/operators';
+import { take, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-list',
