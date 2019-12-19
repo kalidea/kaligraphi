@@ -78,7 +78,6 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
    */
   currentView: KalCalendarView = 'month';
 
-
   /**
    * base control
    */
@@ -246,6 +245,14 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     // We should manually trigger change detection because header arrows depends on `KalDatepickerComponent`
     // and header doesn't know when it should refresh itself.
     this.datePickerHeader.markForCheck();
+  }
+
+  toggle() {
+    if (this.getOverlayRef().hasAttached()) {
+      this.close();
+    } else {
+      this.open(null, 'icon');
+    }
   }
 
   open($event: MouseEvent = null, origin: 'icon' | 'mouse' = 'mouse') {
