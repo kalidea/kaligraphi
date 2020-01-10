@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
-import { KalListComponent, KalSelectionModel } from '@kalidea/kaligraphi';
+import { KalListComponent, KalSelectionModel, KalVirtualScrollConfig } from '@kalidea/kaligraphi';
 import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
 import range from 'lodash-es/range';
-import { delay, take, tap } from 'rxjs/operators';
+import { take, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-list',
@@ -44,8 +44,7 @@ export class ListComponent implements OnInit {
   /**
    * The virtual scroll config
    */
-  virtualScrollConfig = {
-    height: 500,
+  virtualScrollConfig: KalVirtualScrollConfig = {
     itemSize: 48
   };
 
@@ -151,7 +150,7 @@ const list = (page: number, numberOfElements: number) => {
     );
   }
 
-  return of({data: listItem, meta: {total}}).pipe(delay(1000));
+  return of({data: listItem, meta: {total}});
 };
 
 class TestDataSource<T> implements DataSource<{ id: string, name: string }> {
@@ -194,7 +193,7 @@ class TestDataSource<T> implements DataSource<{ id: string, name: string }> {
     this.subscriptionsList.push(
       collectionViewer.viewChange.pipe(
         tap(value => {
-          if (value.end > this.displayedElement && this.cachedData.length <= this.total.getValue()) {
+          if (value.end >= this.displayedElement && this.cachedData.length <= this.total.getValue()) {
             this.page += 1;
             this.subscriptionsList.push(this.changePage().subscribe());
           }
