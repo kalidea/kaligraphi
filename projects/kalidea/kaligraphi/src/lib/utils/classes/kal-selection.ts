@@ -3,7 +3,7 @@ import { Observable, Subject } from 'rxjs';
 import isNil from 'lodash-es/isNil';
 import xor from 'lodash-es/xor';
 
-export class KalSelection<T extends { id?: string }> {
+export class KalSelection<T> {
 
   /**
    * Number of elements in list
@@ -36,11 +36,11 @@ export class KalSelection<T extends { id?: string }> {
   numberOfSelectedItems ? = 0;
 }
 
-class SubSelectionModel<T extends { id?: string }> extends SelectionModel<T> {
+class SubSelectionModel<T> extends SelectionModel<T> {
 
-  getItem(item: T): T {
+  getItem(item: (T & {id?: string})): T {
     if (!isNil(item.id)) {
-      return this.selected.find(element => !!('' + element.id === '' + item.id));
+      return this.selected.find((element: T & {id?: string}) => !!('' + element.id === '' + item.id));
     } else {
       return item;
     }
@@ -69,7 +69,7 @@ class SubSelectionModel<T extends { id?: string }> extends SelectionModel<T> {
 
 }
 
-export class KalSelectionModel<T extends { id?: string }> extends SelectionModel<T> {
+export class KalSelectionModel<T> extends SelectionModel<T> {
 
   numberOfItems = 0;
 
