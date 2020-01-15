@@ -45,7 +45,7 @@ export interface KalVirtualScrollConfig {
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalListComponent<T extends { id?: string }>
+export class KalListComponent<T>
   implements CollectionViewer, OnInit, OnChanges, OnDestroy {
 
   /**
@@ -53,7 +53,7 @@ export class KalListComponent<T extends { id?: string }>
    */
   viewChange: Observable<ListRange>;
 
-  @Input() highlightedItem: T = null;
+  @Input() highlightedItem: (T & {id: string}) = null;
 
   /**
    * The icon to display in all templates
@@ -351,7 +351,7 @@ export class KalListComponent<T extends { id?: string }>
   /**
    * Is the item highlighted
    */
-  isHighlighted(item: T): boolean {
+  isHighlighted(item: (T & {id: string})): boolean {
     if (!this.highlightedItem) {
       return false;
     } else if (!isNil(item.id)) {
