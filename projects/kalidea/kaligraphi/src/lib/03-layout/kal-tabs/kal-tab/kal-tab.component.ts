@@ -36,26 +36,32 @@ export class KalTabComponent implements OnInit {
    * Template label of the header
    */
   @ContentChild(KalTabLabelDirective, {static: true}) templateLabel: KalTabLabelDirective;
+
   /**
    * Template provided in the tab content that will be used if present, used to enable lazy-loading
    */
   @ContentChild(KalTabContentDirective, {read: TemplateRef, static: true}) _explicitContent: TemplateRef<any>;
+
   /**
    * Template inside the MatTab view that contains an `<ng-content>`.
    */
   @ViewChild(TemplateRef, {static: true}) _implicitContent: TemplateRef<any>;
+
   /**
    * Is a tab selected
    */
   private selectedTab = false;
+
   /**
    * Is a tab disabled
    */
   private isDisabled = false;
+
   /**
    * Label of the header
    */
   private tabLabel = '';
+
   private _contentPortal: TemplatePortal | null = null;
 
   constructor(@Optional() @Inject(forwardRef(() => KalTabGroupComponent)) public tabGroup: KalTabGroupComponent,
