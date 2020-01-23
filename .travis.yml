@@ -1,10 +1,10 @@
-
-node_js: "10"
+os: linux
 language: node_js
+node_js: "10"
 cache: npm
 
 notifications:
-    slack: kalidea-ce:2T5YxayEhI0lFrNzlL5bdrgC
+    slack: $SLACK_CHANNEL
 
 jobs:
   include:
@@ -28,11 +28,11 @@ jobs:
         - npm run build:playground -- --base-href https://kalidea.github.io/kaligraphi/
       deploy:
         provider: pages
-        skip-cleanup: true
-        github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
-        keep-history: true
+        cleanup: true
+        token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+        keep_history: true
         verbose: true
-        local-dir: dist/playground/
+        local_dir: dist/playground/
         on:
           tags: true
 
@@ -48,8 +48,9 @@ jobs:
         - cd dist/kalidea/kaligraphi
       deploy:
         provider: npm
+        edge: true
         email: $NPM_EMAIL
-        api_key: $NPM_TOKEN
-        skip_cleanup: true
+        api_token: $NPM_TOKEN
+        cleanup: true
         on:
           tags: true
