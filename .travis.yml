@@ -34,7 +34,7 @@ jobs:
           verbose: true
           local_dir: dist/playground/
           on:
-            tags: true
+            all_branches: true
 
     #DEPLOY TO NPM
     - stage: "Deploy"
