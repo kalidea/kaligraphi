@@ -27,15 +27,12 @@ jobs:
         - npm run build
         - npm run build:playground -- --base-href https://kalidea.github.io/kaligraphi/
       deploy:
-        provider: pages:git
-        cleanup: true
+        provider: pages
+        skip_cleanup: true
         token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
         keep_history: true
         verbose: true
-        edge: true # opt in to dpl v2
         local_dir: dist/playground/
-        on:
-          tags: true
 
     #DEPLOY TO NPM
     - stage: "Deploy"
