@@ -26,13 +26,22 @@ jobs:
       script:
         - npm run build
         - npm run build:playground -- --base-href https://kalidea.github.io/kaligraphi/
+      before_deploy:
+        - git tag DEV
       deploy:
-        provider: pages
-        skip_cleanup: true
-        token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
-        keep_history: true
-        verbose: true
-        local_dir: dist/playground/
+        - provider: pages
+          skip_cleanup: true
+          token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+          keep_history: true
+          verbose: true
+          local_dir: dist/playground/
+        - provider: releases
+          overwrite: true
+          email: $NPM_EMAIL
+          api_key: $NPM_TOKEN
+          skip_cleanup: true
+          local_dir: dist/kalidea/kaligraphi
+          tag:
 
     #DEPLOY TO NPM
     - stage: "Deploy"
@@ -43,11 +52,13 @@ jobs:
         - npm run build
       before_deploy:
         - cp README.md dist/kalidea/kaligraphi/
-#         - cd dist/kalidea/kaligraphi
+        - cd dist/kalidea/kaligraphi
       deploy:
-        provider: npm
-        email: $NPM_EMAIL
-        api_key: $NPM_TOKEN
-        cleanup: true
-        on:
-          tags: true
+        - provider: npm
+          email: $NPM_EMAIL
+          api_key: $NPM_TOKEN
+          skip_cleanup: true
+        - provider: releases
+          email: $NPM_EMAIL
+          api_key: $NPM_TOKEN
+          skip_cleanup: true
