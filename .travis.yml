@@ -1,44 +1,41 @@
 os: linux
 language: node_js
-node_js: "10"
+node_js: '10'
 cache: npm
-
 notifications:
-    slack: $SLACK_CHANNEL
+  slack: "$SLACK_CHANNEL"
 
 jobs:
   include:
-    - stage: "CI"
-      name: "Code Quality"
+    - stage: CI
+      name: Code Quality
       before_script:
-        - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+        - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
+          > ./cc-test-reporter
         - chmod +x ./cc-test-reporter
-        - ./cc-test-reporter before-build
+        - "./cc-test-reporter before-build"
       script:
         - echo "npm test temporarily disabled"
         - npm run test:ci
       after_script:
-        - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
-
-    # BUILD LIB
-    - stage: "CI"
-      name: "Build library & playground"
+        - "./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT"
+    - stage: CI
+      name: Build library & playground
       script:
         - npm run build
         - npm run build:playground -- --base-href https://kalidea.github.io/kaligraphi/
       deploy:
         - provider: pages
           skip_cleanup: true
-          token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+          token: "$GITHUB_TOKEN"
           keep_history: true
           verbose: true
           local_dir: dist/playground/
           on:
             all_branches: true
 
-    #DEPLOY TO NPM
-    - stage: "Deploy"
-      name: "Publish library to npm registry"
+    - stage: Deploy
+      name: Publish library to npm registry
       if: tag IS present
       script:
         - echo "Deploying to npm ..."
@@ -48,13 +45,16 @@ jobs:
         - cd dist/kalidea/kaligraphi
       deploy:
         - provider: npm
-          email: $NPM_EMAIL
-          api_key: $NPM_TOKEN
+          email: "$NPM_EMAIL"
+          api_key: "$NPM_TOKEN"
           skip_cleanup: true
           on:
             tags: true
         - provider: releases
-          token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+          api_key:
+            secure: iFnAA3ATHrUhTdm82QZ7NRLliOR/UjvjapgnbhLNJTszELwLVm/i6kwvW1wxlQ9/T3TGQkENW6vUo9Rrd8CPeTHe2iC0M4s0RQQKAjAoOsy8IeMaJhNza7oXW4AJwwA83TlkKaGCCBfa6BBs9OLILu1tJLtd2H9aW3A1nCoVhgdRxXBGWlPoZGflwkNqXudXmaLFOnag9SqWNgvJtdIZ1C6QcKHwJ5phb5lt8UmWjvUww3RtRqUcLAWZxwys7hOMGNQR8S/z33NbRKOD65m1wcaaFeNuLS6YAHiC5HRQUU8sU2UoUIUn9xWt+kKqqRtcX8+f0tK+y1nFGHvDNf34nwO4I3+82fspMdCi3jnIU2fpbbtAji8dml4Ge7PJAwMOoJLFzr7cZfb/t+ThJjKIT9IHrEmljNLYdWqD75RXT0sDH1+7VVd/rEIsGP3W9b8OaN2EQAXUrYRdv+RPMFfMvn1MFlc6NG0Z2DTLa/jspe1HXVQ7hBAzvtpmSHH/71CcaCuyDeppvZtwx/s595XJSRBAXX+bDz+Or+O8vHxX5dgmyAKbPCSUgwDRLmtx/0OWhsNluVtELfpEEyPRFEbQt3FwJaiQKZY9w0mN5zo3wYSKS8CLV7CVmC2505aC+rFqrBL8JHPWYPg4EmuC671Lm4VOx1PphVVNUzqGn+kBnac=
+          file_glob: true
+          file: dist/kalidea/kaligraphi/*
           skip_cleanup: true
           on:
-            tags: true
+            repo: kalidea/kaligraphi
