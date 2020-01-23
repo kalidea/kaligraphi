@@ -27,7 +27,7 @@ jobs:
         - npm run build
         - npm run build:playground -- --base-href https://kalidea.github.io/kaligraphi/
       before_deploy:
-        - git tag DEV
+        - git tag -f DEV
       deploy:
         - provider: pages
           skip_cleanup: true
@@ -37,11 +37,9 @@ jobs:
           local_dir: dist/playground/
         - provider: releases
           overwrite: true
-          email: $NPM_EMAIL
-          api_key: $NPM_TOKEN
+          token: $GITHUB_TOKEN
           skip_cleanup: true
           local_dir: dist/kalidea/kaligraphi
-          tag:
 
     #DEPLOY TO NPM
     - stage: "Deploy"
