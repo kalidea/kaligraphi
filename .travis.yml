@@ -33,6 +33,15 @@ jobs:
           local_dir: dist/playground/
           on:
             all_branches: true
+        - provider: npm
+          email: "$NPM_EMAIL"
+          skip_cleanup: true
+          tag: next
+          api_key:
+            secure: X1gayMHwe9LJqQP7tjkS0nqEG2dZqTaVccON4RfJHrZRDZf0F2e++nP3TCLdkJ1l5LNBbAO/Q2SSZ3uWS1rO/mzPejisi24fjiKl4AB/IcC7bZ9FnHknNHv30iHC9eUnfltGwI1maqRvILLSWro6F+EObdfyofG6PejBUJZtYlFZDJo+Mpn8a3Aa52eoN57BNE/O6wQCvfwW/QGjbYqA0RZDQ0CUohLTr5NtvwIkMuaAhJHViUXmGYC1bsqgTKom3EZG64U34BON/4wqQ+K+HyPPmi98T72JROpUaad+JXQtgjjDqaiFgJEyN5ppCip9HyrnWuVdjnQY11o19aGjSNjtl2lmDshmG22MZ6V9wPiAzNX4zhNv/vHHL5DqCR9ED9AUNcSdIC82T/yVSXu7WYk/df+jL8XUct+K18dCQgC43hZSV2LHX2oL1FsOne9Et9tzy8fpWGS2VHDI5WZxxlS1xSy+FnRDhiLQoJwERLFWZEGA6uEsmq8grLHh05QtYJ31HwFnJqEnFMuKPF38fp1FjB4J8xsE2pVhwW/f980C/nEwVLhirUoIXa7N8brNHherJFBHwQVCI6Vg9mI2fNEsVyTnNz/+GB6XoV5abCQZb9BP1fiaFkI9QakGqFiLi8oO93wo2fCcbYa/cYGTyYhdiYCzMCLdgwocOjYPb4U=
+          on:
+            branch: master
+            repo: kalidea/kaligraphi
 
     - stage: Deploy
       name: Publish library to npm registry
@@ -46,6 +55,7 @@ jobs:
       deploy:
         provider: npm
         email: "$NPM_EMAIL"
+        skip_cleanup: true
         api_key:
           secure: X1gayMHwe9LJqQP7tjkS0nqEG2dZqTaVccON4RfJHrZRDZf0F2e++nP3TCLdkJ1l5LNBbAO/Q2SSZ3uWS1rO/mzPejisi24fjiKl4AB/IcC7bZ9FnHknNHv30iHC9eUnfltGwI1maqRvILLSWro6F+EObdfyofG6PejBUJZtYlFZDJo+Mpn8a3Aa52eoN57BNE/O6wQCvfwW/QGjbYqA0RZDQ0CUohLTr5NtvwIkMuaAhJHViUXmGYC1bsqgTKom3EZG64U34BON/4wqQ+K+HyPPmi98T72JROpUaad+JXQtgjjDqaiFgJEyN5ppCip9HyrnWuVdjnQY11o19aGjSNjtl2lmDshmG22MZ6V9wPiAzNX4zhNv/vHHL5DqCR9ED9AUNcSdIC82T/yVSXu7WYk/df+jL8XUct+K18dCQgC43hZSV2LHX2oL1FsOne9Et9tzy8fpWGS2VHDI5WZxxlS1xSy+FnRDhiLQoJwERLFWZEGA6uEsmq8grLHh05QtYJ31HwFnJqEnFMuKPF38fp1FjB4J8xsE2pVhwW/f980C/nEwVLhirUoIXa7N8brNHherJFBHwQVCI6Vg9mI2fNEsVyTnNz/+GB6XoV5abCQZb9BP1fiaFkI9QakGqFiLi8oO93wo2fCcbYa/cYGTyYhdiYCzMCLdgwocOjYPb4U=
         on:
