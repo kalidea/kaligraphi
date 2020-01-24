@@ -24,13 +24,15 @@ jobs:
       script:
         - npm run build
         - npm run build:playground -- --base-href https://kalidea.github.io/kaligraphi/
+        - cp README.md dist/kalidea/kaligraphi/ # copy README in DIST
+        - cd dist/kalidea/kaligraphi
       deploy:
         - provider: pages
           skip_cleanup: true
           token: "$GITHUB_TOKEN"
           keep_history: true
           verbose: true
-          local_dir: dist/playground/
+          local_dir: ../../playground/
           on:
             all_branches: true
         - provider: npm
