@@ -15,10 +15,10 @@ import {
 import { FlexibleConnectedPositionStrategy, Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { DOCUMENT } from '@angular/common';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { DOWN_ARROW, ENTER, ESCAPE, SPACE, UP_ARROW } from '@angular/cdk/keycodes';
+import { DOWN_ARROW, ENTER, ESCAPE, UP_ARROW } from '@angular/cdk/keycodes';
 
 import { fromEvent, merge, Observable, of, Subscription } from 'rxjs';
-import { filter, skip, startWith, take } from 'rxjs/operators';
+import { filter, map, startWith, take, tap } from 'rxjs/operators';
 
 import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 import { KalInputComponent } from '../kal-input/kal-input.component';
@@ -38,33 +38,26 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
    * clear field on option picked
    */
   @Input() kalClearOnPick = false;
-
-  /**
-   * reference to the overlay created
-   */
-  private _overlayRef: OverlayRef;
-
   /**
    * reference to autocomplete component loaded in overlay
    */
   private autocompleteComponent: KalAutocompleteComponent<T>;
-
-  /**
-   * datasource for this autocomplete
-   */
-  private _dataSource: KalAutocompleteOption<T>[];
-
   @AutoUnsubscribe()
   private subscriptionsList: Subscription[] = [];
 
   constructor(private readonly overlay: Overlay,
               private readonly input: KalInputComponent,
-              private readonly elementRef: ElementRef,
+              private readonly elementRef: ElementRef<HTMLElement>,
               private readonly viewContainerRef: ViewContainerRef,
               @Optional() @Host() private readonly theme: KalThemeDirective,
               @Optional() @Inject(DOCUMENT) private _document: any) {
 
   }
+
+  /**
+   * datasource for this autocomplete
+   */
+  private _dataSource: KalAutocompleteOption<T>[];
 
   @Input('kalAutocomplete')
   set dataSource(dataSource: KalAutocompleteOption<T>[]) {
@@ -72,19 +65,10 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
     this.updateOptionsList();
   }
 
-  private get positionsList(): FlexibleConnectedPositionStrategy {
-    return this.overlay.position()
-      .flexibleConnectedTo(this.elementRef)
-      .withFlexibleDimensions(true)
-      .withPositions([
-        {
-          overlayY: 'top',
-          overlayX: 'start',
-          originY: 'bottom',
-          originX: 'start'
-        }
-      ]);
-  }
+  /**
+   * reference to the overlay created
+   */
+  private _overlayRef: OverlayRef;
 
   /**
    * get reference of overlayRef and create it if don't exists
@@ -102,6 +86,24 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
 
     }
     return this._overlayRef;
+  }
+
+  private get positionsList(): FlexibleConnectedPositionStrategy {
+    return this.overlay.position()
+      .flexibleConnectedTo(this.elementRef)
+      .withFlexibleDimensions(true)
+      .withPositions([
+        {
+          overlayY: 'top',
+          overlayX: 'start',
+          originY: 'bottom',
+          originX: 'start'
+        }
+      ]);
+  }
+
+  private get hasOverlayAttached(): boolean {
+    return !!this._overlayRef && this._overlayRef.hasAttached();
   }
 
   /**
@@ -133,9 +135,44 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
     } else if ([ENTER].indexOf(keyCode) >= 0) {
       // space or enter, emit selected option
       this.notifySelectionUpdate(this.autocompleteComponent.selectedOption);
-
     }
 
+  }
+
+  @HostListener('focusin')
+  open() {
+
+    // don't close and reopen the overlay when there's already an existing overlay
+    if (this.hasOverlayAttached) {
+      return;
+    }
+
+    this.close();
+
+    const portal = new ComponentPortal(KalAutocompleteComponent, this.viewContainerRef) as ComponentPortal<KalAutocompleteComponent<T>>;
+    this.autocompleteComponent = this.overlayRef.attach(portal).instance;
+
+    // watch for selection change
+    const selectionChangeSubscription = this.autocompleteComponent.selection$
+      .pipe(
+        take(1),
+        tap(selectedOption => this.notifySelectionUpdate(selectedOption))
+      )
+      .subscribe();
+
+    // watch for input change
+    const valueChangeSubscription = this.input
+      .valueChanges
+      .pipe(
+        startWith(this.input.value),
+        tap(expression => this.updateOptionsList(expression))
+      )
+      .subscribe();
+
+    // watch for click outside
+    const clickOutsideSubscription = this.getOutsideClickStream().pipe(tap(() => this.close())).subscribe();
+
+    this.subscriptionsList.push(selectionChangeSubscription, valueChangeSubscription, clickOutsideSubscription);
   }
 
   /** Stream of clicks outside of the autocomplete panel. */
@@ -149,44 +186,16 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
       fromEvent<MouseEvent>(this._document, 'click'),
       fromEvent<TouchEvent>(this._document, 'touchend')
     )
-      .pipe(filter(event => {
-        const clickTarget = event.target as HTMLElement;
-        return this.overlayRef.hasAttached() &&
-          clickTarget !== this.elementRef.nativeElement &&
-          (!!this._overlayRef && !this._overlayRef.overlayElement.contains(clickTarget));
-      }));
-  }
-
-  @HostListener('focusin')
-  open() {
-
-    this.close();
-
-    const portal = new ComponentPortal(KalAutocompleteComponent, this.viewContainerRef) as ComponentPortal<KalAutocompleteComponent<T>>;
-    this.autocompleteComponent = this.overlayRef.attach(portal).instance;
-
-    // watch for selection change
-    const selectionChangeSubscription = this.autocompleteComponent.selection$
-      .pipe(take(1))
-      .subscribe(selectedOption => {
-        this.notifySelectionUpdate(selectedOption);
-      });
-
-    // watch for input change
-    const valueChangeSubscription = this.input
-      .valueChanges
-      .pipe(startWith(this.input.value))
-      .subscribe(expression => {
-        this.updateOptionsList(expression);
-      });
-
-    // watch for click outside
-    const clickOutsideSubscription = this.getOutsideClickStream()
-      .pipe(skip(1)) // skip first click
-      .subscribe(() => this.close());
-
-
-    this.subscriptionsList.push(selectionChangeSubscription, valueChangeSubscription, clickOutsideSubscription);
+      .pipe(
+        map(event => event.target as HTMLElement),
+        // we should not have clicked on KalInput to continue the process
+        filter(target => !this.elementRef.nativeElement.contains(target)),
+        filter(target => {
+          return this.overlayRef.hasAttached() &&
+            target !== this.elementRef.nativeElement &&
+            (!!this._overlayRef && !this._overlayRef.overlayElement.contains(target));
+        })
+      );
   }
 
   /**
@@ -231,6 +240,15 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.input.autocomplete = 'off';
+
+    const iconClickedSubscription = this.input.iconClicked.asObservable()
+      .pipe(
+        filter(() => !this.hasOverlayAttached),
+        tap(() => this.open())
+      )
+      .subscribe();
+
+    this.subscriptionsList.push(iconClickedSubscription);
   }
 
   ngOnDestroy() {
