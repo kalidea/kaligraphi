@@ -1,5 +1,8 @@
-<ul>
-  <li *ngFor="let option of options">
+<cdk-virtual-scroll-viewport [style.height]="virtualScrollConfig.height"
+                             [itemSize]="virtualScrollConfig.itemSize">
+
+  <div *cdkVirtualFor="let option of options; index as i">
+
     <kal-option [value]="option"
                 [label]="option.label"
                 [disabled]="option.disabled"
@@ -7,5 +10,7 @@
                 (click)="select(option)">
       {{ option.label }}
     </kal-option>
-  </li>
-</ul>
+
+  </div>
+
+</cdk-virtual-scroll-viewport>

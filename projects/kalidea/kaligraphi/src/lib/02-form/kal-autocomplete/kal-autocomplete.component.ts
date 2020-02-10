@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  Input,
   OnDestroy,
   QueryList,
   ViewChildren,
@@ -15,6 +16,7 @@ import { startWith } from 'rxjs/operators';
 import { KalAutocompleteOption } from './kal-autocomplete-option';
 import { KalOptionComponent } from '../kal-option/kal-option.component';
 import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
+import { KalVirtualScrollConfig } from '../../03-layout/kal-list/kal-list.component';
 
 @Component({
   selector: 'kal-autocomplete',
@@ -37,23 +39,44 @@ export class KalAutocompleteComponent<T> implements AfterViewInit, OnDestroy {
    */
   private keyManager: ActiveDescendantKeyManager<KalOptionComponent>;
 
-  /**
-   * list of options
-   */
-  private _options: KalAutocompleteOption<T>[];
-
   @AutoUnsubscribe()
   private subscription: Subscription;
 
   constructor(private cdr: ChangeDetectorRef) {
   }
 
-  get options(): KalAutocompleteOption<T>[] {
+  /**
+   * list of options
+   */
+  private _options: KalAutocompleteOption<T>[];
+
+  get options(): KalAutocompleteOption<any>[] {
     return this._options;
   }
 
-  set options(options: KalAutocompleteOption<T>[]) {
+  set options(options: KalAutocompleteOption<any>[]) {
     this._options = options;
+    this.cdr.markForCheck();
+  }
+
+  /**
+   * The virtual scroll config
+   */
+  private _virtualScrollConfig: KalVirtualScrollConfig = {itemSize: 40};
+
+  @Input()
+  get virtualScrollConfig(): KalVirtualScrollConfig {
+    return this._virtualScrollConfig;
+  }
+
+  set virtualScrollConfig(value: KalVirtualScrollConfig) {
+    value = value || {itemSize: 40};
+
+    this._virtualScrollConfig = {
+      height: value.height || null,
+      itemSize: value.itemSize || 40
+    };
+
     this.cdr.markForCheck();
   }
 

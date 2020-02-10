@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 import { KalAutocompleteDirective } from './kal-autocomplete.directive';
 import { KalAutocompleteComponent } from './kal-autocomplete.component';
@@ -16,16 +17,17 @@ const exports = [
 ];
 
 @NgModule({
-  exports,
-  declarations: exports,
   imports: [
     CommonModule,
+    ScrollingModule,
     KalOptionModule,
     KalUtilityModule
   ],
+  declarations: exports,
   entryComponents: [
     KalAutocompleteComponent
-  ]
+  ],
+  exports
 })
 export class KalAutocompleteModule {
 
