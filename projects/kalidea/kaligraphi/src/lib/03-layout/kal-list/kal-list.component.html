@@ -51,6 +51,7 @@
         <div *ngIf="selectionMode === 'multiple'">
 
             <kal-checkbox [value]="isRowSelected(item)"
+                          [disabled]="isRowDisabled(item)"
                           (click)="selectCheckbox(item, $event)">
             </kal-checkbox>
 
