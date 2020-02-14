@@ -1,3 +1,7 @@
+import { DOWN_ARROW, ENTER, ESCAPE, UP_ARROW } from '@angular/cdk/keycodes';
+import { FlexibleConnectedPositionStrategy, Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
+import { ComponentPortal, PortalInjector } from '@angular/cdk/portal';
+import { DOCUMENT } from '@angular/common';
 import {
   Directive,
   ElementRef,
@@ -5,6 +9,7 @@ import {
   Host,
   HostListener,
   Inject,
+  Injector,
   Input,
   OnDestroy,
   OnInit,
@@ -12,19 +17,16 @@ import {
   Output,
   ViewContainerRef
 } from '@angular/core';
-import { FlexibleConnectedPositionStrategy, Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
-import { DOCUMENT } from '@angular/common';
-import { ComponentPortal } from '@angular/cdk/portal';
-import { DOWN_ARROW, ENTER, ESCAPE, UP_ARROW } from '@angular/cdk/keycodes';
 
 import { fromEvent, merge, Observable, of, Subscription } from 'rxjs';
 import { filter, map, startWith, take, tap } from 'rxjs/operators';
+import { KalThemeDirective } from '../../99-utility/directives/kal-theme/kal-theme.directive';
 
 import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 import { KalInputComponent } from '../kal-input/kal-input.component';
-import { KalAutocompleteComponent } from './kal-autocomplete.component';
 import { KalAutocompleteOption } from './kal-autocomplete-option';
-import { KalThemeDirective } from '../../99-utility/directives/kal-theme/kal-theme.directive';
+import { KAL_AUTOCOMPLETE_DATA, KalAutocompleteComponent } from './kal-autocomplete.component';
+
 
 @Directive({
   selector: 'kal-input[kalAutocomplete]',
@@ -38,14 +40,35 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
    * clear field on option picked
    */
   @Input() kalClearOnPick = false;
+
+  /**
+   * class added to kal-autocomplete component cdk-virtual-scroll-viewport
+   */
+  @Input() kalAutocompleteClassName: string;
+
+  /**
+   * height of kal-autocomplete component cdk-virtual-scroll-viewport
+   */
+  @Input() kalAutocompleteHeight: string;
+
   /**
    * reference to autocomplete component loaded in overlay
    */
   private autocompleteComponent: KalAutocompleteComponent<T>;
+
   @AutoUnsubscribe()
   private subscriptionsList: Subscription[] = [];
+  /**
+   * datasource for this autocomplete
+   */
+  private _dataSource: KalAutocompleteOption<T>[];
+  /**
+   * reference to the overlay created
+   */
+  private _overlayRef: OverlayRef;
 
   constructor(private readonly overlay: Overlay,
+              private readonly injector: Injector,
               private readonly input: KalInputComponent,
               private readonly elementRef: ElementRef<HTMLElement>,
               private readonly viewContainerRef: ViewContainerRef,
@@ -54,21 +77,11 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
 
   }
 
-  /**
-   * datasource for this autocomplete
-   */
-  private _dataSource: KalAutocompleteOption<T>[];
-
   @Input('kalAutocomplete')
   set dataSource(dataSource: KalAutocompleteOption<T>[]) {
     this._dataSource = dataSource;
     this.updateOptionsList();
   }
-
-  /**
-   * reference to the overlay created
-   */
-  private _overlayRef: OverlayRef;
 
   /**
    * get reference of overlayRef and create it if don't exists
@@ -149,7 +162,11 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
 
     this.close();
 
-    const portal = new ComponentPortal(KalAutocompleteComponent, this.viewContainerRef) as ComponentPortal<KalAutocompleteComponent<T>>;
+    const portal = new ComponentPortal(
+      KalAutocompleteComponent,
+      this.viewContainerRef,
+      this.getPortalInjector()
+    ) as ComponentPortal<KalAutocompleteComponent<T>>;
     this.autocompleteComponent = this.overlayRef.attach(portal).instance;
 
     // watch for selection change
@@ -173,6 +190,20 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
     const clickOutsideSubscription = this.getOutsideClickStream().pipe(tap(() => this.close())).subscribe();
 
     this.subscriptionsList.push(selectionChangeSubscription, valueChangeSubscription, clickOutsideSubscription);
+  }
+
+  /**
+   * build injector of KAL_AUTOCOMPLETE_DATA for KalAutocompleteComponent
+   */
+  private getPortalInjector() {
+    const injectionTokens = new WeakMap<any, any>([
+      [KAL_AUTOCOMPLETE_DATA, {
+        width: this.input.inputElement.nativeElement.getBoundingClientRect().width + 'px',
+        height: this.kalAutocompleteHeight,
+        className: this.kalAutocompleteClassName
+      }],
+    ]);
+    return new PortalInjector(this.injector, injectionTokens);
   }
 
   /** Stream of clicks outside of the autocomplete panel. */

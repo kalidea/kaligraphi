@@ -35,6 +35,7 @@ export class KalFlatTreeNode {
         const key = k as keyof KalFlatTreeNode;
 
         if (typeof options[key] !== 'undefined') {
+          // @ts-ignore
           this[key] = options[key];
         }
       });
