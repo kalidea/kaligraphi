@@ -1,11 +1,22 @@
-<ul>
-  <li *ngFor="let option of options">
-    <kal-option [value]="option"
-                [label]="option.label"
-                [disabled]="option.disabled"
+
+<cdk-virtual-scroll-viewport
+  [itemSize]="virtualScrollConfig.itemSize"
+  [ngClass]="getClasses()"
+  class="kal-autocomplete-virtual-scroll-viewport"
+  [style.width]="width"
+  [style.height]="height">
+
+
+  <ng-container *cdkVirtualFor="let option of options; index as i">
+
+    <kal-option (click)="select(option)"
                 (selectionChange)="select(option)"
-                (click)="select(option)">
+                [disabled]="option.disabled"
+                [label]="option.label"
+                [value]="option">
       {{ option.label }}
     </kal-option>
-  </li>
-</ul>
+
+  </ng-container>
+
+</cdk-virtual-scroll-viewport>

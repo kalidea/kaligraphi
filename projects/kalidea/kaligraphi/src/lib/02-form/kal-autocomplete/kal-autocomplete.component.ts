@@ -1,20 +1,35 @@
+import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  Inject,
+  InjectionToken,
+  Input,
   OnDestroy,
   QueryList,
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
-import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';
+import { KalVirtualScrollConfig } from '../../03-layout/kal-list/kal-list.component';
+import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
+import { KalOptionComponent } from '../kal-option/kal-option.component';
 
 import { KalAutocompleteOption } from './kal-autocomplete-option';
-import { KalOptionComponent } from '../kal-option/kal-option.component';
-import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
+
+export interface KalAutocompleteComponentOption {
+  width?: string;
+  height?: string;
+  className?: string;
+}
+
+/**
+ * token to inject to retrieve data from dialog
+ */
+export const KAL_AUTOCOMPLETE_DATA = new InjectionToken<KalAutocompleteComponentOption>('KalAutoCompleteData');
 
 @Component({
   selector: 'kal-autocomplete',
@@ -23,6 +38,21 @@ import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class KalAutocompleteComponent<T> implements AfterViewInit, OnDestroy {
+
+  /**
+   * custom width of scroll container ( default to kal-input width )
+   */
+  width: string;
+
+  /**
+   * custom height of scroll container
+   */
+  height: string;
+
+  /**
+   * custom of scroll container
+   */
+  className: string;
 
   private selectionSubject = new Subject<KalAutocompleteOption<T>>();
 
@@ -37,15 +67,24 @@ export class KalAutocompleteComponent<T> implements AfterViewInit, OnDestroy {
    */
   private keyManager: ActiveDescendantKeyManager<KalOptionComponent>;
 
+  @AutoUnsubscribe()
+  private subscription: Subscription;
+
   /**
    * list of options
    */
   private _options: KalAutocompleteOption<T>[];
 
-  @AutoUnsubscribe()
-  private subscription: Subscription;
+  /**
+   * The virtual scroll config
+   */
+  private _virtualScrollConfig: KalVirtualScrollConfig = {itemSize: 27};
 
-  constructor(private cdr: ChangeDetectorRef) {
+  constructor(private cdr: ChangeDetectorRef,
+              @Inject(KAL_AUTOCOMPLETE_DATA) public data: KalAutocompleteComponentOption) {
+    this.width = data.width;
+    this.height = data.height;
+    this.className = data.className;
   }
 
   get options(): KalAutocompleteOption<T>[] {
@@ -54,6 +93,22 @@ export class KalAutocompleteComponent<T> implements AfterViewInit, OnDestroy {
 
   set options(options: KalAutocompleteOption<T>[]) {
     this._options = options;
+    this.cdr.markForCheck();
+  }
+
+  @Input()
+  get virtualScrollConfig(): KalVirtualScrollConfig {
+    return this._virtualScrollConfig;
+  }
+
+  set virtualScrollConfig(value: KalVirtualScrollConfig) {
+    value = value || {itemSize: 40};
+
+    this._virtualScrollConfig = {
+      height: value.height || null,
+      itemSize: value.itemSize || 40
+    };
+
     this.cdr.markForCheck();
   }
 
@@ -96,6 +151,17 @@ export class KalAutocompleteComponent<T> implements AfterViewInit, OnDestroy {
 
     this.selectionSubject.next(option);
     this.selectionSubject.complete();
+  }
+
+  /**
+   * build class for scroll container if provided
+   */
+  getClasses() {
+    if (this.className) {
+      return {
+        [this.className]: true
+      };
+    }
   }
 
   private initKeyManager() {
