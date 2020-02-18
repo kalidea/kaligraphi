@@ -87,11 +87,11 @@ export class KalAutocompleteComponent<T> implements AfterViewInit, OnDestroy {
     this.className = data.className;
   }
 
-  get options(): KalAutocompleteOption<any>[] {
+  get options(): KalAutocompleteOption<T>[] {
     return this._options;
   }
 
-  set options(options: KalAutocompleteOption<any>[]) {
+  set options(options: KalAutocompleteOption<T>[]) {
     this._options = options;
     this.cdr.markForCheck();
   }
