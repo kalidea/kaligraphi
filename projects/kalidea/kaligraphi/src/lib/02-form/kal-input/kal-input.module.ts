@@ -7,6 +7,7 @@ import { KalIconModule } from '../../01-typography/kal-icon/kal-icon.module';
 import { KalInputComponent } from './kal-input.component';
 
 export * from './kal-input.component';
+export * from './kal-formater.service';
 
 const exports = [
   KalInputComponent
