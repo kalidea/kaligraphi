@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { KalListComponent, KalSelectionModel, KalVirtualScrollConfig } from '@kalidea/kaligraphi';
-import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
 import range from 'lodash-es/range';
 import { take, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-list',
@@ -155,6 +155,7 @@ const list = (page: number, numberOfElements: number) => {
 
 class TestDataSource<T> implements DataSource<{ id: string, name: string }> {
 
+  _loading = new BehaviorSubject(false);
   private subscriptionsList: Subscription[] = [];
   private datastream: BehaviorSubject<T[]> = new BehaviorSubject([]);
   private total: BehaviorSubject<number> = new BehaviorSubject(0);
@@ -183,7 +184,16 @@ class TestDataSource<T> implements DataSource<{ id: string, name: string }> {
   }
 
   get list(): Observable<{ data, meta }> {
+    this._loading.next(true);
     return list(this.page, this.countElement);
+  }
+
+  get loading$(): Observable<boolean> {
+    return this._loading.asObservable();
+  }
+
+  loading() {
+    return this._loading.getValue();
   }
 
   /**
@@ -210,6 +220,7 @@ class TestDataSource<T> implements DataSource<{ id: string, name: string }> {
       tap(({data, meta}) => {
           this.cachedData = data;
           this.total.next(meta.total);
+          this._loading.next(false);
         }
       ));
   }

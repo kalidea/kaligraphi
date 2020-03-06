@@ -53,7 +53,7 @@ export class KalListComponent<T>
    */
   viewChange: Observable<ListRange>;
 
-  @Input() highlightedItem: (T & {id: string}) = null;
+  @Input() highlightedItem: (T & { id: string }) = null;
 
   /**
    * The icon to display in all templates
@@ -111,6 +111,9 @@ export class KalListComponent<T>
 
   @AutoUnsubscribe()
   private countSubscription: Subscription = Subscription.EMPTY;
+
+  @AutoUnsubscribe()
+  private loadingSubscription: Subscription = Subscription.EMPTY;
 
   private groupedByParams: { previous: T, slug: string } = {previous: null, slug: ''};
 
@@ -244,6 +247,30 @@ export class KalListComponent<T>
     return isDataSource(this.dataSource);
   }
 
+  private _loading = false;
+
+  @Input()
+  get loading() {
+    return this._loading;
+  }
+
+  set loading(loading: boolean | Observable<boolean>) {
+    this.loadingSubscription.unsubscribe();
+
+    if (loading instanceof Observable) {
+
+      this.loadingSubscription = loading.pipe(
+        tap(e => {
+          this._loading = e;
+          this.cdr.markForCheck();
+        })
+      ).subscribe();
+    } else {
+      this._loading = loading;
+      this.cdr.markForCheck();
+    }
+  }
+
   initSelection() {
     const isMutliple = this.selectionMode === KalListSelectionMode.Multiple;
 
@@ -351,7 +378,7 @@ export class KalListComponent<T>
   /**
    * Is the item highlighted
    */
-  isHighlighted(item: (T & {id: string})): boolean {
+  isHighlighted(item: (T & { id: string })): boolean {
     if (!this.highlightedItem) {
       return false;
     } else if (!isNil(item.id)) {
@@ -405,8 +432,12 @@ export class KalListComponent<T>
     if (this.hasDataSource) {
       this.results = this.dataSource as DataSource<T>;
       this.countItems();
+      const dataSource = this.dataSource as DataSource<T> & { loading$: Observable<boolean> };
+      this.loading = dataSource.loading$;
+
     } else if (this.dataSource instanceof Observable) {
       this.setResults((this.dataSource as Observable<T[]>));
+
     } else if (Array.isArray(this.dataSource)) {
       this.setResults(of(this.dataSource as T[]));
     }
