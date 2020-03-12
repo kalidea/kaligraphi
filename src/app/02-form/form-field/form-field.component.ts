@@ -1,9 +1,6 @@
 import {ChangeDetectionStrategy, Component, ViewEncapsulation} from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
-import {
-  KAL_FORM_FIELDS_GLOBAL_OPTIONS,
-  KalFormFieldOptions
-} from '@kalidea/kaligraphi';
+import {KAL_FORM_FIELDS_GLOBAL_OPTIONS, KalFormFieldOptions} from '@kalidea/kaligraphi';
 
 @Component({
   selector: 'app-form-field',
@@ -38,6 +35,8 @@ export class FormFieldComponent {
   reverse = false;
 
   legend = 'new legend';
+
+  displayErrors = true;
 
   get themes() {
     return this.reverse ? 'reverse' : '';

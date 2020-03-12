@@ -12,14 +12,15 @@ import {
   Optional,
   ViewEncapsulation
 } from '@angular/core';
-import { KeyValue } from '@angular/common';
-import { Subscription } from 'rxjs';
+import {KeyValue} from '@angular/common';
+import {Subscription} from 'rxjs';
 
-import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
-import { KalCheckboxComponent } from '../kal-checkbox/kal-checkbox.component';
-import { FormElementComponent } from '../../utils/forms/form-element.component';
-import { KalFormFieldLabelDirective } from './kal-form-field-label.directive';
-import { AbstractControl } from '@angular/forms';
+import {AutoUnsubscribe} from '../../utils/decorators/auto-unsubscribe';
+import {KalCheckboxComponent} from '../kal-checkbox/kal-checkbox.component';
+import {FormElementComponent} from '../../utils/forms/form-element.component';
+import {KalFormFieldLabelDirective} from './kal-form-field-label.directive';
+import {AbstractControl} from '@angular/forms';
+import isNil from 'lodash-es/isNil';
 
 export interface KalFormFieldOptions {
 
@@ -85,6 +86,11 @@ export class KalFormFieldComponent implements AfterContentInit, OnDestroy {
    */
   @Input() legend: string;
 
+  /**
+   * show error message
+   */
+  @Input() displayErrors: boolean;
+
   @ContentChild(forwardRef(() => FormElementComponent), {static: false})
   formElement: FormElementComponent;
 
@@ -100,7 +106,7 @@ export class KalFormFieldComponent implements AfterContentInit, OnDestroy {
   }
 
   get showError() {
-    return !!this.formFieldOptions.showError;
+    return !!this.formFieldOptions.showError && isNil(this.displayErrors) || this.displayErrors === true;
   }
 
   get errors() {
@@ -123,33 +129,6 @@ export class KalFormFieldComponent implements AfterContentInit, OnDestroy {
     }
 
     return message;
-  }
-
-  private configureFormField() {
-    if (!(this.formElement instanceof KalCheckboxComponent)) {
-      this.label = this.formElement.label;
-    }
-    this.required = this.formElement.required || this.hasRequiredValidator();
-    this.for = this.formElement.id;
-    this.checkErrorAndDirtyness();
-    this.cdr.markForCheck();
-  }
-
-  private hasRequiredValidator(): boolean {
-    const control = this.formElement.superControl || this.formElement.control;
-    if (control.validator) {
-      const validationResult = control.validator({} as AbstractControl);
-      const requiredValidatorKeys = this.formFieldOptions.requiredValidatorKeys || ['required'];
-      if (validationResult && requiredValidatorKeys.some(k => validationResult[k])) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-
-  private checkErrorAndDirtyness() {
-    this.hasError = (!!this.formFieldOptions.showErrorAtDisplay || this.formElement.dirty) && this.formElement.hasError;
   }
 
   ngAfterContentInit(): void {
@@ -177,5 +156,31 @@ export class KalFormFieldComponent implements AfterContentInit, OnDestroy {
 
   ngOnDestroy(): void {
     // required for AutoUnsubscribe
+  }
+
+  private configureFormField() {
+    if (!(this.formElement instanceof KalCheckboxComponent)) {
+      this.label = this.formElement.label;
+    }
+    this.required = this.formElement.required || this.hasRequiredValidator();
+    this.for = this.formElement.id;
+    this.checkErrorAndDirtyness();
+    this.cdr.markForCheck();
+  }
+
+  private hasRequiredValidator(): boolean {
+    const control = this.formElement.superControl || this.formElement.control;
+    if (control.validator) {
+      const validationResult = control.validator({} as AbstractControl);
+      const requiredValidatorKeys = this.formFieldOptions.requiredValidatorKeys || ['required'];
+      if (validationResult && requiredValidatorKeys.some(k => validationResult[k])) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private checkErrorAndDirtyness() {
+    this.hasError = (!!this.formFieldOptions.showErrorAtDisplay || this.formElement.dirty) && this.formElement.hasError;
   }
 }
