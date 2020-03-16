@@ -193,27 +193,7 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
     this.autocompleteComponent.loading = this.loading;
     this.autocompleteComponent.kalAutocompleteHeight = this.kalAutocompleteHeight;
 
-    // watch for selection change
-    const selectionChangeSubscription = this.autocompleteComponent.selection$
-      .pipe(
-        take(1),
-        tap(selectedOption => this.notifySelectionUpdate(selectedOption))
-      )
-      .subscribe();
-
-    // watch for input change
-    const valueChangeSubscription = this.input
-      .valueChanges
-      .pipe(
-        startWith(this.input.value),
-        tap(expression => this.updateOptionsList(expression))
-      )
-      .subscribe();
-
-    // watch for click outside
-    const clickOutsideSubscription = this.getOutsideClickStream().pipe(tap(() => this.close())).subscribe();
-
-    this.subscriptionsList.push(selectionChangeSubscription, valueChangeSubscription, clickOutsideSubscription);
+    this.handleSubscriptions();
   }
 
   /**
@@ -291,6 +271,31 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
       this.input.writeValue(this.kalClearOnPick ? '' : option.label);
     }
     this.close();
+  }
+
+  private handleSubscriptions(): void {
+
+    // watch for selection change
+    const selectionChangeSubscription = this.autocompleteComponent.selection$
+      .pipe(
+        take(1),
+        tap(selectedOption => this.notifySelectionUpdate(selectedOption))
+      )
+      .subscribe();
+
+    // watch for input change
+    const valueChangeSubscription = this.input
+      .valueChanges
+      .pipe(
+        startWith(this.input.value),
+        tap(expression => this.updateOptionsList(expression))
+      )
+      .subscribe();
+
+    // watch for click outside
+    const clickOutsideSubscription = this.getOutsideClickStream().pipe(tap(() => this.close())).subscribe();
+
+    this.subscriptionsList.push(selectionChangeSubscription, valueChangeSubscription, clickOutsideSubscription);
   }
 
   ngOnInit(): void {
