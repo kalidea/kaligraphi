@@ -67,6 +67,12 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
    */
   private _overlayRef: OverlayRef;
 
+  /**
+   * Separate subscription for icon clicked because it's not destroyed at the same moment
+   * as other observables
+   */
+  private iconClickedSubscription: Subscription;
+
   constructor(private readonly overlay: Overlay,
               private readonly injector: Injector,
               private readonly input: KalInputComponent,
@@ -272,18 +278,18 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.input.autocomplete = 'off';
 
-    const iconClickedSubscription = this.input.iconClicked.asObservable()
+    this.iconClickedSubscription = this.input.iconClicked.asObservable()
       .pipe(
         filter(() => !this.hasOverlayAttached),
         tap(() => this.open())
       )
       .subscribe();
-
-    this.subscriptionsList.push(iconClickedSubscription);
   }
 
   ngOnDestroy() {
     this.kalAutocompleteSelected.complete();
+    this.iconClickedSubscription.unsubscribe();
+
     if (this._overlayRef) {
       this._overlayRef.dispose();
     }
