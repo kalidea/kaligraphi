@@ -26,6 +26,7 @@ import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 import { KalInputComponent } from '../kal-input/kal-input.component';
 import { KalAutocompleteOption } from './kal-autocomplete-option';
 import { KAL_AUTOCOMPLETE_DATA, KalAutocompleteComponent } from './kal-autocomplete.component';
+import { Coerce } from '../../utils/decorators/coerce';
 
 
 @Directive({
@@ -49,7 +50,7 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
   /**
    * height of kal-autocomplete component cdk-virtual-scroll-viewport
    */
-  @Input() kalAutocompleteHeight: string;
+  @Input() kalAutocompleteHeight = '15vh';
 
   /**
    * reference to autocomplete component loaded in overlay
@@ -58,13 +59,16 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
 
   @AutoUnsubscribe()
   private subscriptionsList: Subscription[] = [];
+
   /**
    * datasource for this autocomplete
    */
+
   private _dataSource: KalAutocompleteOption<T>[];
   /**
    * reference to the overlay created
    */
+
   private _overlayRef: OverlayRef;
 
   /**
@@ -72,6 +76,8 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
    * as other observables
    */
   private iconClickedSubscription: Subscription;
+
+  private _loading = false;
 
   constructor(private readonly overlay: Overlay,
               private readonly injector: Injector,
@@ -87,6 +93,16 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
   set dataSource(dataSource: KalAutocompleteOption<T>[]) {
     this._dataSource = dataSource;
     this.updateOptionsList();
+  }
+
+  @Input('kalAutocompleteLoading')
+  @Coerce('boolean')
+  set loading(loading: boolean) {
+    this._loading = loading;
+  }
+
+  get loading(): boolean {
+    return this._loading;
   }
 
   /**
@@ -174,6 +190,8 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
       this.getPortalInjector()
     ) as ComponentPortal<KalAutocompleteComponent<T>>;
     this.autocompleteComponent = this.overlayRef.attach(portal).instance;
+    this.autocompleteComponent.loading = this.loading;
+    this.autocompleteComponent.kalAutocompleteHeight = this.kalAutocompleteHeight;
 
     // watch for selection change
     const selectionChangeSubscription = this.autocompleteComponent.selection$

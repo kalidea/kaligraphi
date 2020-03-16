@@ -7,6 +7,7 @@
         label="autocomplete"
         [formControl]="control"
         [kalAutocomplete]="dataSource"
+        [kalAutocompleteLoading]="loading"
         [kalClearOnPick]="clearOnPick"
         (kalAutocompleteSelected)="choicePicked($event)"
         [kalTheme]="themes"
@@ -35,6 +36,13 @@
     <kal-checkbox
       [(ngModel)]="clearOnPick"
       label="clearOnPick"
+    ></kal-checkbox>
+  </kal-form-field>
+
+  <kal-form-field>
+    <kal-checkbox
+      [(ngModel)]="loading"
+      label="Toggle loading"
     ></kal-checkbox>
   </kal-form-field>
 

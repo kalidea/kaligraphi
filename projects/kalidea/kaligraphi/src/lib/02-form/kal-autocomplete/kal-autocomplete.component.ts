@@ -80,6 +80,10 @@ export class KalAutocompleteComponent<T> implements AfterViewInit, OnDestroy {
    */
   private _virtualScrollConfig: KalVirtualScrollConfig = {itemSize: 27};
 
+  private _loading = false;
+
+  private _kalAutocompleteHeight: string;
+
   constructor(private cdr: ChangeDetectorRef,
               @Inject(KAL_AUTOCOMPLETE_DATA) public data: KalAutocompleteComponentOption) {
     this.width = data.width;
@@ -93,6 +97,24 @@ export class KalAutocompleteComponent<T> implements AfterViewInit, OnDestroy {
 
   set options(options: KalAutocompleteOption<T>[]) {
     this._options = options;
+    this.cdr.markForCheck();
+  }
+
+  get loading(): boolean {
+    return this._loading;
+  }
+
+  set loading(loading: boolean) {
+    this._loading = loading;
+    this.cdr.markForCheck();
+  }
+
+  get kalAutocompleteHeight(): string {
+    return this._kalAutocompleteHeight;
+  }
+
+  set kalAutocompleteHeight(autocompleteHeight: string) {
+    this._kalAutocompleteHeight = autocompleteHeight;
     this.cdr.markForCheck();
   }
 
