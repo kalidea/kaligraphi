@@ -29,6 +29,8 @@ export class AutocompleteComponent implements OnDestroy {
 
   clearOnPick = false;
 
+  loading = false;
+
   @AutoUnsubscribe()
   private subscription = Subscription.EMPTY;
 

@@ -1,4 +1,3 @@
-
 <cdk-virtual-scroll-viewport
   [itemSize]="virtualScrollConfig.itemSize"
   [ngClass]="getClasses()"
@@ -6,17 +5,26 @@
   [style.width]="width"
   [style.height]="height">
 
+  <div *ngIf="loading; else displayOptionsTemplate"
+       [style.height]="kalAutocompleteHeight"
+       [kalLoading]="loading">
+  </div>
 
-  <ng-container *cdkVirtualFor="let option of options; index as i">
+  <ng-template #displayOptionsTemplate>
 
-    <kal-option (click)="select(option)"
-                (selectionChange)="select(option)"
-                [disabled]="option.disabled"
-                [label]="option.label"
-                [value]="option">
-      {{ option.label }}
-    </kal-option>
+    <ng-container [kalLoading]="loading"
+                  *cdkVirtualFor="let option of options; index as i">
 
-  </ng-container>
+      <kal-option (click)="select(option)"
+                  (selectionChange)="select(option)"
+                  [disabled]="option.disabled"
+                  [label]="option.label"
+                  [value]="option">
+        {{ option.label }}
+      </kal-option>
+
+    </ng-container>
+
+  </ng-template>
 
 </cdk-virtual-scroll-viewport>

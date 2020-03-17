@@ -6,6 +6,7 @@ import { KalAutocompleteDirective } from './kal-autocomplete.directive';
 import { KalAutocompleteComponent } from './kal-autocomplete.component';
 import { KalOptionModule } from '../kal-option/kal-option.module';
 import { KalUtilityModule } from '../../99-utility/kal-utility.module';
+import { KalLoaderModule } from '../../04-overlay/kal-loader/kal-loader.module';
 
 export * from './kal-autocomplete.directive';
 export * from './kal-autocomplete.component';
@@ -21,7 +22,8 @@ const exports = [
     CommonModule,
     ScrollingModule,
     KalOptionModule,
-    KalUtilityModule
+    KalUtilityModule,
+    KalLoaderModule,
   ],
   declarations: exports,
   entryComponents: [
