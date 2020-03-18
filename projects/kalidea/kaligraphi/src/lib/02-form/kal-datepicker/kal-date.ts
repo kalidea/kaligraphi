@@ -61,7 +61,14 @@ export class KalDate {
         throw new Error('You should provide a date format');
       }
 
-      date = dayjs(rawDate, formatDate(format));
+      const dayJsParseFormat = formatDate(format);
+
+      // if date is not valid, return invalid date (e.g : 31st February)
+      if (dayjs(rawDate, dayJsParseFormat).format(dayJsParseFormat) !== rawDate) {
+        date = dayjs(new Date(NaN));
+      } else {
+        date = dayjs(rawDate, dayJsParseFormat);
+      }
     } else if (rawDate instanceof KalDate) {
       date = (rawDate as KalDate).getDate();
     } else {

@@ -44,7 +44,7 @@ describe('KalDate class', () => {
   it('should manage invalid date', () => {
 
     // Testing invalid values for parsing : alpha char, undefined, null
-    ['aa', undefined, ''].forEach(invalidValue => {
+    ['aa', undefined, '', '31/02/2020'].forEach(invalidValue => {
       const kalDate = new KalDate(invalidValue);
       expect(kalDate.valid).toBeFalsy();
       expect(kalDate.toString()).toEqual('');
@@ -85,7 +85,7 @@ describe('KalDate class', () => {
 
     // is between
     expect(new KalDate('18/11/2019').isBetween('01/11/2019', '31/12/2019')).toBeTruthy();
-    expect(new KalDate('18/11/2019').isBetween(new KalDate('19/11/2019'), new KalDate('31/11/2019'))).toBeFalsy();
+    expect(new KalDate('18/11/2019').isBetween(new KalDate('19/11/2019'), new KalDate('30/11/2019'))).toBeFalsy();
 
     // is between with exclusions
     expect(new KalDate('18/11/2019').isBetween('18/11/2019', '19/11/2019', {start: true, end: false})).toBeFalsy();

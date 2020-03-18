@@ -390,8 +390,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
 
     // watch value changes
     const valueChangesSubscription = this.control.valueChanges.pipe(
-      map(value => coerceKalDateProperty(value)), // transform as date
-      map(date => date.valid ? date : null), // remove invalid date
+      map(value => !!value ? coerceKalDateProperty(value) : null), // transform as date or send null if the input is empty
       tap((date: KalDate) => {
         // notify parent for validation
         super.notifyUpdate(date);
@@ -399,8 +398,9 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
         // emit value
         this.valueChanges.emit(date);
 
-        // if there's no date we should apply one manually so the datepicker can open at the current date
-        if (date === null) {
+        // if there's no date or if the given input is invalid, we should apply one
+        // date manually so the datepicker can open at the current date
+        if (date === null || !date.valid) {
           date = new KalDate();
         }
 
