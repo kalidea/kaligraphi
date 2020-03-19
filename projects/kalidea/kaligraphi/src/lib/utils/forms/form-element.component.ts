@@ -225,7 +225,9 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
     ({disabled, updateOn, value} = this.superControl);
     updateOn = updateOnOverride || updateOn; // override value
 
-    return new FormControl({value, disabled}, {updateOn});
+    this.control = new FormControl({value, disabled}, {updateOn});
+
+    return this.control;
   }
 
   /**
