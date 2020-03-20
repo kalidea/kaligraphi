@@ -459,8 +459,12 @@ export class KalSelectComponent
     this.options.changes
       .pipe(startWith(0))
       .subscribe(() => {
+
         if (this.ngControl && !this.multiple) {
           this.select(this.ngControl.value);
+
+        } else if (this.value) {
+          this.select(this.value);
         }
 
         this.cleanSubscriptionsList();
