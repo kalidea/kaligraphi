@@ -207,13 +207,6 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
     }
   }
 
-
-  protected updateStatus(control) {
-    if (this.superControl.disabled !== control.disabled) {
-      this.superControl.enabled ? control.enable() : control.disable();
-    }
-  }
-
   /**
    * create control
    */
@@ -231,12 +224,8 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
 
     ({disabled, updateOn, value} = this.superControl);
     updateOn = updateOnOverride || updateOn; // override value
-    this.control = new FormControl({value, disabled}, {updateOn});
 
-    // don't forget to implement super.ngOnDestroy on child element
-    this.controlStatusChangedSubscription = this.superControl.statusChanges
-      .pipe(startWith(1))
-      .subscribe(() => this.updateStatus(this.control));
+    this.control = new FormControl({value, disabled}, {updateOn});
 
     return this.control;
   }
