@@ -92,7 +92,7 @@ export class KalDate {
       rawDate = rawDate.slice(0, -1) + '+00:00';
     }
 
-    // on supprime la timezone de la date et du format pour la comparaison
+    // remove timezone for comparaison
     const timeZoneRegexp = '(Z|(\\+|-)([0-9]{4}|([0-9]{2}:[0-9]{2})))$';
     const timeZoneOffset = KalDate.getLocalGMTOffset();
     const timeZoneMatch = rawDate.match(new RegExp(timeZoneRegexp));
@@ -100,21 +100,6 @@ export class KalDate {
     const timeZone = timeZoneMatch && timeZoneMatch.length > 0 ? timeZoneMatch[1] : timeZoneOffset;
     const rawDateWithoutTimeZone = rawDate.replace(new RegExp('^(.*)' + timeZoneRegexp), '$1');
     const dayJsParseFormatWithoutTimeZone = dayJsParseFormat.replace('Z', '');
-
-    // console.log({
-    //   rawDate,
-    //   timeZoneOffset,
-    //   rawConcat: rawDateWithoutTimeZone + timeZone,
-    //   format,
-    //   parsed: dayjs(rawDateWithoutTimeZone + timeZone, dayJsParseFormat)
-    // });
-    //
-    // console.log({
-    //   rawWithoutTZ: rawDateWithoutTimeZone,
-    //   parsedWithoutTZ: dayjs(rawDateWithoutTimeZone, dayJsParseFormatWithoutTimeZone).format(dayJsParseFormatWithoutTimeZone),
-    //   comparaison: dayjs(rawDateWithoutTimeZone, dayJsParseFormatWithoutTimeZone).format(dayJsParseFormatWithoutTimeZone) !== rawDateWithoutTimeZone,
-    //   parsed: dayjs(rawDate, dayJsParseFormat)
-    // });
 
     // @ts-ignore
     if (dayjs(rawDateWithoutTimeZone, dayJsParseFormatWithoutTimeZone).format(dayJsParseFormatWithoutTimeZone) !== rawDateWithoutTimeZone) {
