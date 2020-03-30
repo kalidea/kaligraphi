@@ -91,7 +91,7 @@ export function formatDate(angularFormat: string) {
   let dayJsDateFormat = '';
   let countChars = 0;
 
-  // récupération des Z de fin
+  // get Z at end of format
   let zList = '';
   if (angularFormat.endsWith('Z')) {
     while (angularFormat.endsWith('Z')) {
