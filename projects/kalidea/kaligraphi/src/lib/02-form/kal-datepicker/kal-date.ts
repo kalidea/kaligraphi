@@ -48,6 +48,18 @@ export class KalDate {
   }
 
   /**
+   * get current GMT offset as string
+   * E.G.: +02:00
+   */
+  static getLocalGMTOffset(): string {
+    const timeZoneOffset = (new Date().getTimezoneOffset() / -60);
+    const sign = Math.sign(timeZoneOffset) > 0 ? '+' : '-';
+    const value = Math.abs(timeZoneOffset) + '';
+    const offset = sign + value.padStart(2, '0') + ':00';
+    return offset;
+  }
+
+  /**
    * Returns a DayJS object
    * @param format Date format to provide if date is a `string`
    */
@@ -60,6 +72,7 @@ export class KalDate {
       if (!format) {
         throw new Error('You should provide a date format');
       }
+
 
       date = this.parseRawDate(rawDate, format);
     } else if (rawDate instanceof KalDate) {
@@ -75,11 +88,40 @@ export class KalDate {
   private static parseRawDate(rawDate: string, format: string): Dayjs {
     const dayJsParseFormat = formatDate(format);
 
-    // if date is not valid, return invalid date (e.g : 31st February)
-    if (dayjs(rawDate, dayJsParseFormat).format(dayJsParseFormat) !== rawDate) {
+    // we should replace 'Z' timezone flag by +00:00
+    if (rawDate.endsWith('Z')) {
+      rawDate = rawDate.slice(0, -1) + '+00:00';
+    }
+
+    // on supprime la timezone de la date et du format pour la comparaison
+    const timeZoneRegexp = '(Z|(\\+|-)([0-9]{4}|([0-9]{2}:[0-9]{2})))$';
+    const timeZoneOffset = KalDate.getLocalGMTOffset();
+    const timeZoneMatch = rawDate.match(new RegExp(timeZoneRegexp));
+    // timeZone is current timezone if not provided
+    const timeZone = timeZoneMatch && timeZoneMatch.length > 0 ? timeZoneMatch[1] : timeZoneOffset;
+    const rawDateWithoutTimeZone = rawDate.replace(new RegExp('^(.*)' + timeZoneRegexp), '$1');
+    const dayJsParseFormatWithoutTimeZone = dayJsParseFormat.replace('Z', '');
+
+    // console.log({
+    //   rawDate,
+    //   timeZoneOffset,
+    //   rawConcat: rawDateWithoutTimeZone + timeZone,
+    //   format,
+    //   parsed: dayjs(rawDateWithoutTimeZone + timeZone, dayJsParseFormat)
+    // });
+    //
+    // console.log({
+    //   rawWithoutTZ: rawDateWithoutTimeZone,
+    //   parsedWithoutTZ: dayjs(rawDateWithoutTimeZone, dayJsParseFormatWithoutTimeZone).format(dayJsParseFormatWithoutTimeZone),
+    //   comparaison: dayjs(rawDateWithoutTimeZone, dayJsParseFormatWithoutTimeZone).format(dayJsParseFormatWithoutTimeZone) !== rawDateWithoutTimeZone,
+    //   parsed: dayjs(rawDate, dayJsParseFormat)
+    // });
+
+    // @ts-ignore
+    if (dayjs(rawDateWithoutTimeZone, dayJsParseFormatWithoutTimeZone).format(dayJsParseFormatWithoutTimeZone) !== rawDateWithoutTimeZone) {
       return dayjs(new Date(NaN));
     } else {
-      return dayjs(rawDate, dayJsParseFormat);
+      return dayjs(rawDateWithoutTimeZone + timeZone, dayJsParseFormat);
     }
   }
 

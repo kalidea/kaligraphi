@@ -91,7 +91,16 @@ export function formatDate(angularFormat: string) {
   let dayJsDateFormat = '';
   let countChars = 0;
 
-  const splitResult = angularFormat.split(/\W|_/);
+  // récupération des Z de fin
+  let zList = '';
+  if (angularFormat.endsWith('Z')) {
+    while (angularFormat.endsWith('Z')) {
+      angularFormat = angularFormat.slice(0, -1);
+      zList += 'Z';
+    }
+  }
+
+  const splitResult = angularFormat.split(/\W|_|T/);
 
   splitResult.forEach((item, i) => {
 
@@ -108,6 +117,10 @@ export function formatDate(angularFormat: string) {
       countChars++;
     }
   });
+
+  if (zList) {
+    dayJsDateFormat += dateFormats[zList];
+  }
 
   return dayJsDateFormat;
 }
