@@ -53,7 +53,7 @@ export class KalDate {
    */
   static getLocalGMTOffset(): string {
     const timeZoneOffset = (new Date().getTimezoneOffset() / -60);
-    const sign = Math.sign(timeZoneOffset) > 0 ? '+' : '-';
+    const sign = Math.sign(timeZoneOffset) < 0 ? '-' : '+';
     const value = Math.abs(timeZoneOffset) + '';
     return sign + (value.length < 2 ? '0' + value : value) + ':00';
   }
