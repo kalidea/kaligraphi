@@ -106,6 +106,7 @@ describe('KalDate class', () => {
 
     const datesList = [
       {raw: '2020-03-05T14:36:48.687Z', format: 'yyyy-MM-ddTHH:mm:ss.SSSZZZZZ', valid: true},
+      {raw: '2020-03-05T14:36:48.687-00:00', format: 'yyyy-MM-ddTHH:mm:ss.SSSZZZZZ', valid: true},
       {raw: '2020-03-05T14:36:48.687+00:00', format: 'yyyy-MM-ddTHH:mm:ss.SSSZZZZZ', valid: true},
       {raw: '2020-03-05T14:36:48.687+01:00', format: 'yyyy-MM-ddTHH:mm:ss.SSSZZZZZ', valid: true},
       {raw: '2020-03-05T14:36:48.687-08:00', format: 'yyyy-MM-ddTHH:mm:ss.SSSZZZZZ', valid: true},

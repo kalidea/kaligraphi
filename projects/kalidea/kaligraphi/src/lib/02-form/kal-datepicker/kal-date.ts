@@ -97,7 +97,10 @@ export class KalDate {
     const timeZoneOffset = KalDate.getLocalGMTOffset();
     const timeZoneMatch = rawDate.match(new RegExp(timeZoneRegexp));
     // timeZone is current timezone if not provided
-    const timeZone = timeZoneMatch && timeZoneMatch.length > 0 ? timeZoneMatch[1] : timeZoneOffset;
+    let timeZone = timeZoneMatch && timeZoneMatch.length > 0 ? timeZoneMatch[1] : timeZoneOffset;
+    if (timeZone === '-00:00') {
+      timeZone = '+00:00';
+    }
     const rawDateWithoutTimeZone = rawDate.replace(new RegExp('^(.*)' + timeZoneRegexp), '$1');
     const dayJsParseFormatWithoutTimeZone = dayJsParseFormat.replace('Z', '');
 
