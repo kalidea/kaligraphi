@@ -55,8 +55,7 @@ export class KalDate {
     const timeZoneOffset = (new Date().getTimezoneOffset() / -60);
     const sign = Math.sign(timeZoneOffset) > 0 ? '+' : '-';
     const value = Math.abs(timeZoneOffset) + '';
-    const offset = sign + value.padStart(2, '0') + ':00';
-    return offset;
+    return sign + (value.length < 2 ? '0' + value : value) + ':00';
   }
 
   /**
