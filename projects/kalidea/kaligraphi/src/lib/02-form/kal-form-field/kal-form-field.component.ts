@@ -20,6 +20,7 @@ import { KalCheckboxComponent } from '../kal-checkbox/kal-checkbox.component';
 import { FormElementComponent } from '../../utils/forms/form-element.component';
 import { KalFormFieldLabelDirective } from './kal-form-field-label.directive';
 import { AbstractControl } from '@angular/forms';
+import isNil from 'lodash-es/isNil';
 
 export interface KalFormFieldOptions {
 
@@ -85,6 +86,11 @@ export class KalFormFieldComponent implements AfterContentInit, OnDestroy {
    */
   @Input() legend: string;
 
+  /**
+   * show error message
+   */
+  @Input() displayErrors: boolean;
+
   @ContentChild(forwardRef(() => FormElementComponent), {static: false})
   formElement: FormElementComponent;
 
@@ -100,7 +106,7 @@ export class KalFormFieldComponent implements AfterContentInit, OnDestroy {
   }
 
   get showError() {
-    return !!this.formFieldOptions.showError;
+    return !!this.formFieldOptions.showError && isNil(this.displayErrors) || this.displayErrors === true;
   }
 
   get errors() {
@@ -146,7 +152,6 @@ export class KalFormFieldComponent implements AfterContentInit, OnDestroy {
     }
     return false;
   }
-
 
   private checkErrorAndDirtyness() {
     this.hasError = (!!this.formFieldOptions.showErrorAtDisplay || this.formElement.dirty) && this.formElement.hasError;
