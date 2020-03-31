@@ -96,4 +96,32 @@ describe('KalDate class', () => {
     expect(new KalDate('15/11/2019').isToday()).toBeFalsy();
   });
 
+  it('should local timezone if not provided', () => {
+    const rawDate = '2020-03-30T15:15:20.110';
+    const date = new KalDate(rawDate, 'yyyy-MM-ddTHH:mm:ss.SSS');
+    expect(date.toFormat('yyyy-MM-ddTHH:mm:ss.SSSZZZZZ')).toBe(rawDate + KalDate.getLocalGMTOffset());
+  });
+
+  it('should manage timezone and validity', () => {
+
+    const datesList = [
+      {raw: '2020-03-05T14:36:48.687Z', format: 'yyyy-MM-ddTHH:mm:ss.SSSZZZZZ', valid: true},
+      {raw: '2020-03-05T14:36:48.687-00:00', format: 'yyyy-MM-ddTHH:mm:ss.SSSZZZZZ', valid: true},
+      {raw: '2020-03-05T14:36:48.687+00:00', format: 'yyyy-MM-ddTHH:mm:ss.SSSZZZZZ', valid: true},
+      {raw: '2020-03-05T14:36:48.687+01:00', format: 'yyyy-MM-ddTHH:mm:ss.SSSZZZZZ', valid: true},
+      {raw: '2020-03-05T14:36:48.687-08:00', format: 'yyyy-MM-ddTHH:mm:ss.SSSZZZZZ', valid: true},
+      {raw: '2020-03-05T14:36:48.687Z', format: 'yyyy-MM-ddTHH:mm:ss.SSS', valid: true},
+      {raw: '2020-03-05T14:36:48.687', format: 'yyyy-MM-ddTHH:mm:ss.SSS', valid: true},
+      {raw: '2020-03-05T14:36:48.687', format: 'yyyy-MM-ddTHH:mm:ss.SSSZZZZZ', valid: true},
+      {raw: '2020-02-32T14:36:48.687Z', format: 'yyyy-MM-ddTHH:mm:ss.SSSZZZZZ', valid: false},
+      {raw: '2020-02-32T14:36:48.687', format: 'yyyy-MM-ddTHH:mm:ss.SSS', valid: false},
+    ];
+
+    datesList.forEach(({raw, format, valid}) => {
+      const date = new KalDate(raw, format);
+      expect(date.valid).toBe(valid, `${raw} validity should be ${valid}`);
+    });
+
+  });
+
 });
