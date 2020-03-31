@@ -59,7 +59,7 @@ export class KalSelectComponent
   /**
    * The currently selected option
    */
-  selection: KalOptionComponent [];
+  private selection: KalOptionComponent [];
 
   /**
    * Overlay Reference
