@@ -1,5 +1,5 @@
 import {
-  AfterContentInit,
+  AfterContentInit, AfterViewChecked, AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -24,6 +24,7 @@ import { DOWN_ARROW, ENTER, ESCAPE, SPACE, UP_ARROW } from '@angular/cdk/keycode
 import { NgControl } from '@angular/forms';
 import { filter, startWith } from 'rxjs/operators';
 import { merge, Subscription } from 'rxjs';
+import cloneDeep from 'lodash-es/cloneDeep';
 
 import { KalOptionComponent } from '../kal-option/kal-option.component';
 import { KalThemeDirective } from '../../99-utility/directives/kal-theme/kal-theme.directive';
@@ -39,8 +40,7 @@ import { buildProviders, FormElementComponent } from '../../utils/forms/form-ele
 })
 export class KalSelectComponent
   extends FormElementComponent<any>
-  implements OnInit, OnDestroy, AfterContentInit {
-
+  implements OnInit, OnDestroy, AfterContentInit, AfterViewInit {
   /**
    * All of the defined select optionsComponent
    */
@@ -59,7 +59,7 @@ export class KalSelectComponent
   /**
    * The currently selected option
    */
-  private selection: KalOptionComponent [];
+  selection: KalOptionComponent [];
 
   /**
    * Overlay Reference
@@ -476,10 +476,6 @@ export class KalSelectComponent
             })
         );
       });
-
-    if (this.options.length === 1) {
-      this.optionSelected(this.options.first);
-    }
   }
 
   ngOnDestroy() {
@@ -489,5 +485,14 @@ export class KalSelectComponent
     }
 
     this.cleanSubscriptionsList();
+  }
+
+  ngAfterViewInit(): void {
+    if (this.options.length === 1 && this.selection.length === 0) {
+      // Keep this to display selected option
+      setTimeout(() => {
+        this.optionSelected(this.options.toArray()[0]);
+      }, 0);
+    }
   }
 }
