@@ -1,5 +1,5 @@
 import {
-  AfterContentInit, AfterViewChecked, AfterViewInit,
+  AfterContentInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -24,7 +24,6 @@ import { DOWN_ARROW, ENTER, ESCAPE, SPACE, UP_ARROW } from '@angular/cdk/keycode
 import { NgControl } from '@angular/forms';
 import { filter, startWith } from 'rxjs/operators';
 import { merge, Subscription } from 'rxjs';
-import cloneDeep from 'lodash-es/cloneDeep';
 
 import { KalOptionComponent } from '../kal-option/kal-option.component';
 import { KalThemeDirective } from '../../99-utility/directives/kal-theme/kal-theme.directive';
@@ -40,7 +39,7 @@ import { buildProviders, FormElementComponent } from '../../utils/forms/form-ele
 })
 export class KalSelectComponent
   extends FormElementComponent<any>
-  implements OnInit, OnDestroy, AfterContentInit, AfterViewInit {
+  implements OnInit, OnDestroy, AfterContentInit {
   /**
    * All of the defined select optionsComponent
    */
@@ -50,6 +49,8 @@ export class KalSelectComponent
    * Overlay Portal Options
    */
   @ViewChild('optionsPortal', {static: true}) optionsPortal: TemplatePortal<any>;
+
+  private hasDefaultValue = false;
 
   /**
    * Whether the component is in multiple selection mode
@@ -296,9 +297,57 @@ export class KalSelectComponent
    */
   writeValue(value: any) {
     Promise.resolve().then(() => {
-      this.select(value);
-      super.writeValue(value);
+      if (!this.hasDefaultValue) {
+        this.select(value);
+        super.writeValue(value);
+
+        this.hasDefaultValue = false;
+      }
     });
+  }
+
+  ngOnInit() {
+    this.ngControl = this.injector.get(NgControl, null);
+    this.selection = [];
+  }
+
+  ngAfterContentInit() {
+    this.initKeyManager();
+
+    this.options.changes
+      .pipe(startWith(0))
+      .subscribe(() => {
+
+        if (this.ngControl && !this.multiple) {
+          this.select(this.ngControl.value);
+
+        } else if (this.value) {
+          this.select(this.value);
+        }
+
+        this.cleanSubscriptionsList();
+        this.subscriptionsList.push(
+          merge<KalOptionComponent>(...this.options.map(option => option.selectionChange))
+            .subscribe(event => {
+              this.focus();
+              this.optionSelected(event);
+            })
+        );
+      });
+
+    if (this.options.length === 1 && this.selection.length === 0 && !this.value) {
+      this.optionSelected(this.options.first);
+      this.hasDefaultValue = true;
+    }
+  }
+
+  ngOnDestroy() {
+    super.ngOnDestroy();
+    if (this.overlayRef) {
+      this.overlayRef.dispose();
+    }
+
+    this.cleanSubscriptionsList();
   }
 
   /**
@@ -446,53 +495,5 @@ export class KalSelectComponent
       });
 
     this.subscriptionsList = [];
-  }
-
-  ngOnInit() {
-    this.ngControl = this.injector.get(NgControl, null);
-    this.selection = [];
-  }
-
-  ngAfterContentInit() {
-    this.initKeyManager();
-
-    this.options.changes
-      .pipe(startWith(0))
-      .subscribe(() => {
-
-        if (this.ngControl && !this.multiple) {
-          this.select(this.ngControl.value);
-
-        } else if (this.value) {
-          this.select(this.value);
-        }
-
-        this.cleanSubscriptionsList();
-        this.subscriptionsList.push(
-          merge<KalOptionComponent>(...this.options.map(option => option.selectionChange))
-            .subscribe(event => {
-              this.focus();
-              this.optionSelected(event);
-            })
-        );
-      });
-  }
-
-  ngOnDestroy() {
-    super.ngOnDestroy();
-    if (this.overlayRef) {
-      this.overlayRef.dispose();
-    }
-
-    this.cleanSubscriptionsList();
-  }
-
-  ngAfterViewInit(): void {
-    if (this.options.length === 1 && this.selection.length === 0) {
-      // Keep this to display selected option
-      setTimeout(() => {
-        this.optionSelected(this.options.toArray()[0]);
-      }, 0);
-    }
   }
 }
