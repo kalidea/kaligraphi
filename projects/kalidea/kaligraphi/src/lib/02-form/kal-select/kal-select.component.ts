@@ -40,7 +40,6 @@ import { buildProviders, FormElementComponent } from '../../utils/forms/form-ele
 export class KalSelectComponent
   extends FormElementComponent<any>
   implements OnInit, OnDestroy, AfterContentInit {
-
   /**
    * All of the defined select optionsComponent
    */
@@ -50,6 +49,8 @@ export class KalSelectComponent
    * Overlay Portal Options
    */
   @ViewChild('optionsPortal', {static: true}) optionsPortal: TemplatePortal<any>;
+
+  private hasDefaultValue = false;
 
   /**
    * Whether the component is in multiple selection mode
@@ -296,8 +297,12 @@ export class KalSelectComponent
    */
   writeValue(value: any) {
     Promise.resolve().then(() => {
-      this.select(value);
-      super.writeValue(value);
+      if (!this.hasDefaultValue) {
+        this.select(value);
+        super.writeValue(value);
+      }
+
+      this.hasDefaultValue = false;
     });
   }
 
@@ -477,8 +482,9 @@ export class KalSelectComponent
         );
       });
 
-    if (this.options.length === 1) {
+    if (this.options.length === 1 && this.selection.length === 0 && !this.value) {
       this.optionSelected(this.options.first);
+      this.hasDefaultValue = true;
     }
   }
 
