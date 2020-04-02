@@ -300,9 +300,9 @@ export class KalSelectComponent
       if (!this.hasDefaultValue) {
         this.select(value);
         super.writeValue(value);
-
-        this.hasDefaultValue = false;
       }
+
+      this.hasDefaultValue = false;
     });
   }
 
