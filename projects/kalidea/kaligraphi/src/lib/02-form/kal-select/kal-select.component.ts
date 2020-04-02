@@ -306,50 +306,6 @@ export class KalSelectComponent
     });
   }
 
-  ngOnInit() {
-    this.ngControl = this.injector.get(NgControl, null);
-    this.selection = [];
-  }
-
-  ngAfterContentInit() {
-    this.initKeyManager();
-
-    this.options.changes
-      .pipe(startWith(0))
-      .subscribe(() => {
-
-        if (this.ngControl && !this.multiple) {
-          this.select(this.ngControl.value);
-
-        } else if (this.value) {
-          this.select(this.value);
-        }
-
-        this.cleanSubscriptionsList();
-        this.subscriptionsList.push(
-          merge<KalOptionComponent>(...this.options.map(option => option.selectionChange))
-            .subscribe(event => {
-              this.focus();
-              this.optionSelected(event);
-            })
-        );
-      });
-
-    if (this.options.length === 1 && this.selection.length === 0 && !this.value) {
-      this.optionSelected(this.options.first);
-      this.hasDefaultValue = true;
-    }
-  }
-
-  ngOnDestroy() {
-    super.ngOnDestroy();
-    if (this.overlayRef) {
-      this.overlayRef.dispose();
-    }
-
-    this.cleanSubscriptionsList();
-  }
-
   /**
    * Handles enter ans space keydown events on the select
    */
@@ -495,5 +451,49 @@ export class KalSelectComponent
       });
 
     this.subscriptionsList = [];
+  }
+
+  ngOnInit() {
+    this.ngControl = this.injector.get(NgControl, null);
+    this.selection = [];
+  }
+
+  ngAfterContentInit() {
+    this.initKeyManager();
+
+    this.options.changes
+      .pipe(startWith(0))
+      .subscribe(() => {
+
+        if (this.ngControl && !this.multiple) {
+          this.select(this.ngControl.value);
+
+        } else if (this.value) {
+          this.select(this.value);
+        }
+
+        this.cleanSubscriptionsList();
+        this.subscriptionsList.push(
+          merge<KalOptionComponent>(...this.options.map(option => option.selectionChange))
+            .subscribe(event => {
+              this.focus();
+              this.optionSelected(event);
+            })
+        );
+      });
+
+    if (this.options.length === 1 && this.selection.length === 0 && !this.value) {
+      this.optionSelected(this.options.first);
+      this.hasDefaultValue = true;
+    }
+  }
+
+  ngOnDestroy() {
+    super.ngOnDestroy();
+    if (this.overlayRef) {
+      this.overlayRef.dispose();
+    }
+
+    this.cleanSubscriptionsList();
   }
 }
