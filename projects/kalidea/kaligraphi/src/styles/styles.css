@@ -78,7 +78,7 @@ kal-tree {
 .kal-drag-dragging {
   opacity: 0.3; }
 
-.kal-dropable *:not(button):not(a):not([kalTreeNodeToggle]) {
+.kal-dropable *:not(button):not(a):not([kalTreeNodeToggle]):not(.kal-dropable-disable-trigger) {
   pointer-events: none; }
 
 /* molecules */
@@ -1521,19 +1521,40 @@ kal-card {
     kal-card.kal-theme--reverse kal-card-content {
       color: #F5F5F5; }
 
-kal-accordion kal-expansion-panel kal-expansion-panel-header {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: flex-start;
-  align-items: center; }
-  kal-accordion kal-expansion-panel kal-expansion-panel-header > span:nth-child(1) {
-    flex: 1; }
-  kal-accordion kal-expansion-panel kal-expansion-panel-header > span:nth-child(2) i {
-    color: #B8B8B8; }
-  kal-accordion kal-expansion-panel kal-expansion-panel-header[aria-disabled="false"]:hover {
-    cursor: pointer; }
-    kal-accordion kal-expansion-panel kal-expansion-panel-header[aria-disabled="false"]:hover i {
+kal-accordion kal-expansion-panel {
+  display: block;
+  padding: 8px;
+  border-bottom: 1px solid #B8B8B8; }
+  kal-accordion kal-expansion-panel kal-expansion-panel-header {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: center; }
+    kal-accordion kal-expansion-panel kal-expansion-panel-header > span:nth-child(2) i {
+      color: #B8B8B8; }
+    kal-accordion kal-expansion-panel kal-expansion-panel-header[aria-disabled="false"]:hover, kal-accordion kal-expansion-panel kal-expansion-panel-header[aria-disabled="false"]:active, kal-accordion kal-expansion-panel kal-expansion-panel-header[aria-disabled="false"]:focus {
+      cursor: pointer;
       color: #E89536; }
+      kal-accordion kal-expansion-panel kal-expansion-panel-header[aria-disabled="false"]:hover i, kal-accordion kal-expansion-panel kal-expansion-panel-header[aria-disabled="false"]:active i, kal-accordion kal-expansion-panel kal-expansion-panel-header[aria-disabled="false"]:focus i {
+        color: #E89536; }
+  kal-accordion kal-expansion-panel > div kal-expansion-panel-content {
+    display: block;
+    padding: 10px 0; }
+
+kal-accordion.kal-theme--bordered kal-expansion-panel {
+  border: 1px solid #B8B8B8; }
+  kal-accordion.kal-theme--bordered kal-expansion-panel:not(:last-child) {
+    border-bottom: none; }
+
+kal-accordion.kal-theme--reverse kal-expansion-panel {
+  border-bottom: 1px solid #5C5C5C; }
+  kal-accordion.kal-theme--reverse kal-expansion-panel kal-expansion-panel-header > span:nth-child(2) i {
+    color: #5C5C5C; }
+
+kal-accordion.kal-theme--reverse.kal-theme--bordered kal-expansion-panel {
+  border: 1px solid #5C5C5C; }
+  kal-accordion.kal-theme--reverse.kal-theme--bordered kal-expansion-panel:not(:last-child) {
+    border-bottom: none; }
 
 kal-chip {
   display: inline-flex;
@@ -1825,6 +1846,9 @@ kal-button {
     kal-button.kal-theme--small button[disabled] {
       cursor: not-allowed; }
 
+kal-list cdk-virtual-scroll-viewport {
+  height: 500px; }
+
 kal-list.has-selected-element kal-checkbox {
   visibility: visible; }
 
@@ -1957,7 +1981,6 @@ kal-nav {
   display: block;
   width: 100%;
   height: auto;
-  background-color: #1F1F1F;
   color: #ffffff;
   padding: 20px 0 0 10px; }
   kal-nav .kal-nav__logo {

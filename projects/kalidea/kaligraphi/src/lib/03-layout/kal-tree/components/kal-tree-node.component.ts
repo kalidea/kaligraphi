@@ -43,8 +43,6 @@ export class KalTreeNodeComponent extends CdkTreeNode<KalTreeNode> implements On
 
   tabIndex;
 
-  node: KalTreeNode;
-
   @ContentChildren(KalTreeNodeOutletDirective) nodeOutlet: QueryList<KalTreeNodeOutletDirective>;
 
   constructor(protected elementRef: ElementRef<HTMLElement>,
@@ -57,11 +55,6 @@ export class KalTreeNodeComponent extends CdkTreeNode<KalTreeNode> implements On
   @HostBinding('class.kal-selected')
   get selected() {
     return this.tree.selection.isSelected(this.data);
-  }
-
-  @Input()
-  set kalTreeNode(node) {
-    this.node = node;
   }
 
   @HostListener('click', ['$event'])

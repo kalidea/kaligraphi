@@ -48,7 +48,7 @@ export class KalSelectComponent
   /**
    * Overlay Portal Options
    */
-  @ViewChild('optionsPortal', {static: true}) optionsPortal: TemplatePortal<any>;
+  @ViewChild('optionsPortal', {static: true}) optionsPortal: TemplatePortal;
 
   private hasDefaultValue = false;
 

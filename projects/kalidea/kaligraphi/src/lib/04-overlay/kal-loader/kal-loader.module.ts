@@ -19,10 +19,7 @@ const exports: Type<any>[] = [
     CommonModule,
     KalUtilityModule
   ],
-  exports,
-  entryComponents: [
-    KalLoaderComponent
-  ]
+  exports
 })
 export class KalLoaderModule {
 }

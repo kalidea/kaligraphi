@@ -25,8 +25,6 @@ const exports = [
     OverlayModule,
     KalOptionModule,
     KalUtilityModule
-  ],
-  entryComponents: [
   ]
 })
 export class KalMenuModule {
