@@ -6,7 +6,7 @@
     "serve": "ng serve --open",
     "test": "ng test @kalidea/kaligraphi",
     "ng": "ng",
-    "build": "ng build",
+    "build": "ng build --prod",
     "build:lib": "npm run build",
     "copy:styles": "cpx \"./projects/kalidea/kaligraphi/src/**/*.{sass,scss,css}\" ./dist/kalidea/kaligraphi",
     "compile:styles": "node-sass ./projects/kalidea/kaligraphi/src/styles/styles.sass ./dist/kalidea/kaligraphi/styles/styles.css",
