@@ -143,7 +143,7 @@ export class KalFormFieldComponent implements AfterContentInit, OnDestroy {
 
   private hasRequiredValidator(): boolean {
     const control = this.formElement.superControl || this.formElement.control;
-    if (control.validator) {
+    if (control?.validator) {
       const validationResult = control.validator({} as AbstractControl);
       const requiredValidatorKeys = this.formFieldOptions.requiredValidatorKeys || ['required'];
       if (validationResult && requiredValidatorKeys.some(k => validationResult[k])) {

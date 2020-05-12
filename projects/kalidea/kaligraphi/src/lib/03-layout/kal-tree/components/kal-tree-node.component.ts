@@ -58,7 +58,7 @@ export class KalTreeNodeComponent extends CdkTreeNode<KalTreeNode> implements On
   }
 
   @HostListener('click', ['$event'])
-  select($event) {
+  select($event: Event) {
     $event.stopPropagation();
     if (this.data) {
       this.tree.selection.select(this.data);
