@@ -37,9 +37,7 @@ export interface Recognizer {
 }
 
 /** @docs-private */
-export interface RecognizerStatic {
-  new(options?: any): Recognizer;
-}
+export type RecognizerStatic = new(options?: any) => Recognizer;
 
 /** @docs-private */
 export interface HammerInstance {

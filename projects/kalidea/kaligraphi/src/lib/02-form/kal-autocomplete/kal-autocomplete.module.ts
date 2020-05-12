@@ -26,9 +26,6 @@ const exports = [
     KalLoaderModule,
   ],
   declarations: exports,
-  entryComponents: [
-    KalAutocompleteComponent
-  ],
   exports
 })
 export class KalAutocompleteModule {

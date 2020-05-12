@@ -40,6 +40,7 @@ export const KAL_INPUT_GLOBAL_OPTIONS =
 
 @Component({
   selector: 'kal-input',
+  exportAs: 'kalInput',
   templateUrl: './kal-input.component.html',
   styleUrls: ['./kal-input.sass'],
   encapsulation: ViewEncapsulation.None,

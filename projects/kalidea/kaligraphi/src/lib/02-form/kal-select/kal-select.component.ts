@@ -31,6 +31,7 @@ import { buildProviders, FormElementComponent } from '../../utils/forms/form-ele
 
 @Component({
   selector: 'kal-select',
+  exportAs: 'kalSelect',
   templateUrl: './kal-select.component.html',
   styleUrls: ['./kal-select.sass'],
   encapsulation: ViewEncapsulation.None,
@@ -48,7 +49,7 @@ export class KalSelectComponent
   /**
    * Overlay Portal Options
    */
-  @ViewChild('optionsPortal', {static: true}) optionsPortal: TemplatePortal<any>;
+  @ViewChild('optionsPortal', {static: true}) optionsPortal: TemplatePortal;
 
   private hasDefaultValue = false;
 

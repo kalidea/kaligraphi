@@ -29,8 +29,8 @@ import { KalTreeNode } from '../classes/kal-tree-node';
  */
 @Component({
   selector: 'kal-tree-node',
-  template: '<ng-content></ng-content>',
   exportAs: 'kalTreeNode',
+  template: '<ng-content></ng-content>',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {provide: CdkNestedTreeNode, useExisting: KalTreeNodeComponent},
@@ -42,8 +42,6 @@ export class KalTreeNodeComponent extends CdkTreeNode<KalTreeNode> implements On
   @Input() disabled;
 
   tabIndex;
-
-  node: KalTreeNode;
 
   @ContentChildren(KalTreeNodeOutletDirective) nodeOutlet: QueryList<KalTreeNodeOutletDirective>;
 
@@ -59,13 +57,8 @@ export class KalTreeNodeComponent extends CdkTreeNode<KalTreeNode> implements On
     return this.tree.selection.isSelected(this.data);
   }
 
-  @Input()
-  set kalTreeNode(node) {
-    this.node = node;
-  }
-
   @HostListener('click', ['$event'])
-  select($event) {
+  select($event: Event) {
     $event.stopPropagation();
     if (this.data) {
       this.tree.selection.select(this.data);

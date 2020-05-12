@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
-import { KalTreeNode } from 'projects/kalidea/kaligraphi/src/lib/03-layout/kal-tree/classes/kal-tree-node';
-import { KalTreeControl } from 'projects/kalidea/kaligraphi/src/lib/03-layout/kal-tree/classes/kal-tree-control';
-import { KalTreeDataSource } from 'projects/kalidea/kaligraphi/src/lib/03-layout/kal-tree/classes/kal-tree-data-source';
+import { KalTreeNode } from '@kalidea/kaligraphi';
+import { KalTreeControl } from '@kalidea/kaligraphi';
+import { KalTreeDataSource } from '@kalidea/kaligraphi';
 
 const TREE_DATA: KalTreeNode[] = [
   {

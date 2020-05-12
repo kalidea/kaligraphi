@@ -9,6 +9,7 @@ import { KalExpansionPanelHeaderComponent } from './kal-expansion-panel-header/k
 
 @Component({
   selector: 'kal-accordion',
+  exportAs: 'kalAccordion',
   templateUrl: './kal-accordion.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

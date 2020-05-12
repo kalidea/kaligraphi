@@ -8,7 +8,10 @@
       "sourceRoot": "src",
       "projectType": "application",
       "prefix": "app",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "sass"
+        }},
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -24,6 +27,7 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.app.json",
+            "aot": true,
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -139,6 +143,11 @@
           "options": {
             "tsConfig": "projects/kalidea/kaligraphi/tsconfig.lib.json",
             "project": "projects/kalidea/kaligraphi/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/kalidea/kaligraphi/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -174,5 +183,8 @@
     "@schematics/angular:module": {
       "export": true
     }
+  },
+  "cli": {
+    "analytics": "3932d92d-82cf-4dfe-9914-ad99ab89761d"
   }
 }
