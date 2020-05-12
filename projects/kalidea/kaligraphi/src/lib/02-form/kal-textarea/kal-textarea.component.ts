@@ -18,6 +18,7 @@ import { Coerce } from '../../utils/decorators/coerce';
 
 @Component({
   selector: 'kal-textarea',
+  exportAs: 'kalTextarea',
   templateUrl: './kal-textarea.component.html',
   styleUrls: ['./kal-textarea.sass'],
   encapsulation: ViewEncapsulation.None,

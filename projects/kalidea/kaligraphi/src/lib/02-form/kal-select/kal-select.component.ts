@@ -31,6 +31,7 @@ import { buildProviders, FormElementComponent } from '../../utils/forms/form-ele
 
 @Component({
   selector: 'kal-select',
+  exportAs: 'kalSelect',
   templateUrl: './kal-select.component.html',
   styleUrls: ['./kal-select.sass'],
   encapsulation: ViewEncapsulation.None,

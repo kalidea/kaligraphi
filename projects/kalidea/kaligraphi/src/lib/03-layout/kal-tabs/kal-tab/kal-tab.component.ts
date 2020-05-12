@@ -21,6 +21,7 @@ import { KalTabContentDirective } from '../kal-tab-content.directive';
 
 @Component({
   selector: 'kal-tab',
+  exportAs: 'kalTab',
   template: `
     <ng-template>
       <ng-content>

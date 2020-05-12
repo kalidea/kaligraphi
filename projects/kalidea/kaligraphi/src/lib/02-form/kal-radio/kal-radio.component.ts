@@ -28,6 +28,7 @@ import { uniqid } from '../../utils/helpers/uniq';
 
 @Component({
   selector: 'kal-radio-group',
+  exportAs: 'kalRadioGroup',
   template: `
       <ng-content></ng-content>`,
   providers: buildProviders(KalRadioGroupComponent),

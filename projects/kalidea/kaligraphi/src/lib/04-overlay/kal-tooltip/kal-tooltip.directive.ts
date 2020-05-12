@@ -34,7 +34,8 @@ export class KalTooltipConfig {
 }
 
 @Directive({
-  selector: '[kalTooltip]'
+  selector: '[kalTooltip]',
+  exportAs: 'kalTooltip',
 })
 export class KalTooltipDirective implements OnDestroy {
 

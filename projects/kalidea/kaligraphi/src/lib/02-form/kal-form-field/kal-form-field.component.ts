@@ -55,6 +55,7 @@ export const KAL_FORM_FIELDS_GLOBAL_OPTIONS =
 
 @Component({
   selector: 'kal-form-field',
+  exportAs: 'kalFormField',
   templateUrl: './kal-form-field.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush

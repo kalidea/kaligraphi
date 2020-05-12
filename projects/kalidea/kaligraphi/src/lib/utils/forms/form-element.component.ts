@@ -1,18 +1,18 @@
 import {
   EventEmitter,
   forwardRef,
-  HostBinding,
+  HostBinding, Injectable,
   Injector,
   Input,
   OnChanges,
   OnDestroy,
-  Output,
+  Output, Provider,
   SimpleChanges
 } from '@angular/core';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { AbstractControl, FormControl, NG_ASYNC_VALIDATORS, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { distinctUntilChanged, startWith } from 'rxjs/operators';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 import { FormControlAccessComponent } from './form-control-access.component';
 import { uniqid } from '../helpers/uniq';
@@ -248,7 +248,7 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
 }
 
 
-export function buildProviders(type) {
+export function buildProviders(type): Provider[] {
   return [
     {
       provide: NG_VALUE_ACCESSOR,
