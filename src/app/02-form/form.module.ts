@@ -27,11 +27,15 @@ import localeData from 'dayjs/plugin/localeData';
 import weekday from 'dayjs/plugin/weekday';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import isBetween from 'dayjs/plugin/isBetween';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 
 dayjs.extend(localeData);
 dayjs.extend(weekday);
 dayjs.extend(customParseFormat);
 dayjs.extend(isBetween);
+dayjs.extend(isSameOrBefore);
+dayjs.extend(isSameOrAfter);
 
 @NgModule({
   imports: [
