@@ -1,6 +1,8 @@
 import dayjs, { Dayjs, OpUnitType, UnitType } from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import isBetween from 'dayjs/plugin/isBetween';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import { formatDate } from './kal-date-converter';
 
 export type KalDateType = string | Dayjs | Date | KalDate;
@@ -10,6 +12,8 @@ export type KalDateType = string | Dayjs | Date | KalDate;
  */
 dayjs.extend(customParseFormat);
 dayjs.extend(isBetween);
+dayjs.extend(isSameOrBefore);
+dayjs.extend(isSameOrAfter);
 
 /**
  * Helper
@@ -185,11 +189,27 @@ export class KalDate {
   }
 
   /**
+   * Returns a boolean indicating whether the current date is before the supplied date.
+   */
+  isSameOrBefore(date: KalDateType, unit: OpUnitType = 'day'): boolean {
+    const comparisonDate = KalDate.getDate(date);
+    return this.value.isSameOrBefore(comparisonDate, unit);
+  }
+
+  /**
    * Returns a boolean indicating whether the current date is after the supplied date.
    */
   isAfter(date: KalDateType, unit: OpUnitType = 'day'): boolean {
     const comparisonDate = KalDate.getDate(date);
     return this.value.isAfter(comparisonDate, unit);
+  }
+
+  /**
+   * Returns a boolean indicating whether the current date is after the supplied date.
+   */
+  isSameOrAfter(date: KalDateType, unit: OpUnitType = 'day'): boolean {
+    const comparisonDate = KalDate.getDate(date);
+    return this.value.isSameOrAfter(comparisonDate, unit);
   }
 
   /**

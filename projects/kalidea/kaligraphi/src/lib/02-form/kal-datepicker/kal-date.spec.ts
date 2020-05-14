@@ -83,6 +83,16 @@ describe('KalDate class', () => {
     expect(new KalDate('18/11/2019').isAfter('17/11/2019')).toBeTruthy();
     expect(new KalDate('18/11/2019').isAfter(new KalDate('31/12/2019'))).toBeFalsy();
 
+    // is same or before
+    expect(new KalDate('14/05/2020').isSameOrBefore('16/05/2020')).toBeTruthy();
+    expect(new KalDate('14/05/2020').isSameOrBefore('14/05/2020')).toBeTruthy();
+    expect(new KalDate('16/05/2020').isSameOrBefore(new KalDate('14/05/2020'))).toBeFalsy();
+
+    // is same or after
+    expect(new KalDate('16/05/2020').isSameOrAfter('14/05/2020')).toBeTruthy();
+    expect(new KalDate('14/05/2020').isSameOrAfter('14/05/2020')).toBeTruthy();
+    expect(new KalDate('14/05/2020').isSameOrAfter(new KalDate('16/05/2020'))).toBeFalsy();
+
     // is between
     expect(new KalDate('18/11/2019').isBetween('01/11/2019', '31/12/2019')).toBeTruthy();
     expect(new KalDate('18/11/2019').isBetween(new KalDate('19/11/2019'), new KalDate('30/11/2019'))).toBeFalsy();
