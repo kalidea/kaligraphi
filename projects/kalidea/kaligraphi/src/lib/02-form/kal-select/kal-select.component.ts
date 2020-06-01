@@ -133,15 +133,9 @@ export class KalSelectComponent
       return null;
     }
 
-    let label = null;
-
     if (this.multiple) {
-        if (this.kalSelectPlaceholder?.view) {
-          label = null;
-      } else {
-          label = this.selection.map(option => option.getLabel()).join(', ');
-        }
-        return label;
+      return this.kalSelectPlaceholder && this.kalSelectPlaceholder.view
+        ? null : this.selection.map(option => option.getLabel()).join(', ');
     }
 
     return this.selection[0].getLabel();
