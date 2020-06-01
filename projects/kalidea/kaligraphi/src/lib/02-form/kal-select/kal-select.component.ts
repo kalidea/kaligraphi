@@ -134,7 +134,8 @@ export class KalSelectComponent
     }
 
     if (this.multiple) {
-      return this.kalSelectPlaceholder?.view ? null : this.selection.map(option => option.getLabel()).join(', ');
+      return this.kalSelectPlaceholder?.view
+        ? null : this.selection.map(option => option.getLabel()).join(', ');
     }
 
     return this.selection[0].getLabel();
