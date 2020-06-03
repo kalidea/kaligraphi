@@ -29,7 +29,7 @@ import { merge, Subscription } from 'rxjs';
 import { KalOptionComponent } from '../kal-option/kal-option.component';
 import { KalThemeDirective } from '../../99-utility/directives/kal-theme/kal-theme.directive';
 import { buildProviders, FormElementComponent } from '../../utils/forms/form-element.component';
-import { KalSelectMultiplePlaceholderDirective } from './kal-select-multiple-placeholder.directive';
+import { KalSelectPlaceholderDirective } from './kal-select-placeholder.directive';
 
 @Component({
   selector: 'kal-select',
@@ -48,7 +48,7 @@ export class KalSelectComponent
    */
   @ContentChildren(KalOptionComponent, {descendants: true}) options: QueryList<KalOptionComponent>;
 
-  @ContentChild(KalSelectMultiplePlaceholderDirective) kalSelectPlaceholder: KalSelectMultiplePlaceholderDirective;
+  @ContentChild(KalSelectPlaceholderDirective) kalSelectPlaceholder: KalSelectPlaceholderDirective;
 
   /**
    * Overlay Portal Options
@@ -133,12 +133,11 @@ export class KalSelectComponent
       return null;
     }
 
-    if (this.multiple) {
-      return this.kalSelectPlaceholder && this.kalSelectPlaceholder.view
-        ? null : this.selection.map(option => option.getLabel()).join(', ');
+    if (this.kalSelectPlaceholder) {
+      return null;
     }
 
-    return this.selection[0].getLabel();
+    return this.multiple ? this.selection.map(option => option.getLabel()).join(', ') : this.selection[0].getLabel();
   }
 
   /**

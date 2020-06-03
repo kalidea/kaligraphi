@@ -1,9 +1,9 @@
 import { Directive, TemplateRef } from '@angular/core';
 
 @Directive({
-  selector: '[kalSelectMultiplePlaceholder]'
+  selector: '[kalSelectPlaceholder]'
 })
-export class KalSelectMultiplePlaceholderDirective {
+export class KalSelectPlaceholderDirective {
 
   constructor(public view: TemplateRef<any>) {
   }
