@@ -8,6 +8,8 @@ import {
   ElementRef,
   Host,
   HostListener,
+  Inject,
+  InjectionToken,
   Injector,
   Input,
   OnDestroy,
@@ -29,7 +31,19 @@ import { merge, Subscription } from 'rxjs';
 import { KalOptionComponent } from '../kal-option/kal-option.component';
 import { KalThemeDirective } from '../../99-utility/directives/kal-theme/kal-theme.directive';
 import { buildProviders, FormElementComponent } from '../../utils/forms/form-element.component';
-import { KalSelectPlaceholderDirective } from './kal-select-placeholder.directive';
+import { KalSelectTriggerValueDirective } from './kal-select-trigger-value.directive';
+
+type KalSelectOptionsTriggerValueFunction = (selection: KalOptionComponent[]) => string;
+
+export interface KalSelectOptions {
+
+  triggerValueFunction: KalSelectOptionsTriggerValueFunction;
+
+}
+
+/** InjectionToken that can be used to specify the global select options. */
+export const KAL_SELECT_GLOBAL_OPTIONS =
+  new InjectionToken<KalSelectOptions>('KAL_SELECT_GLOBAL_OPTIONS');
 
 @Component({
   selector: 'kal-select',
@@ -43,12 +57,15 @@ import { KalSelectPlaceholderDirective } from './kal-select-placeholder.directiv
 export class KalSelectComponent
   extends FormElementComponent<any>
   implements OnInit, OnDestroy, AfterContentInit {
+
+  @Input() triggerValueFunction: KalSelectOptionsTriggerValueFunction;
+
   /**
    * All of the defined select optionsComponent
    */
   @ContentChildren(KalOptionComponent, {descendants: true}) options: QueryList<KalOptionComponent>;
 
-  @ContentChild(KalSelectPlaceholderDirective) kalSelectPlaceholder: KalSelectPlaceholderDirective;
+  @ContentChild(KalSelectTriggerValueDirective) kalSelectPlaceholder: KalSelectTriggerValueDirective;
 
   /**
    * Overlay Portal Options
@@ -65,7 +82,7 @@ export class KalSelectComponent
   /**
    * The currently selected option
    */
-  private selection: KalOptionComponent [];
+  selection: KalOptionComponent[];
 
   /**
    * Overlay Reference
@@ -96,7 +113,8 @@ export class KalSelectComponent
               private elementRef: ElementRef<HTMLElement>,
               private cdr: ChangeDetectorRef,
               private injector: Injector,
-              @Optional() @Host() private themeDirective: KalThemeDirective) {
+              @Optional() @Host() private themeDirective: KalThemeDirective,
+              @Optional() @Inject(KAL_SELECT_GLOBAL_OPTIONS) private selectOptions: KalSelectOptions) {
     super();
   }
 
@@ -135,6 +153,12 @@ export class KalSelectComponent
 
     if (this.kalSelectPlaceholder) {
       return null;
+    }
+
+    const triggerValueFunction = this.getTriggerValueFunction();
+
+    if (triggerValueFunction && typeof triggerValueFunction === 'function') {
+      return triggerValueFunction(this.selection);
     }
 
     return this.multiple ? this.selection.map(option => option.getLabel()).join(', ') : this.selection[0].getLabel();
@@ -181,6 +205,10 @@ export class KalSelectComponent
    */
   get theme() {
     return this.themeDirective ? this.themeDirective.rawThemes : '';
+  }
+
+  getTriggerValueFunction(): KalSelectOptionsTriggerValueFunction {
+    return this.triggerValueFunction || this.selectOptions?.triggerValueFunction;
   }
 
   /**

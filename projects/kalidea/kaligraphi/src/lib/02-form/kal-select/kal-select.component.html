@@ -5,12 +5,12 @@
 
   <div>
 
-    <ng-container *ngIf="triggerValue || kalSelectPlaceholder?.view; else placeHolderTemplate">
+    <ng-container *ngIf="selection?.length > 0; else placeHolderTemplate">
 
       <div class="kal-select__triggervalue">
 
         <ng-container
-          *ngTemplateOutlet="triggerValue ? triggerValueTemplate : kalSelectPlaceholder?.view; context: {selected: selectedValue}">
+          *ngTemplateOutlet="triggerValue ? triggerValueTemplate : kalSelectPlaceholder?.view; context: {selection: selection}">
         </ng-container>
 
         <ng-template #triggerValueTemplate>

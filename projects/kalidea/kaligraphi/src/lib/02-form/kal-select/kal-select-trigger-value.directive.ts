@@ -1,9 +1,9 @@
 import { Directive, TemplateRef } from '@angular/core';
 
 @Directive({
-  selector: '[kalSelectPlaceholder]'
+  selector: '[kalSelectTriggerValue]'
 })
-export class KalSelectPlaceholderDirective {
+export class KalSelectTriggerValueDirective {
 
   constructor(public view: TemplateRef<any>) {
   }
