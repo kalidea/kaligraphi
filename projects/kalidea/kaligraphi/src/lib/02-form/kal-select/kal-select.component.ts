@@ -61,7 +61,7 @@ export class KalSelectComponent
 
   @Coerce('boolean')
   @Input()
-  disableSelectFirstOption = false;
+  disableFirstOptionSelection = false;
 
   @Input() triggerValueFunction: KalSelectOptionsTriggerValueFunction;
 
@@ -522,7 +522,7 @@ export class KalSelectComponent
         );
       });
 
-    if (this.options.length === 1 && this.selection.length === 0 && !this.value && !this.disableSelectFirstOption) {
+    if (this.options.length === 1 && this.selection.length === 0 && !this.value && !this.disableFirstOptionSelection) {
       this.optionSelected(this.options.first);
       this.hasDefaultValue = true;
     }
