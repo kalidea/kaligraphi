@@ -32,6 +32,7 @@ import { KalOptionComponent } from '../kal-option/kal-option.component';
 import { KalThemeDirective } from '../../99-utility/directives/kal-theme/kal-theme.directive';
 import { buildProviders, FormElementComponent } from '../../utils/forms/form-element.component';
 import { KalSelectTriggerValueDirective } from './kal-select-trigger-value.directive';
+import { Coerce } from '../../utils';
 
 type KalSelectOptionsTriggerValueFunction = (selection: KalOptionComponent[]) => string;
 
@@ -57,6 +58,10 @@ export const KAL_SELECT_GLOBAL_OPTIONS =
 export class KalSelectComponent
   extends FormElementComponent<any>
   implements OnInit, OnDestroy, AfterContentInit {
+
+  @Coerce('boolean')
+  @Input()
+  disableFirstOptionSelection = false;
 
   @Input() triggerValueFunction: KalSelectOptionsTriggerValueFunction;
 
@@ -517,7 +522,7 @@ export class KalSelectComponent
         );
       });
 
-    if (this.options.length === 1 && this.selection.length === 0 && !this.value) {
+    if (this.options.length === 1 && this.selection.length === 0 && !this.value && !this.disableFirstOptionSelection) {
       this.optionSelected(this.options.first);
       this.hasDefaultValue = true;
     }
