@@ -234,6 +234,11 @@ describe('TestSelectComponent', () => {
       expect(selectedOption.viewValue).toEqual(component.options.first.viewValue);
     });
 
+    it('should disable the first option selection when there is one option in options list', () => {
+      const selectedOption = component.select.selected as KalOptionComponent;
+      expect(selectedOption.viewValue).toEqual(null);
+    });
+
   });
 
 });
