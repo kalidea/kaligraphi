@@ -93,16 +93,9 @@ export class KalTabGroupComponent extends FormElementComponent<number> implement
    * @inheritDoc
    */
   writeValue(value = null) {
-
-    console.log('coucou');
-
     this.tabToSelect = value;
 
-    if (!this.tabs) {
-      return;
-    }
-
-    if ('' + value && !isNaN(value)) {
+    if ('' + value && !isNaN(value) && this.tabs) {
 
       const tabIndex = this.getTabIndex(this.tabToSelect);
       const selectedTab = this.tabs.find((element, i) => i === tabIndex);
