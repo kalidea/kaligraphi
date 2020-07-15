@@ -92,19 +92,30 @@ export class KalTabGroupComponent extends FormElementComponent<number> implement
   /**
    * @inheritDoc
    */
-  writeValue(value: number = null) {
+  writeValue(value = null) {
+
+    console.log('coucou');
 
     this.tabToSelect = value;
 
-    if ('' + value && !isNaN(value) && this.tabs) {
+    if (!this.tabs) {
+      return;
+    }
 
-      const selectedTab = this.tabs.find((element, i) => i === value);
+    if ('' + value && !isNaN(value)) {
+
+      const tabIndex = this.getTabIndex(this.tabToSelect);
+      const selectedTab = this.tabs.find((element, i) => i === tabIndex);
 
       if (selectedTab) {
-        this.selectTabHeader(selectedTab, value);
+        this.selectTabHeader(selectedTab, tabIndex);
       }
     }
 
+  }
+
+  getTabIndex(value): number {
+    return (typeof value === 'string') ? this.tabs?.toArray().findIndex(e => e.value === value) : value;
   }
 
   /**
@@ -178,7 +189,7 @@ export class KalTabGroupComponent extends FormElementComponent<number> implement
 
     if (this.tabToSelect) {
 
-      this.selectedTabIndex = this.tabToSelect;
+      this.selectedTabIndex = this.getTabIndex(this.tabToSelect);
 
     } else {
       this.tabs.forEach(
