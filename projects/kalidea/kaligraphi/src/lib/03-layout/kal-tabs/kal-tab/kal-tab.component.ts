@@ -48,6 +48,8 @@ export class KalTabComponent implements OnInit {
    */
   @ViewChild(TemplateRef, {static: true}) _implicitContent: TemplateRef<any>;
 
+  @Input() value = null;
+
   /**
    * Is a tab selected
    */
