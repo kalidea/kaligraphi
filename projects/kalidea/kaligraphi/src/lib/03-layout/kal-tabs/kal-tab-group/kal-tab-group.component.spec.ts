@@ -2,14 +2,13 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { PortalModule } from '@angular/cdk/portal';
-import { RIGHT_ARROW, LEFT_ARROW, ENTER } from '@angular/cdk/keycodes';
 
 import { KalTabGroupComponent } from 'projects/kalidea/kaligraphi/src/lib/03-layout/kal-tabs/kal-tab-group/kal-tab-group.component';
 import { KalTabComponent } from 'projects/kalidea/kaligraphi/src/lib/03-layout/kal-tabs/kal-tab/kal-tab.component';
 import { KalTabHeaderComponent } from 'projects/kalidea/kaligraphi/src/lib/03-layout/kal-tabs/kal-tab-header/kal-tab-header.component';
 import { KalTabBodyComponent } from 'projects/kalidea/kaligraphi/src/lib/03-layout/kal-tabs/kal-tab-body/kal-tab-body.component';
 import { KalTabLabelDirective } from 'projects/kalidea/kaligraphi/src/lib/03-layout/kal-tabs/kal-tab-label.directive';
-import { createKeyboardEvent } from 'projects/kalidea/kaligraphi/src/lib/utils/tests/event-keyboard';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   template: `
@@ -27,34 +26,6 @@ import { createKeyboardEvent } from 'projects/kalidea/kaligraphi/src/lib/utils/t
   `
 })
 class TestTabGroupWithLabelComponent {
-  disabled = false;
-}
-
-@Component({
-  template: `
-    <kal-tab-group>
-      <kal-tab selected>
-        <ng-template kalTabLabel>
-          Header 1
-        </ng-template>
-        Body 1
-      </kal-tab>
-      <kal-tab>
-        <ng-template kalTabLabel>
-          Header 2
-        </ng-template>
-        Body 2
-      </kal-tab>
-      <kal-tab>
-        <ng-template kalTabLabel>
-          Header 3
-        </ng-template>
-        Body 3
-      </kal-tab>
-    </kal-tab-group>
-  `
-})
-class TestGroupWithTemplateLabelComponent {
   disabled = false;
 }
 
@@ -214,6 +185,35 @@ describe('KalTabGroupComponent', () => {
   // }));
 });
 
+@Component({
+  template: `
+    <kal-tab-group [formControl]="tabControl">
+      <kal-tab value="tab1">
+        <ng-template kalTabLabel>
+          Header 1
+        </ng-template>
+        Body 1
+      </kal-tab>
+      <kal-tab value="tab2">
+        <ng-template kalTabLabel>
+          Header 2
+        </ng-template>
+        Body 2
+      </kal-tab>
+      <kal-tab value="tab3">
+        <ng-template kalTabLabel>
+          Header 3
+        </ng-template>
+        Body 3
+      </kal-tab>
+    </kal-tab-group>
+  `
+})
+class TestGroupWithTemplateLabelComponent {
+  disabled = false;
+  tabControl = new FormControl('tab1');
+}
+
 describe('KalTabGroupComponent', () => {
   let component: TestGroupWithTemplateLabelComponent;
   let fixture: ComponentFixture<TestGroupWithTemplateLabelComponent>;
@@ -226,6 +226,7 @@ describe('KalTabGroupComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
+        ReactiveFormsModule,
         PortalModule
       ],
       declarations: [
@@ -280,6 +281,19 @@ describe('KalTabGroupComponent', () => {
   it('should selected the first tab header', () => {
     expect(tabHeaderInstances[0].selected).toBeTruthy();
     expect(tabHeaderInstances[1].selected).toBeFalsy();
+    expect(tabHeaderInstances[2].selected).toBeFalsy();
+  });
+
+  it('should select a tab in using patchValue', () => {
+    expect(tabHeaderInstances[0].selected).toBeTruthy();
+    expect(tabHeaderInstances[1].selected).toBeFalsy();
+    expect(tabHeaderInstances[2].selected).toBeFalsy();
+
+    component.tabControl.patchValue('tab2');
+    fixture.detectChanges();
+
+    expect(tabHeaderInstances[0].selected).toBeFalsy();
+    expect(tabHeaderInstances[1].selected).toBeTruthy();
     expect(tabHeaderInstances[2].selected).toBeFalsy();
   });
 });
