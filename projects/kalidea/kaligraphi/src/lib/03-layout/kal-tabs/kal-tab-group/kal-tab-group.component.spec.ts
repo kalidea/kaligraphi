@@ -290,6 +290,7 @@ describe('KalTabGroupComponent', () => {
     expect(tabHeaderInstances[2].selected).toBeFalsy();
 
     component.tabControl.patchValue('tab2');
+    fixture.detectChanges();
 
     expect(tabHeaderInstances[0].selected).toBeFalsy();
     expect(tabHeaderInstances[1].selected).toBeTruthy();
