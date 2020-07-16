@@ -120,7 +120,6 @@ export class KalTabGroupComponent extends FormElementComponent<any> implements A
       this.keyManager.setActiveItem(this.selectedIndex);
 
       const value = this.tabs.toArray()[tabIndex]?.value;
-
       this.selectedTab.emit(new KalTabChange(tab, value));
 
       if (params.emitEvent) {
