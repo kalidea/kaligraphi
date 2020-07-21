@@ -9,12 +9,14 @@ import {
   Host,
   HostListener,
   Inject,
+  InjectionToken,
   Injector,
   Input,
   OnDestroy,
   OnInit,
   Optional,
   Output,
+  TemplateRef,
   ViewContainerRef
 } from '@angular/core';
 
@@ -25,7 +27,11 @@ import { KalThemeDirective } from '../../99-utility/directives/kal-theme/kal-the
 import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 import { KalInputComponent } from '../kal-input/kal-input.component';
 import { KalAutocompleteOption } from './kal-autocomplete-option';
-import { KAL_AUTOCOMPLETE_DATA, KalAutocompleteComponent } from './kal-autocomplete.component';
+import {
+  KAL_AUTOCOMPLETE_DATA,
+  KalAutocompleteComponent,
+  KalAutocompleteComponentOption
+} from './kal-autocomplete.component';
 import { Coerce } from '../../utils/decorators/coerce';
 
 
@@ -59,25 +65,11 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
 
   @AutoUnsubscribe()
   private subscriptionsList: Subscription[] = [];
-
-  /**
-   * datasource for this autocomplete
-   */
-
-  private _dataSource: KalAutocompleteOption<T>[];
-  /**
-   * reference to the overlay created
-   */
-
-  private _overlayRef: OverlayRef;
-
   /**
    * Separate subscription for icon clicked because it's not destroyed at the same moment
    * as other observables
    */
   private iconClickedSubscription: Subscription;
-
-  private _loading = false;
 
   constructor(private readonly overlay: Overlay,
               private readonly injector: Injector,
@@ -89,10 +81,22 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
 
   }
 
+  /**
+   * datasource for this autocomplete
+   */
+
+  private _dataSource: KalAutocompleteOption<T>[];
+
   @Input('kalAutocomplete')
   set dataSource(dataSource: KalAutocompleteOption<T>[]) {
     this._dataSource = dataSource;
     this.updateOptionsList();
+  }
+
+  private _loading = false;
+
+  get loading(): boolean {
+    return this._loading;
   }
 
   @Input('kalAutocompleteLoading')
@@ -101,9 +105,11 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
     this._loading = loading;
   }
 
-  get loading(): boolean {
-    return this._loading;
-  }
+  /**
+   * reference to the overlay created
+   */
+
+  private _overlayRef: OverlayRef;
 
   /**
    * get reference of overlayRef and create it if don't exists
@@ -266,6 +272,10 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
    * notify selection was updated
    */
   private notifySelectionUpdate(option: KalAutocompleteOption<T>) {
+    if (!this.kalSelectOnPick) {
+      return;
+    }
+
     this.kalAutocompleteSelected.emit(option);
     if (option) {
       this.input.writeValue(this.kalClearOnPick ? '' : option.label);
