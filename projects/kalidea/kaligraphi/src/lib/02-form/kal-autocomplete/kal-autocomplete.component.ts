@@ -9,6 +9,7 @@ import {
   Input,
   OnDestroy,
   QueryList,
+  TemplateRef,
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
@@ -24,6 +25,7 @@ export interface KalAutocompleteComponentOption {
   width?: string;
   height?: string;
   className?: string;
+  optionTemplate?: TemplateRef<any>;
 }
 
 /**
@@ -85,7 +87,7 @@ export class KalAutocompleteComponent<T> implements AfterViewInit, OnDestroy {
   private _kalAutocompleteHeight: string;
 
   constructor(private cdr: ChangeDetectorRef,
-              @Inject(KAL_AUTOCOMPLETE_DATA) public data: KalAutocompleteComponentOption) {
+              @Inject(KAL_AUTOCOMPLETE_DATA) public readonly  data: KalAutocompleteComponentOption) {
     this.width = data.width;
     this.height = data.height;
     this.className = data.className;
