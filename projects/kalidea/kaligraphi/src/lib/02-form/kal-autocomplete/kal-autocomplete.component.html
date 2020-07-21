@@ -20,7 +20,11 @@
                   [disabled]="option.disabled"
                   [label]="option.label"
                   [value]="option">
-        {{ option.label }}
+
+        <ng-container *ngTemplateOutlet="data.optionTemplate ? data.optionTemplate : noTemplate; context: {index: i, option: option}"></ng-container>
+
+        <ng-template #noTemplate>{{ option.label }}</ng-template>
+
       </kal-option>
 
     </ng-container>

@@ -49,6 +49,16 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
   @Input() kalClearOnPick = false;
 
   /**
+   * select when an option is clicked
+   */
+  @Input() kalSelectOnPick = true;
+
+  /**
+   * replace the option label by a template
+   */
+  @Input() kalAutocompleteOptionTemplate: TemplateRef<any>;
+
+  /**
    * class added to kal-autocomplete component cdk-virtual-scroll-viewport
    */
   @Input() kalAutocompleteClassName: string;
@@ -206,11 +216,12 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
    * build injector of KAL_AUTOCOMPLETE_DATA for KalAutocompleteComponent
    */
   private getPortalInjector() {
-    const injectionTokens = new WeakMap<any, any>([
+    const injectionTokens = new WeakMap<InjectionToken<KalAutocompleteComponentOption>, KalAutocompleteComponentOption>([
       [KAL_AUTOCOMPLETE_DATA, {
         width: this.input.inputElement.nativeElement.getBoundingClientRect().width + 'px',
         height: this.kalAutocompleteHeight,
-        className: this.kalAutocompleteClassName
+        className: this.kalAutocompleteClassName,
+        optionTemplate: this.kalAutocompleteOptionTemplate
       }],
     ]);
     return new PortalInjector(this.injector, injectionTokens);
