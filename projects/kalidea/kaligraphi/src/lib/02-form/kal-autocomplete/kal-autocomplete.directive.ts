@@ -92,14 +92,14 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
   }
 
   /**
-   * datasource for this autocomplete
+   * options list for this autocomplete
    */
 
-  private _dataSource: KalAutocompleteOption<T>[];
+  private _optionsList: KalAutocompleteOption<T>[];
 
   @Input('kalAutocomplete')
-  set dataSource(dataSource: KalAutocompleteOption<T>[]) {
-    this._dataSource = dataSource;
+  set optionsList(optionsList: KalAutocompleteOption<T>[]) {
+    this._optionsList = optionsList;
     this.updateOptionsList();
   }
 
@@ -255,11 +255,11 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
    */
   private updateOptionsList(expression = '') {
     if (this.autocompleteComponent) {
-      let optionsList = this._dataSource;
+      let optionsList = this._optionsList;
       if ((expression || '').trim() !== '') {
         try {
           const regexp = new RegExp(`.*${expression}.*`, 'i');
-          optionsList = this._dataSource.filter(element => regexp.test(element.label));
+          optionsList = this._optionsList.filter(element => regexp.test(element.label));
         } catch (e) {
         }
       }
