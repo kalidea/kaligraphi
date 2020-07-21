@@ -6,6 +6,7 @@ import { KalFormModule } from './02-form/kal-form.module';
 import { KalLayoutModule } from './03-layout/kal-layout.module';
 import { KalOverlayModule } from './04-overlay/kal-overlay.module';
 import { KalUtilityModule } from './99-utility/kal-utility.module';
+import { HammerModule } from '@angular/platform-browser';
 
 export * from './01-typography/kal-typography.module';
 export * from './02-form/kal-form.module';
@@ -25,9 +26,10 @@ const exports = [
 @NgModule({
   imports: [
     CommonModule,
+    HammerModule,
     ...exports
   ],
-  exports: exports,
+  exports,
   declarations: []
 })
 export class KaligraphiModule {

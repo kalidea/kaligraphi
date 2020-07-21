@@ -16,6 +16,10 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "hammerjs",
+              "dayjs/locale/fr"
+            ],
             "outputPath": "dist/playground",
             "stylePreprocessorOptions": {
               "includePaths": [
@@ -177,7 +181,7 @@
   "schematics": {
     "@schematics/angular:component": {
       "viewEncapsulation": "None",
-      "styleext": "sass",
+      "style": "sass",
       "changeDetection": "OnPush"
     },
     "@schematics/angular:module": {
