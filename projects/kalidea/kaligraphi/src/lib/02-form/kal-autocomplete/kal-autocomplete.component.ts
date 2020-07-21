@@ -8,7 +8,8 @@ import {
   InjectionToken,
   Input,
   OnDestroy,
-  QueryList, TemplateRef,
+  QueryList,
+  TemplateRef,
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
