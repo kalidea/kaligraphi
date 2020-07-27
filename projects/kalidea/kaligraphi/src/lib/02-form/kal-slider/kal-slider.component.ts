@@ -13,7 +13,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { END, HOME, LEFT_ARROW, RIGHT_ARROW, } from '@angular/cdk/keycodes';
-import { isNil } from 'lodash';
+import isNil from 'lodash-es/isNil';
 
 import { HammerInput } from '../../utils/gestures/gesture-annotations';
 import { clamp } from '../../utils/helpers/numbers';
@@ -22,6 +22,7 @@ import { buildProviders, FormElementComponent } from '../../utils/forms/form-ele
 
 @Component({
   selector: 'kal-slider',
+  exportAs: 'kalSlider',
   templateUrl: './kal-slider.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -60,7 +61,7 @@ export class KalSliderComponent extends FormElementComponent<number> implements 
   @Output()
   readonly pointerDragging: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  @ViewChild('sliderWrapper') private sliderWrapper: ElementRef;
+  @ViewChild('sliderWrapper', {static: true}) private sliderWrapper: ElementRef;
 
   private _value = 0;
 

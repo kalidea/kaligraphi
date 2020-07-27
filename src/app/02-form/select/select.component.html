@@ -16,7 +16,8 @@
 
         <kal-checkbox
           [formControl]="optionRef.formControl"
-          *ngIf="hasCheckbox"></kal-checkbox>
+          *ngIf="hasCheckbox">
+        </kal-checkbox>
 
         OPTION {{ option.value }}
       </kal-option>
@@ -26,7 +27,7 @@
     <div class="technical-value">
       <div class="technical-value__item">
         <span>selection</span>
-        <span>{{ selection | json}}</span>
+        <span>{{ selection | json }}</span>
       </div>
     </div>
 

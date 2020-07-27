@@ -1,6 +1,9 @@
-import { ChangeDetectorRef, EventEmitter, forwardRef, Inject, Input, Output } from '@angular/core';
+import { ChangeDetectorRef, EventEmitter, forwardRef, Inject, Input, Output, Directive } from '@angular/core';
 import { Coerce } from '../../../utils/decorators/coerce';
 
+// required decorator for Ivy
+@Directive()
+// tslint:disable-next-line:directive-class-suffix
 export class KalCardDismissable {
 
   /**

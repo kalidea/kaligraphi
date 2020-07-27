@@ -34,14 +34,15 @@ export class KalTooltipConfig {
 }
 
 @Directive({
-  selector: '[kalTooltip]'
+  selector: '[kalTooltip]',
+  exportAs: 'kalTooltip',
 })
 export class KalTooltipDirective implements OnDestroy {
 
   @Input()
   kalTooltip: string;
 
-  @ContentChild(KalTooltipContentDirective)
+  @ContentChild(KalTooltipContentDirective, {static: true})
   contentAsTemplate: CdkPortal;
 
   private overlayRef: OverlayRef;

@@ -123,7 +123,7 @@ describe('KalAccordionComponent', () => {
     </kal-accordion>`
 })
 class SetOfItemsComponent {
-  @ViewChild(KalAccordionComponent) accordion: KalAccordionComponent;
+  @ViewChild(KalAccordionComponent, {static: true}) accordion: KalAccordionComponent;
   @ViewChildren(KalExpansionPanelComponent) panels: QueryList<KalExpansionPanelComponent>;
   @ViewChildren(KalExpansionPanelHeaderComponent) headers: QueryList<KalExpansionPanelHeaderComponent>;
 
@@ -143,6 +143,6 @@ class SetOfItemsComponent {
     </kal-accordion>`
 })
 class NestedPanelComponent {
-  @ViewChild('outerPanel') outerPanel: KalExpansionPanelComponent;
-  @ViewChild('innerPanel') innerPanel: KalExpansionPanelComponent;
+  @ViewChild('outerPanel', {static: true}) outerPanel: KalExpansionPanelComponent;
+  @ViewChild('innerPanel', {static: true}) innerPanel: KalExpansionPanelComponent;
 }

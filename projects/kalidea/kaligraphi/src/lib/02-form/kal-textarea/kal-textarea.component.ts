@@ -3,18 +3,22 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   Injector,
+  Input,
   OnDestroy,
+  ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 import { buildProviders, FormElementComponent } from '../../utils/forms/form-element.component';
 import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
+import { Coerce } from '../../utils/decorators/coerce';
 
 @Component({
   selector: 'kal-textarea',
+  exportAs: 'kalTextarea',
   templateUrl: './kal-textarea.component.html',
   styleUrls: ['./kal-textarea.sass'],
   encapsulation: ViewEncapsulation.None,
@@ -22,17 +26,31 @@ import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
   providers: buildProviders(KalTextareaComponent)
 })
 export class KalTextareaComponent extends FormElementComponent<string> implements OnDestroy, AfterContentInit {
-  /**
-   * form control for this component
-   */
-  control: FormControl;
 
   @AutoUnsubscribe()
   subscription: Subscription = Subscription.EMPTY;
 
+  @ViewChild('textarea', {static: true}) textarea: ElementRef<HTMLTextAreaElement>;
+
   constructor(private cdr: ChangeDetectorRef,
               private injector: Injector) {
     super();
+  }
+
+  private _disabled = false;
+
+  @Input()
+  @Coerce('boolean')
+  get disabled(): boolean {
+    return this._disabled;
+  }
+
+  set disabled(value: boolean) {
+    this._disabled = value;
+
+    if (this.control) {
+      this.setDisabledState(this._disabled);
+    }
   }
 
   /**
@@ -46,7 +64,6 @@ export class KalTextareaComponent extends FormElementComponent<string> implement
   }
 
   ngAfterContentInit(): void {
-
     // ngControl for formControl does not contain `control` on ngOnInit
     this.control = this.createControlAndSubscriptions(this.injector);
 
@@ -55,6 +72,11 @@ export class KalTextareaComponent extends FormElementComponent<string> implement
         this.notifyUpdate(value);
       }
     );
+
+    if (this._disabled) {
+      this.setDisabledState(this._disabled);
+    }
+
   }
 
   ngOnDestroy() {

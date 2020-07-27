@@ -25,6 +25,7 @@ import { AutoUnsubscribe } from '../../../utils/decorators/auto-unsubscribe';
  */
 @Component({
   selector: 'kal-tree',
+  exportAs: 'kalTree',
   template: `
     <ng-container kalTreeNodeOutlet></ng-container>
   `,
@@ -34,7 +35,7 @@ import { AutoUnsubscribe } from '../../../utils/decorators/auto-unsubscribe';
 })
 export class KalTreeComponent extends CdkTree<KalTreeNode> implements OnInit, OnDestroy {
   // Outlets within the tree's template where the dataNodes will be inserted.
-  @ViewChild(KalTreeNodeOutletDirective) _nodeOutlet: KalTreeNodeOutletDirective;
+  @ViewChild(KalTreeNodeOutletDirective, {static: true}) _nodeOutlet: KalTreeNodeOutletDirective;
 
   @Output() readonly selectionChanged: EventEmitter<SelectionChange<KalTreeNode>> = new EventEmitter();
 

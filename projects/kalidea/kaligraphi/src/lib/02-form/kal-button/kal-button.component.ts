@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Coerce } from '../../utils/decorators/coerce';
 
 @Component({
   selector: 'kal-button',
+  exportAs: 'kalButton',
   templateUrl: './kal-button.component.html',
   styleUrls: ['./kal-button.sass'],
   encapsulation: ViewEncapsulation.None,
@@ -14,6 +15,8 @@ export class KalButtonComponent {
    * Is the button disabled ?
    */
   private isDisabled = false;
+
+  @ViewChild('button', {static: true}) button: ElementRef<HTMLButtonElement>;
 
   /**
    * tabindex value

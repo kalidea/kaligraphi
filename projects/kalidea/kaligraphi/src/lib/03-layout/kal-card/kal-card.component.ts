@@ -4,6 +4,7 @@ import {
   Component,
   ContentChild,
   OnChanges,
+  OnDestroy,
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
@@ -15,13 +16,15 @@ import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 
 @Component({
   selector: 'kal-card',
-  template: `<ng-content></ng-content>`,
+  exportAs: 'kalCard',
+  template: `
+      <ng-content></ng-content>`,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalCardComponent extends KalCardDismissable implements AfterContentInit, OnChanges {
+export class KalCardComponent extends KalCardDismissable implements AfterContentInit, OnChanges, OnDestroy {
 
-  @ContentChild(KalCardTitleComponent) title: KalCardTitleComponent;
+  @ContentChild(KalCardTitleComponent, {static: false}) kalCardTitleComponent: KalCardTitleComponent;
 
   @AutoUnsubscribe()
   private dismissSubscription = Subscription.EMPTY;
@@ -33,11 +36,10 @@ export class KalCardComponent extends KalCardDismissable implements AfterContent
       this.dismissSubscription.unsubscribe();
     }
 
-    if (this.title) {
-
+    if (this.kalCardTitleComponent) {
       // transfer dismissable to title and subscribe to it
-      this.title.dismissable = this.dismissable;
-      this.dismissSubscription = this.title.dismissed.subscribe(() => this.dismissed.emit());
+      this.kalCardTitleComponent.dismissable = this.dismissable;
+      this.dismissSubscription = this.kalCardTitleComponent.dismissed.subscribe(() => this.dismissed.emit());
 
       // update view
       this.cdr.markForCheck();
@@ -50,6 +52,9 @@ export class KalCardComponent extends KalCardDismissable implements AfterContent
 
   ngOnChanges(changes: SimpleChanges): void {
     this.updateTitle();
+  }
+
+  ngOnDestroy(): void {
   }
 
 }

@@ -32,7 +32,7 @@ Online Demo with last build available here : https://kalidea.github.io/kaligraph
 * add library styles :
   * with library compiled stylesheet : 
     ```css
-    @import '~@kalidea/kaligraphi/styles/styles.css
+    @import '~@kalidea/kaligraphi/styles/styles.css'
     ```
   * with library mixin in sass/scss :
     ```sass  
@@ -49,7 +49,7 @@ Online Demo with last build available here : https://kalidea.github.io/kaligraph
   @import ~@kalidea/kaligraphi/styles/parameters
   @import ~@kalidea/kaligraphi/styles/kaligraphi
   
-  $parameters = deep-map-merge($parameters, ( 'input': ('border' : ('radius': '5px' ))))
+  $parameters: deep-map-merge($parameters, ( 'input': ('border' : ('radius': '5px' ))))
   
   +kaligraphi($parameters)
   ```

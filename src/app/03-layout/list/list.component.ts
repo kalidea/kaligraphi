@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { DataSource } from '@angular/cdk/collections';
-import { KalListComponent, KalSelectionModel } from '@kalidea/kaligraphi';
-import { Observable, of } from 'rxjs';
-import { range } from 'lodash';
+import { CollectionViewer, DataSource } from '@angular/cdk/collections';
+import { KalListComponent, KalSelectionModel, KalVirtualScrollConfig } from '@kalidea/kaligraphi';
+import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
+import range from 'lodash-es/range';
+import { take, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-list',
@@ -12,6 +13,7 @@ import { range } from 'lodash';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ListComponent implements OnInit {
+
   items = [];
 
   /**
@@ -30,11 +32,6 @@ export class ListComponent implements OnInit {
   disableRowsFunction = null;
 
   /**
-   * selected value
-   */
-  selectedValue;
-
-  /**
    * items selectionMode
    */
   selectionMode = 'single';
@@ -42,13 +39,12 @@ export class ListComponent implements OnInit {
   /**
    * The list selection
    */
-  listSelection = null;
+  listSelection: KalSelectionModel<{ id: string }> = null;
 
   /**
    * The virtual scroll config
    */
-  virtualScrollConfig = {
-    height: 500,
+  virtualScrollConfig: KalVirtualScrollConfig = {
     itemSize: 48
   };
 
@@ -56,24 +52,25 @@ export class ListComponent implements OnInit {
 
   selectRowOnContentClick = false;
 
-  @ViewChild(KalListComponent) kalListComponent: KalListComponent<{ id: string, name: string, disabled: boolean }>;
+  highlightedItem = null;
+
+  @ViewChild(KalListComponent, {static: true}) kalListComponent: KalListComponent<{ id: string, name: string, disabled: boolean }>;
 
   constructor() {
   }
 
   selectRow($event: KalSelectionModel<{ id: string }>) {
-    this.selectedValue = $event.format();
-    this.kalListComponent.highlightedItem = null;
+    this.listSelection = $event;
   }
 
-  highlightItem() {
-    this.listSelection = new KalSelectionModel();
+  highlightItem($event) {
+    this.highlightedItem = $event;
   }
 
   changeDataSource() {
     this.virtualScrollConfig = null;
 
-    this.dataSource = range(1, 5).map(
+    this.dataSource = range(1, 20000).map(
       index => {
         return {
           id: '' + index,
@@ -101,7 +98,7 @@ export class ListComponent implements OnInit {
   }
 
   selectAll() {
-    if (this.selectedValue && this.selectedValue.all) {
+    if (this.listSelection && this.listSelection.format().all) {
       this.kalListComponent.clear();
     } else {
       this.kalListComponent.selectAll();
@@ -111,19 +108,19 @@ export class ListComponent implements OnInit {
   selectMultipleRows() {
     this.icon = 'keyboard_arrow_right';
     this.selectionMode = 'multiple';
-    this.selectedValue = null;
+    this.listSelection.clear();
   }
 
   unselectRows() {
     this.icon = null;
     this.selectionMode = 'none';
-    this.selectedValue = null;
+    this.listSelection.clear();
   }
 
   selectSingleRow() {
     this.icon = 'keyboard_arrow_right';
     this.selectionMode = null;
-    this.selectedValue = null;
+    this.listSelection.clear();
   }
 
   changeSelection() {
@@ -137,26 +134,91 @@ export class ListComponent implements OnInit {
 
 }
 
-class TestDataSource implements DataSource<{ id: string, name: string }> {
+const list = (page: number, numberOfElements: number) => {
+  const listItem = [];
+  const startElement = ((page - 1) * numberOfElements) + 1;
+  const total = 1000;
+  const numberOfTotalElements = Math.min(total, page * numberOfElements);
+
+  for (let i = startElement; i <= numberOfTotalElements; i++) {
+    listItem.push(
+      {
+        id: '' + i,
+        name: 'rTest' + i,
+        disabled: i === 1
+      },
+    );
+  }
+
+  return of({data: listItem, meta: {total}});
+};
+
+class TestDataSource<T> implements DataSource<{ id: string, name: string }> {
+
+  private subscriptionsList: Subscription[] = [];
+  private datastream: BehaviorSubject<T[]> = new BehaviorSubject([]);
+  private total: BehaviorSubject<number> = new BehaviorSubject(0);
+  private page = 1;
+  private countElement = 500;
+
+  constructor() {
+    this.subscriptionsList.push(
+      this.changePage().subscribe()
+    );
+  }
+
+  private _cachedData: T[] = [];
+
+  get cachedData(): T[] {
+    return this._cachedData;
+  }
+
+  set cachedData(values: T[]) {
+    this._cachedData.push(...values);
+    this.datastream.next(this._cachedData);
+  }
+
+  get displayedElement(): number {
+    return this.page * this.countElement;
+  }
+
+  get list(): Observable<{ data, meta }> {
+    return list(this.page, this.countElement);
+  }
 
   /**
    * Return an observable that contains the items list
    */
-  connect(): Observable<any> {
-    const listItem = [];
-    for (let i = 1; i <= 500; i++) {
-      listItem.push(
-        {
-          id: '' + i,
-          name: 'rTest' + i,
-          disabled: i === 1
-        },
-      );
-    }
+  connect(collectionViewer: CollectionViewer): Observable<any> {
+    this.subscriptionsList.push(
+      collectionViewer.viewChange.pipe(
+        tap(value => {
+          if (value.end >= this.displayedElement && this.cachedData.length <= this.total.getValue()) {
+            this.page += 1;
+            this.subscriptionsList.push(this.changePage().subscribe());
+          }
+        })
+      ).subscribe()
+    );
 
-    return of(listItem);
+    return this.datastream;
   }
 
-  disconnect() {
+  changePage(): Observable<any> {
+    return this.list.pipe(
+      take(1),
+      tap(({data, meta}) => {
+          this.cachedData = data;
+          this.total.next(meta.total);
+        }
+      ));
+  }
+
+  disconnect(collectionViewer: CollectionViewer) {
+    this.subscriptionsList.forEach(subscription => {
+      if (subscription) {
+        subscription.unsubscribe();
+      }
+    });
   }
 }

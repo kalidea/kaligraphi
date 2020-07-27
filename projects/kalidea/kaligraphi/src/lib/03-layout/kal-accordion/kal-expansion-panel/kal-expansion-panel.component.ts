@@ -59,7 +59,7 @@ export class KalExpansionPanelComponent extends CdkAccordionItem implements OnCh
   /**
    * Element containing the panel's user-provided content.
    */
-  @ViewChild('body') panelBody: ElementRef<HTMLElement>;
+  @ViewChild('body', {static: true}) panelBody: ElementRef<HTMLElement>;
 
   /**
    * DOM

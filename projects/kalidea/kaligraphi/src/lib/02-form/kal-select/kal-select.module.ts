@@ -5,12 +5,15 @@ import { OverlayModule } from '@angular/cdk/overlay';
 
 import { KalIconModule } from '../../01-typography/kal-icon/kal-icon.module';
 import { KalSelectComponent } from './kal-select.component';
+import { KalSelectTriggerValueDirective } from './kal-select-trigger-value.directive';
 import { KalUtilityModule } from '../../99-utility/kal-utility.module';
 
 export * from './kal-select.component';
+export * from './kal-select-trigger-value.directive';
 
 const exports = [
   KalSelectComponent,
+  KalSelectTriggerValueDirective
 ];
 
 @NgModule({

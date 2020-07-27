@@ -1,8 +1,8 @@
 import { Directive, ElementRef, Input, Renderer2 } from '@angular/core';
-import { isArray } from 'util';
 
 @Directive({
-  selector: '[kalTheme]'
+  selector: '[kalTheme]',
+  exportAs: 'kalTheme'
 })
 export class KalThemeDirective {
 
@@ -28,7 +28,7 @@ export class KalThemeDirective {
     this.removeOldThemes();
 
     // string
-    if (!isArray(themes)) {
+    if (!Array.isArray(themes)) {
       themes = (<string>themes || '').split(/[ ,]+/);
     }
 

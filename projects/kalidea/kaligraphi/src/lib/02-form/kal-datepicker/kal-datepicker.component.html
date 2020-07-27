@@ -1,11 +1,12 @@
 <div class="kal-datepicker__input">
 
   <kal-input icon="event_note"
+             autocomplete="off"
              [id]="id + '_input'"
              [label]="label"
              [placeholder]="placeholder"
              [formControl]="control"
-             (iconClicked)="open($event, 'icon')">
+             (iconClicked)="toggle()">
   </kal-input>
 
   <ng-template cdkPortal #datepickerCalendar="cdkPortal">

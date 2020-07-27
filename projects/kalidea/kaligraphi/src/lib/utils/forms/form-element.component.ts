@@ -1,15 +1,18 @@
-import { EventEmitter, forwardRef, HostBinding, Injector, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
+import { EventEmitter, forwardRef, HostBinding, Injectable, Injector, Input, OnChanges, OnDestroy, Output, Provider, SimpleChanges, Directive } from '@angular/core';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { AbstractControl, FormHooks } from '@angular/forms/src/model';
-import { FormControl, NG_ASYNC_VALIDATORS, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
+import { AbstractControl, FormControl, NG_ASYNC_VALIDATORS, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { distinctUntilChanged, startWith } from 'rxjs/operators';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 import { FormControlAccessComponent } from './form-control-access.component';
 import { uniqid } from '../helpers/uniq';
 import { Coerce } from '../decorators/coerce';
 import { AutoUnsubscribe } from '../decorators/auto-unsubscribe';
+import { FormHooks } from '../forms/form-hooks';
 
+// required decorator for Ivy
+@Directive()
+// tslint:disable-next-line:directive-class-suffix
 export class FormElementComponent<T = string> extends FormControlAccessComponent<T> implements OnChanges, OnDestroy {
 
   /**
@@ -33,7 +36,6 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
    * id of this form element
    */
   @Input() id = uniqid('form-');
-
   /**
    * name of this form element
    */
@@ -57,7 +59,6 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
   @Input()
   @Coerce('boolean')
   readonly: boolean;
-
 
   /**
    * event to trigger change
@@ -85,6 +86,7 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
    */
   public ngControl: NgControl;
 
+  public control: FormControl;
   /**
    * is this form element disabled
    */
@@ -188,12 +190,13 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
    */
   setDisabledState(isDisabled: boolean): void {
     this.disabled = isDisabled;
-  }
 
-
-  protected updateStatus(control) {
-    if (this.superControl.disabled !== control.disabled) {
-      this.superControl.enabled ? control.enable() : control.disable();
+    if (this.control) {
+      if (isDisabled) {
+        this.control.disable({emitEvent: false});
+      } else {
+        this.control.enable({emitEvent: false});
+      }
     }
   }
 
@@ -215,14 +218,9 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
     updateOn = updateOnOverride || updateOn; // override value
 
     // we're not taking the value of the superControl because it was formatted in the current component
-    const control = new FormControl({value: this.value, disabled}, {updateOn});
+    this.control = new FormControl({value: this.value, disabled}, {updateOn});
 
-    // don't forget to implement super.ngOnDestroy on child element
-    this.controlStatusChangedSubscription = this.superControl.statusChanges
-      .pipe(startWith(1))
-      .subscribe(() => this.updateStatus(control));
-
-    return control;
+    return this.control;
   }
 
   /**
@@ -243,7 +241,7 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
 }
 
 
-export function buildProviders(type) {
+export function buildProviders(type): Provider[] {
   return [
     {
       provide: NG_VALUE_ACCESSOR,

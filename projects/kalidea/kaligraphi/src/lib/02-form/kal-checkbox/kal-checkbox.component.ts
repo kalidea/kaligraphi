@@ -2,12 +2,14 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   HostBinding,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
   SimpleChanges,
+  ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
@@ -15,9 +17,11 @@ import { Subscription } from 'rxjs';
 
 import { buildProviders, FormElementComponent } from '../../utils/forms/form-element.component';
 import { Coerce } from '../../utils/decorators/coerce';
+import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 
 @Component({
   selector: 'kal-checkbox',
+  exportAs: 'kalCheckbox',
   templateUrl: './kal-checkbox.component.html',
   styleUrls: ['./kal-checkbox.sass'],
   encapsulation: ViewEncapsulation.None,
@@ -34,19 +38,20 @@ export class KalCheckboxComponent extends FormElementComponent<boolean> implemen
   /**
    * Subscription of the valueChanges control
    */
+  @AutoUnsubscribe()
   controlSubscription: Subscription;
 
   // empty id attribute
   @HostBinding('attr.id')
   attributeId = null;
 
-  private _value = false;
-
-  private _disabled = false;
+  @ViewChild('input', {static: true}) input: ElementRef<HTMLInputElement>;
 
   constructor(private cdr: ChangeDetectorRef) {
     super();
   }
+
+  private _value = false;
 
   get value() {
     return this._value;
@@ -62,6 +67,8 @@ export class KalCheckboxComponent extends FormElementComponent<boolean> implemen
 
     this.cdr.markForCheck();
   }
+
+  private _disabled = false;
 
   @Input()
   @Coerce('boolean')
@@ -124,9 +131,6 @@ export class KalCheckboxComponent extends FormElementComponent<boolean> implemen
   }
 
   ngOnDestroy(): void {
-    if (this.controlSubscription) {
-      this.controlSubscription.unsubscribe();
-    }
   }
 
 }

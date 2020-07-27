@@ -4,18 +4,21 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  EventEmitter, HostBinding,
+  EventEmitter,
+  HostBinding,
+  Inject,
+  InjectionToken,
   Injector,
   Input,
   OnChanges,
   OnDestroy,
+  Optional,
   Output,
   SimpleChanges,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 import { AbstractControl, FormControl } from '@angular/forms';
-import { FormHooks } from '@angular/forms/src/model';
 import { of, Subscription } from 'rxjs';
 
 import { InputFormater } from './format/input-formater';
@@ -23,10 +26,21 @@ import { KalFormaterService } from './kal-formater.service';
 import { buildProviders, FormElementComponent } from '../../utils/forms/form-element.component';
 import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 import { Coerce } from '../../utils/decorators/coerce';
+import { FormHooks } from '../../utils/forms/form-hooks';
 
+export interface KalInputOptions {
+
+  clearable?: boolean;
+
+}
+
+/** InjectionToken that can be used to specify the global input options. */
+export const KAL_INPUT_GLOBAL_OPTIONS =
+  new InjectionToken<KalInputOptions>('KAL_INPUT_GLOBAL_OPTIONS');
 
 @Component({
   selector: 'kal-input',
+  exportAs: 'kalInput',
   templateUrl: './kal-input.component.html',
   styleUrls: ['./kal-input.sass'],
   encapsulation: ViewEncapsulation.None,
@@ -68,15 +82,10 @@ export class KalInputComponent extends FormElementComponent<string> implements O
    * event to trigger change
    */
   @Input() updateOnEvent: FormHooks = 'change';
-
-  @Input()
-  @Coerce('boolean')
-  clearable = false;
-
   /**
    * Reference to native input
    */
-  @ViewChild('input') inputElement: ElementRef<HTMLInputElement>;
+  @ViewChild('input', {static: true}) inputElement: ElementRef<HTMLInputElement>;
 
   // empty id attribute
   @HostBinding('attr.id')
@@ -87,8 +96,22 @@ export class KalInputComponent extends FormElementComponent<string> implements O
 
   constructor(private cdr: ChangeDetectorRef,
               private injector: Injector,
-              private formaters: KalFormaterService) {
+              private formaters: KalFormaterService,
+              @Optional() @Inject(KAL_INPUT_GLOBAL_OPTIONS) private inputOptions: KalInputOptions) {
     super();
+    this.clearable = this.inputOptions ? this.inputOptions.clearable : false;
+  }
+
+  private _clearable: boolean;
+
+  @Input()
+  @Coerce('boolean')
+  get clearable(): boolean {
+    return this._clearable;
+  }
+
+  set clearable(value: boolean) {
+    this._clearable = value;
   }
 
   get htmlInputType() {
@@ -104,6 +127,10 @@ export class KalInputComponent extends FormElementComponent<string> implements O
    */
   get formater(): InputFormater {
     return this.formaters.get(this.type);
+  }
+
+  get shouldDisplayClearIcon(): boolean {
+    return this._clearable && !this.disabled && (this.control && !!this.control.value);
   }
 
   clearField() {

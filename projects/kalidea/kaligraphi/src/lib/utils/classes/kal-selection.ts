@@ -1,8 +1,9 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { isNil } from 'lodash';
 import { Observable, Subject } from 'rxjs';
+import isNil from 'lodash-es/isNil';
+import xor from 'lodash-es/xor';
 
-export class KalSelection<T extends { id?: string }> {
+export class KalSelection<T> {
 
   /**
    * Number of elements in list
@@ -35,11 +36,11 @@ export class KalSelection<T extends { id?: string }> {
   numberOfSelectedItems ? = 0;
 }
 
-class SubSelectionModel<T extends { id?: string }> extends SelectionModel<T> {
+class SubSelectionModel<T> extends SelectionModel<T> {
 
-  getItem(item: T): T {
+  getItem(item: (T & {id?: string})): T {
     if (!isNil(item.id)) {
-      return this.selected.find(element => !!('' + element.id === '' + item.id));
+      return this.selected.find((element: T & {id?: string}) => !!('' + element.id === '' + item.id));
     } else {
       return item;
     }
@@ -58,7 +59,9 @@ class SubSelectionModel<T extends { id?: string }> extends SelectionModel<T> {
     const filteredItems = [];
 
     items.forEach(item => {
-      filteredItems.push(this.getItem(item));
+      if (item && this.isSelected(item)) {
+        filteredItems.push(this.getItem(item));
+      }
     });
 
     super.deselect(...filteredItems);
@@ -66,7 +69,7 @@ class SubSelectionModel<T extends { id?: string }> extends SelectionModel<T> {
 
 }
 
-export class KalSelectionModel<T extends { id?: string }> extends SelectionModel<T> {
+export class KalSelectionModel<T> extends SelectionModel<T> {
 
   numberOfItems = 0;
 
@@ -79,8 +82,6 @@ export class KalSelectionModel<T extends { id?: string }> extends SelectionModel
   private isMultiple = false;
 
   private readonly changes$: Subject<KalSelection<T>> = new Subject<KalSelection<T>>();
-
-  // changed: Subject<KalSelection<T>>;
 
   constructor(params?: KalSelection<T>) {
     super();
@@ -126,13 +127,20 @@ export class KalSelectionModel<T extends { id?: string }> extends SelectionModel
     return this._all ? this.removedSelection : this.addedSelection;
   }
 
-  select(item: T): void {
-    this._all ? this.removedSelection.deselect(item) : this.addedSelection.select(item);
-    this.changes$.next(this.format());
+  select(...items: T[]): void {
+    this.editSelection('select', ...items);
   }
 
-  deselect(item: T): void {
-    this._all ? this.removedSelection.select(item) : this.addedSelection.deselect(item);
+  deselect(...items: T[]): void {
+    this.editSelection('deselect', ...items);
+  }
+
+  private editSelection(action: 'select' | 'deselect', ...items: T[]) {
+    const actionName = !this._all ? action : xor([action], ['select', 'deselect'])[0];
+    const collection: SubSelectionModel<T> = this._all ? this.removedSelection : this.addedSelection;
+
+    collection[actionName](...items);
+
     this.changes$.next(this.format());
   }
 

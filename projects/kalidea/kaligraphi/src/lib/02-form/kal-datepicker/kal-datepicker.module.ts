@@ -15,17 +15,11 @@ import { KalDatepickerMultiViewComponent } from './kal-datepicker-multi-view/kal
 import { KalUtilityModule } from '../../99-utility/kal-utility.module';
 
 export * from './kal-datepicker.component';
-export * from './kal-datepicker-header/kal-datepicker-header.component';
-export * from './kal-month-calendar/kal-month-calendar.component';
-export * from './kal-datepicker-multi-view/kal-datepicker-multi-view.component';
 
 export { KalDate } from './kal-date';
 
 const exports = [
   KalDatepickerComponent,
-  KalDatepickerHeaderComponent,
-  KalMonthCalendarComponent,
-  KalDatepickerMultiViewComponent
 ];
 
 @NgModule({
@@ -38,8 +32,13 @@ const exports = [
     KalIconModule,
     KalUtilityModule
   ],
-  exports: exports,
-  declarations: exports
+  exports,
+  declarations: [
+    ...exports,
+    KalDatepickerHeaderComponent,
+    KalMonthCalendarComponent,
+    KalDatepickerMultiViewComponent
+  ]
 })
 export class KalDatepickerModule {
 }

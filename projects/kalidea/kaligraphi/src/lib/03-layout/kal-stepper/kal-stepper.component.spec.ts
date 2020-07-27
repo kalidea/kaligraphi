@@ -39,7 +39,7 @@ import {
   `
 })
 class TestComponent {
-  @ViewChild(KalStepperComponent) stepper: KalStepperComponent;
+  @ViewChild(KalStepperComponent, {static: true}) stepper: KalStepperComponent;
 
   form = new FormGroup({
     email: new FormControl('')

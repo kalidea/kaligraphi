@@ -5,7 +5,6 @@
   <article>
 
     <kal-list
-      #kalListItem
       tabindex="1"
       [icon]="icon"
       [selection]="listSelection"
@@ -17,7 +16,7 @@
       [selectRowOnContentClick]="selectRowOnContentClick"
       [class.has-selected-element]="listSelection && listSelection.total > 0"
       (selectionChange)="selectRow($event)"
-      (highlighted)="highlightItem()">
+      (highlighted)="highlightItem($event)">
 
       <ng-template kalListItem let-item="item">
         {{ item.name }}
@@ -28,7 +27,12 @@
     <div class="technical-value">
       <div class="technical-value__item">
         <span>Selected value</span>
-        <span>{{ selectedValue | json }}</span>
+        <span>{{ listSelection.format() | json }}</span>
+      </div>
+
+      <div class="technical-value__item">
+        <span>highlighted value</span>
+        <span>{{ highlightedItem | json }}</span>
       </div>
     </div>
 

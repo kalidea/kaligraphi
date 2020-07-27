@@ -15,6 +15,7 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 @Component({
   selector: 'kal-option',
+  exportAs: 'kalOption',
   templateUrl: './kal-option.component.html',
   styleUrls: ['./kal-option.sass'],
   encapsulation: ViewEncapsulation.None,
@@ -89,13 +90,6 @@ export class KalOptionComponent implements AfterViewInit, Highlightable {
   }
 
   /**
-   * get label for this option
-   */
-  getLabel(): string {
-    return (this.label || this._element.nativeElement.textContent || '').trim();
-  }
-
-  /**
    * Get display value of the option
    * @deprecated
    */
@@ -104,9 +98,21 @@ export class KalOptionComponent implements AfterViewInit, Highlightable {
   }
 
   /**
+   * get label for this option
+   */
+  getLabel(): string {
+    return (this.label || this._element.nativeElement.textContent || '').trim();
+  }
+
+  /**
    * Emit the selection change event
    */
-  emitSelectionEvent(): void {
+  emitSelectionEvent($event?): void {
+    if ($event) {
+      $event.preventDefault();
+      $event.stopPropagation();
+    }
+
     if (!this.disabled) {
       this.selectionChange.emit(this);
     }

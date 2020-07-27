@@ -11,7 +11,7 @@ import { KalDialogRef } from './kal-dialog-ref';
       <!-- header -->
       <div kalDialogHeader *ngIf="config.title">
         <div class="kal-dialog__title">{{ config.title }}</div>
-        <kal-icon (click)="closeDialog()" *ngIf="!config.disableClose">clear</kal-icon>
+        <kal-icon (click)="closeDialog()" *ngIf="!config.disableClose">close</kal-icon>
       </div>
 
       <ng-template cdkPortalOutlet></ng-template>
@@ -22,7 +22,7 @@ import { KalDialogRef } from './kal-dialog-ref';
 export class KalDialogContainerComponent {
 
   /** The portal outlet inside of this container into which the dialog content will be loaded. */
-  @ViewChild(CdkPortalOutlet) portalOutlet: CdkPortalOutlet;
+  @ViewChild(CdkPortalOutlet, {static: true}) portalOutlet: CdkPortalOutlet;
 
   private dialogRef: KalDialogRef<any>;
 

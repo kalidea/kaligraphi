@@ -3,10 +3,13 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ContentChild,
   ContentChildren,
   ElementRef,
   Host,
   HostListener,
+  Inject,
+  InjectionToken,
   Injector,
   Input,
   OnDestroy,
@@ -28,9 +31,24 @@ import { merge, Subscription } from 'rxjs';
 import { KalOptionComponent } from '../kal-option/kal-option.component';
 import { KalThemeDirective } from '../../99-utility/directives/kal-theme/kal-theme.directive';
 import { buildProviders, FormElementComponent } from '../../utils/forms/form-element.component';
+import { KalSelectTriggerValueDirective } from './kal-select-trigger-value.directive';
+import { Coerce } from '../../utils';
+
+type KalSelectOptionsTriggerValueFunction = (selection: KalOptionComponent[]) => string;
+
+export interface KalSelectOptions {
+
+  triggerValueFunction: KalSelectOptionsTriggerValueFunction;
+
+}
+
+/** InjectionToken that can be used to specify the global select options. */
+export const KAL_SELECT_GLOBAL_OPTIONS =
+  new InjectionToken<KalSelectOptions>('KAL_SELECT_GLOBAL_OPTIONS');
 
 @Component({
   selector: 'kal-select',
+  exportAs: 'kalSelect',
   templateUrl: './kal-select.component.html',
   styleUrls: ['./kal-select.sass'],
   encapsulation: ViewEncapsulation.None,
@@ -41,15 +59,25 @@ export class KalSelectComponent
   extends FormElementComponent<any>
   implements OnInit, OnDestroy, AfterContentInit {
 
+  @Coerce('boolean')
+  @Input()
+  disableFirstOptionSelection = false;
+
+  @Input() triggerValueFunction: KalSelectOptionsTriggerValueFunction;
+
   /**
    * All of the defined select optionsComponent
    */
   @ContentChildren(KalOptionComponent, {descendants: true}) options: QueryList<KalOptionComponent>;
 
+  @ContentChild(KalSelectTriggerValueDirective) kalSelectPlaceholder: KalSelectTriggerValueDirective;
+
   /**
    * Overlay Portal Options
    */
-  @ViewChild('optionsPortal') optionsPortal: TemplatePortal<any>;
+  @ViewChild('optionsPortal', {static: true}) optionsPortal: TemplatePortal;
+
+  private hasDefaultValue = false;
 
   /**
    * Whether the component is in multiple selection mode
@@ -59,7 +87,7 @@ export class KalSelectComponent
   /**
    * The currently selected option
    */
-  private selection: KalOptionComponent [];
+  selection: KalOptionComponent[];
 
   /**
    * Overlay Reference
@@ -90,7 +118,8 @@ export class KalSelectComponent
               private elementRef: ElementRef<HTMLElement>,
               private cdr: ChangeDetectorRef,
               private injector: Injector,
-              @Optional() @Host() private themeDirective: KalThemeDirective) {
+              @Optional() @Host() private themeDirective: KalThemeDirective,
+              @Optional() @Inject(KAL_SELECT_GLOBAL_OPTIONS) private selectOptions: KalSelectOptions) {
     super();
   }
 
@@ -127,9 +156,17 @@ export class KalSelectComponent
       return null;
     }
 
-    return (this.multiple) ?
-      this.selection.map(option => option.getLabel()).join(', ') :
-      this.selection[0].getLabel();
+    if (this.kalSelectPlaceholder) {
+      return null;
+    }
+
+    const triggerValueFunction = this.getTriggerValueFunction();
+
+    if (triggerValueFunction && typeof triggerValueFunction === 'function') {
+      return triggerValueFunction(this.selection);
+    }
+
+    return this.multiple ? this.selection.map(option => option.getLabel()).join(', ') : this.selection[0].getLabel();
   }
 
   /**
@@ -173,6 +210,10 @@ export class KalSelectComponent
    */
   get theme() {
     return this.themeDirective ? this.themeDirective.rawThemes : '';
+  }
+
+  getTriggerValueFunction(): KalSelectOptionsTriggerValueFunction {
+    return this.triggerValueFunction || this.selectOptions?.triggerValueFunction;
   }
 
   /**
@@ -296,8 +337,12 @@ export class KalSelectComponent
    */
   writeValue(value: any) {
     Promise.resolve().then(() => {
-      this.select(value);
-      super.writeValue(value);
+      if (!this.hasDefaultValue) {
+        this.select(value);
+        super.writeValue(value);
+      }
+
+      this.hasDefaultValue = false;
     });
   }
 
@@ -459,8 +504,12 @@ export class KalSelectComponent
     this.options.changes
       .pipe(startWith(0))
       .subscribe(() => {
-        if (this.ngControl) {
+
+        if (this.ngControl && !this.multiple) {
           this.select(this.ngControl.value);
+
+        } else if (this.value) {
+          this.select(this.value);
         }
 
         this.cleanSubscriptionsList();
@@ -473,8 +522,9 @@ export class KalSelectComponent
         );
       });
 
-    if (this.options.length === 1) {
+    if (this.options.length === 1 && this.selection.length === 0 && !this.value && !this.disableFirstOptionSelection) {
       this.optionSelected(this.options.first);
+      this.hasDefaultValue = true;
     }
   }
 
