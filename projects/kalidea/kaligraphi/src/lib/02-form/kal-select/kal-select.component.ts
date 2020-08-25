@@ -6,7 +6,7 @@ import {
   ContentChild,
   ContentChildren,
   ElementRef,
-  Host,
+  Host, HostBinding,
   HostListener,
   Inject,
   InjectionToken,
@@ -76,6 +76,9 @@ export class KalSelectComponent
    * Overlay Portal Options
    */
   @ViewChild('optionsPortal', {static: true}) optionsPortal: TemplatePortal;
+
+  @Input()
+  @HostBinding('attr.tabIndex') tabIndex = 0;
 
   private hasDefaultValue = false;
 
@@ -395,9 +398,20 @@ export class KalSelectComponent
       return;
     }
 
-    options.map((option) => {
-      this.optionSelectedOnMultipleMode(option);
+    // unselect options not included anymore
+    this.selection.filter(option => !options.includes(option))
+      .forEach(option => {
+        option.active = false;
+        this.selection.splice(this.selection.indexOf(option), 1)
     });
+
+    //select options that were not already selected
+    options.filter(option => !this.selection.includes(option)).forEach(option => {
+      option.active = true;
+      this.selection.push(option);
+    })
+
+    this.sortSelection();
 
     if (withNotify) {
       super.notifyUpdate(this.selectedValue);
@@ -450,10 +464,7 @@ export class KalSelectComponent
     } else {
       option.active = true;
       this.selection.push(option);
-      // Multiple selection keep the option's order
-      this.selection.sort((x, y) => {
-        return this.options.toArray().indexOf(x) > this.options.toArray().indexOf(y) ? 1 : -1;
-      });
+      this.sortSelection();
     }
 
     this.checkResetActiveItem();
@@ -477,6 +488,15 @@ export class KalSelectComponent
     if (this.selection.indexOf(this.keyManager.activeItem) < 0) {
       this.keyManager.setActiveItem(this.selection[this.selection.length - 1]);
     }
+  }
+
+  /**
+   * Multiple selection sort option to keep order
+   */
+  private sortSelection() {
+    this.selection.sort((x, y) => {
+      return this.options.toArray().indexOf(x) > this.options.toArray().indexOf(y) ? 1 : -1;
+    });
   }
 
   /**
