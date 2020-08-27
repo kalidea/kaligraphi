@@ -19,6 +19,8 @@ export class InputComponent {
 
   disabled = false;
 
+  nullable = false;
+
   icon = '';
 
   content = '';
