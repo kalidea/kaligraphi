@@ -135,7 +135,7 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     return this.formaters.get(this.type);
   }
 
-  get shouldntFormat(): boolean {
+  get shouldFormat(): boolean {
     return this.nullable && (this.value === null || this.value === undefined || this.value === '');
   }
 
@@ -160,7 +160,7 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     this.value = value;
 
     if (this.control) {
-      if (!this.shouldntFormat) {
+      if (this.shouldFormat) {
         value = this.formater.toUser(value);
       }
 
@@ -183,7 +183,7 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     this.valueChanges.emit(value);
 
     // notify parent
-    super.notifyUpdate(this.shouldntFormat ? value : this.formater.toCode(value));
+    super.notifyUpdate(this.shouldFormat ? this.formater.toCode(value) : value);
     this.cdr.detectChanges();
   }
 
@@ -192,7 +192,7 @@ export class KalInputComponent extends FormElementComponent<string> implements O
   }
 
   formatValue() {
-    if (this.formatOnBlur && !this.shouldntFormat) {
+    if (this.formatOnBlur && this.shouldFormat) {
       this.control.patchValue(this.formater.toUser(this.value), {emitEvent: false});
     }
   }
