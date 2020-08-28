@@ -77,6 +77,12 @@ export class KalInputComponent extends FormElementComponent<string> implements O
    */
   @Input() icon: string;
 
+  /**
+   * should the formating be ignored on empty value
+   */
+  @Coerce('boolean')
+  @Input() nullable = false;
+
   @Output() readonly iconClicked = new EventEmitter<MouseEvent>();
 
   /**
@@ -134,6 +140,10 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     return this.formaters.get(this.type);
   }
 
+  get shouldFormat(): boolean {
+    return this.nullable && (this.value === null || this.value === undefined || this.value === '');
+  }
+
   get shouldDisplayClearIcon(): boolean {
     return this._clearable && !this.disabled && (this.control && !!this.control.value);
   }
@@ -155,7 +165,9 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     this.value = value;
 
     if (this.control) {
-      value = this.formater.toUser(value);
+      if (this.shouldFormat) {
+        value = this.formater.toUser(value);
+      }
 
       this.value = value;
       this.control.setValue(value, {emitEvent: false});
@@ -176,7 +188,7 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     this.valueChanges.emit(value);
 
     // notify parent
-    super.notifyUpdate(this.formater.toCode(value));
+    super.notifyUpdate(this.shouldFormat ? this.formater.toCode(value) : value);
     this.cdr.detectChanges();
   }
 
@@ -185,7 +197,7 @@ export class KalInputComponent extends FormElementComponent<string> implements O
   }
 
   formatValue() {
-    if (this.formatOnBlur) {
+    if (this.formatOnBlur && this.shouldFormat) {
       this.control.patchValue(this.formater.toUser(this.value), {emitEvent: false});
     }
   }
