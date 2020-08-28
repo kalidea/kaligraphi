@@ -6,6 +6,7 @@ import {
   ElementRef,
   EventEmitter,
   HostBinding,
+  HostListener,
   Inject,
   InjectionToken,
   Injector,
@@ -90,6 +91,10 @@ export class KalInputComponent extends FormElementComponent<string> implements O
   // empty id attribute
   @HostBinding('attr.id')
   attributeId = null;
+
+  // set tabindex to be able to receive focus event (KalAutoFocus)
+  @HostBinding('attr.tabindex')
+  tabIndex = 0;
 
   @AutoUnsubscribe()
   private controlValueChangedSubscription = Subscription.EMPTY;
@@ -185,8 +190,19 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     }
   }
 
+  @HostListener('blur')
   blur() {
     this.inputElement.nativeElement.blur();
+    // set tabIndex back to 0 to be able to focus the kal-input again
+    this.tabIndex = 0
+  }
+
+  @HostListener('focus')
+  focus() {
+    this.inputElement.nativeElement.focus();
+    // set tabIndex to -1 to not trap the focus in the kal-input
+    // timeout to not trigger an error during angular render process
+    setTimeout(() => this.tabIndex = -1)
   }
 
   ngOnDestroy(): void {
