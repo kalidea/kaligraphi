@@ -257,6 +257,10 @@ export class KalListComponent<T>
     this.countItems();
   }
 
+  markForCheck() {
+    this.cdr.markForCheck();
+  }
+
   selectAll() {
     if (this._selectionMode === KalListSelectionMode.Multiple) {
       this._selection.selectAll();
