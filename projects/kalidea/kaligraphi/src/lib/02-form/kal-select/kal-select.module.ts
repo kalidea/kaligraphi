@@ -24,7 +24,7 @@ const exports = [
     KalIconModule,
     KalUtilityModule
   ],
-  exports: exports,
+  exports,
   declarations: exports
 })
 export class KalSelectModule { }

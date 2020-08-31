@@ -25,6 +25,7 @@ class TestRadioGroupWithControlComponent {
   control = new FormControl('');
 }
 
+// tslint:disable-next-line:max-classes-per-file
 @Component({
   template: `
     <kal-radio-group [value]="value"

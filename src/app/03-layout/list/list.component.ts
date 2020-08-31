@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { KalListComponent, KalSelectionModel, KalVirtualScrollConfig } from '@kalidea/kaligraphi';
 import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
@@ -56,7 +63,7 @@ export class ListComponent implements OnInit {
 
   @ViewChild(KalListComponent, {static: true}) kalListComponent: KalListComponent<{ id: string, name: string, disabled: boolean }>;
 
-  constructor() {
+  constructor(private cdr: ChangeDetectorRef) {
   }
 
   selectRow($event: KalSelectionModel<{ id: string }>) {
@@ -153,6 +160,7 @@ const list = (page: number, numberOfElements: number) => {
   return of({data: listItem, meta: {total}});
 };
 
+// tslint:disable-next-line:max-classes-per-file
 class TestDataSource<T> implements DataSource<{ id: string, name: string }> {
 
   private subscriptionsList: Subscription[] = [];

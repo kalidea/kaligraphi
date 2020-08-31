@@ -24,13 +24,13 @@ class CarouselContext<T> {
   /** The index of the item. */
   index: number;
 
-  /** The number of _items*/
+  /** The number of _items */
   count: number;
 
   /** Whether this is the first item */
   first: boolean;
 
-  /** current status for this item **/
+  /** current status for this item */
   status: KalCarouselItemStatus;
 
   /** Whether this is the last item  */
@@ -39,6 +39,7 @@ class CarouselContext<T> {
 
 const prefix = 'kalCarouselItem';
 
+// tslint:disable-next-line:max-classes-per-file
 @Directive({
   selector: '[' + prefix + ']',
   exportAs: prefix,
@@ -135,7 +136,7 @@ export class KalCarouselItemDirective<T> implements OnInit, OnDestroy {
     } = this.getVariables(status);
 
     // get view ref and update context
-    const viewRef = <EmbeddedViewRef<CarouselContext<T>>>this.viewContainerRef.get(positionFrom);
+    const viewRef = this.viewContainerRef.get(positionFrom) as EmbeddedViewRef<CarouselContext<T>>;
     viewRef.context.status = status;
 
     // move viewRef if needed

@@ -14,7 +14,7 @@ const exports = [
     CommonModule,
     ReactiveFormsModule
   ],
-  exports: exports,
+  exports,
   declarations: exports
 })
 export class KalTextareaModule { }

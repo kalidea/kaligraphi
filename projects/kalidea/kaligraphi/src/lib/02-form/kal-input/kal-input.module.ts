@@ -18,7 +18,7 @@ const exports = [
     ReactiveFormsModule,
     KalIconModule
   ],
-  exports: exports,
+  exports,
   declarations: exports
 })
 export class KalInputModule { }
