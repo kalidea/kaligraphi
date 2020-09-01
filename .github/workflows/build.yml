@@ -88,13 +88,16 @@ jobs:
 #          asset_name: ${{ steps.create-asset.outputs.filename }}
 #          asset_content_type: application/gzip
 
-      - name: Deploy to NPMJS
+      - name: SET REGISTRY npmjs
         uses: actions/setup-node@v1
         with:
           node-version: '10.x'
           registry-url: 'https://registry.npmjs.org'
       # Publish to npm
-      - run: npm publish --access public
+      - name: Deploy to NPMJS
+        run: |
+          cd dist/kalidea/kaligraphi
+          npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPMJS_TOKEN }}
       # Setup .npmrc file to publish to GitHub Packages
@@ -105,6 +108,9 @@ jobs:
           # Defaults to the user or organization that owns the workflow file
           scope: '@kalidea'
       # Publish to GitHub Packages
-      - run: npm publish
+      - name: SET REGISTRY github
+        run: |
+          cd dist/kalidea/kaligraphi
+          npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
