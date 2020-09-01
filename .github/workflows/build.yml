@@ -58,35 +58,35 @@ jobs:
           name: dist
           path: dist/
 
-      - name: Copy Files & create asset
-        id: create-asset
-        run: |
-          cp README.md dist/kalidea/kaligraphi/
-          cd dist/kalidea/kaligraphi
-          npm pack
-          echo "::set-output name=filename::`ls *.tgz`"
-
-      - name: Create Release
-        id: create-release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: false
-
-      - name: Upload Release Asset
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: ./${{ steps.create-asset.outputs.filename }}
-          asset_name: ${{ steps.create-asset.outputs.filename }}
-          asset_content_type: application/gzip
+#      - name: Copy Files & create asset
+#        id: create-asset
+#        run: |
+#          cp README.md dist/kalidea/kaligraphi/
+#          cd dist/kalidea/kaligraphi
+#          npm pack
+#          echo "::set-output name=filename::`ls *.tgz`"
+#
+#      - name: Create Release
+#        id: create-release
+#        uses: actions/create-release@v1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          tag_name: ${{ github.ref }}
+#          release_name: Release ${{ github.ref }}
+#          draft: false
+#          prerelease: false
+#
+#      - name: Upload Release Asset
+#        id: upload-release-asset
+#        uses: actions/upload-release-asset@v1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          upload_url: ${{ steps.create-release.outputs.upload_url }}
+#          asset_path: ./${{ steps.create-asset.outputs.filename }}
+#          asset_name: ${{ steps.create-asset.outputs.filename }}
+#          asset_content_type: application/gzip
 
       - name: Deploy to NPMJS
         uses: actions/setup-node@v1
