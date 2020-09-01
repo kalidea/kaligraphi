@@ -27,7 +27,7 @@ jobs:
 
       - name: Build Lib & Playground
         run: |
-          npm run build
+          npm run build --prod
           npm run build:playground -- --base-href /kaligraphi/
 
       - name: Upload to Github Pages
