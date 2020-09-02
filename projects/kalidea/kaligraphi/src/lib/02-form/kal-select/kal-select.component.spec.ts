@@ -258,6 +258,7 @@ class TestSelectComponent {
   @ViewChildren(KalOptionComponent) options: QueryList<KalOptionComponent>;
 }
 
+// tslint:disable-next-line:max-classes-per-file
 @Component({
   selector: 'kal-test-select-one',
   template: `

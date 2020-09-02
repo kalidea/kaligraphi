@@ -206,7 +206,7 @@ export class KalInputComponent extends FormElementComponent<string> implements O
   blur() {
     this.inputElement.nativeElement.blur();
     // set tabIndex back to 0 to be able to focus the kal-input again
-    this.tabIndex = 0
+    this.tabIndex = 0;
   }
 
   @HostListener('focus')
@@ -214,7 +214,7 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     this.inputElement.nativeElement.focus();
     // set tabIndex to -1 to not trap the focus in the kal-input
     // timeout to not trigger an error during angular render process
-    setTimeout(() => this.tabIndex = -1)
+    setTimeout(() => this.tabIndex = -1);
   }
 
   ngOnDestroy(): void {

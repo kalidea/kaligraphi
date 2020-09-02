@@ -21,6 +21,8 @@ function coerceFromType(value: any, type: KAL_COERCE_TYPES, fallback) {
 }
 
 export function Coerce(type: KAL_COERCE_TYPES, fallback?): PropertyDecorator & MethodDecorator {
+  // Vu la complexité du code, il est plus judicieux de garder cette fonction, elle utilise this qui est scopé
+  // tslint:disable-next-line:only-arrow-functions
   return function (target: any, key: string | symbol, propDesc?: PropertyDescriptor): void | any {
     const privateKey = '_coerce_' + key.toString();
 

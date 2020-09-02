@@ -15,7 +15,7 @@ const exports = [
     CommonModule,
     KalIconModule
   ],
-  exports: exports,
+  exports,
   declarations: exports
 })
 export class KalRaterModule { }

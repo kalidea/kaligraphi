@@ -16,6 +16,6 @@ const exports = [
     CommonModule
   ],
   declarations: exports,
-  exports: exports
+  exports
 })
 export class KalRadioModule { }

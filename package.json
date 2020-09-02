@@ -1,6 +1,6 @@
 {
   "name": "kaligraphi",
-  "version": "9.1.0",
+  "version": "10.0.1",
   "scripts": {
     "dev": "ng build @kalidea/kaligraphi --watch",
     "serve": "ng serve --open",
@@ -23,7 +23,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "~10.0.4",
-    "@angular/cdk": "^9.2",
+    "@angular/cdk": "^10.1.3",
     "@angular/common": "~10.0.4",
     "@angular/compiler": "~10.0.4",
     "@angular/core": "~10.0.4",
