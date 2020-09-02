@@ -10,30 +10,12 @@
   </kal-input>
 
   <ng-template cdkPortal #datepickerCalendar="cdkPortal">
-    <kal-calendar (datePicked)="setInputValue($event)"
-                  [maxYear]="maxYear"
-                  [minYear]="minYear"></kal-calendar>
+    <div class="kal-datepicker__calendar">
+      <kal-calendar (datePicked)="setInputValue($event)"
+                    [selectedDate]="this.selectedDate"
+                    [maxYear]="maxYear"
+                    [minYear]="minYear"></kal-calendar>
+
+    </div>
   </ng-template>
 </div>
-
-<!--    <div class="kal-datepicker__calendar">-->
-<!--      <kal-datepicker-header>-->
-
-<!--        <p (click)="changeCurrentView()">-->
-<!--          {{ currentPeriod }}-->
-<!--        </p>-->
-
-<!--      </kal-datepicker-header>-->
-
-<!--      <kal-month-calendar #monthCalendar-->
-<!--                          [hidden]="isMultiView"-->
-<!--                          (datePicked)="setInputValue($event)">-->
-<!--      </kal-month-calendar>-->
-
-<!--      <kal-datepicker-multi-view *ngIf="isMultiView"-->
-<!--                                 [displayedDate]="monthCalendar.displayedDate"-->
-<!--                                 [minYear]="minYear"-->
-<!--                                 [maxYear]="maxYear"-->
-<!--                                 (selectedDate)="monthCalendar.updateDate($event)">-->
-<!--      </kal-datepicker-multi-view>-->
-<!--    </div>-->

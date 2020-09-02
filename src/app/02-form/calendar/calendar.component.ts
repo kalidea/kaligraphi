@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
+import { KalDate } from '@kalidea/kaligraphi';
 
 @Component({
   selector: 'app-month-calendar',
@@ -9,9 +10,18 @@ import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@
 })
 export class CalendarComponent implements OnInit {
 
+  date: KalDate;
+
+  selectedDates = [new KalDate('02/09/2020'), new KalDate('20/09/2020')]
+
   constructor() { }
+
+  datePicked($event: KalDate) {
+    this.date = $event;
+  }
 
   ngOnInit(): void {
   }
+
 
 }

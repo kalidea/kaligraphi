@@ -5,11 +5,12 @@
 
 <div class="kal-day-calendar__number">
 
-  <button *ngFor="let date of datesList"
+  <button *ngFor="let date of monthDatesList"
           type="button"
           [class.kal-other-month-day]="isDateFromAnotherMonth(date)"
           [class.kal-today]="date.isToday()"
-          [class.selected]="isDaySelected(date)"
+          [class.kal-active]="isDayActivated(date)"
+          [class.kal-selected]="date.isSame(currentDate)"
           [disabled]="shouldDisable(date)"
           (click)="pickDate($event, date)">
     {{ date.getDay() }}

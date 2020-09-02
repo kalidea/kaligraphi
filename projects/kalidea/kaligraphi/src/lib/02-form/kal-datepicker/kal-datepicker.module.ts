@@ -8,12 +8,12 @@ import { KalInputModule } from '../kal-input/kal-input.module';
 import { KalIconModule } from '../../01-typography/kal-icon/kal-icon.module';
 
 import { KalDatepickerComponent } from './kal-datepicker.component';
-import { KalCalendarHeaderComponent } from './kal-datepicker-header/kal-calendar-header.component';
+import { KalCalendarComponent } from './kal-calendar/kal-calendar.component';
+import { KalCalendarHeaderComponent } from './kal-calendar-header/kal-calendar-header.component';
 import { KalMonthCalendarComponent } from './kal-month-calendar/kal-month-calendar.component';
 import { KalDatepickerMultiViewComponent } from './kal-datepicker-multi-view/kal-datepicker-multi-view.component';
 // KalUtilityModule is used for ``KalAutoFocusDirective`
 import { KalUtilityModule } from '../../99-utility/kal-utility.module';
-import { KalCalendarComponent } from './kal-calendar/kal-calendar.component';
 
 export * from './kal-datepicker.component';
 export * from './kal-calendar/kal-calendar.component';

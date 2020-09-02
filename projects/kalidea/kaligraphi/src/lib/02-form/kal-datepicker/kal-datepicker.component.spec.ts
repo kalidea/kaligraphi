@@ -7,7 +7,7 @@ import { KalInputModule } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-
 import { KalIconModule } from 'projects/kalidea/kaligraphi/src/lib/01-typography/kal-icon/kal-icon.module';
 
 import { KalDatepickerComponent } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-datepicker/kal-datepicker.component';
-import { KalCalendarHeaderComponent } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-datepicker/kal-datepicker-header/kal-calendar-header.component';
+import { KalCalendarHeaderComponent } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-datepicker/kal-calendar-header/kal-calendar-header.component';
 import { KalMonthCalendarComponent } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-datepicker/kal-month-calendar/kal-month-calendar.component';
 import { KalDatepickerMultiViewComponent } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-datepicker/kal-datepicker-multi-view/kal-datepicker-multi-view.component';
 import { KalDate } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-datepicker/kal-date';

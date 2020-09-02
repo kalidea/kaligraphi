@@ -1,0 +1,15 @@
+<div>
+  <kal-calendar
+    (datePicked)="datePicked($event)"
+    [selectedDate]="date"
+    [activatedDates]="selectedDates">
+  </kal-calendar>
+  <div>Date Picked: {{date}}</div>
+
+  <div>Selected Dates: {{selectedDates | json}}</div>
+</div>
+
+
+<div class="configurator">
+
+</div>

@@ -1,16 +1,21 @@
 import {
-  Component,
-  OnInit,
-  ViewEncapsulation,
   ChangeDetectionStrategy,
-  Inject,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
   forwardRef,
-  Optional, ViewChild, Injector, ChangeDetectorRef, Input, Output, EventEmitter
+  Inject,
+  Injector,
+  Input,
+  Optional,
+  Output,
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
-import { KalCalendarView, KalDatepickerComponent } from '../kal-datepicker.component';
+import { KalCalendarView } from '../kal-datepicker.component';
 import { buildProviders, Coerce } from '../../../utils';
 import { NgControl } from '@angular/forms';
-import { KalCalendarHeaderComponent } from '../kal-datepicker-header/kal-calendar-header.component';
+import { KalCalendarHeaderComponent } from '../kal-calendar-header/kal-calendar-header.component';
 import { KalDate } from '../kal-date';
 import dayjs from 'dayjs';
 import { capitalize } from '../../../utils/helpers/strings';
@@ -24,7 +29,14 @@ import { KalMonthCalendarComponent } from '../kal-month-calendar/kal-month-calen
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: buildProviders(KalCalendarComponent)
 })
-export class KalCalendarComponent implements OnInit {
+export class KalCalendarComponent {
+
+  /**
+   * Dates to mark as Active
+   */
+  @Input() activatedDates: KalDate[] = [];
+
+  @Input() selectedDate = new KalDate();
 
   /**
    * Emits when a new date is selected.
@@ -35,7 +47,7 @@ export class KalCalendarComponent implements OnInit {
   /**
    * Reference to `KalDatepickerHeaderComponent`.
    */
-  @ViewChild(forwardRef(() => KalCalendarHeaderComponent), {static: false}) datePickerHeader: KalCalendarHeaderComponent;
+  @ViewChild(forwardRef(() => KalCalendarHeaderComponent), {static: false}) calendarHeader: KalCalendarHeaderComponent;
 
   /**
    * Reference to `KalMonthCalendarComponent`.
@@ -54,8 +66,7 @@ export class KalCalendarComponent implements OnInit {
 
   private readonly yearsIncrement = 30;
 
-  constructor(@Optional() @Inject(forwardRef(() => KalDatepickerComponent)) public datepicker: KalDatepickerComponent,
-              private cdr: ChangeDetectorRef,
+  constructor(private cdr: ChangeDetectorRef,
               private injector: Injector) {
   }
 
@@ -99,33 +110,10 @@ export class KalCalendarComponent implements OnInit {
   }
 
   /**
-   * Returns the date stored in the datepicker if it's valid else the current date.
-   * We should do this to still display something with the datepicker even if the given
-   * date is invalid.
-   */
-  get currentDate(): KalDate {
-    return this.datepicker?.currentDate?.valid ? this.datepicker?.currentDate : new KalDate('03/09/2020');
-  }
-
-  set currentDate(date: KalDate) {
-    this.monthCalendar.currentDate = date;
-
-    this.cdr.markForCheck();
-  }
-
-  /**
    * Display the current period : month as string + year.
    */
   get currentPeriod(): string {
-    let date: KalDate = null;
-
-    if (this.monthCalendar) {
-      date = this.monthCalendar.displayedDate;
-    } else if (this.currentDate.valid) {
-      date = this.currentDate;
-    } else {
-      date = new KalDate();
-    }
+    const date = this.monthCalendar?.currentDate ?? new KalDate();
 
     const month = dayjs().localeData().months()[date.getMonth()];
     return month ? capitalize(month) + ' ' + date.getYear() : '';
@@ -151,7 +139,7 @@ export class KalCalendarComponent implements OnInit {
 
     // We should manually trigger change detection because header arrows depends on `KalDatepickerComponent`
     // and header doesn't know when it should refresh itself.
-    this.datePickerHeader.markForCheck();
+    this.calendarHeader.markForCheck();
   }
 
   /**
@@ -164,15 +152,11 @@ export class KalCalendarComponent implements OnInit {
   /**
    * Action to do when used in datepicker and closing the overlay
    */
-  datePickerClose(date: KalDate) {
+  datePickerClose() {
     // Set the current view to `month` because if the datepicker is
     // closed then opened it will keep its last view.
     this.currentView = 'month';
-
-    // Reset displayed date to avoid keeping selected month and year in multiview.
-    if (this.monthCalendar) {
-      this.monthCalendar.displayedDate = this.currentDate;
-    }
+    this.cdr.markForCheck();
   }
 
   /**
@@ -186,9 +170,6 @@ export class KalCalendarComponent implements OnInit {
     } else {
       this.monthCalendar.updateMonth($event);
     }
-  }
-
-  ngOnInit(): void {
   }
 
 }

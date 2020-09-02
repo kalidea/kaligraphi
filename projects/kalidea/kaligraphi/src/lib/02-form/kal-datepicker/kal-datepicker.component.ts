@@ -184,30 +184,14 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     this.cdr.markForCheck();
   }
 
-  // /**
-  //  * Display the current period : month as string + year.
-  //  */
-  // get currentPeriod(): string {
-  //   let date: KalDate = null;
-  //
-  //   if (this.monthCalendar) {
-  //     date = this.monthCalendar.displayedDate;
-  //   } else if (this.currentDate.valid) {
-  //     date = this.currentDate;
-  //   } else {
-  //     date = new KalDate();
-  //   }
-  //
-  //   const month = dayjs().localeData().months()[date.getMonth()];
-  //   return month ? capitalize(month) + ' ' + date.getYear() : '';
-  // }
-
-  // /**
-  //  * Whether the current view is the `multi` view.
-  //  */
-  // get isMultiView(): boolean {
-  //   return this.currentView === 'multi';
-  // }
+  /**
+   * Returns the date stored in the datepicker if it's valid else the current date.
+   * We should do this to still display something with the datepicker even if the given
+   * date is invalid.
+   */
+  get selectedDate(): KalDate {
+    return this.currentDate.valid ? this.currentDate : new KalDate();
+  }
 
   get parentControlValidator() {
     const parentControl = this.injector.get(NgControl, null);
@@ -289,7 +273,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     this.clickOutsideSubscription.unsubscribe();
 
     if(this.calendar) {
-      this.calendar.datePickerClose(this.currentDate);
+      this.calendar.datePickerClose();
     }
 
     // // Set the current view to `month` because if the datepicker is
@@ -410,10 +394,6 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
         // date manually so the datepicker can open at the current date
         if (date === null || !date.valid) {
           date = new KalDate();
-        }
-
-        if (this.calendar) {
-          this.calendar.currentDate = date;
         }
 
         this.currentDate = date;
