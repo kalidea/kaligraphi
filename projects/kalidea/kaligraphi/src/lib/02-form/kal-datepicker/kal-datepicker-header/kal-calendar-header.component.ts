@@ -6,18 +6,18 @@ import {
   Inject,
   ViewEncapsulation
 } from '@angular/core';
-import { KalDatepickerComponent } from '../kal-datepicker.component';
+import { KalCalendarComponent } from '../kal-calendar/kal-calendar.component';
 
 @Component({
-  selector: 'kal-datepicker-header',
-  templateUrl: './kal-datepicker-header.component.html',
-  styleUrls: ['./kal-datepicker-header.component.sass'],
+  selector: 'kal-calendar-header',
+  templateUrl: './kal-calendar-header.component.html',
+  styleUrls: ['./kal-calendar-header.component.sass'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalDatepickerHeaderComponent {
+export class KalCalendarHeaderComponent {
 
-  constructor(@Inject(forwardRef(() => KalDatepickerComponent)) public datepicker: KalDatepickerComponent,
+  constructor(@Inject(forwardRef(() => KalCalendarComponent)) public calendar: KalCalendarComponent,
               private cdr: ChangeDetectorRef) {
   }
 
@@ -25,7 +25,7 @@ export class KalDatepickerHeaderComponent {
    * Whether the current view is the `month` view.
    */
   get isMultiView(): boolean {
-    return this.datepicker.isMultiView;
+    return this.calendar.isMultiView;
   }
 
   /**
@@ -33,7 +33,7 @@ export class KalDatepickerHeaderComponent {
    * @param amount The amount is `1` or `-1`
    */
   updateMonth(amount: number) {
-    this.datepicker.updateView(this.isMultiView ? null : amount);
+    this.calendar.updateView(this.isMultiView ? null : amount);
   }
 
   /**

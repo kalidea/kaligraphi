@@ -24,6 +24,7 @@ export class AppComponent {
     {label: 'datepicker', route: '/form/datepicker'},
     {label: 'form-field', route: '/form/form-field'},
     {label: 'input', route: '/form/input'},
+    {label: 'calendar', route: '/form/calendar'},
     {label: 'progress-bar', route: '/form/progress-bar'},
     {label: 'radio', route: '/form/radio'},
     {label: 'rater', route: '/form/rater'},

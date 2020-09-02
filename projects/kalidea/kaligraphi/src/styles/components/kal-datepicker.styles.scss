@@ -66,6 +66,12 @@ $kal-styles-datepicker: (
             'padding': 2px,
             'text-align': center,
             'background-color': transparent,
+            'other-month-day':(
+              'color': get("grey.wf400", $kal-palettes)
+            ),
+            'today':(
+              'color': get("orange.dark", $kal-palettes)
+            ),
             'selected':(
               'cursor': pointer,
               'background-color': get("grey.wf800", $kal-palettes),

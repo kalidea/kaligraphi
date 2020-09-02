@@ -1,0 +1,39 @@
+//=kal-themed-month-calendar($theme-parameters)
+//  kal-month-calendar
+//    width: get("month.width", $theme-parameters)
+//    margin: get("month.margin", $theme-parameters)
+//    .kal-day-calendar__letter, .kal-day-calendar__number
+//      display: get("month.letter.display", $theme-parameters)
+//      flex-flow: get("month.letter.flex-flow", $theme-parameters)
+//      justify-content: get("month.letter.justify-content", $theme-parameters)
+//      align-items: get("month.letter.align-items", $theme-parameters)
+//    .kal-day-calendar__letter
+//      padding: get("month.letter.padding", $theme-parameters)
+//      font-size: get("month.letter.font-size", $theme-parameters)
+//      div
+//        display: get("month.letter.div.display", $theme-parameters)
+//        align-items: get("month.letter.div.align-items", $theme-parameters)
+//        justify-content: get("month.letter.div.justify-content", $theme-parameters)
+//        width: get("month.letter.div.width", $theme-parameters)
+//        height: get("month.letter.div.height", $theme-parameters)
+//        padding: get("month.letter.div.padding", $theme-parameters)
+//        color: get("month.letter.div.color", $theme-parameters)
+//    .kal-day-calendar__number
+//      button
+//        width: get("month.number.button.width", $theme-parameters)
+//        height: get("month.number.button.height", $theme-parameters)
+//        border: get("month.number.button.border", $theme-parameters)
+//        border-radius: get("month.number.button.border-radius", $theme-parameters)
+//        padding: get("month.number.button.padding", $theme-parameters)
+//        text-align: get("month.number.button.text-align", $theme-parameters)
+//        background-color: get("month.number.button.background-color", $theme-parameters)
+//        &.hidden
+//          visibility: hidden
+//        &:not(:disabled)
+//          &:hover, &:active, &:focus, &.selected
+//            cursor: get("month.number.button.selected.cursor", $theme-parameters)
+//            background-color: get("month.number.button.selected.background-color", $theme-parameters)
+//            color: get("month.number.button.selected.color", $theme-parameters)
+//
+//=kal-month-calendar($kal-parameters)
+//  +kal-themed-datepicker(get('datepicker.default.calendar', $kal-parameters))

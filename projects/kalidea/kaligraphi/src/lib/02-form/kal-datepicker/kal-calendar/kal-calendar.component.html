@@ -1,0 +1,21 @@
+<div class="kal-datepicker__calendar">
+  <kal-calendar-header>
+
+    <p (click)="changeCurrentView()">
+      {{ currentPeriod }}
+    </p>
+
+  </kal-calendar-header>
+
+  <kal-month-calendar #monthCalendar
+                      [hidden]="isMultiView"
+                      (datePicked)="pickDate($event)">
+  </kal-month-calendar>
+
+  <kal-datepicker-multi-view *ngIf="isMultiView"
+                             [displayedDate]="monthCalendar.displayedDate"
+                             [minYear]="minYear"
+                             [maxYear]="maxYear"
+                             (selectedDate)="monthCalendar.updateDate($event)">
+  </kal-datepicker-multi-view>
+</div>

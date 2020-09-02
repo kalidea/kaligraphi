@@ -25,13 +25,11 @@ import dayjs from 'dayjs';
 import localeData from 'dayjs/plugin/localeData';
 
 import { coerceKalDateProperty, KalDate, KalDateType } from './kal-date';
-import { KalMonthCalendarComponent } from './kal-month-calendar/kal-month-calendar.component';
-import { KalDatepickerHeaderComponent } from './kal-datepicker-header/kal-datepicker-header.component';
 import { buildProviders, FormElementComponent } from '../../utils/forms/form-element.component';
 import { KalInputComponent } from '../kal-input/kal-input.component';
 import { Coerce } from '../../utils/decorators/coerce';
 import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
-import { capitalize } from '../../utils/helpers/strings';
+import { KalCalendarComponent } from './kal-calendar/kal-calendar.component';
 
 /**
  * Configure DayJS
@@ -60,24 +58,29 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   @ViewChild('datepickerCalendar', {static: true}) datepickerCalendar: TemplatePortal<any>;
 
   /**
-   * Reference to `KalMonthCalendarComponent`.
+   * Reference to `KalCalendarComponent`.
    */
-  @ViewChild(KalMonthCalendarComponent, {static: false}) monthCalendar: KalMonthCalendarComponent;
+  @ViewChild('KalCalendar', {static: false}) calendar: KalCalendarComponent;
 
-  /**
-   * Reference to `KalDatepickerHeaderComponent`.
-   */
-  @ViewChild(forwardRef(() => KalDatepickerHeaderComponent), {static: false}) datePickerHeader: KalDatepickerHeaderComponent;
+  // /**
+  //  * Reference to `KalMonthCalendarComponent`.
+  //  */
+  // @ViewChild(KalMonthCalendarComponent, {static: false}) monthCalendar: KalMonthCalendarComponent;
+  //
+  // /**
+  //  * Reference to `KalDatepickerHeaderComponent`.
+  //  */
+  // @ViewChild(forwardRef(() => KalDatepickerHeaderComponent), {static: false}) datePickerHeader: KalDatepickerHeaderComponent;
 
   /**
    * reference to the kal input
    */
   @ViewChild(KalInputComponent, {static: true}) kalInput: KalInputComponent;
 
-  /**
-   * Whether the calendar is in month view.
-   */
-  currentView: KalCalendarView = 'month';
+  // /**
+  //  * Whether the calendar is in month view.
+  //  */
+  // currentView: KalCalendarView = 'month';
 
   /**
    * base control
@@ -181,30 +184,30 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     this.cdr.markForCheck();
   }
 
-  /**
-   * Display the current period : month as string + year.
-   */
-  get currentPeriod(): string {
-    let date: KalDate = null;
+  // /**
+  //  * Display the current period : month as string + year.
+  //  */
+  // get currentPeriod(): string {
+  //   let date: KalDate = null;
+  //
+  //   if (this.monthCalendar) {
+  //     date = this.monthCalendar.displayedDate;
+  //   } else if (this.currentDate.valid) {
+  //     date = this.currentDate;
+  //   } else {
+  //     date = new KalDate();
+  //   }
+  //
+  //   const month = dayjs().localeData().months()[date.getMonth()];
+  //   return month ? capitalize(month) + ' ' + date.getYear() : '';
+  // }
 
-    if (this.monthCalendar) {
-      date = this.monthCalendar.displayedDate;
-    } else if (this.currentDate.valid) {
-      date = this.currentDate;
-    } else {
-      date = new KalDate();
-    }
-
-    const month = dayjs().localeData().months()[date.getMonth()];
-    return month ? capitalize(month) + ' ' + date.getYear() : '';
-  }
-
-  /**
-   * Whether the current view is the `multi` view.
-   */
-  get isMultiView(): boolean {
-    return this.currentView === 'multi';
-  }
+  // /**
+  //  * Whether the current view is the `multi` view.
+  //  */
+  // get isMultiView(): boolean {
+  //   return this.currentView === 'multi';
+  // }
 
   get parentControlValidator() {
     const parentControl = this.injector.get(NgControl, null);
@@ -237,16 +240,16 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     return this.overlayRef;
   }
 
-  /**
-   * Switch between views to display.
-   */
-  changeCurrentView() {
-    this.currentView = this.isMultiView ? 'month' : 'multi';
-
-    // We should manually trigger change detection because header arrows depends on `KalDatepickerComponent`
-    // and header doesn't know when it should refresh itself.
-    this.datePickerHeader.markForCheck();
-  }
+  // /**
+  //  * Switch between views to display.
+  //  */
+  // changeCurrentView() {
+  //   this.currentView = this.isMultiView ? 'month' : 'multi';
+  //
+  //   // We should manually trigger change detection because header arrows depends on `KalDatepickerComponent`
+  //   // and header doesn't know when it should refresh itself.
+  //   this.datePickerHeader.markForCheck();
+  // }
 
   toggle() {
     if (this.getOverlayRef().hasAttached()) {
@@ -285,14 +288,18 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
 
     this.clickOutsideSubscription.unsubscribe();
 
-    // Set the current view to `month` because if the datepicker is
-    // closed then opened it will keep its last view.
-    this.currentView = 'month';
-
-    // Reset displayed date to avoid keeping selected month and year in multiview.
-    if (this.monthCalendar) {
-      this.monthCalendar.displayedDate = this.currentDate;
+    if(this.calendar) {
+      this.calendar.datePickerClose(this.currentDate);
     }
+
+    // // Set the current view to `month` because if the datepicker is
+    // // closed then opened it will keep its last view.
+    // this.currentView = 'month';
+    //
+    // // Reset displayed date to avoid keeping selected month and year in multiview.
+    // if (this.monthCalendar) {
+    //   this.monthCalendar.displayedDate = this.currentDate;
+    // }
   }
 
   /**
@@ -328,19 +335,19 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
 
     }
   }
-
-  /**
-   * Update the view according to `$event` parameter.
-   * If we receive a `null` value it means that we're currently displaying the `multi` view and
-   * we wants to display the `month` view.
-   */
-  updateView($event: number | null): void {
-    if ($event === null) {
-      this.changeCurrentView();
-    } else {
-      this.monthCalendar.updateMonth($event);
-    }
-  }
+  //
+  // /**
+  //  * Update the view according to `$event` parameter.
+  //  * If we receive a `null` value it means that we're currently displaying the `multi` view and
+  //  * we wants to display the `month` view.
+  //  */
+  // updateView($event: number | null): void {
+  //   if ($event === null) {
+  //     this.changeCurrentView();
+  //   } else {
+  //     this.monthCalendar.updateMonth($event);
+  //   }
+  // }
 
   private getOutsideClickStream(): Observable<any> {
     if (!this._document) {
@@ -405,8 +412,8 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
           date = new KalDate();
         }
 
-        if (this.monthCalendar) {
-          this.monthCalendar.currentDate = date;
+        if (this.calendar) {
+          this.calendar.currentDate = date;
         }
 
         this.currentDate = date;

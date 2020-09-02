@@ -2121,17 +2121,17 @@ kal-datepicker .kal-datepicker__input {
   width: 100%;
   max-width: 240px;
   min-width: 240px; }
-  .kal-datepicker__calendar kal-datepicker-header .kal-datepicker-header__wrapper {
+  .kal-datepicker__calendar kal-calendar-header .kal-datepicker-header__wrapper {
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
     padding: 0 0 10px 0; }
-    .kal-datepicker__calendar kal-datepicker-header .kal-datepicker-header__wrapper *:nth-child(2) {
+    .kal-datepicker__calendar kal-calendar-header .kal-datepicker-header__wrapper *:nth-child(2) {
       flex: 1;
       text-align: center; }
-      .kal-datepicker__calendar kal-datepicker-header .kal-datepicker-header__wrapper *:nth-child(2):hover {
+      .kal-datepicker__calendar kal-calendar-header .kal-datepicker-header__wrapper *:nth-child(2):hover {
         cursor: pointer; }
-    .kal-datepicker__calendar kal-datepicker-header .kal-datepicker-header__wrapper *:nth-child(1):hover, .kal-datepicker__calendar kal-datepicker-header .kal-datepicker-header__wrapper *:nth-child(3):hover {
+    .kal-datepicker__calendar kal-calendar-header .kal-datepicker-header__wrapper *:nth-child(1):hover, .kal-datepicker__calendar kal-calendar-header .kal-datepicker-header__wrapper *:nth-child(3):hover {
       cursor: pointer; }
   .kal-datepicker__calendar kal-month-calendar {
     width: 170px;

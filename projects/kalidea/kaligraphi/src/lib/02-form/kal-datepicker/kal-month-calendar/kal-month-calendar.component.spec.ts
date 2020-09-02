@@ -6,7 +6,7 @@ import { KalMonthCalendarComponent } from 'projects/kalidea/kaligraphi/src/lib/0
 import { KalDatepickerComponent } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-datepicker/kal-datepicker.component';
 import { KalDatepickerModule } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-datepicker/kal-datepicker.module';
 
-describe('KalMonthCalendarComponent', () => {
+fdescribe('KalMonthCalendarComponent', () => {
   let component: TestComponent;
   let fixture: ComponentFixture<TestComponent>;
 
@@ -30,17 +30,20 @@ describe('KalMonthCalendarComponent', () => {
     fixture = TestBed.createComponent(TestComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should')
 });
 
 @Component({
   selector: 'kal-test-month-calendar',
   template: `
-    <kal-datepicker></kal-datepicker>
+    <kal-month-calendar></kal-month-calendar>
   `
 })
 export class TestComponent {

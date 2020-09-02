@@ -5,7 +5,7 @@ import {
   EventEmitter,
   forwardRef,
   Inject,
-  OnInit,
+  OnInit, Optional,
   Output,
   ViewEncapsulation
 } from '@angular/core';
@@ -27,7 +27,7 @@ dayjs.extend(weekday);
 @Component({
   selector: 'kal-month-calendar',
   templateUrl: './kal-month-calendar.component.html',
-  styleUrls: ['./kal-month-calendar.component.sass'],
+  styleUrls: ['./kal-month-calendar.sass'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -40,7 +40,7 @@ export class KalMonthCalendarComponent implements OnInit {
 
   displayedDate: KalDate;
 
-  constructor(@Inject(forwardRef(() => KalDatepickerComponent)) public datepicker: KalDatepickerComponent,
+  constructor(@Optional() @Inject(forwardRef(() => KalDatepickerComponent)) public datepicker: KalDatepickerComponent,
               private cdr: ChangeDetectorRef) {
   }
 
@@ -51,9 +51,13 @@ export class KalMonthCalendarComponent implements OnInit {
     const datesList: KalDate[] = [];
     const firstDayOfCurrentMonth = this.displayedDate.getDate().startOf('month');
     const firstDayOfLastWeekOfPreviousMonth = firstDayOfCurrentMonth.startOf('week');
+    const lastDayOfNextWeekOfNextMonth = firstDayOfCurrentMonth.add(5, 'week').endOf('week');
+
+    // number of days with float part to not miss a day
+    const numberOfDays = lastDayOfNextWeekOfNextMonth.diff(firstDayOfLastWeekOfPreviousMonth, 'day', true)
 
     // create an array with all days in selected date month
-    for (let i = 0; i < (firstDayOfCurrentMonth.weekday() + firstDayOfCurrentMonth.daysInMonth()); i++) {
+    for (let i = 0; i < (numberOfDays); i++) {
       datesList.push(new KalDate(firstDayOfLastWeekOfPreviousMonth.add(i, 'day')));
     }
 
@@ -80,7 +84,7 @@ export class KalMonthCalendarComponent implements OnInit {
    * date is invalid.
    */
   get currentDate(): KalDate {
-    return this.datepicker.currentDate.valid ? this.datepicker.currentDate : new KalDate();
+    return this.datepicker?.currentDate?.valid ? this.datepicker?.currentDate : new KalDate();
   }
 
   set currentDate(date: KalDate) {
@@ -89,10 +93,10 @@ export class KalMonthCalendarComponent implements OnInit {
   }
 
   /**
-   * Whether we should add a `hidden` class to our button.
-   * It allows us to hide the days of the previous month.
+   * Whether we should add a `gray` class to our button.
+   * It allows us to gray the days of the previous month.
    */
-  isDateHidden(date: KalDate): boolean {
+  isDateFromAnotherMonth(date: KalDate): boolean {
     return date.getMonth() !== this.displayedDate.getMonth();
   }
 
@@ -125,7 +129,7 @@ export class KalMonthCalendarComponent implements OnInit {
    * It allows us to enable and disable the buttons.
    */
   shouldDisable(date: KalDate) {
-    const parentValidator = this.datepicker.parentControlValidator;
+    const parentValidator = this.datepicker?.parentControlValidator;
     return parentValidator ? parentValidator({value: date} as AbstractControl) !== null : false;
   }
 
