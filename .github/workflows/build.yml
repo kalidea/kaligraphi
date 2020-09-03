@@ -55,7 +55,7 @@ jobs:
       github.event_name == 'pull_request' &&
       github.event.action == 'closed' &&
       github.event.pull_request.merged == true &&
-      contains(github.ref, '/tags/v')))
+      contains(github.ref, '/tags/v')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout project
