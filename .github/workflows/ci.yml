@@ -1,0 +1,88 @@
+
+# trigger this build on push & pull_request
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  NODE_RELEASE_VERSION: 10 # release version created by NODE 10
+
+jobs:
+  test-and-build:
+    name: Test and Build
+    # Run only on pull_request
+    runs-on: ubuntu-latest
+    # run this workflow on multiple node version
+    strategy:
+      matrix:
+        node: [10, 12]
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v2
+
+      - name: Set node version
+        uses: actions/setup-node@v1
+        with:
+          node-version:  ${{ matrix.node }}
+
+      - name: Install dependencies
+        run: npm i
+
+      - name: Run test suite
+        run: npm run test:ci
+
+      - name: Build Lib & Playground
+        run: |
+          npm run build
+          npm run build:playground -- --base-href /kaligraphi/
+
+      - name: Upload to Github Pages
+        # deploy only once to github page
+        if: matrix.node == env.NODE_RELEASE_VERSION
+        uses: JamesIves/github-pages-deploy-action@3.5.9
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages # The branch the action should deploy to.
+          FOLDER: dist/playground # The folder the action should deploy.
+
+  deploy:
+    name: Deploy package
+    needs: test-and-build
+    if: >
+      github.event_name == 'pull_request' &&
+      github.event.action == 'closed' &&
+      github.event.pull_request.merged == true &&
+      contains(github.ref, '/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v2
+
+      - name: Set node version
+        uses: actions/setup-node@v1
+        with:
+          node-version:  env.NODE_RELEASE_VERSION
+
+      - name: Build library
+        run: |
+          npm i
+          npm run build
+          cp README.md dist/kalidea/kaligraphi/
+
+      - name: Deploy to NPMJS
+        run: |
+          npm set registry https://registry.npmjs.org
+          cd dist/kalidea/kaligraphi
+          npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPMJS_TOKEN }}
+
+      - name: Deploy to github package
+        run: |
+          npm set registry https://npm.pkg.github.com
+          cd dist/kalidea/kaligraphi
+          npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

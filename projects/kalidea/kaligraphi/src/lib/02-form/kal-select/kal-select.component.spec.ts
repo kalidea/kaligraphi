@@ -76,7 +76,7 @@ describe('TestSelectComponent', () => {
     it('should display given optionsComponent', () => {
       trigger.click();
 
-      component.options.map(o => expect(overlayContainerElement.textContent).toContain(o.viewValue));
+      component.options.map(o => expect(overlayContainerElement.textContent).toContain(o.getLabel()));
     });
 
     it('should set a default label', () => {
@@ -231,7 +231,7 @@ describe('TestSelectComponent', () => {
     it('should select the first option when there is only one option', () => {
       fixture.detectChanges();
       const selectedOption = component.select.selected as KalOptionComponent;
-      expect(selectedOption.viewValue).toEqual(component.options.first.viewValue);
+      expect(selectedOption.getLabel()).toEqual(component.options.first.getLabel());
     });
 
     it('should disable the first option selection when there is one option in options list', () => {

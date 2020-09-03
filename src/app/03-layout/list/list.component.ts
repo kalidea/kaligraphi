@@ -63,9 +63,6 @@ export class ListComponent implements OnInit {
 
   @ViewChild(KalListComponent, {static: true}) kalListComponent: KalListComponent<{ id: string, name: string, disabled: boolean }>;
 
-  constructor(private cdr: ChangeDetectorRef) {
-  }
-
   selectRow($event: KalSelectionModel<{ id: string }>) {
     this.listSelection = $event;
   }
