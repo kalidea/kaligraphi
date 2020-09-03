@@ -10,7 +10,9 @@ env:
   NODE_RELEASE_VERSION: 10 # release version created by NODE 10
 
 jobs:
-  CI:
+  test-and-build:
+    name: Test and Build
+    # Run only on pull_request
     runs-on: ubuntu-latest
     # run this workflow on multiple node version
     strategy:
@@ -45,8 +47,9 @@ jobs:
           BRANCH: gh-pages # The branch the action should deploy to.
           FOLDER: dist/playground # The folder the action should deploy.
 
-  DEPLOY:
-    needs: CI
+  deploy:
+    name: Deploy package
+    needs: test-and-build
     if: >
       github.event_name == 'pull_request' &&
       github.event.action == 'closed' &&
