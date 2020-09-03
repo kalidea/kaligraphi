@@ -7,12 +7,11 @@ import { KalInputModule } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-
 import { KalIconModule } from 'projects/kalidea/kaligraphi/src/lib/01-typography/kal-icon/kal-icon.module';
 
 import { KalDatepickerComponent } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-datepicker/kal-datepicker.component';
-import { KalCalendarHeaderComponent } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-datepicker/kal-calendar-header/kal-calendar-header.component';
-import { KalMonthCalendarComponent } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-datepicker/kal-month-calendar/kal-month-calendar.component';
-import { KalDatepickerMultiViewComponent } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-datepicker/kal-datepicker-multi-view/kal-datepicker-multi-view.component';
+
 import { KalDate } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-datepicker/kal-date';
 import { FormElementComponent } from 'projects/kalidea/kaligraphi/src/lib/utils';
 import { KalUtilityModule } from 'projects/kalidea/kaligraphi/src/lib/99-utility/kal-utility.module';
+import { KalCalendarModule } from 'projects/kalidea/kaligraphi/src/lib/03-layout/kal-calendar/kal-calendar.module';
 
 describe('KalDatepickerComponent', () => {
   let component: KalDatepickerComponent;
@@ -24,14 +23,12 @@ describe('KalDatepickerComponent', () => {
         KalIconModule,
         KalInputModule,
         KalUtilityModule,
+        KalCalendarModule,
         ReactiveFormsModule,
         PortalModule,
       ],
       declarations: [
         KalDatepickerComponent,
-        KalCalendarHeaderComponent,
-        KalMonthCalendarComponent,
-        KalDatepickerMultiViewComponent,
       ],
       providers: [
         Overlay

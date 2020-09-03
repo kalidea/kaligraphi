@@ -13,7 +13,6 @@ import { RaterComponent } from 'src/app/02-form/rater/rater.component';
 import { SelectComponent } from 'src/app/02-form/select/select.component';
 import { SliderComponent } from 'src/app/02-form/slider/slider.component';
 import { TextareaComponent } from 'src/app/02-form/textarea/textarea.component';
-import { CalendarComponent } from 'src/app/02-form/calendar/calendar.component';
 
 const routes: Routes = [
   {path: 'autocomplete', component: AutocompleteComponent},
@@ -22,7 +21,6 @@ const routes: Routes = [
   {path: 'datepicker', component: DatepickerComponent},
   {path: 'form-field', component: FormFieldComponent},
   {path: 'input', component: InputComponent},
-  {path: 'calendar', component: CalendarComponent},
   {path: 'progress-bar', component: ProgressBarComponent},
   {path: 'radio', component: RadioComponent},
   {path: 'rater', component: RaterComponent},

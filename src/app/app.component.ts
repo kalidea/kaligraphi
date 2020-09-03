@@ -24,7 +24,6 @@ export class AppComponent {
     {label: 'datepicker', route: '/form/datepicker'},
     {label: 'form-field', route: '/form/form-field'},
     {label: 'input', route: '/form/input'},
-    {label: 'calendar', route: '/form/calendar'},
     {label: 'progress-bar', route: '/form/progress-bar'},
     {label: 'radio', route: '/form/radio'},
     {label: 'rater', route: '/form/rater'},
@@ -37,6 +36,7 @@ export class AppComponent {
   // Layout
   itemsLayout: KalNavItem[] = [
     {label: 'accordion', route: '/layout/accordion'},
+    {label: 'calendar', route: '/layout/calendar'},
     {label: 'card', route: '/layout/card'},
     {label: 'carousel', route: '/layout/carousel'},
     {label: 'list', route: '/layout/list'},

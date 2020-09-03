@@ -9,10 +9,12 @@ import { TreeComponent } from 'src/app/03-layout/tree/tree.component';
 import { AccordionComponent } from 'src/app/03-layout/accordion/accordion.component';
 import { CardComponent } from 'src/app/03-layout/card/card.component';
 import { CarouselComponent } from 'src/app/03-layout/carousel/carousel.component';
+import { CalendarComponent } from 'src/app/03-layout/calendar/calendar.component';
 
 
 const routes: Routes = [
   {path: 'accordion', component: AccordionComponent},
+  {path: 'calendar', component: CalendarComponent},
   {path: 'card', component: CardComponent},
   {path: 'carousel', component: CarouselComponent},
   {path: 'list', component: ListComponent},

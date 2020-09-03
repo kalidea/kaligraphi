@@ -29,7 +29,6 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import isBetween from 'dayjs/plugin/isBetween';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-import { CalendarComponent } from 'src/app/02-form/calendar/calendar.component';
 
 dayjs.extend(localeData);
 dayjs.extend(weekday);
@@ -59,7 +58,6 @@ dayjs.extend(isSameOrAfter);
     SelectComponent,
     SliderComponent,
     TextareaComponent,
-    CalendarComponent
   ],
   providers: [
     {

@@ -12,9 +12,14 @@ export class CalendarComponent implements OnInit {
 
   date: KalDate;
 
-  selectedDates = [new KalDate('02/09/2020'), new KalDate('20/09/2020')]
+  selectedDates = [
+    new KalDate('02/09/2020'),
+    new KalDate('20/09/2020')
+  ];
+  newdate: KalDate;
 
-  constructor() { }
+  constructor() {
+  }
 
   datePicked($event: KalDate) {
     this.date = $event;

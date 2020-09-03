@@ -11,14 +11,16 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import {KalCalendarView} from '../kal-datepicker.component';
-import {buildProviders, Coerce} from '../../../utils';
-import {NgControl} from '@angular/forms';
-import {KalCalendarHeaderComponent} from '../kal-calendar-header/kal-calendar-header.component';
-import {KalDate} from '../kal-date';
+import { NgControl } from '@angular/forms';
 import dayjs from 'dayjs';
-import {capitalize} from '../../../utils/helpers/strings';
-import {KalMonthCalendarComponent} from '../kal-month-calendar/kal-month-calendar.component';
+import { KalDate } from '../../02-form/kal-datepicker/kal-date';
+import { KalCalendarView } from '../../02-form/kal-datepicker/kal-datepicker.component';
+import { buildProviders, Coerce } from '../../utils';
+import { capitalize } from '../../utils/helpers/strings';
+
+import { KalCalendarHeaderComponent } from './kal-calendar-header/kal-calendar-header.component';
+import { KalCalendarMonthComponent } from './kal-calendar-month/kal-calendar-month.component';
+
 
 @Component({
   selector: 'kal-calendar',
@@ -51,19 +53,19 @@ export class KalCalendarComponent implements AfterViewInit {
   /**
    * Reference to `KalMonthCalendarComponent`.
    */
-  @ViewChild(KalMonthCalendarComponent, {static: false}) monthCalendar: KalMonthCalendarComponent;
+  @ViewChild(KalCalendarMonthComponent, {static: false}) calendarMonth: KalCalendarMonthComponent;
 
   /**
    * Whether the calendar is in month view.
    */
   currentView: KalCalendarView = 'month';
   private readonly yearsIncrement = 30;
+  private _maxYear: number;
+  private _minYear = 1940;
 
   constructor(private cdr: ChangeDetectorRef,
               private injector: Injector) {
   }
-
-  private _maxYear: number;
 
   /**
    * Max year that should be displayed in year selection.
@@ -88,8 +90,6 @@ export class KalCalendarComponent implements AfterViewInit {
     this.cdr.markForCheck();
   }
 
-  private _minYear = 1940;
-
   @Input()
   @Coerce('number')
   get minYear(): number {
@@ -110,7 +110,7 @@ export class KalCalendarComponent implements AfterViewInit {
    * Display the current period : month as string + year.
    */
   get currentPeriod(): string {
-    const date = this.monthCalendar?.currentDate ?? new KalDate();
+    const date = this.calendarMonth?.currentDate ?? new KalDate();
 
     const month = dayjs().localeData().months()[date.getMonth()];
     return month ? capitalize(month) + ' ' + date.getYear() : '';
@@ -155,7 +155,7 @@ export class KalCalendarComponent implements AfterViewInit {
     if ($event === null) {
       this.changeCurrentView();
     } else {
-      this.monthCalendar.updateMonth($event);
+      this.calendarMonth.updateMonth($event);
     }
   }
 

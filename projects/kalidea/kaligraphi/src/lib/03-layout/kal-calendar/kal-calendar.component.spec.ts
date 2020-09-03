@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { KalCalendarComponent } from './kal-calendar.component';
+import { KalCalendarComponent, KalCalendarModule } from './kal-calendar.module';
 
 describe('KalCalendarComponent', () => {
   let component: KalCalendarComponent;
@@ -8,7 +8,11 @@ describe('KalCalendarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ KalCalendarComponent ]
+      declarations: [
+      ],
+      imports: [
+        KalCalendarModule
+      ]
     })
     .compileComponents();
   }));

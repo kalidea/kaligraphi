@@ -6,23 +6,20 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { KalInputModule } from '../kal-input/kal-input.module';
 import { KalIconModule } from '../../01-typography/kal-icon/kal-icon.module';
+import { KalCalendarModule } from '../../03-layout/kal-calendar/kal-calendar.module';
 
-import { KalDatepickerComponent } from './kal-datepicker.component';
-import { KalCalendarComponent } from './kal-calendar/kal-calendar.component';
-import { KalCalendarHeaderComponent } from './kal-calendar-header/kal-calendar-header.component';
-import { KalMonthCalendarComponent } from './kal-month-calendar/kal-month-calendar.component';
-import { KalDatepickerMultiViewComponent } from './kal-datepicker-multi-view/kal-datepicker-multi-view.component';
 // KalUtilityModule is used for ``KalAutoFocusDirective`
 import { KalUtilityModule } from '../../99-utility/kal-utility.module';
 
+// local import
+import { KalDatepickerComponent } from './kal-datepicker.component';
+
 export * from './kal-datepicker.component';
-export * from './kal-calendar/kal-calendar.component';
 
 export { KalDate } from './kal-date';
 
 const exports = [
   KalDatepickerComponent,
-  KalCalendarComponent
 ];
 
 @NgModule({
@@ -33,14 +30,12 @@ const exports = [
     ReactiveFormsModule,
     KalInputModule,
     KalIconModule,
-    KalUtilityModule
+    KalUtilityModule,
+    KalCalendarModule
   ],
   exports,
   declarations: [
     ...exports,
-    KalCalendarHeaderComponent,
-    KalDatepickerMultiViewComponent,
-    KalMonthCalendarComponent,
   ]
 })
 export class KalDatepickerModule {

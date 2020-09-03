@@ -29,7 +29,7 @@ export class KalDate {
    */
   private value: Dayjs;
 
-  constructor(date?: KalDateType, format = 'dd/MM/yyyy') {
+  constructor(date?: KalDateType, format: string = 'dd/MM/yyyy') {
     if (arguments.length === 0 || date === null) {
       this.value = dayjs();
     } else {

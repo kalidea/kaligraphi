@@ -16,9 +16,8 @@ import { CdkPortal, ComponentPortal, PortalInjector } from '@angular/cdk/portal'
 import { Overlay, OverlayConfig, OverlayRef, PositionStrategy } from '@angular/cdk/overlay';
 import { animate, AnimationEvent, state, style, transition, trigger } from '@angular/animations';
 
-import { fromEvent } from 'rxjs/internal/observable/fromEvent';
 import { filter, take } from 'rxjs/operators';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { fromEvent, Observable, Subject, Subscription } from 'rxjs';
 
 import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 import { KalThemeDirective } from '../../99-utility/directives/kal-theme/kal-theme.directive';

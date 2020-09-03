@@ -6,7 +6,7 @@ import {
   Inject,
   ViewEncapsulation
 } from '@angular/core';
-import { KalCalendarComponent } from '../kal-calendar/kal-calendar.component';
+import { KalCalendarComponent } from '../kal-calendar.component';
 
 @Component({
   selector: 'kal-calendar-header',

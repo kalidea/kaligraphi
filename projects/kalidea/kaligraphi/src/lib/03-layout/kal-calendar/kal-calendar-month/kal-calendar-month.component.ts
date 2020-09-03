@@ -15,10 +15,11 @@ import {AbstractControl} from '@angular/forms';
 import dayjs from 'dayjs';
 import weekday from 'dayjs/plugin/weekday';
 
-import {KalDatepickerComponent} from '../kal-datepicker.component';
-import {KalDate} from '../kal-date';
-import {DateUnits} from '../kal-datepicker-multi-view/kal-datepicker-multi-view.component';
-import {move} from '../../../utils/helpers/arrays';
+import { KalDate } from '../../../02-form/kal-datepicker/kal-date';
+import { KalDatepickerComponent } from '../../../02-form/kal-datepicker/kal-datepicker.component';
+import { move } from '../../../utils/helpers/arrays';
+import { DateUnits } from '../kal-calendar-multi-view/kal-calendar-multi-view.component';
+
 
 /**
  * Configure DayJS
@@ -26,13 +27,13 @@ import {move} from '../../../utils/helpers/arrays';
 dayjs.extend(weekday);
 
 @Component({
-  selector: 'kal-month-calendar',
-  templateUrl: './kal-month-calendar.component.html',
-  styleUrls: ['./kal-month-calendar.sass'],
+  selector: 'kal-calendar-month',
+  templateUrl: './kal-calendar-month.component.html',
+  styleUrls: ['./kal-calendar-month.component.sass'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalMonthCalendarComponent implements OnInit {
+export class KalCalendarMonthComponent implements OnInit {
 
   /**
    * Emits when a new date is selected.
