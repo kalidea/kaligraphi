@@ -6,14 +6,16 @@ on:
   pull_request:
     branches: [ master ]
 
+env:
+  NODE_RELEASE_VERSION: '10.x' # release version created by NODE 10
 
 jobs:
-  # run this workflow on multiple node version
-  strategy:
-    matrix:
-      node: [10, 12]
   CI:
     runs-on: ubuntu-latest
+    # run this workflow on multiple node version
+    strategy:
+      matrix:
+        node: [ 10, 12 ]
     steps:
       - name: Checkout project
         uses: actions/checkout@v2
@@ -62,7 +64,7 @@ jobs:
       - name: Set node version
         uses: actions/setup-node@v1
         with:
-          node-version:  ${{ matrix.node }}
+          node-version:  NODE_RELEASE_VERSION
 
       - name: Build library
         run: |
