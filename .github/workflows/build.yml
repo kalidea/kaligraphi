@@ -38,7 +38,7 @@ jobs:
 
       - name: Upload to Github Pages
         # deploy only once to github page
-        if: matrix.node === NODE_RELEASE_VERSION
+        if: matrix.node == NODE_RELEASE_VERSION
         uses: JamesIves/github-pages-deploy-action@3.5.9
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
