@@ -7,8 +7,7 @@ on:
     branches: [ master ]
 
 env:
-  NODE_RELEASE_VERSION: 10 # release version created by NODE 10
-  NODE_MATRIX: [env.NODE_RELEASE_VERSION, 12 ]
+  NODE_MATRIX: [10, 12 ]
 
 jobs:
   CI:
@@ -39,7 +38,7 @@ jobs:
 
       - name: Upload to Github Pages
         # deploy only once to github page
-        if: matrix.node === NODE_RELEASE_VERSION
+        if: matrix.node === NODE_MATRIX[0]
         uses: JamesIves/github-pages-deploy-action@3.5.9
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -61,7 +60,7 @@ jobs:
       - name: Set node version
         uses: actions/setup-node@v1
         with:
-          node-version:  NODE_RELEASE_VERSION
+          node-version:  NODE_MATRIX[0]
 
       - name: Build library
         run: |
