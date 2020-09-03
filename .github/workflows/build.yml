@@ -5,24 +5,25 @@ on:
   pull_request:
     branches: [ master ]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+# Variables for all jobs
+env:
+  NODE_VERSION: '10.x'
+  PKG_SCOPE: '@kalidea'
+
 jobs:
   CI:
     runs-on: ubuntu-latest
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Checkout
+      - name: Checkout project
         uses: actions/checkout@v2
 
-      - name: Set node version
-        uses: actions/setup-node@master
+      - name: Install dependencies
+        uses: actions/setup-node@v2
         with:
-          node-version: '10.x'
-
-      - name: Install
+          node-version: NODE_VERSION
         run: npm i
 
-      - name: Test
+      - name: Run test suite
         run: npm run test:ci
 
       - name: Build Lib & Playground
@@ -43,25 +44,30 @@ jobs:
           name: dist
           path: dist/
 
-
   DEPLOY:
     needs: CI
-    if: (github.event_name == 'push' && (contains(github.ref, '/heads/master') || contains(github.ref, '/tags/v')))
+    if: >
+      github.event_name == 'pull_request' &&
+      github.event.action == 'closed' &&
+      github.event.pull_request.merged == true &&
+      contains(github.ref, '/tags/v')))
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout project
         uses: actions/checkout@v2
 
       - name: SET REGISTRY npmjs
         uses: actions/setup-node@v1
         with:
-          node-version: '10.x'
+          node-version: NODE_VERSION
           registry-url: 'https://registry.npmjs.org'
 
       - name: Prepare build
+        uses: actions/setup-node@v1
         run: |
           npm i
           npm run build
+          cp README.md dist/kalidea/kaligraphi/
 
       # Publish to npm
       - name: Deploy to NPMJS
@@ -70,14 +76,14 @@ jobs:
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPMJS_TOKEN }}
-      # Setup .npmrc file to publish to GitHub Packages
+
       - name: Deploy to github package
         uses: actions/setup-node@v1
         with:
+          node-version: NODE_VERSION
           registry-url: 'https://npm.pkg.github.com'
-          # Defaults to the user or organization that owns the workflow file
-          scope: '@kalidea'
-      # Publish to GitHub Packages
+          scope: PKG_SCOPE
+
       - name: SET REGISTRY github
         run: |
           cd dist/kalidea/kaligraphi
