@@ -6,12 +6,12 @@ on:
   pull_request:
     branches: [ master ]
 
-# run this workflow on multiple node version
-strategy:
-  matrix:
-    node: [10, 12]
 
 jobs:
+  # run this workflow on multiple node version
+  strategy:
+    matrix:
+      node: [10, 12]
   CI:
     runs-on: ubuntu-latest
     steps:
