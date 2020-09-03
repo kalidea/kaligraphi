@@ -88,6 +88,7 @@ class KalTreeFlattener {
   }
 }
 
+// tslint:disable-next-line:max-classes-per-file
 export class KalTreeDataSource extends DataSource<KalTreeNode> {
   _flattenedData = new BehaviorSubject<KalTreeNode[]>([]);
 

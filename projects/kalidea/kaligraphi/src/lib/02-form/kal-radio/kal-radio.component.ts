@@ -204,6 +204,8 @@ export class KalRadioGroupComponent extends FormElementComponent<any> implements
 
 }
 
+
+// tslint:disable-next-line:max-classes-per-file
 @Component({
   selector: 'kal-radio',
   templateUrl: './kal-radio.component.html',

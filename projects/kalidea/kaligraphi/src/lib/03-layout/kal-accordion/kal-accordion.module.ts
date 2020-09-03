@@ -27,7 +27,7 @@ const exports = [
     CommonModule,
     CdkAccordionModule
   ],
-  exports: exports,
+  exports,
   declarations: exports
 })
 export class KalAccordionModule {

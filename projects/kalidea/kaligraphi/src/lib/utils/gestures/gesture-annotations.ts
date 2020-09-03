@@ -41,8 +41,8 @@ export type RecognizerStatic = new(options?: any) => Recognizer;
 
 /** @docs-private */
 export interface HammerInstance {
-  on(eventName: string, callback: Function): void;
-  off(eventName: string, callback: Function): void;
+  on(eventName: string, callback: () => void): void;
+  off(eventName: string, callback: () => void): void;
 }
 
 /** @docs-private */
@@ -50,8 +50,8 @@ export interface HammerManager {
   add(recogniser: Recognizer | Recognizer[]): Recognizer;
   set(options: any): HammerManager;
   emit(event: string, data: any): void;
-  off(events: string, handler?: Function): void;
-  on(events: string, handler: Function): void;
+  off(events: string, handler?: () => void): void;
+  on(events: string, handler: () => void): void;
 }
 
 /** @docs-private */

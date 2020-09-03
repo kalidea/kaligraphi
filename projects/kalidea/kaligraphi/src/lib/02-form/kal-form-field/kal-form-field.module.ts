@@ -16,7 +16,7 @@ const exports = [
   imports: [
     CommonModule
   ],
-  exports: exports,
+  exports,
   declarations: exports
 })
 export class KalFormFieldModule { }

@@ -74,6 +74,7 @@ describe('KalFormFieldComponent', () => {
 
 });
 
+// tslint:disable-next-line:max-classes-per-file
 @Component({
   selector: 'kal-test',
   template: `

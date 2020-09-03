@@ -402,14 +402,14 @@ export class KalSelectComponent
     this.selection.filter(option => !options.includes(option))
       .forEach(option => {
         option.active = false;
-        this.selection.splice(this.selection.indexOf(option), 1)
+        this.selection.splice(this.selection.indexOf(option), 1);
     });
 
-    //select options that were not already selected
+    // select options that were not already selected
     options.filter(option => !this.selection.includes(option)).forEach(option => {
       option.active = true;
       this.selection.push(option);
-    })
+    });
 
     this.sortSelection();
 
@@ -471,7 +471,7 @@ export class KalSelectComponent
   }
 
   /**
-   Sets up a key manager to listen to keyboard events on the overlay panel.
+   * Sets up a key manager to listen to keyboard events on the overlay panel.
    */
   private initKeyManager() {
     this.keyManager = new ActiveDescendantKeyManager<KalOptionComponent>(this.options).withVerticalOrientation();
