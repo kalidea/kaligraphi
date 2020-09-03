@@ -15,7 +15,7 @@ jobs:
     # run this workflow on multiple node version
     strategy:
       matrix:
-        node: [env.NODE_RELEASE_VERSION, 12]
+        node: [${{env.NODE_RELEASE_VERSION}}, 12]
     steps:
       - name: Checkout project
         uses: actions/checkout@v2
