@@ -1,14 +1,15 @@
 
+# trigger this build on push & pull_request
 on:
   push:
     branches: [ master ]
   pull_request:
     branches: [ master ]
 
-# Variables for all jobs
-env:
-  NODE_VERSION: '10.x'
-  PKG_SCOPE: '@kalidea'
+# run this workflow on multiple node version
+strategy:
+  matrix:
+    node: [10, 12]
 
 jobs:
   CI:
@@ -17,10 +18,12 @@ jobs:
       - name: Checkout project
         uses: actions/checkout@v2
 
-      - name: Install dependencies
-        uses: actions/setup-node@v2
+      - name: Set node version
+        uses: actions/setup-node@v1
         with:
-          node-version: NODE_VERSION
+          node-version:  ${{ matrix.node }}
+
+      - name: Install dependencies
         run: npm i
 
       - name: Run test suite
@@ -56,36 +59,29 @@ jobs:
       - name: Checkout project
         uses: actions/checkout@v2
 
-      - name: SET REGISTRY npmjs
+      - name: Set node version
         uses: actions/setup-node@v1
         with:
-          node-version: NODE_VERSION
-          registry-url: 'https://registry.npmjs.org'
+          node-version:  ${{ matrix.node }}
 
-      - name: Prepare build
+      - name: Build library
         uses: actions/setup-node@v1
         run: |
           npm i
           npm run build
           cp README.md dist/kalidea/kaligraphi/
 
-      # Publish to npm
       - name: Deploy to NPMJS
         run: |
+          npm set registry https://registry.npmjs.org
           cd dist/kalidea/kaligraphi
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPMJS_TOKEN }}
 
       - name: Deploy to github package
-        uses: actions/setup-node@v1
-        with:
-          node-version: NODE_VERSION
-          registry-url: 'https://npm.pkg.github.com'
-          scope: PKG_SCOPE
-
-      - name: SET REGISTRY github
         run: |
+          npm set registry https://npm.pkg.github.com
           cd dist/kalidea/kaligraphi
           npm publish --access public
         env:
