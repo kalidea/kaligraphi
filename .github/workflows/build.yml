@@ -65,7 +65,6 @@ jobs:
           node-version:  ${{ matrix.node }}
 
       - name: Build library
-        uses: actions/setup-node@v1
         run: |
           npm i
           npm run build
