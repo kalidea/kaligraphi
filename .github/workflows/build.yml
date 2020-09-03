@@ -7,7 +7,8 @@ on:
     branches: [ master ]
 
 env:
-  NODE_RELEASE_VERSION: '10.x' # release version created by NODE 10
+  NODE_RELEASE_VERSION: 10 # release version created by NODE 10
+  NODE_MATRIX: [env.NODE_RELEASE_VERSION, 12 ]
 
 jobs:
   CI:
@@ -15,7 +16,7 @@ jobs:
     # run this workflow on multiple node version
     strategy:
       matrix:
-        node: [ 10, 12 ]
+        node: NODE_MATRIX
     steps:
       - name: Checkout project
         uses: actions/checkout@v2
@@ -37,17 +38,13 @@ jobs:
           npm run build:playground -- --base-href /kaligraphi/
 
       - name: Upload to Github Pages
+        # deploy only once to github page
+        if: matrix.node === NODE_RELEASE_VERSION
         uses: JamesIves/github-pages-deploy-action@3.5.9
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages # The branch the action should deploy to.
           FOLDER: dist/playground # The folder the action should deploy.
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: dist
-          path: dist/
 
   DEPLOY:
     needs: CI
