@@ -6,7 +6,7 @@ import { KalMonthCalendarComponent } from 'projects/kalidea/kaligraphi/src/lib/0
 import { KalDatepickerComponent } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-datepicker/kal-datepicker.component';
 import { KalDatepickerModule } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-datepicker/kal-datepicker.module';
 
-fdescribe('KalMonthCalendarComponent', () => {
+describe('KalMonthCalendarComponent', () => {
   let component: TestComponent;
   let fixture: ComponentFixture<TestComponent>;
 

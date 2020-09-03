@@ -80,8 +80,8 @@ $kal-styles-datepicker: (
             'calendar-selected':(
               'background-color': get("orange.normal", $kal-palettes),
             ),
-            'active':(
-              'border': solid 1px get('grey.w800', $kal-palettes)
+            'kal-selected':(
+              'border': get("grey.wf800", $kal-palettes) 1px solid,
             )
           ),
         ),

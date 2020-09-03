@@ -1,25 +1,24 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
   forwardRef,
-  Inject,
   Injector,
   Input,
-  Optional,
   Output,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { KalCalendarView } from '../kal-datepicker.component';
-import { buildProviders, Coerce } from '../../../utils';
-import { NgControl } from '@angular/forms';
-import { KalCalendarHeaderComponent } from '../kal-calendar-header/kal-calendar-header.component';
-import { KalDate } from '../kal-date';
+import {KalCalendarView} from '../kal-datepicker.component';
+import {buildProviders, Coerce} from '../../../utils';
+import {NgControl} from '@angular/forms';
+import {KalCalendarHeaderComponent} from '../kal-calendar-header/kal-calendar-header.component';
+import {KalDate} from '../kal-date';
 import dayjs from 'dayjs';
-import { capitalize } from '../../../utils/helpers/strings';
-import { KalMonthCalendarComponent } from '../kal-month-calendar/kal-month-calendar.component';
+import {capitalize} from '../../../utils/helpers/strings';
+import {KalMonthCalendarComponent} from '../kal-month-calendar/kal-month-calendar.component';
 
 @Component({
   selector: 'kal-calendar',
@@ -29,7 +28,7 @@ import { KalMonthCalendarComponent } from '../kal-month-calendar/kal-month-calen
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: buildProviders(KalCalendarComponent)
 })
-export class KalCalendarComponent {
+export class KalCalendarComponent implements AfterViewInit {
 
   /**
    * Dates to mark as Active
@@ -58,17 +57,13 @@ export class KalCalendarComponent {
    * Whether the calendar is in month view.
    */
   currentView: KalCalendarView = 'month';
-
-
-  private _maxYear: number;
-
-  private _minYear = 1940;
-
   private readonly yearsIncrement = 30;
 
   constructor(private cdr: ChangeDetectorRef,
               private injector: Injector) {
   }
+
+  private _maxYear: number;
 
   /**
    * Max year that should be displayed in year selection.
@@ -92,6 +87,8 @@ export class KalCalendarComponent {
     this._maxYear = maxYear;
     this.cdr.markForCheck();
   }
+
+  private _minYear = 1940;
 
   @Input()
   @Coerce('number')
@@ -150,16 +147,6 @@ export class KalCalendarComponent {
   }
 
   /**
-   * Action to do when used in datepicker and closing the overlay
-   */
-  datePickerClose() {
-    // Set the current view to `month` because if the datepicker is
-    // closed then opened it will keep its last view.
-    this.currentView = 'month';
-    this.cdr.markForCheck();
-  }
-
-  /**
    * Update the view according to `$event` parameter.
    * If we receive a `null` value it means that we're currently displaying the `multi` view and
    * we wants to display the `month` view.
@@ -170,6 +157,10 @@ export class KalCalendarComponent {
     } else {
       this.monthCalendar.updateMonth($event);
     }
+  }
+
+  ngAfterViewInit() {
+    this.cdr.markForCheck();
   }
 
 }
