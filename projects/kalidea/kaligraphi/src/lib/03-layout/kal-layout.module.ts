@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { KalAccordionModule } from './kal-accordion/kal-accordion.module';
+import { KalCalendarModule } from './kal-calendar/kal-calendar.module';
 import { KalCardModule } from './kal-card/kal-card.module';
 import { KalCarouselModule } from './kal-carousel/kal-carousel.module';
 import { KalListModule } from './kal-list/kal-list.module';
@@ -18,10 +19,12 @@ export * from './kal-nav/kal-nav.module';
 export * from './kal-stepper/kal-stepper.module';
 export * from './kal-tabs/kal-tab.module';
 export * from './kal-tree/kal-tree.module';
+export * from './kal-calendar/kal-calendar.module';
 
 const exports = [
   KalAccordionModule,
   KalCardModule,
+  KalCalendarModule,
   KalCarouselModule,
   KalListModule,
   KalNavModule,
@@ -35,7 +38,7 @@ const exports = [
     CommonModule,
     ...exports
   ],
-  exports: exports,
+  exports,
   declarations: [],
 })
 export class KalLayoutModule {

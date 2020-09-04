@@ -6,6 +6,7 @@ import {
   ElementRef,
   EventEmitter,
   HostBinding,
+  HostListener,
   Inject,
   InjectionToken,
   Injector,
@@ -40,6 +41,7 @@ export const KAL_INPUT_GLOBAL_OPTIONS =
 
 @Component({
   selector: 'kal-input',
+  exportAs: 'kalInput',
   templateUrl: './kal-input.component.html',
   styleUrls: ['./kal-input.sass'],
   encapsulation: ViewEncapsulation.None,
@@ -75,6 +77,12 @@ export class KalInputComponent extends FormElementComponent<string> implements O
    */
   @Input() icon: string;
 
+  /**
+   * should the formating be ignored on empty value
+   */
+  @Coerce('boolean')
+  @Input() nullable = false;
+
   @Output() readonly iconClicked = new EventEmitter<MouseEvent>();
 
   /**
@@ -89,6 +97,10 @@ export class KalInputComponent extends FormElementComponent<string> implements O
   // empty id attribute
   @HostBinding('attr.id')
   attributeId = null;
+
+  // set tabindex to be able to receive focus event (KalAutoFocus)
+  @HostBinding('attr.tabindex')
+  tabIndex = 0;
 
   @AutoUnsubscribe()
   private controlValueChangedSubscription = Subscription.EMPTY;
@@ -128,6 +140,10 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     return this.formaters.get(this.type);
   }
 
+  get shouldFormat(): boolean {
+    return this.nullable && (this.value === null || this.value === undefined || this.value === '');
+  }
+
   get shouldDisplayClearIcon(): boolean {
     return this._clearable && !this.disabled && (this.control && !!this.control.value);
   }
@@ -149,7 +165,9 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     this.value = value;
 
     if (this.control) {
-      value = this.formater.toUser(value);
+      if (this.shouldFormat) {
+        value = this.formater.toUser(value);
+      }
 
       this.value = value;
       this.control.setValue(value, {emitEvent: false});
@@ -170,7 +188,7 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     this.valueChanges.emit(value);
 
     // notify parent
-    super.notifyUpdate(this.formater.toCode(value));
+    super.notifyUpdate(this.shouldFormat ? this.formater.toCode(value) : value);
     this.cdr.detectChanges();
   }
 
@@ -179,13 +197,24 @@ export class KalInputComponent extends FormElementComponent<string> implements O
   }
 
   formatValue() {
-    if (this.formatOnBlur) {
+    if (this.formatOnBlur && this.shouldFormat) {
       this.control.patchValue(this.formater.toUser(this.value), {emitEvent: false});
     }
   }
 
+  @HostListener('blur')
   blur() {
     this.inputElement.nativeElement.blur();
+    // set tabIndex back to 0 to be able to focus the kal-input again
+    this.tabIndex = 0;
+  }
+
+  @HostListener('focus')
+  focus() {
+    this.inputElement.nativeElement.focus();
+    // set tabIndex to -1 to not trap the focus in the kal-input
+    // timeout to not trigger an error during angular render process
+    setTimeout(() => this.tabIndex = -1);
   }
 
   ngOnDestroy(): void {

@@ -21,6 +21,7 @@ import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 
 @Component({
   selector: 'kal-checkbox',
+  exportAs: 'kalCheckbox',
   templateUrl: './kal-checkbox.component.html',
   styleUrls: ['./kal-checkbox.sass'],
   encapsulation: ViewEncapsulation.None,

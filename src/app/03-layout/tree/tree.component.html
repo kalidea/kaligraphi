@@ -12,8 +12,7 @@
       kalTreeNodePadding
       *kalTreeNodeDef="let node; when: hasNestedChild"
       [kalDrag]="node"
-      (kalDrop)="drop($event)"
-      [kalTreeNode]="node">
+      (kalDrop)="drop($event)">
       <kal-icon class="mat-icon-rtl-mirror" kalTreeNodeToggle>
         {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
       </kal-icon>

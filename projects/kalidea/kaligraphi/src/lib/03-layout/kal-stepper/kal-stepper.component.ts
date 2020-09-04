@@ -34,6 +34,7 @@ export class KalStepHeaderDirective implements FocusableOption {
   }
 }
 
+// tslint:disable-next-line:max-classes-per-file
 @Component({
   selector: 'kal-stepper',
   templateUrl: './kal-stepper.component.html',

@@ -8,8 +8,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import dayjs, { UnitType } from 'dayjs';
+import { KalDate } from '../../../02-form/kal-datepicker/kal-date';
 
-import { KalDate } from '../kal-date';
 
 export interface DateUnits {
   unit: UnitType;
@@ -17,14 +17,14 @@ export interface DateUnits {
 }
 
 @Component({
-  selector: 'kal-datepicker-multi-view',
-  templateUrl: './kal-datepicker-multi-view.component.html',
-  styleUrls: ['./kal-datepicker-multi-view.component.sass'],
+  selector: 'kal-calendar-multi-view',
+  templateUrl: './kal-calendar-multi-view.component.html',
+  styleUrls: ['./kal-calendar-multi-view.component.sass'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class KalDatepickerMultiViewComponent implements AfterViewInit {
+export class KalCalendarMultiViewComponent implements AfterViewInit {
 
   @Input() displayedDate: KalDate;
 

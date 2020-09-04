@@ -3,6 +3,7 @@ import { Coerce } from '../../utils/decorators/coerce';
 
 @Component({
   selector: 'kal-button',
+  exportAs: 'kalButton',
   templateUrl: './kal-button.component.html',
   styleUrls: ['./kal-button.sass'],
   encapsulation: ViewEncapsulation.None,

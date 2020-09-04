@@ -1,22 +1,24 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ListComponent } from 'src/app/03-layout/list/list.component';
+import { KalCalendarComponent, KalCalendarModule } from './kal-calendar.module';
 
-describe('ListComponent', () => {
-  let component: ListComponent;
-  let fixture: ComponentFixture<ListComponent>;
+describe('KalCalendarComponent', () => {
+  let component: KalCalendarComponent;
+  let fixture: ComponentFixture<KalCalendarComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        ListComponent
+      ],
+      imports: [
+        KalCalendarModule
       ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ListComponent);
+    fixture = TestBed.createComponent(KalCalendarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

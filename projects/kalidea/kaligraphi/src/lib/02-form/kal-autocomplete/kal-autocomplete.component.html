@@ -1,11 +1,34 @@
-<ul>
-  <li *ngFor="let option of options">
-    <kal-option [value]="option"
-                [label]="option.label"
-                [disabled]="option.disabled"
-                (selectionChange)="select(option)"
-                (click)="select(option)">
-      {{ option.label }}
-    </kal-option>
-  </li>
-</ul>
+<cdk-virtual-scroll-viewport
+  [itemSize]="virtualScrollConfig.itemSize"
+  [ngClass]="getClasses()"
+  class="kal-autocomplete-virtual-scroll-viewport"
+  [style.width]="width"
+  [style.height]="height">
+
+  <div *ngIf="loading; else displayOptionsTemplate"
+       [style.height]="kalAutocompleteHeight"
+       [kalLoading]="loading">
+  </div>
+
+  <ng-template #displayOptionsTemplate>
+
+    <ng-container [kalLoading]="loading"
+                  *cdkVirtualFor="let option of options; index as i">
+
+      <kal-option (click)="select(option)"
+                  (selectionChange)="select(option)"
+                  [disabled]="option.disabled"
+                  [label]="option.label"
+                  [value]="option">
+
+        <ng-container *ngTemplateOutlet="data.optionTemplate ? data.optionTemplate : noTemplate; context: {index: i, option: option}"></ng-container>
+
+        <ng-template #noTemplate>{{ option.label }}</ng-template>
+
+      </kal-option>
+
+    </ng-container>
+
+  </ng-template>
+
+</cdk-virtual-scroll-viewport>

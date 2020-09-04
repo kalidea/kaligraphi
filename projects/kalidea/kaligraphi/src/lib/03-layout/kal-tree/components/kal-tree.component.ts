@@ -25,6 +25,7 @@ import { AutoUnsubscribe } from '../../../utils/decorators/auto-unsubscribe';
  */
 @Component({
   selector: 'kal-tree',
+  exportAs: 'kalTree',
   template: `
     <ng-container kalTreeNodeOutlet></ng-container>
   `,

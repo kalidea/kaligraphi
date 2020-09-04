@@ -22,9 +22,6 @@ const exports = [
     CommonModule,
     PortalModule,
     KalUtilityModule
-  ],
-  entryComponents: [
-    KalTooltipComponent
   ]
 })
 export class KalTooltipModule {

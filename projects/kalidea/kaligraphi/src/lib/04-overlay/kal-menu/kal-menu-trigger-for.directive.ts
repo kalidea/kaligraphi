@@ -44,7 +44,7 @@ export class KalMenuTriggerForDirective implements OnDestroy {
   @HostListener('click')
   /**
    * Toggles the menu between the open and closed states.
-   * */
+   */
   toggleMenu(): void {
     return this.menuOpen ? this.closeMenu() : this.openMenu();
   }

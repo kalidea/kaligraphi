@@ -17,7 +17,7 @@ const exports = [
     ReactiveFormsModule,
     KalFormFieldModule
   ],
-  exports: exports,
+  exports,
   declarations: exports
 })
 export class KalCheckboxModule {

@@ -1,8 +1,21 @@
-#!/bin/sh
+#!/bin/bash
+
+if ! git checkout master
+then
+  echo "[ERR] can't checkout master"
+  exit 1
+fi
+
+CHANGED=$(git diff-index --name-only HEAD --)
+if [ -n "$CHANGED" ]; then
+  echo "[ERR] your local version has unstashed changes"
+  echo $CHANGED
+  exit 1
+fi
 
 #### patch version ####
 echo "going to lib dir"
-cd ./projects/kalidea/kaligraphi
+cd ./projects/kalidea/kaligraphi  || exit
 
 echo "update version"
 version=`npm version patch`

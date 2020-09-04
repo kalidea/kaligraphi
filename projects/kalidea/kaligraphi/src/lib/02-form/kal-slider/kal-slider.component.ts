@@ -22,6 +22,7 @@ import { buildProviders, FormElementComponent } from '../../utils/forms/form-ele
 
 @Component({
   selector: 'kal-slider',
+  exportAs: 'kalSlider',
   templateUrl: './kal-slider.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -218,7 +219,7 @@ export class KalSliderComponent extends FormElementComponent<number> implements 
    * a slide event with x=200px should be a value of 600
    * a slide event with x=300px should be a value of 900
    * a slide event with x=400px should be a value of 1200
-   **/
+   */
   private positionInSliderToValue(position: number): number {
     const percent = clamp(position, 0, this.sliderDimensions.width) / this.sliderDimensions.width;
     return percent * this.getSliderInterval() + this.from;

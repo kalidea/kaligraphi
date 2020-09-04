@@ -31,7 +31,7 @@ import { AutoUnsubscribe } from '../../../utils/decorators/auto-unsubscribe';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: buildProviders(KalTabGroupComponent)
 })
-export class KalTabGroupComponent extends FormElementComponent<number> implements AfterContentInit, AfterViewInit {
+export class KalTabGroupComponent extends FormElementComponent<any> implements AfterContentInit, AfterViewInit {
 
   /**
    * This event is emitted when a tab is selected
@@ -92,30 +92,39 @@ export class KalTabGroupComponent extends FormElementComponent<number> implement
   /**
    * @inheritDoc
    */
-  writeValue(value: number = null) {
-
+  writeValue(value = null) {
     this.tabToSelect = value;
 
-    if ('' + value && !isNaN(value) && this.tabs) {
+    if ('' + value && this.tabs) {
 
-      const selectedTab = this.tabs.find((element, i) => i === value);
+      const tabIndex = this.getTabIndex(this.tabToSelect);
+      const selectedTab = this.tabs.find((element, i) => i === tabIndex);
 
       if (selectedTab) {
-        this.selectTabHeader(selectedTab, value);
+        this.selectTabHeader(selectedTab, tabIndex, {emitEvent: false});
       }
     }
 
   }
 
+  getTabIndex(value): number {
+    return (typeof value === 'string') ? this.tabs?.toArray().findIndex(e => e.value === value) : value;
+  }
+
   /**
    * Select a tab and emit an event with the index of the selected tab
    */
-  selectTabHeader(tab: KalTabComponent, tabIndex: number) {
+  selectTabHeader(tab: KalTabComponent, tabIndex: number, params = {emitEvent: true}) {
     if (!tab.disabled) {
       this.selectedTabIndex = tabIndex;
       this.keyManager.setActiveItem(this.selectedIndex);
-      this.notifyUpdate(tabIndex);
-      this.selectedTab.emit(new KalTabChange(tab, tabIndex));
+
+      const value = this.tabs.toArray()[tabIndex]?.value;
+      this.selectedTab.emit(new KalTabChange(tab, value));
+
+      if (params.emitEvent) {
+        this.notifyUpdate(typeof value === 'string' ? value : tabIndex);
+      }
     }
   }
 
@@ -178,7 +187,7 @@ export class KalTabGroupComponent extends FormElementComponent<number> implement
 
     if (this.tabToSelect) {
 
-      this.selectedTabIndex = this.tabToSelect;
+      this.selectedTabIndex = this.getTabIndex(this.tabToSelect);
 
     } else {
       this.tabs.forEach(

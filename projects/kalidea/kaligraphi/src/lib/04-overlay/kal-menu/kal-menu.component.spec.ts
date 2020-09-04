@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { async, TestBed } from '@angular/core/testing';
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { OverlayModule } from '@angular/cdk/overlay';
@@ -72,7 +72,7 @@ describe('KalMenu', () => {
     });
   });
 
-  it('should close menu on selection', () => {
+  it('should close menu on selection', ((done) => {
     trigger.nativeElement.click();
 
     fixture.whenStable().then(() => {
@@ -80,11 +80,12 @@ describe('KalMenu', () => {
 
       fixture.whenStable().then(() => {
         expect(getContent()).toBeFalsy();
+        done();
       });
     });
-  });
+  }));
 
-  it('should output selected option', () => {
+  it('should output selected option', ((done) => {
     trigger.nativeElement.click();
 
     fixture.whenStable().then(() => {
@@ -96,8 +97,9 @@ describe('KalMenu', () => {
       fixture.whenStable().then(() => {
         expect(spy1).toHaveBeenCalledWith(component.menu.options.first);
         expect(spy2).toHaveBeenCalledWith(component.menu.options.first);
+        done();
       });
     });
-  });
+  }));
 
 });

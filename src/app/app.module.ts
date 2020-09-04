@@ -18,12 +18,9 @@ import { OverviewExampleDialogComponent } from 'src/app/dialogs/overview-example
     BrowserAnimationsModule,
     FormsModule, // for dialog
     AppRoutingModule,
-    KaligraphiModule
+    KaligraphiModule,
   ],
   providers: [],
-  bootstrap: [AppComponent],
-  entryComponents: [
-    OverviewExampleDialogComponent,
-  ],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -2,16 +2,16 @@
  * auto unsubscribe annotation to unsubscribe subscription when component is detroyed
  * how to use :
  *
- ```
- export class DumbComponent implements OnDestroy {
-
-    @AutoUnsubscribe()
-    subscription: Subscription;
-
-    ngOnDestroy(): void {
-    }
-  }
- ```
+ * ```
+ * export class DumbComponent implements OnDestroy {
+ *
+ *    @AutoUnsubscribe()
+ *    subscription: Subscription;
+ *
+ *    ngOnDestroy(): void {
+ *    }
+ *  }
+ * ```
  */
 import { Subscription } from 'rxjs';
 
@@ -19,7 +19,7 @@ const decoratorSubscriptionsListKey = 'decoratorSubscriptionsListKey';
 
 export function AutoUnsubscribe() {
 
-  return function (componentInstance: any, key: string) {
+  return (componentInstance: any, key: string) => {
 
     // init : add property to store subscriptions
     if (!componentInstance[decoratorSubscriptionsListKey]) {

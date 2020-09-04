@@ -23,9 +23,6 @@ const exports = [
   ],
   imports: [
     CommonModule
-  ],
-  entryComponents: [
-    KalSnackbarComponent
   ]
 })
 export class KalSnackbarModule {

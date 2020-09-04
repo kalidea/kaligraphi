@@ -20,6 +20,7 @@ import { KalCheckboxComponent } from '../kal-checkbox/kal-checkbox.component';
 import { FormElementComponent } from '../../utils/forms/form-element.component';
 import { KalFormFieldLabelDirective } from './kal-form-field-label.directive';
 import { AbstractControl } from '@angular/forms';
+import isNil from 'lodash-es/isNil';
 
 export interface KalFormFieldOptions {
 
@@ -54,6 +55,7 @@ export const KAL_FORM_FIELDS_GLOBAL_OPTIONS =
 
 @Component({
   selector: 'kal-form-field',
+  exportAs: 'kalFormField',
   templateUrl: './kal-form-field.component.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -85,6 +87,11 @@ export class KalFormFieldComponent implements AfterContentInit, OnDestroy {
    */
   @Input() legend: string;
 
+  /**
+   * show error message
+   */
+  @Input() displayErrors: boolean;
+
   @ContentChild(forwardRef(() => FormElementComponent), {static: false})
   formElement: FormElementComponent;
 
@@ -100,7 +107,7 @@ export class KalFormFieldComponent implements AfterContentInit, OnDestroy {
   }
 
   get showError() {
-    return !!this.formFieldOptions.showError;
+    return !!this.formFieldOptions.showError && isNil(this.displayErrors) || this.displayErrors === true;
   }
 
   get errors() {
@@ -137,7 +144,7 @@ export class KalFormFieldComponent implements AfterContentInit, OnDestroy {
 
   private hasRequiredValidator(): boolean {
     const control = this.formElement.superControl || this.formElement.control;
-    if (control && control.validator) {
+    if (control?.validator) {
       const validationResult = control.validator({} as AbstractControl);
       const requiredValidatorKeys = this.formFieldOptions.requiredValidatorKeys || ['required'];
       if (validationResult && requiredValidatorKeys.some(k => validationResult[k])) {
@@ -146,7 +153,6 @@ export class KalFormFieldComponent implements AfterContentInit, OnDestroy {
     }
     return false;
   }
-
 
   private checkErrorAndDirtyness() {
     this.hasError = (!!this.formFieldOptions.showErrorAtDisplay || this.formElement.dirty) && this.formElement.hasError;
