@@ -1,4 +1,4 @@
-<h1>Card</h1>
+<h1>Calendar</h1>
 
 <div class="example">
 
@@ -8,16 +8,34 @@
       [selectedDate]="date"
       [activatedDates]="selectedDates">
     </kal-calendar>
-    <div>Date Picked: {{date}}</div>
 
-    <div>Selected Dates: {{selectedDates | json}}</div>
+    <div class="technical-value">
+
+      <div class="technical-value__item">
+
+        <span>Date Picked</span>
+        <span>{{ date }}</span>
+
+      </div>
+
+      <div class="technical-value__item">
+
+        <span>Selected Dates</span>
+        <span>{{selectedDates | json}}</span>
+
+      </div>
+
+    </div>
+
   </div>
+
 </div>
 
 <div class="configurator">
-  <kal-form-field>
-    <kal-datepicker [(ngModel)]="newdate" (ngModelChange)="selectedDates.push($event)" label="Select new date"></kal-datepicker>
-  </kal-form-field>
 
+  <kal-form-field>
+    <kal-datepicker [(ngModel)]="newdate" (ngModelChange)="selectedDates.push($event)"
+                    label="Select new date"></kal-datepicker>
+  </kal-form-field>
 
 </div>

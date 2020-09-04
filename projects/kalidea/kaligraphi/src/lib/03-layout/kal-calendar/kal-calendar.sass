@@ -1,12 +1,5 @@
 =kal-themed-calendar($theme-parameters)
   kal-calendar
-    .kal-day-calendar__number
-      button
-        &:not(:disabled)
-          &:hover, &:active, &:focus, &.kal-selected
-            background-color: get("calendar.month.number.button.selected.background-color", $theme-parameters)
-            color: get("calendar.month.number.button.selected.color", $theme-parameters)
-            cursor: get("calendar.month.number.button.selected.cursor", $theme-parameters)
     display: get("calendar.display", $theme-parameters)
     flex-flow: get("calendar.flex-flow", $theme-parameters)
     background-color: get("calendar.background-color", $theme-parameters)
@@ -15,6 +8,14 @@
     width: get("calendar.width", $theme-parameters)
     max-width: get("calendar.max-width", $theme-parameters)
     min-width: get("calendar.min-width", $theme-parameters)
+    .kal-day-calendar__number
+      button
+        &:not(:disabled)
+          &:hover, &:active, &:focus, &.kal-selected
+            background-color: get("calendar.month.number.button.selected.background-color", $theme-parameters)
+            color: get("calendar.month.number.button.selected.color", $theme-parameters)
+            cursor: get("calendar.month.number.button.selected.cursor", $theme-parameters)
+
 
     kal-calendar-header
       .kal-calendar-header__wrapper
@@ -82,16 +83,16 @@
               color: get("calendar.month.number.button.selected.color", $theme-parameters)
 
     kal-calendar-multi-view
-      .kal-datepicker-multi-view__wrapper
+      .kal-calendar-multi-view__wrapper
         display: get("multi-view.wrapper.display", $theme-parameters)
 
-        .kal-datepicker-multi-view__month
+        .kal-calendar-multi-view__month
           flex: get("multi-view.wrapper.month.flex", $theme-parameters)
           column-count: get("multi-view.wrapper.month.column-count", $theme-parameters)
           column-width: get("multi-view.wrapper.month.column-width", $theme-parameters)
           height: get("multi-view.wrapper.month.height", $theme-parameters)
 
-        .kal-datepicker-multi-view__month, .kal-datepicker-multi-view__year
+        .kal-calendar-multi-view__month, .kal-calendar-multi-view__year
           height: 205px
 
           div
@@ -104,7 +105,7 @@
                 background-color: get("multi-view.wrapper.month.div.selected.background-color", $theme-parameters)
                 color: get("multi-view.wrapper.month.div.selected.color", $theme-parameters)
 
-        .kal-datepicker-multi-view__year
+        .kal-calendar-multi-view__year
           flex: get("multi-view.wrapper.year.flex", $theme-parameters)
           overflow-x: get("multi-view.wrapper.year.overflow-x", $theme-parameters)
           overflow-y: get("multi-view.wrapper.year.overflow-y", $theme-parameters)
@@ -135,8 +136,8 @@
       border: get("reverse.border", $theme-parameters)
 
       kal-calendar-multi-view
-        .kal-datepicker-multi-view__wrapper
-          .kal-datepicker-multi-view__year
+        .kal-calendar-multi-view__wrapper
+          .kal-calendar-multi-view__year
             &::-webkit-scrollbar
               background: get("reverse.multi-view.wrapper.year.scrollbar.background", $theme-parameters)
               border: get("reverse.multi-view.wrapper.year.scrollbar.border", $theme-parameters)
@@ -148,4 +149,4 @@
               background: get("reverse.multi-view.wrapper.year.scrollbar.thumb.inactive.background", $theme-parameters)
 
 =kal-calendar($kal-parameters)
-  +kal-themed-calendar(get('datepicker.default', $kal-parameters))
+  +kal-themed-calendar(get('calendar.default', $kal-parameters))
