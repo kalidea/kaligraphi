@@ -6,13 +6,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { KalInputModule } from '../kal-input/kal-input.module';
 import { KalIconModule } from '../../01-typography/kal-icon/kal-icon.module';
+import { KalCalendarModule } from '../../03-layout/kal-calendar/kal-calendar.module';
 
-import { KalDatepickerComponent } from './kal-datepicker.component';
-import { KalDatepickerHeaderComponent } from './kal-datepicker-header/kal-datepicker-header.component';
-import { KalMonthCalendarComponent } from './kal-month-calendar/kal-month-calendar.component';
-import { KalDatepickerMultiViewComponent } from './kal-datepicker-multi-view/kal-datepicker-multi-view.component';
 // KalUtilityModule is used for ``KalAutoFocusDirective`
 import { KalUtilityModule } from '../../99-utility/kal-utility.module';
+
+// local import
+import { KalDatepickerComponent } from './kal-datepicker.component';
 
 export * from './kal-datepicker.component';
 
@@ -30,14 +30,12 @@ const exports = [
     ReactiveFormsModule,
     KalInputModule,
     KalIconModule,
-    KalUtilityModule
+    KalUtilityModule,
+    KalCalendarModule
   ],
   exports,
   declarations: [
     ...exports,
-    KalDatepickerHeaderComponent,
-    KalMonthCalendarComponent,
-    KalDatepickerMultiViewComponent
   ]
 })
 export class KalDatepickerModule {

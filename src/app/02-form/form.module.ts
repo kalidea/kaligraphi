@@ -57,7 +57,7 @@ dayjs.extend(isSameOrAfter);
     RaterComponent,
     SelectComponent,
     SliderComponent,
-    TextareaComponent
+    TextareaComponent,
   ],
   providers: [
     {
