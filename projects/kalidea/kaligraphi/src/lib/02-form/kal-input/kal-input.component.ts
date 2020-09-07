@@ -126,10 +126,12 @@ export class KalInputComponent extends FormElementComponent<string> implements O
   }
 
   get htmlInputType() {
-    if (this.type === 'password') {
-      return this.type;
-    } else {
-      return 'text';
+    switch (this.type) {
+      case 'password':
+      case 'time':
+        return this.type;
+      default:
+        return 'text';
     }
   }
 
