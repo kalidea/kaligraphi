@@ -143,7 +143,7 @@ export class KalInputComponent extends FormElementComponent<string> implements O
   }
 
   get shouldFormat(): boolean {
-    return this.nullable && (this.value === null || this.value === undefined || this.value === '');
+    return !this.nullable && (this.value === null || this.value === undefined || this.value === '');
   }
 
   get shouldDisplayClearIcon(): boolean {
