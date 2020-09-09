@@ -21,6 +21,7 @@ import { KAL_INPUT_GLOBAL_OPTIONS } from 'projects/kalidea/kaligraphi/src/lib/02
       [limit]="limit"
       [icon]="icon"
       [clearable]="clearable"
+      [nullable]="nullable"
       [placeholder]="placeholder"></kal-input>
 
     <kal-input
@@ -43,6 +44,8 @@ class TestComponent {
   icon = 'calendar_today';
 
   clearable = false;
+
+  nullable = false;
 
   @ViewChild('inputChange', {static: true}) inputComponent: KalInputComponent;
 
@@ -117,6 +120,43 @@ describe('KalInputComponent', () => {
     const userInput = '2,2';
     expect(component.inputComponent.formater.toUser(userInput)).toBe(userInput, 'user input should be untouched');
 
+  });
+
+  it('should format number to 0 on patch value when not nullable with a null value', () => {
+    component.type = 'number';
+    component.nullable = false
+    // detect once before patching the value to have the writeValue method working as expected
+    fixture.detectChanges();
+    component.inputControl.patchValue('');
+    fixture.detectChanges();
+    expect(component.inputComponent.value).toBe('0', '\'\' should be formatted when not nullable');
+
+    component.inputControl.patchValue(undefined);
+    fixture.detectChanges();
+    expect(component.inputComponent.value).toBe('0', 'undefined should be formatted when not nullable');
+
+    component.inputControl.patchValue(null);
+    fixture.detectChanges();
+    expect(component.inputComponent.value).toBe('0', 'null value should be formatted when not nullable');
+  });
+
+  it('should not format number to 0 on patch value when nullable with a null value', () => {
+    component.type = 'number';
+    component.nullable = true
+    // detect once before patching the value to have the writeValue method working as expected
+    fixture.detectChanges();
+
+    component.inputControl.patchValue('');
+    fixture.detectChanges();
+    expect(component.inputComponent.control.value).toBe('', '\'\' value should not be formatted when nullable');
+
+    component.inputControl.patchValue(undefined);
+    fixture.detectChanges();
+    expect(component.inputComponent.control.value).toBe(undefined, 'undefined value should not be formatted when nullable');
+
+    component.inputControl.patchValue(null);
+    fixture.detectChanges();
+    expect(component.inputComponent.control.value).toBe(null, 'null value should not be formatted when nullable');
   });
 
   it('format currency on patch value', () => {
