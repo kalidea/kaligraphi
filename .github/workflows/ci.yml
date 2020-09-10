@@ -49,7 +49,7 @@ jobs:
     name: Deploy package
     needs: test-and-build
     if: >
-      contains( github.event.pull_request.labels.*.name, 'PATCH') &&
+      contains( github.event.pull_request.labels.*.name, 'RELEASE') &&
       github.event_name == 'pull_request' &&
       github.event.action == 'closed' &&
       github.event.pull_request.merged == true
@@ -63,24 +63,22 @@ jobs:
         with:
           node-version: ${{ env.NODE_RELEASE_VERSION }}
 
-      - name: Build library
+      - name: Tag version
         run: |
+          echo "get version"
           cd ./projects/kalidea/kaligraphi
-          version=`npm version patch`
-
+          version=`npm view @kalidea/kaligraphi version`
           cd ../../../
-          npm i
-          npm run build
-          cp README.md dist/kalidea/kaligraphi/
-
-          echo "commit files"
-          git add .
-          git commit -m "version $version"
-          git push
 
           echo "add tag"
           git tag $version
           git push --tags
+
+      - name: Build library
+        run: |
+          npm i
+          npm run build
+          cp README.md dist/kalidea/kaligraphi/
 
       - name: Set REGISTRY NPMJS
         uses: actions/setup-node@v1
