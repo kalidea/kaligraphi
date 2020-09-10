@@ -1,8 +1,11 @@
 
 # trigger this build on push & pull_request
 on:
+  push:
+    - master
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
 
 env:
   NODE_RELEASE_VERSION: 10 # release version created by NODE 10
@@ -27,7 +30,9 @@ jobs:
 
       - name: Install dependencies
         run: |
-          echo "${{ toJson(github.event) }}"
+          echo "github.event_name: ${{ github.event_name }}"
+          echo "github.event.action: ${{ github.event.action }}"
+          echo "github.event.pull_request.merged: ${{ github.event.pull_request.merged }}"
           npm i
 
       - name: Run test suite
