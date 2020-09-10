@@ -50,10 +50,7 @@ jobs:
   deploy:
     name: Deploy package
     needs: test-and-build
-    if: >
-      github.event_name == 'pull_request' &&
-      github.event.action == 'closed' &&
-      contains(github.ref, '/release/v')
+    if: contains(github.ref, '/deploy/v')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout project

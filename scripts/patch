@@ -16,7 +16,7 @@ fi
 #### patch version ####
 
 echo "create release branch"
-git checkout -b "release/$version"
+git checkout -b "deploy/$version"
 
 echo "going to lib dir"
 cd ./projects/kalidea/kaligraphi  || exit
