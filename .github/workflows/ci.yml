@@ -60,7 +60,7 @@ jobs:
       - name: Set node version
         uses: actions/setup-node@v1
         with:
-          node-version: {{ env.NODE_RELEASE_VERSION }}
+          node-version: ${{ env.NODE_RELEASE_VERSION }}
 
       - name: Build library
         run: |
