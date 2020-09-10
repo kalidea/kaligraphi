@@ -24,9 +24,6 @@ echo "commit files"
 git add .
 git commit -m "version $version"
 
-echo "push to master"
-git push
-
 echo "add tag"
 git tag $version
 git push --tags
