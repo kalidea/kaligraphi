@@ -50,7 +50,7 @@ jobs:
   deploy:
     name: Deploy package
     needs: test-and-build
-    if: contains(github.ref, '/deploy/v')
+    if: contains(github.ref, '/deploy_v')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout project
