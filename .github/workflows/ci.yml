@@ -68,18 +68,30 @@ jobs:
           npm run build
           cp README.md dist/kalidea/kaligraphi/
 
+
+      - name: Set REGISTRY NPMJS
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_RELEASE_VERSION }}
+          registry-url: 'https://registry.npmjs.org'
+
       - name: Deploy to NPMJS
         run: |
-          npm set registry https://registry.npmjs.org
           cd dist/kalidea/kaligraphi
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPMJS_TOKEN }}
 
+      - name: Set REGISTRY github
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_RELEASE_VERSION }}
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@kalidea'
+
       - name: Deploy to github package
         run: |
-          npm set registry https://npm.pkg.github.com
           cd dist/kalidea/kaligraphi
-          npm publish --access public
+          npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
