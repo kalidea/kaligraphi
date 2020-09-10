@@ -2,7 +2,8 @@
 # trigger this build on push & pull_request
 on:
   push:
-    branches: [ master ]
+    branches:
+      - 'releases/**'
   pull_request:
     branches: [ master ]
 
@@ -50,7 +51,7 @@ jobs:
   deploy:
     name: Deploy package
     needs: test-and-build
-    if: contains(github.ref, '/deploy_v')
+    if: contains(github.ref, '/releases/')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout project

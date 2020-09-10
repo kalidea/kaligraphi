@@ -20,14 +20,15 @@ cd ./projects/kalidea/kaligraphi  || exit
 
 echo "update version"
 version=`npm version patch`
+branch=releases/$version
 
 echo "create release branch"
-git checkout -b deploy_$version
+git checkout -b $branch
 
 echo "commit files"
 git add .
 git commit -m "version $version"
-git push
+git push --set-upstream origin $branch
 
 echo "add tag"
 git tag $version
