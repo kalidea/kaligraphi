@@ -2,7 +2,8 @@
 # trigger this build on push & pull_request
 on:
   push:
-    - master
+    branches:
+      - master
   pull_request:
     branches:
       - master
