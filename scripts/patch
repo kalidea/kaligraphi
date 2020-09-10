@@ -15,18 +15,19 @@ fi
 
 #### patch version ####
 
-echo "create release branch"
-git checkout -b "deploy_$version"
-
 echo "going to lib dir"
 cd ./projects/kalidea/kaligraphi  || exit
 
 echo "update version"
 version=`npm version patch`
 
+echo "create release branch"
+git checkout -b deploy_$version
+
 echo "commit files"
 git add .
 git commit -m "version $version"
+git push
 
 echo "add tag"
 git tag $version
