@@ -3,6 +3,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import isBetween from 'dayjs/plugin/isBetween';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import localeData from 'dayjs/plugin/localeData';
 import { formatDate } from './kal-date-converter';
 
 export type KalDateType = string | Dayjs | Date | KalDate;
@@ -14,6 +15,7 @@ dayjs.extend(customParseFormat);
 dayjs.extend(isBetween);
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
+dayjs.extend(localeData);
 
 /**
  * Helper

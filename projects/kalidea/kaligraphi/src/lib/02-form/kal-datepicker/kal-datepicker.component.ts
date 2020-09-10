@@ -21,7 +21,6 @@ import {FormControl, NgControl} from '@angular/forms';
 import {fromEvent, merge, Observable, of, Subscription} from 'rxjs';
 import {filter, map, take, tap} from 'rxjs/operators';
 import dayjs from 'dayjs';
-import localeData from 'dayjs/plugin/localeData';
 
 import {coerceKalDateProperty, KalDate, KalDateType} from './kal-date';
 import {buildProviders, FormElementComponent} from '../../utils/forms/form-element.component';
@@ -29,10 +28,6 @@ import {KalInputComponent} from '../kal-input/kal-input.component';
 import {Coerce} from '../../utils/decorators/coerce';
 import {AutoUnsubscribe} from '../../utils/decorators/auto-unsubscribe';
 
-/**
- * Configure DayJS
- */
-dayjs.extend(localeData);
 
 /**
  * Possible views for the calendar.
