@@ -1,9 +1,6 @@
 
 # trigger this build on push & pull_request
 on:
-  push:
-    branches:
-      - 'releases/**'
   pull_request:
     branches: [ master ]
 
@@ -51,7 +48,11 @@ jobs:
   deploy:
     name: Deploy package
     needs: test-and-build
-    if: contains(github.ref, '/releases/')
+    if: >
+      contains( github.event.pull_request.labels.*.name, 'PATCH') &&
+      github.event_name == 'pull_request' &&
+      github.event.action == 'closed' &&
+      github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - name: Checkout project
@@ -64,10 +65,22 @@ jobs:
 
       - name: Build library
         run: |
+          cd ./projects/kalidea/kaligraphi
+          version=`npm version patch`
+
+          cd ../../../
           npm i
           npm run build
           cp README.md dist/kalidea/kaligraphi/
 
+          echo "commit files"
+          git add .
+          git commit -m "version $version"
+          git push
+
+          echo "add tag"
+          git tag $version
+          git push --tags
 
       - name: Set REGISTRY NPMJS
         uses: actions/setup-node@v1
