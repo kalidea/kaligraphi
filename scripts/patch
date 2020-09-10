@@ -29,7 +29,3 @@ echo "commit files"
 git add .
 git commit -m "version $version"
 git push --set-upstream origin $branch
-
-echo "add tag"
-git tag $version
-git push --tags
