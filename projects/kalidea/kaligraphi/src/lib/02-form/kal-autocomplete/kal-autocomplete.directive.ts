@@ -129,7 +129,7 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
       const panelClass = this.theme ? this.theme.kalThemeAsClassNames : [''];
       const config: OverlayConfig = {
         positionStrategy: this.positionsList,
-        scrollStrategy: this.overlay.scrollStrategies.reposition({scrollThrottle: 100}),
+        scrollStrategy: this.overlay.scrollStrategies.close(),
         panelClass: panelClass.concat('kal-overlay-autocomplete').join(' ').trim(),
         maxHeight: '90vh'
       };
