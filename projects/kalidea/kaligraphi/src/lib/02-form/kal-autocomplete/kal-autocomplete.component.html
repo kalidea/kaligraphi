@@ -1,34 +1,37 @@
-<cdk-virtual-scroll-viewport
-  [itemSize]="virtualScrollConfig.itemSize"
-  [ngClass]="getClasses()"
-  class="kal-autocomplete-virtual-scroll-viewport"
-  [style.width]="width"
-  [style.height]="height">
+<div class="kal-autocomplete-virtual-scroll-viewport"
+     [style.width]="width"
+     [ngClass]="getClasses()">
 
   <div *ngIf="loading; else displayOptionsTemplate"
-       [style.height]="kalAutocompleteHeight"
+       [style.height]="height"
        [kalLoading]="loading">
   </div>
 
   <ng-template #displayOptionsTemplate>
 
-    <ng-container [kalLoading]="loading"
-                  *cdkVirtualFor="let option of options; index as i">
+    <cdk-virtual-scroll-viewport
+      [itemSize]="virtualScrollConfig.itemSize"
+      [style.height]="height">
 
-      <kal-option (click)="select(option)"
-                  (selectionChange)="select(option)"
-                  [disabled]="option.disabled"
-                  [label]="option.label"
-                  [value]="option">
+    <ng-container *cdkVirtualFor="let option of options; index as i">
 
-        <ng-container *ngTemplateOutlet="data.optionTemplate ? data.optionTemplate : noTemplate; context: {index: i, option: option}"></ng-container>
+        <kal-option (click)="select(option)"
+                    (selectionChange)="select(option)"
+                    [disabled]="option.disabled"
+                    [label]="option.label"
+                    [value]="option">
 
-        <ng-template #noTemplate>{{ option.label }}</ng-template>
+          <ng-container
+            *ngTemplateOutlet="data.optionTemplate ? data.optionTemplate : noTemplate; context: {index: i, option: option}"></ng-container>
 
-      </kal-option>
+          <ng-template #noTemplate>{{ option.label }}</ng-template>
 
-    </ng-container>
+        </kal-option>
+
+      </ng-container>
+
+    </cdk-virtual-scroll-viewport>
 
   </ng-template>
 
-</cdk-virtual-scroll-viewport>
+</div>
