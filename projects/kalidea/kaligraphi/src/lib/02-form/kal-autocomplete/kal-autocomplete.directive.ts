@@ -126,6 +126,10 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
   @Coerce('boolean')
   set loading(loading: boolean) {
     this._loading = loading;
+
+    if (!!this.autocompleteComponent) {
+      this.autocompleteComponent.loading = loading;
+    }
   }
 
   /**
@@ -220,7 +224,6 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
     ) as ComponentPortal<KalAutocompleteComponent<T>>;
     this.autocompleteComponent = this.overlayRef.attach(portal).instance;
     this.autocompleteComponent.loading = this.loading;
-    this.autocompleteComponent.kalAutocompleteHeight = this.kalAutocompleteHeight;
 
     this.handleSubscriptions();
   }

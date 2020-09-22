@@ -47,11 +47,6 @@ export class KalAutocompleteComponent<T> implements AfterViewInit, OnDestroy {
   width: string;
 
   /**
-   * custom height of scroll container
-   */
-  height: string;
-
-  /**
    * custom of scroll container
    */
   className: string;
@@ -69,22 +64,10 @@ export class KalAutocompleteComponent<T> implements AfterViewInit, OnDestroy {
    */
   private keyManager: ActiveDescendantKeyManager<KalOptionComponent>;
 
+  height: string;
+
   @AutoUnsubscribe()
   private subscription: Subscription;
-
-  /**
-   * list of options
-   */
-  private _options: KalAutocompleteOption<T>[];
-
-  /**
-   * The virtual scroll config
-   */
-  private _virtualScrollConfig: KalVirtualScrollConfig = {itemSize: 27};
-
-  private _loading = false;
-
-  private _kalAutocompleteHeight: string;
 
   constructor(private cdr: ChangeDetectorRef,
               @Inject(KAL_AUTOCOMPLETE_DATA) public readonly  data: KalAutocompleteComponentOption) {
@@ -92,6 +75,11 @@ export class KalAutocompleteComponent<T> implements AfterViewInit, OnDestroy {
     this.height = data.height;
     this.className = data.className;
   }
+
+  /**
+   * list of options
+   */
+  private _options: KalAutocompleteOption<T>[];
 
   get options(): KalAutocompleteOption<T>[] {
     return this._options;
@@ -102,23 +90,10 @@ export class KalAutocompleteComponent<T> implements AfterViewInit, OnDestroy {
     this.cdr.markForCheck();
   }
 
-  get loading(): boolean {
-    return this._loading;
-  }
-
-  set loading(loading: boolean) {
-    this._loading = loading;
-    this.cdr.markForCheck();
-  }
-
-  get kalAutocompleteHeight(): string {
-    return this._kalAutocompleteHeight;
-  }
-
-  set kalAutocompleteHeight(autocompleteHeight: string) {
-    this._kalAutocompleteHeight = autocompleteHeight;
-    this.cdr.markForCheck();
-  }
+  /**
+   * The virtual scroll config
+   */
+  private _virtualScrollConfig: KalVirtualScrollConfig = {itemSize: 27};
 
   @Input()
   get virtualScrollConfig(): KalVirtualScrollConfig {
@@ -133,6 +108,17 @@ export class KalAutocompleteComponent<T> implements AfterViewInit, OnDestroy {
       itemSize: value.itemSize || 40
     };
 
+    this.cdr.markForCheck();
+  }
+
+  private _loading = false;
+
+  get loading(): boolean {
+    return this._loading;
+  }
+
+  set loading(loading: boolean) {
+    this._loading = loading;
     this.cdr.markForCheck();
   }
 
