@@ -162,7 +162,7 @@ describe('KalInputComponent', () => {
     expect(component.inputComponent.control.value).toBe(null, 'null value should not be formatted when nullable');
   });
 
-  fit('should format [type=currency] on patch value', () => {
+  it('should format [type=currency] on patch value', () => {
 
     // set type before patch value to update to formatter
     component.type = 'currency';
