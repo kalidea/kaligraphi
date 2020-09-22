@@ -1,15 +1,18 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { Component, LOCALE_ID, ViewChild } from '@angular/core';
-import localeFr from '@angular/common/locales/fr';
 import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+import { Component, LOCALE_ID, ViewChild } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 import {
+  KalIconComponent,
+  KalIconModule
+} from 'projects/kalidea/kaligraphi/src/lib/01-typography/kal-icon/kal-icon.module';
+import {
+  KAL_INPUT_GLOBAL_OPTIONS,
   KalInputComponent,
   KalInputOptions
 } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-input/kal-input.component';
-import { KalIconComponent, KalIconModule } from 'projects/kalidea/kaligraphi/src/lib/01-typography/kal-icon/kal-icon.module';
-import { KAL_INPUT_GLOBAL_OPTIONS } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-input/kal-input.component';
 
 @Component({
   selector: 'kal-test',
@@ -114,7 +117,7 @@ describe('KalInputComponent', () => {
     expect(getInput().getAttribute('placeholder')).toEqual(placeholder);
   });
 
-  it('format number on patch value', () => {
+  it('should format [type=number] on patch value', () => {
     component.type = 'number';
     fixture.detectChanges();
     const userInput = '2,2';
@@ -122,9 +125,9 @@ describe('KalInputComponent', () => {
 
   });
 
-  it('should format number to 0 on patch value when not nullable with a null value', () => {
+  it('should format [type=number] to 0 on patch value when not nullable with a null value', () => {
     component.type = 'number';
-    component.nullable = false
+    component.nullable = false;
     // detect once before patching the value to have the writeValue method working as expected
     fixture.detectChanges();
     component.inputControl.patchValue('');
@@ -140,9 +143,9 @@ describe('KalInputComponent', () => {
     expect(component.inputComponent.value).toBe('0', 'null value should be formatted when not nullable');
   });
 
-  it('should not format number to 0 on patch value when nullable with a null value', () => {
+  it('should not format [type=number] to 0 on patch value when nullable with a null value', () => {
     component.type = 'number';
-    component.nullable = true
+    component.nullable = true;
     // detect once before patching the value to have the writeValue method working as expected
     fixture.detectChanges();
 
@@ -159,12 +162,25 @@ describe('KalInputComponent', () => {
     expect(component.inputComponent.control.value).toBe(null, 'null value should not be formatted when nullable');
   });
 
-  it('format currency on patch value', () => {
+  fit('should format [type=currency] on patch value', () => {
+
+    // set type before patch value to update to formatter
     component.type = 'currency';
     fixture.detectChanges();
 
-    const userInput = '12.0';
-    expect(component.inputComponent.formater.toUser(userInput)).toBe('12,00', 'user input should be formatted');
+    // round up
+    const userInput1 = '12.078';
+    component.inputControl.patchValue(userInput1);
+
+    expect(component.inputComponent.formater.toUser(userInput1)).toBe('12,08', ' displayed value should be rounded');
+    expect(component.inputComponent.value + '').toEqual('12.08', ' form control value should be rounded');
+
+    // round down
+    const userInput2 = '2.522';
+    component.inputControl.patchValue(userInput2);
+
+    expect(component.inputComponent.formater.toUser(userInput2)).toBe('2,52', ' displayed value should be rounded');
+    expect(component.inputComponent.value + '').toEqual('2.52', ' form control value should be rounded');
   });
 
   it('format currency on patch value with wrong value', () => {
@@ -175,8 +191,7 @@ describe('KalInputComponent', () => {
     expect(component.inputComponent.formater.toUser(userInput)).toBe('12,00', 'user input should be formatted');
   });
 
-
-  it('format phone number on patch value', () => {
+  it('should format [type=phone] on patch value', () => {
     component.type = 'phone';
     fixture.detectChanges();
 

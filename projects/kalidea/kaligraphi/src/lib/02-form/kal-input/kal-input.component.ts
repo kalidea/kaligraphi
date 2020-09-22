@@ -164,20 +164,20 @@ export class KalInputComponent extends FormElementComponent<string> implements O
    * @inheritDoc
    */
   writeValue(value) {
-    this.value = value;
 
     if (this.control) {
-      if (this.shouldFormat) {
-        value = this.formater.toUser(value);
-      }
-
-      this.value = value;
-      this.control.setValue(value, {emitEvent: false});
-
-      super.writeValue(value);
-
+      // format displayed value if requested
+      const formattedValue = this.shouldFormat ? this.formater.toUser(value) : value;
+      this.control.setValue(formattedValue, {emitEvent: false});
       this.cdr.markForCheck();
     }
+
+    // set value for internal use
+    value = this.formater.toCode(value);
+    super.writeValue(value);
+
+    // update stored value after updates
+    this.value = value;
   }
 
   /**
