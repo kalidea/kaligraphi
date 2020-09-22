@@ -7,6 +7,9 @@ export class CurrencyFormat extends NumberFormat {
   protected digitsInfo = `.${this.decimals}-${this.decimals}`;
 
   toCode(value: string): any {
+    if (this.isEmpty(value)) {
+      return value;
+    }
     // format as number
     value = super.toCode(value);
 

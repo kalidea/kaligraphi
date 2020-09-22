@@ -1,7 +1,7 @@
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
-import { Component, LOCALE_ID, ViewChild } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ChangeDetectorRef, Component, LOCALE_ID, ViewChild } from '@angular/core';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import {
@@ -24,7 +24,7 @@ import {
       [limit]="limit"
       [icon]="icon"
       [clearable]="clearable"
-      [nullable]="nullable"
+      [defaultValue]="defaultValue"
       [placeholder]="placeholder"></kal-input>
 
     <kal-input
@@ -48,11 +48,14 @@ class TestComponent {
 
   clearable = false;
 
-  nullable = false;
+  defaultValue: any = '';
 
   @ViewChild('inputChange', {static: true}) inputComponent: KalInputComponent;
 
   @ViewChild('inputBlur', {static: true}) inputComponentBlur: KalInputComponent;
+
+  constructor(private cdr: ChangeDetectorRef) {
+  }
 
   get valueChanges() {
     return this.inputControl.valueChanges;
@@ -65,6 +68,12 @@ class TestComponent {
   set value(value: any) {
     this.inputControl.patchValue(value);
     this.inputControlBlur.patchValue(value, {emitEvent: false});
+  }
+
+  patchAndGet(value: any) {
+    this.inputControl.patchValue(value);
+    this.cdr.markForCheck();
+    return this.inputComponent.value + '';
   }
 }
 
@@ -125,37 +134,36 @@ describe('KalInputComponent', () => {
 
   });
 
-  it('should format [type=number] to 0 on patch value when not nullable with a null value', () => {
+  it('should use defaultValue (0) for [type=number] on patch value ', () => {
     component.type = 'number';
-    component.nullable = false;
-    // detect once before patching the value to have the writeValue method working as expected
-    fixture.detectChanges();
-    component.inputControl.patchValue('');
-    fixture.detectChanges();
-    expect(component.inputComponent.value).toBe('0', '\'\' should be formatted when not nullable');
 
-    component.inputControl.patchValue(undefined);
+    // replace '' / undefined / null
+    component.defaultValue = '0';
     fixture.detectChanges();
-    expect(component.inputComponent.value).toBe('0', 'undefined should be formatted when not nullable');
+    ['', undefined, null].forEach(v => expect(component.patchAndGet(v)).toBe(component.defaultValue, `for value ${v}`));
 
-    component.inputControl.patchValue(null);
-    fixture.detectChanges();
-    expect(component.inputComponent.value).toBe('0', 'null value should be formatted when not nullable');
   });
 
-  it('should not format [type=number] to 0 on patch value when nullable with a null value', () => {
+  it('should use defaultValue (true) for [type=number] on patch value ', fakeAsync(() => {
     component.type = 'number';
-    component.nullable = true;
+
+    component.defaultValue = 'true';
+    fixture.detectChanges();
+    ['', null].forEach(v => {
+      expect(component.patchAndGet(v)).toBe(component.defaultValue, `for value ${v}`)
+    });
+  }));
+
+ it('should let initial value for [type=number] on patch value ', () => {
+    component.type = 'number';
+
+    component.defaultValue = undefined;
     // detect once before patching the value to have the writeValue method working as expected
     fixture.detectChanges();
 
     component.inputControl.patchValue('');
     fixture.detectChanges();
     expect(component.inputComponent.control.value).toBe('', '\'\' value should not be formatted when nullable');
-
-    component.inputControl.patchValue(undefined);
-    fixture.detectChanges();
-    expect(component.inputComponent.control.value).toBe(undefined, 'undefined value should not be formatted when nullable');
 
     component.inputControl.patchValue(null);
     fixture.detectChanges();

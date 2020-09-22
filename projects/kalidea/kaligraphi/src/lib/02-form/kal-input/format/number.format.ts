@@ -12,16 +12,22 @@ export class NumberFormat extends InputFormater {
    * @inheritDoc
    */
   toCode(value: string): any {
+    if (this.isEmpty(value)) {
+      return value;
+    }
     value = (value + '')
       .replace(/[^0-9\.\,]/g, '') // keep only numbers
       .replace(',', '.'); // replace comma by decimal point
-    return value ? +value : '';
+    return value ? +value : 0;
   }
 
   /**
    * @inheritDoc
    */
   toUser(value: any): string {
+    if (this.isEmpty(value)) {
+      return value;
+    }
     value = (value + '')
       .replace(/[^0-9\.\,]/g, '') // keep only numbers
       .replace(',', '.'); // replace comma by decimal point

@@ -14,4 +14,8 @@ export abstract class InputFormater {
    * called when need convert code to user format
    */
   abstract toUser(value: any): string;
+
+  protected isEmpty(value: any) {
+    return value === '' || value === undefined || value === null;
+  }
 }
