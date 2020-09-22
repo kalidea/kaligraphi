@@ -1,5 +1,11 @@
 import { DOWN_ARROW, ENTER, ESCAPE, UP_ARROW } from '@angular/cdk/keycodes';
-import { FlexibleConnectedPositionStrategy, Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
+import {
+  FlexibleConnectedPositionStrategy,
+  Overlay,
+  OverlayConfig,
+  OverlayRef,
+  ScrollStrategy
+} from '@angular/cdk/overlay';
 import { ComponentPortal, PortalInjector } from '@angular/cdk/portal';
 import { DOCUMENT } from '@angular/common';
 import {
@@ -69,12 +75,19 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
   @Input() kalAutocompleteHeight = '15vh';
 
   /**
+   * which behavior for overlay is expected on scroll ?
+   * default is "overlay.scrollStrategies.close()" meaning that autocomplete overlay will automatically close on page scroll
+   */
+  @Input() kalScrollStrategy?: ScrollStrategy;
+
+  /**
    * reference to autocomplete component loaded in overlay
    */
   private autocompleteComponent: KalAutocompleteComponent<T>;
 
   @AutoUnsubscribe()
   private subscriptionsList: Subscription[] = [];
+
   /**
    * Separate subscription for icon clicked because it's not destroyed at the same moment
    * as other observables
@@ -129,7 +142,7 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
       const panelClass = this.theme ? this.theme.kalThemeAsClassNames : [''];
       const config: OverlayConfig = {
         positionStrategy: this.positionsList,
-        scrollStrategy: this.overlay.scrollStrategies.reposition({scrollThrottle: 100}),
+        scrollStrategy: this.kalScrollStrategy || this.overlay.scrollStrategies.close(),
         panelClass: panelClass.concat('kal-overlay-autocomplete').join(' ').trim(),
         maxHeight: '90vh'
       };
