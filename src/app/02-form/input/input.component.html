@@ -11,7 +11,7 @@
         [formControl]="controlChange"
         [type]="type"
         [clearable]="clearable"
-        [nullable]="nullable"
+        [defaultValue]="defaultValue"
         [placeholder]="placeholder"></kal-input>
       <div class="technical-value">
         <div class="technical-value__item">
@@ -84,7 +84,7 @@
   </kal-form-field>
 
   <kal-form-field>
-    <kal-checkbox [(ngModel)]="nullable" label="nullable"></kal-checkbox>
+    <kal-input [(ngModel)]="defaultValue" label="defaultValue"></kal-input>
   </kal-form-field>
 
   <kal-form-field>

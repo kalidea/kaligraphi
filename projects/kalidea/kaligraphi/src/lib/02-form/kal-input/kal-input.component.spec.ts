@@ -150,7 +150,7 @@ describe('KalInputComponent', () => {
     component.defaultValue = 'true';
     fixture.detectChanges();
     ['', null].forEach(v => {
-      expect(component.patchAndGet(v)).toBe(component.defaultValue, `for value ${v}`)
+      expect(component.patchAndGet(v)).toBe(component.defaultValue, `for value ${v}`);
     });
   }));
 
