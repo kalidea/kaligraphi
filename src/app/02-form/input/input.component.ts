@@ -19,7 +19,7 @@ export class InputComponent {
 
   disabled = false;
 
-  nullable = false;
+  defaultValue = '0';
 
   icon = '';
 

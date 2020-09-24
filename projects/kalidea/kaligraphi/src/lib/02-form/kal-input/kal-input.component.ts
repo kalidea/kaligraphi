@@ -21,13 +21,13 @@ import {
 } from '@angular/core';
 import { AbstractControl, FormControl } from '@angular/forms';
 import { of, Subscription } from 'rxjs';
+import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
+import { Coerce } from '../../utils/decorators/coerce';
+import { buildProviders, FormElementComponent } from '../../utils/forms/form-element.component';
+import { FormHooks } from '../../utils/forms/form-hooks';
 
 import { InputFormater } from './format/input-formater';
 import { KalFormaterService } from './kal-formater.service';
-import { buildProviders, FormElementComponent } from '../../utils/forms/form-element.component';
-import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
-import { Coerce } from '../../utils/decorators/coerce';
-import { FormHooks } from '../../utils/forms/form-hooks';
 
 export interface KalInputOptions {
 
@@ -48,7 +48,7 @@ export const KAL_INPUT_GLOBAL_OPTIONS =
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: buildProviders(KalInputComponent)
 })
-export class KalInputComponent extends FormElementComponent<string> implements OnChanges, OnDestroy, AfterContentInit {
+export class KalInputComponent extends FormElementComponent implements OnChanges, OnDestroy, AfterContentInit {
 
   /**
    * form control for this component
@@ -78,10 +78,9 @@ export class KalInputComponent extends FormElementComponent<string> implements O
   @Input() icon: string;
 
   /**
-   * should the formating be ignored on empty value
+   * if defaultValue is provided , it will replace values : '' / undefined / null
    */
-  @Coerce('boolean')
-  @Input() nullable = false;
+  @Input() defaultValue;
 
   @Output() readonly iconClicked = new EventEmitter<MouseEvent>();
 
@@ -104,6 +103,7 @@ export class KalInputComponent extends FormElementComponent<string> implements O
 
   @AutoUnsubscribe()
   private controlValueChangedSubscription = Subscription.EMPTY;
+  private _clearable: boolean;
 
   constructor(private cdr: ChangeDetectorRef,
               private injector: Injector,
@@ -112,8 +112,6 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     super();
     this.clearable = this.inputOptions ? this.inputOptions.clearable : false;
   }
-
-  private _clearable: boolean;
 
   @Input()
   @Coerce('boolean')
@@ -142,10 +140,6 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     return this.formaters.get(this.type);
   }
 
-  get shouldFormat(): boolean {
-    return !this.nullable && (this.value === null || this.value === undefined || this.value === '');
-  }
-
   get shouldDisplayClearIcon(): boolean {
     return this._clearable && !this.disabled && (this.control && !!this.control.value);
   }
@@ -164,20 +158,27 @@ export class KalInputComponent extends FormElementComponent<string> implements O
    * @inheritDoc
    */
   writeValue(value) {
-    this.value = value;
 
-    if (this.control) {
-      if (this.shouldFormat) {
-        value = this.formater.toUser(value);
-      }
-
+    // if value is empty, should update value to defaultValue
+    if (this.isEmpty(value) && this.defaultValue !== undefined) {
+      value = this.defaultValue;
       this.value = value;
-      this.control.setValue(value, {emitEvent: false});
-
-      super.writeValue(value);
-
+      this.control?.setValue(value, {emitEvent: false});
       this.cdr.markForCheck();
+      return;
     }
+
+    // format displayed value
+    const valueToUser = this.valueToUser(value);
+    this.control?.setValue(valueToUser, {emitEvent: false});
+    this.cdr.markForCheck();
+
+    // set value for internal use
+    const valueToCode = this.valueToCode(value);
+    super.writeValue(valueToCode);
+
+    // update stored value after updates
+    this.value = valueToCode;
   }
 
   /**
@@ -185,12 +186,12 @@ export class KalInputComponent extends FormElementComponent<string> implements O
    * overload notifyupdate
    */
   notifyUpdate(value) {
+    value = this.valueToCode(value);
     this.value = value;
-
     this.valueChanges.emit(value);
 
     // notify parent
-    super.notifyUpdate(this.shouldFormat ? this.formater.toCode(value) : value);
+    super.notifyUpdate(value);
     this.cdr.detectChanges();
   }
 
@@ -199,8 +200,8 @@ export class KalInputComponent extends FormElementComponent<string> implements O
   }
 
   formatValue() {
-    if (this.formatOnBlur && this.shouldFormat) {
-      this.control.patchValue(this.formater.toUser(this.value), {emitEvent: false});
+    if (this.formatOnBlur) {
+      this.control.patchValue(this.valueToUser(this.value), {emitEvent: false});
     }
   }
 
@@ -217,6 +218,18 @@ export class KalInputComponent extends FormElementComponent<string> implements O
     // set tabIndex to -1 to not trap the focus in the kal-input
     // timeout to not trigger an error during angular render process
     setTimeout(() => this.tabIndex = -1);
+  }
+
+  private valueToCode(value = this.value) {
+    return this.formater.toCode(value);
+  }
+
+  private valueToUser(value = this.value) {
+    return this.formater.toUser(value);
+  }
+
+  private isEmpty(value = this.value) {
+    return value === '' || value === undefined || value === null;
   }
 
   ngOnDestroy(): void {
