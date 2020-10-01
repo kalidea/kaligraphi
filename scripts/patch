@@ -28,4 +28,4 @@ git checkout -b $branch
 echo "commit files"
 git add .
 git commit -m "version $version"
-git push --set-upstream origin $branch
+git push --tags --set-upstream origin $branch
