@@ -35,7 +35,7 @@ jobs:
           echo $json_var
           npm i
         env:
-          - json_var: ${{ toJSON(github.event) }}
+          json_var: ${{ toJSON(github.event) }}
 
       - name: Run test suite
         run: npm run test:ci
