@@ -1,0 +1,63 @@
+
+name: Deploy
+
+on:
+  release:
+    types: # This configuration does not affect the page_build event above
+      - created
+
+deploy:
+  name: Deploy package
+  runs-on: ubuntu-latest
+  steps:
+    - name: Checkout project
+      uses: actions/checkout@v2
+
+    - name: Set node version
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ env.NODE_RELEASE_VERSION }}
+
+    - name: Tag version
+      run: |
+        echo "get version"
+        cd ./projects/kalidea/kaligraphi
+        version=`npm view @kalidea/kaligraphi version`
+        cd ../../../
+
+        echo "add tag"
+        git tag $version
+        git push --tags
+
+    - name: Build library
+      run: |
+        npm i
+        npm run build
+        cp README.md dist/kalidea/kaligraphi/
+
+    - name: Set REGISTRY NPMJS
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ env.NODE_RELEASE_VERSION }}
+        registry-url: 'https://registry.npmjs.org'
+
+    - name: Deploy to NPMJS
+      run: |
+        cd dist/kalidea/kaligraphi
+        npm publish --access public
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPMJS_TOKEN }}
+
+    - name: Set REGISTRY github
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ env.NODE_RELEASE_VERSION }}
+        registry-url: 'https://npm.pkg.github.com'
+        scope: '@kalidea'
+
+    - name: Deploy to github package
+      run: |
+        cd dist/kalidea/kaligraphi
+        npm publish
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
