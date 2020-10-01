@@ -25,6 +25,9 @@ branch=releases/$version
 echo "create release branch"
 git checkout -b $branch
 
+echo "add tag"
+git tag $version
+
 echo "commit files"
 git add .
 git commit -m "version $version"
