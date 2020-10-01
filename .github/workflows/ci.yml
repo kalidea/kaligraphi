@@ -34,10 +34,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          echo $json_var
           npm i
-        env:
-          json_var: ${{ toJSON(github.event) }}
 
       - name: Run test suite
         run: npm run test:ci
@@ -76,10 +73,6 @@ jobs:
           cd ./projects/kalidea/kaligraphi
           version=`npm view @kalidea/kaligraphi version`
           cd ../../../
-
-          echo "add tag"
-          git tag $version
-          git push --tags
 
       - name: Build library
         run: |
