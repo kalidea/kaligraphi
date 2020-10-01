@@ -7,6 +7,7 @@ on:
   pull_request:
     branches:
       - master
+      - 'releases/**'
 
 env:
   NODE_RELEASE_VERSION: 10 # release version created by NODE 10
@@ -31,7 +32,10 @@ jobs:
 
       - name: Install dependencies
         run: |
+          echo $json_var
           npm i
+        env:
+          - json_var: ${{ toJSON(github.event) }}
 
       - name: Run test suite
         run: npm run test:ci

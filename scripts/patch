@@ -19,8 +19,8 @@ echo "going to lib dir"
 cd ./projects/kalidea/kaligraphi  || exit
 
 echo "update version"
-version=`npm version patch`
-branch=releases/$version
+version=v`npm version patch`
+branch=releases/v$version
 
 echo "create release branch"
 git checkout -b $branch
