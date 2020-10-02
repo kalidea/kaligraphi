@@ -6,6 +6,7 @@ on:
   push:
     branches:
       - master
+      - 'releases_v*' # release for version X
   pull_request:
     branches:
       - master
