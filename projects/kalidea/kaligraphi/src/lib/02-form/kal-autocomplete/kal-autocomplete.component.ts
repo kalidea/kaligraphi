@@ -41,10 +41,14 @@ export const KAL_AUTOCOMPLETE_DATA = new InjectionToken<KalAutocompleteComponent
 })
 export class KalAutocompleteComponent<T> implements AfterViewInit, OnDestroy {
 
+  static readonly id = 'kal-autocomplete-scroll-viewport';
+
   /**
    * custom width of scroll container ( default to kal-input width )
    */
   width: string;
+
+  height: string;
 
   /**
    * custom of scroll container
@@ -64,8 +68,6 @@ export class KalAutocompleteComponent<T> implements AfterViewInit, OnDestroy {
    */
   private keyManager: ActiveDescendantKeyManager<KalOptionComponent>;
 
-  height: string;
-
   @AutoUnsubscribe()
   private subscription: Subscription;
 
@@ -74,6 +76,10 @@ export class KalAutocompleteComponent<T> implements AfterViewInit, OnDestroy {
     this.width = data.width;
     this.height = data.height;
     this.className = data.className;
+  }
+
+  get id() {
+    return KalAutocompleteComponent.id;
   }
 
   /**

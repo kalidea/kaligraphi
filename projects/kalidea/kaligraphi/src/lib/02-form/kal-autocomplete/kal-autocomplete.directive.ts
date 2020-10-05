@@ -4,6 +4,7 @@ import {
   Overlay,
   OverlayConfig,
   OverlayRef,
+  ScrollDispatcher,
   ScrollStrategy
 } from '@angular/cdk/overlay';
 import { ComponentPortal, PortalInjector } from '@angular/cdk/portal';
@@ -18,6 +19,7 @@ import {
   InjectionToken,
   Injector,
   Input,
+  NgZone,
   OnDestroy,
   OnInit,
   Optional,
@@ -39,6 +41,7 @@ import {
   KalAutocompleteComponentOption
 } from './kal-autocomplete.component';
 import { Coerce } from '../../utils/decorators/coerce';
+import { KalAutocompleteScrollStrategy } from './kal-autocomplete-scroll-strategy';
 
 
 @Directive({
@@ -99,6 +102,8 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
               private readonly input: KalInputComponent,
               private readonly elementRef: ElementRef<HTMLElement>,
               private readonly viewContainerRef: ViewContainerRef,
+              private _scrollDispatcher: ScrollDispatcher,
+              private _ngZone: NgZone,
               @Optional() @Host() private readonly theme: KalThemeDirective,
               @Optional() @Inject(DOCUMENT) private _document: any) {
 
@@ -146,7 +151,7 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
       const panelClass = this.theme ? this.theme.kalThemeAsClassNames : [''];
       const config: OverlayConfig = {
         positionStrategy: this.positionsList,
-        scrollStrategy: this.kalScrollStrategy || this.overlay.scrollStrategies.close(),
+        scrollStrategy: this.kalScrollStrategy || new KalAutocompleteScrollStrategy(this._scrollDispatcher, this._ngZone),
         panelClass: panelClass.concat('kal-overlay-autocomplete').join(' ').trim(),
         maxHeight: '90vh'
       };
@@ -207,6 +212,7 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
 
   }
 
+  @HostListener('click')
   @HostListener('focusin')
   open() {
 
