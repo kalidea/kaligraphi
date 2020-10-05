@@ -33,8 +33,6 @@ if [ -n "$CHANGED" ]; then
   exit 1
 fi
 
-exit 1
-
 #### patch version ####
 
 echo "going to lib dir"
