@@ -10,7 +10,7 @@
   <ng-template #displayOptionsTemplate>
 
     <cdk-virtual-scroll-viewport
-      class="kal-autocomplete-scroll-viewport"
+      [id]="id"
       [itemSize]="virtualScrollConfig.itemSize"
       [style.height]="height">
 
