@@ -252,5 +252,6 @@ export class KalInputComponent extends FormElementComponent implements OnChanges
       this.notifyUpdate(value);
     });
 
+      this.writeValue(this.value);
   }
 }
