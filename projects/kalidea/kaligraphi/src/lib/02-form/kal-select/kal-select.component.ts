@@ -265,7 +265,7 @@ export class KalSelectComponent
   }
 
   private get isBlur(): boolean {
-    return this.superControl.updateOn === 'blur';
+    return this.superControl?.updateOn === 'blur';
   }
 
   /**
@@ -546,7 +546,6 @@ export class KalSelectComponent
           merge<KalOptionComponent>(...this.options.map(option => option.selectionChange))
             .subscribe(event => {
               this.focus();
-              const control = this.superControl;
               this.optionSelected(event, !this.isBlur);
             })
         );
