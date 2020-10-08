@@ -403,7 +403,6 @@ export class KalSelectComponent
    * Set the option as active
    */
   private multipleOptionSelected(options: KalOptionComponent[], withNotify = true) {
-    console.log('multipleOptionSelected', withNotify);
     if (!this.isMultiple) {
       return;
     }
@@ -424,7 +423,6 @@ export class KalSelectComponent
     this.sortSelection();
 
     if (withNotify) {
-      console.log('notify');
       super.notifyUpdate(this.selectedValue);
       this.valueChanges.emit(this.selectedValue);
     }
@@ -437,8 +435,6 @@ export class KalSelectComponent
    * Set the option as active
    */
   private optionSelected(option: KalOptionComponent, withNotify = true) {
-
-    console.log('optionSelected', withNotify);
     if (this.multiple) {
       this.optionSelectedOnMultipleMode(option);
     } else {
@@ -551,7 +547,6 @@ export class KalSelectComponent
             .subscribe(event => {
               this.focus();
               const control = this.superControl;
-              console.log(control);
               this.optionSelected(event, !this.isBlur);
             })
         );
