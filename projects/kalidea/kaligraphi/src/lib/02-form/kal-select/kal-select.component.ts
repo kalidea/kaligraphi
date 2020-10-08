@@ -27,6 +27,7 @@ import { DOWN_ARROW, ENTER, ESCAPE, SPACE, UP_ARROW } from '@angular/cdk/keycode
 import { NgControl } from '@angular/forms';
 import { filter, startWith } from 'rxjs/operators';
 import { merge, Subscription } from 'rxjs';
+import isEqual from 'lodash-es/isEqual';
 
 import { KalOptionComponent } from '../kal-option/kal-option.component';
 import { KalThemeDirective } from '../../99-utility/directives/kal-theme/kal-theme.directive';
@@ -257,6 +258,14 @@ export class KalSelectComponent
       this.overlayRef.detach();
     }
     this.isPanelOpen = false;
+
+    if (this.isBlur && !isEqual(this.superControl.value, this.selectedValue)) {
+      this.notifyUpdate(this.selectedValue);
+    }
+  }
+
+  private get isBlur(): boolean {
+    return this.superControl.updateOn === 'blur';
   }
 
   /**
@@ -394,6 +403,7 @@ export class KalSelectComponent
    * Set the option as active
    */
   private multipleOptionSelected(options: KalOptionComponent[], withNotify = true) {
+    console.log('multipleOptionSelected', withNotify);
     if (!this.isMultiple) {
       return;
     }
@@ -414,6 +424,7 @@ export class KalSelectComponent
     this.sortSelection();
 
     if (withNotify) {
+      console.log('notify');
       super.notifyUpdate(this.selectedValue);
       this.valueChanges.emit(this.selectedValue);
     }
@@ -426,6 +437,8 @@ export class KalSelectComponent
    * Set the option as active
    */
   private optionSelected(option: KalOptionComponent, withNotify = true) {
+
+    console.log('optionSelected', withNotify);
     if (this.multiple) {
       this.optionSelectedOnMultipleMode(option);
     } else {
@@ -537,7 +550,9 @@ export class KalSelectComponent
           merge<KalOptionComponent>(...this.options.map(option => option.selectionChange))
             .subscribe(event => {
               this.focus();
-              this.optionSelected(event);
+              const control = this.superControl;
+              console.log(control);
+              this.optionSelected(event, !this.isBlur);
             })
         );
       });
