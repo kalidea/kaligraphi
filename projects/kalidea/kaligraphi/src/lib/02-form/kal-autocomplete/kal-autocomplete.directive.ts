@@ -150,7 +150,7 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
   /**
    * get reference of overlayRef and create it if don't exists
    */
-  get overlayRef(): OverlayRef {
+  private get overlayRef(): OverlayRef {
     if (!this._overlayRef) {
       const panelClass = this.theme ? this.theme.kalThemeAsClassNames : [''];
       const config: OverlayConfig = {
@@ -171,7 +171,7 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
     return this._overlayRef;
   }
 
-  get hasOverlayAttached(): boolean {
+  private get hasOverlayAttached(): boolean {
     return !!this._overlayRef && this._overlayRef.hasAttached();
   }
 
