@@ -52,6 +52,8 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
 
   @Output() readonly kalAutocompleteSelected = new EventEmitter<KalAutocompleteOption<T>>();
 
+  @Output() readonly kalAutocompleteClosed = new EventEmitter<void>();
+
   /**
    * clear field on option picked
    */
@@ -96,6 +98,8 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
    * as other observables
    */
   private iconClickedSubscription: Subscription;
+
+  private kalAutocompleteClosedSubscription: Subscription = Subscription.EMPTY;
 
   constructor(private readonly overlay: Overlay,
               private readonly injector: Injector,
@@ -157,8 +161,18 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
       };
       this._overlayRef = this.overlay.create(config);
 
+      this.kalAutocompleteClosedSubscription = this._overlayRef.detachments().pipe(
+        tap(() => {
+          this.kalAutocompleteClosed.emit();
+        })
+      ).subscribe();
+
     }
     return this._overlayRef;
+  }
+
+  get hasOverlayAttached(): boolean {
+    return !!this._overlayRef && this._overlayRef.hasAttached();
   }
 
   private get positionsList(): FlexibleConnectedPositionStrategy {
@@ -173,10 +187,6 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
           originX: 'start'
         }
       ]);
-  }
-
-  get hasOverlayAttached(): boolean {
-    return !!this._overlayRef && this._overlayRef.hasAttached();
   }
 
   /**
@@ -355,6 +365,7 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.kalAutocompleteSelected.complete();
     this.iconClickedSubscription.unsubscribe();
+    this.kalAutocompleteClosedSubscription.unsubscribe();
 
     if (this._overlayRef) {
       this._overlayRef.dispose();
