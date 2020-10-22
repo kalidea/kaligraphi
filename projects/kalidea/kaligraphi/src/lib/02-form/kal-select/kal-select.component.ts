@@ -126,7 +126,6 @@ export class KalSelectComponent
 
   /**
    * list of custom class added to select overlay
-   * @private
    */
   private _overlayClassList: string[] = [];
 
