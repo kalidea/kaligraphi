@@ -31,7 +31,9 @@
 </div>
 
 <ng-template #optionsPortal="cdkPortal" cdkPortal>
-  <div [kalTheme]="theme" class="kal-select__overlay">
+  <div
+    [class]="overlayClassList"
+    [kalTheme]="theme">
     <ng-content></ng-content>
   </div>
 </ng-template>
