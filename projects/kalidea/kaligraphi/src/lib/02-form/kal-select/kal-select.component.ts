@@ -124,6 +124,12 @@ export class KalSelectComponent
    */
   private subscriptionsList: Subscription[] = [];
 
+  /**
+   * list of custom class added to select overlay
+   * @private
+   */
+  private _overlayClassList: string[] = [];
+
   constructor(private overlay: Overlay,
               private elementRef: ElementRef<HTMLElement>,
               private cdr: ChangeDetectorRef,
@@ -140,11 +146,19 @@ export class KalSelectComponent
    * - multiple if several options can be selected at the same time
    */
   get overlayClassList(): string[] {
-    const list = [KalSelectComponent.overlayClassName];
+    const list = [
+      KalSelectComponent.overlayClassName, // overlay class
+      ...this._overlayClassList // custom class
+    ];
     if (this.multiple) {
-      list.push(KalSelectComponent.multipleClassName);
+      list.push(KalSelectComponent.multipleClassName); // multiple class
     }
     return list;
+  }
+
+  @Input()
+  set overlayClassList(list: string[]) {
+    this._overlayClassList = list;
   }
 
   /**

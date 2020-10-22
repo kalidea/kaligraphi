@@ -28,6 +28,8 @@ describe('TestSelectComponent', () => {
     let overlayContainerElement: HTMLElement;
     let trigger: HTMLElement;
 
+    const getOverlaySelectDiv = () => overlayContainerElement.querySelector(`.${KalSelectComponent.overlayClassName}`);
+
     beforeEach(async(() => {
       configureTestingModule([TestSelectComponent]);
     }));
@@ -83,9 +85,19 @@ describe('TestSelectComponent', () => {
       component.select.multiple = true;
       trigger.click();
       const multipleClassName = KalSelectComponent.multipleClassName;
-      const overlaySelectDiv = overlayContainerElement.querySelector(`.${KalSelectComponent.overlayClassName}`);
-      expect(overlaySelectDiv.classList.contains(multipleClassName))
-        .toBeTruthy(`classList "${overlaySelectDiv.classList.value}" should contain ${multipleClassName}`);
+      const overlaySelectDivClasses = getOverlaySelectDiv().classList;
+      expect(overlaySelectDivClasses.contains(multipleClassName))
+        .toBeTruthy(`classList "${overlaySelectDivClasses.value}" should contain class ${multipleClassName}`);
+    });
+
+    it('should add custom class to overlay', () => {
+      const classes = ['unit-test-is-awesome', 'continous-integration-too'];
+      component.select.overlayClassList = classes;
+      trigger.click();
+      const overlaySelectDivClasses = getOverlaySelectDiv().classList;
+      classes.forEach(c => expect(overlaySelectDivClasses.contains(c)).toBeTruthy(
+        `classList "${overlaySelectDivClasses.value}" should contain class ${c}`
+      ));
     });
 
     it('should set a default label', () => {
