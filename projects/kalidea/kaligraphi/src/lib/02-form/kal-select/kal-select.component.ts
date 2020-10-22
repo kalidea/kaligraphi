@@ -1,3 +1,8 @@
+import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { DOWN_ARROW, ENTER, ESCAPE, SPACE, UP_ARROW } from '@angular/cdk/keycodes';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { TemplatePortal } from '@angular/cdk/portal';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -6,7 +11,8 @@ import {
   ContentChild,
   ContentChildren,
   ElementRef,
-  Host, HostBinding,
+  Host,
+  HostBinding,
   HostListener,
   Inject,
   InjectionToken,
@@ -19,23 +25,19 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { Overlay, OverlayRef } from '@angular/cdk/overlay';
-import { TemplatePortal } from '@angular/cdk/portal';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
-import { DOWN_ARROW, ENTER, ESCAPE, SPACE, UP_ARROW } from '@angular/cdk/keycodes';
 import { NgControl } from '@angular/forms';
-import { filter, startWith } from 'rxjs/operators';
 import { merge, Subscription } from 'rxjs';
+import { filter, startWith } from 'rxjs/operators';
 import isEqual from 'lodash-es/isEqual';
 
-import { KalOptionComponent } from '../kal-option/kal-option.component';
 import { KalThemeDirective } from '../../99-utility/directives/kal-theme/kal-theme.directive';
-import { buildProviders, FormElementComponent } from '../../utils/forms/form-element.component';
-import { KalSelectTriggerValueDirective } from './kal-select-trigger-value.directive';
 import { Coerce } from '../../utils';
+import { buildProviders, FormElementComponent } from '../../utils/forms/form-element.component';
 
-type KalSelectOptionsTriggerValueFunction = (selection: KalOptionComponent[]) => string;
+import { KalOptionComponent } from '../kal-option/kal-option.component';
+import { KalSelectTriggerValueDirective } from './kal-select-trigger-value.directive';
+
+export type KalSelectOptionsTriggerValueFunction = (selection: KalOptionComponent[]) => string;
 
 export interface KalSelectOptions {
 
@@ -60,6 +62,10 @@ export class KalSelectComponent
   extends FormElementComponent<any>
   implements OnInit, OnDestroy, AfterContentInit {
 
+  private static readonly informationBaseClassName = 'kal-select__';
+  static readonly overlayClassName = KalSelectComponent.informationBaseClassName + 'overlay';
+  static readonly multipleClassName = KalSelectComponent.informationBaseClassName + 'multiple';
+
   @Coerce('boolean')
   @Input()
   disableFirstOptionSelection = false;
@@ -81,17 +87,17 @@ export class KalSelectComponent
   @Input()
   @HostBinding('attr.tabIndex') tabIndex = 0;
 
+  /**
+   * The currently selected option
+   */
+  selection: KalOptionComponent[];
+
   private hasDefaultValue = false;
 
   /**
    * Whether the component is in multiple selection mode
    */
   private isMultiple: boolean;
-
-  /**
-   * The currently selected option
-   */
-  selection: KalOptionComponent[];
 
   /**
    * Overlay Reference
@@ -125,6 +131,20 @@ export class KalSelectComponent
               @Optional() @Host() private themeDirective: KalThemeDirective,
               @Optional() @Inject(KAL_SELECT_GLOBAL_OPTIONS) private selectOptions: KalSelectOptions) {
     super();
+  }
+
+
+  /**
+   * get classes of overlay container
+   * - overlay
+   * - multiple if several options can be selected at the same time
+   */
+  get overlayClassList(): string[] {
+    const list = [KalSelectComponent.overlayClassName];
+    if (this.multiple) {
+      list.push(KalSelectComponent.multipleClassName);
+    }
+    return list;
   }
 
   /**
@@ -412,7 +432,7 @@ export class KalSelectComponent
       .forEach(option => {
         option.active = false;
         this.selection.splice(this.selection.indexOf(option), 1);
-    });
+      });
 
     // select options that were not already selected
     options.filter(option => !this.selection.includes(option)).forEach(option => {

@@ -79,6 +79,15 @@ describe('TestSelectComponent', () => {
       component.options.map(o => expect(overlayContainerElement.textContent).toContain(o.getLabel()));
     });
 
+    it('should add information class ( "multiple" ) on overlay', () => {
+      component.select.multiple = true;
+      trigger.click();
+      const multipleClassName = KalSelectComponent.multipleClassName;
+      const overlaySelectDiv = overlayContainerElement.querySelector(`.${KalSelectComponent.overlayClassName}`);
+      expect(overlaySelectDiv.classList.contains(multipleClassName))
+        .toBeTruthy(`classList "${overlaySelectDiv.classList.value}" should contain ${multipleClassName}`);
+    });
+
     it('should set a default label', () => {
       fixture.detectChanges();
       const placeHolder = fixture.debugElement.query(By.css('.kal-select__placeholder'));
