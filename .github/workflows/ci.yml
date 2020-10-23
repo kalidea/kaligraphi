@@ -38,7 +38,7 @@ jobs:
           npm i
 
       - name: Lint code
-        run: ng lint @kalidea/kaligraphi
+        run: npm run lint
 
       - name: Run test suite
         run: npm run test:ci
