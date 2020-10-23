@@ -4,8 +4,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   KAL_FORM_FIELDS_GLOBAL_OPTIONS,
   KAL_INPUT_GLOBAL_OPTIONS,
+  KAL_SELECT_GLOBAL_OPTIONS,
   KalFormFieldOptions,
   KaligraphiModule,
+  KalSelectOptions,
   KalInputOptions
 } from '@kalidea/kaligraphi';
 
@@ -60,6 +62,12 @@ dayjs.extend(isSameOrAfter);
     TextareaComponent,
   ],
   providers: [
+    {
+      provide: KAL_SELECT_GLOBAL_OPTIONS,
+      useValue: {
+        displayCheckboxOnMultipleSelection: true
+      } as KalSelectOptions
+    },
     {
       provide: KAL_FORM_FIELDS_GLOBAL_OPTIONS,
       useValue: {

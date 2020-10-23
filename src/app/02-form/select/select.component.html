@@ -10,15 +10,8 @@
       tabindex="1"
       placeholder="Select an item">
       <kal-option
-        #optionRef
         *ngFor="let option of options"
         [disabled]="option.disabled">
-
-        <kal-checkbox
-          [formControl]="optionRef.formControl"
-          *ngIf="hasCheckbox">
-        </kal-checkbox>
-
         OPTION {{ option.value }}
       </kal-option>
 
@@ -44,10 +37,6 @@
       <kal-option value="secondary">secondary</kal-option>
       <kal-option value="reverse">reverse</kal-option>
     </kal-select>
-  </kal-form-field>
-
-  <kal-form-field>
-    <kal-checkbox [(ngModel)]="hasCheckbox" label="checkbox"></kal-checkbox>
   </kal-form-field>
 
   <kal-form-field>
