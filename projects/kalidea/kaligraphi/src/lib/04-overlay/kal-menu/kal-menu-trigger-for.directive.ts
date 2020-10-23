@@ -4,6 +4,7 @@ import { DOWN_ARROW, ENTER, ESCAPE, SPACE, UP_ARROW } from '@angular/cdk/keycode
 import { TemplatePortal } from '@angular/cdk/portal';
 import { filter, tap } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import { KalOverlayManager } from '../../utils/classes/kal-overlay-manager';
 
 import { KalMenuComponent } from './kal-menu.component';
 import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
@@ -12,7 +13,7 @@ import { kalPositions } from '../../utils/helpers/positions';
 @Directive({
   selector: '[kalMenuTriggerFor]'
 })
-export class KalMenuTriggerForDirective implements OnDestroy {
+export class KalMenuTriggerForDirective extends KalOverlayManager implements OnDestroy {
 
   /**
    * private reference from menuComponent
@@ -32,9 +33,10 @@ export class KalMenuTriggerForDirective implements OnDestroy {
   @AutoUnsubscribe()
   private subscriptionsList: Subscription[] = [];
 
-  constructor(private overlay: Overlay,
+  constructor(protected overlay: Overlay,
               private elementRef: ElementRef,
               private viewContainerRef: ViewContainerRef) {
+    super(overlay, 'menu');
   }
 
   @Input() set kalMenuTriggerFor(menu: KalMenuComponent) {
@@ -107,15 +109,15 @@ export class KalMenuTriggerForDirective implements OnDestroy {
   /**
    * create overlay
    */
-  private createOverlay() {
+  private createLocalOverlay() {
 
-    this.overlayRef = this.overlay.create({
+    this.overlayRef = this.createOverlay({
       positionStrategy: this.getPositionStrategy(),
       backdropClass: 'kal-menu__overlay-backdrop',
       panelClass: 'kal-menu__overlay',
       hasBackdrop: true,
       minWidth: this.getHostWidth(),
-      scrollStrategy: this.overlay.scrollStrategies.reposition()
+      scrollStrategy: this.scrollStrategies.reposition()
     });
 
     const backdropClickSubscription = this.overlayRef.backdropClick().subscribe(() => {
@@ -144,16 +146,13 @@ export class KalMenuTriggerForDirective implements OnDestroy {
    */
   private getOverlay() {
     if (!this.overlayRef) {
-      this.createOverlay();
+      this.createLocalOverlay();
     }
     return this.overlayRef;
   }
 
   ngOnDestroy(): void {
-    if (this.overlayRef) {
-      this.overlayRef.dispose();
-      this.overlayRef = null;
-    }
+    this.disposeIfExists(this.overlayRef);
   }
 
 

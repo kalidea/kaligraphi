@@ -23,7 +23,7 @@ export class KalDialogService extends KalOverlayManager {
   constructor(protected overlay: Overlay,
               private injector: Injector,
               @Optional() private location?: Location) {
-    super(overlay);
+    super(overlay, 'dialog');
   }
 
   /**
@@ -69,7 +69,7 @@ export class KalDialogService extends KalOverlayManager {
    * retrieve dialog by ID
    */
   close<T, D>(dialogRef: KalDialogRef<T, D>) {
-    dialogRef.overlayRef.detach();
+    this.detachOverlay(dialogRef.overlayRef);
   }
 
 
