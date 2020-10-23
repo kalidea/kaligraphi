@@ -1,8 +1,9 @@
 import { Directive, ElementRef, HostBinding, Injector, Input, OnDestroy, Optional, Self, ViewContainerRef } from '@angular/core';
-import { Overlay, OverlayConfig, OverlayRef, PositionStrategy } from '@angular/cdk/overlay';
+import { Overlay, OverlayRef, PositionStrategy } from '@angular/cdk/overlay';
 import { ComponentPortal, PortalInjector } from '@angular/cdk/portal';
 import { Subscription, timer } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { KalOverlayManager } from '../../utils/classes/kal-overlay-manager';
 
 import { KalLoaderComponent } from './kal-loader.component';
 import { KalLoaderData } from './kal-loader-data';
@@ -15,7 +16,7 @@ import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
   selector: '[kalLoading]',
   exportAs: 'kalLoading'
 })
-export class KalLoadingDirective implements OnDestroy {
+export class KalLoadingDirective extends KalOverlayManager implements OnDestroy {
   /**
    * message to display in overlay
    */
@@ -49,8 +50,9 @@ export class KalLoadingDirective implements OnDestroy {
   constructor(private readonly elementRef: ElementRef,
               private readonly viewContainerRef: ViewContainerRef,
               private readonly injector: Injector,
-              private readonly overlay: Overlay,
+              protected readonly overlay: Overlay,
               @Optional() @Self() private readonly kalTheme: KalThemeDirective) {
+    super(overlay, 'loader');
   }
 
   @Input('kalLoading')
@@ -103,7 +105,7 @@ export class KalLoadingDirective implements OnDestroy {
   /**
    * build positions for this loader
    */
-  private createPositionsList(): PositionStrategy {
+  private createPositionStrategy(): PositionStrategy {
     return this.overlay.position()
       .flexibleConnectedTo(this.elementRef)
       .withFlexibleDimensions(false)
@@ -122,22 +124,19 @@ export class KalLoadingDirective implements OnDestroy {
   }
 
   private getOverlayRef(): OverlayRef {
-    if (this.overlayRef) {
-      this.overlayRef.dispose();
-    }
+    this.disposeIfExists(this.overlayRef);
 
-    const clientRect: ClientRect = (this.elementRef.nativeElement as HTMLElement).getBoundingClientRect();
+    const {height, width}: ClientRect = (this.elementRef.nativeElement as HTMLElement).getBoundingClientRect();
 
-    const config: OverlayConfig = {
-      positionStrategy: this.createPositionsList(),
-      scrollStrategy: this.overlay.scrollStrategies.reposition(),
-      height: clientRect.height,
-      width: clientRect.width,
-    };
+    const overlayConfig = this.applyConfig(
+      {height, width},
+      this.createPositionStrategy(),
+      this.overlay.scrollStrategies.reposition()
+    );
 
-    this.overlayRef = this.overlay.create(config);
+    this.overlayRef = this.createOverlay(overlayConfig);
     this.overlayRef.backdropClick().subscribe(event => {
-      this.overlayRef.detach();
+      this.detachOverlay(this.overlayRef);
     });
 
     return this.overlayRef;
@@ -156,9 +155,7 @@ export class KalLoadingDirective implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.overlayRef) {
-      this.overlayRef.dispose();
-    }
+    this.disposeIfExists(this.overlayRef);
   }
 
 

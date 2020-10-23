@@ -18,6 +18,7 @@ import { animate, AnimationEvent, state, style, transition, trigger } from '@ang
 
 import { filter, take } from 'rxjs/operators';
 import { fromEvent, Observable, Subject, Subscription } from 'rxjs';
+import { KalOverlayManager } from '../../utils/classes/kal-overlay-manager';
 
 import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 import { KalThemeDirective } from '../../99-utility/directives/kal-theme/kal-theme.directive';
@@ -37,7 +38,7 @@ export class KalTooltipConfig {
   selector: '[kalTooltip]',
   exportAs: 'kalTooltip',
 })
-export class KalTooltipDirective implements OnDestroy {
+export class KalTooltipDirective extends KalOverlayManager implements OnDestroy {
 
   @Input()
   kalTooltip: string;
@@ -55,11 +56,12 @@ export class KalTooltipDirective implements OnDestroy {
   @AutoUnsubscribe()
   private animationSubscription = Subscription.EMPTY;
 
-  constructor(private readonly overlay: Overlay,
+  constructor(protected readonly overlay: Overlay,
               private readonly injector: Injector,
               private readonly viewContainerRef: ViewContainerRef,
               private readonly elementRef: ElementRef<HTMLElement>,
               @Optional() private readonly theme: KalThemeDirective) {
+    super(overlay, 'tooltip');
   }
 
   @HostListener('mouseenter')
@@ -113,7 +115,7 @@ export class KalTooltipDirective implements OnDestroy {
         }),
         take(1)
       ).subscribe(() => {
-        this.overlayRef.detach();
+        this.detachOverlay(this.overlayRef);
       });
   }
 
@@ -123,9 +125,9 @@ export class KalTooltipDirective implements OnDestroy {
         hasBackdrop: false,
         disposeOnNavigation: true,
         positionStrategy: this.getPositionStrategy(),
-        scrollStrategy: this.overlay.scrollStrategies.reposition()
+        scrollStrategy: this.scrollStrategies.reposition()
       };
-      this.overlayRef = this.overlay.create(config);
+      this.overlayRef = this.createOverlay(config);
     }
     return this.overlayRef;
   }
@@ -150,9 +152,7 @@ export class KalTooltipDirective implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.overlayRef) {
-      this.overlayRef.dispose();
-    }
+    this.disposeIfExists(this.overlayRef);
   }
 
 }

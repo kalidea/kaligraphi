@@ -26,13 +26,15 @@ export class KalSnackbarService extends KalOverlayManager {
   constructor(protected overlay: Overlay,
               private injector: Injector,
               @Optional() private location?: Location) {
-    super(overlay);
+    super(overlay, 'snackbar');
   }
 
   /**
    * open Snackbar
    */
   open<D>(config?: KalSnackbarConfig<D>) {
+
+    config = new KalSnackbarConfig(config);
 
     if (!this.activeSnackbar) {
       const overlayConfig = this.applyConfig(config, this.positionStrategy.bottom().centerHorizontally());
@@ -54,7 +56,7 @@ export class KalSnackbarService extends KalOverlayManager {
 
     this.activeSnackbar = null;
 
-    config.overlayRef.dispose();
+    this.disposeIfExists(config.overlayRef);
 
     // check for snackbar waiting
     if (this.waitingSnackbarsList.length > 0) {

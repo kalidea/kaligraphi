@@ -12,7 +12,7 @@
     "compile:styles": "node-sass ./projects/kalidea/kaligraphi/src/styles/styles.sass ./dist/kalidea/kaligraphi/styles/styles.css",
     "postbuild": "npm run copy:styles && npm run compile:styles",
     "test:ci": "ng test @kalidea/kaligraphi --karma-config=./projects/kalidea/kaligraphi/karma.test.conf.js --code-coverage",
-    "lint": "ng lint",
+    "lint": "ng lint @kalidea/kaligraphi",
     "e2e": "ng e2e",
     "serve:playground": "npm run serve",
     "build:playground": "ng build playground --prod",

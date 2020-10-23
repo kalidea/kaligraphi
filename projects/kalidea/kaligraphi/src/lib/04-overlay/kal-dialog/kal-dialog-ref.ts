@@ -90,8 +90,8 @@ export class KalDialogRef<T, D = any> {
    */
   private completeDialogClose() {
 
-    //complete afterClose subject
-    this.afterClosedSubject.complete()
+    // complete afterClose subject
+    this.afterClosedSubject.complete();
 
     // close dialog
     this.kalDialogService.detachOverlay(this.overlayRef);

@@ -37,6 +37,9 @@ jobs:
         run: |
           npm i
 
+      - name: Lint code
+        run: npm run lint
+
       - name: Run test suite
         run: npm run test:ci
 
