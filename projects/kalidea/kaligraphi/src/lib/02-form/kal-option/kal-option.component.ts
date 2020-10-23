@@ -12,6 +12,7 @@ import {
 import { Highlightable } from '@angular/cdk/a11y';
 import { FormControl } from '@angular/forms';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { Coerce } from '../../utils';
 
 @Component({
   selector: 'kal-option',
@@ -32,6 +33,11 @@ export class KalOptionComponent implements AfterViewInit, Highlightable {
    * label for this option, if not provided get textContent
    */
   @Input() label: string;
+
+  /**
+   * should we display a checkbox on this option ?
+   */
+  private _checkbox = false;
 
   /**
    * Event emitted when the option is selected or deselected
@@ -59,6 +65,17 @@ export class KalOptionComponent implements AfterViewInit, Highlightable {
   private isDisabled: boolean;
 
   constructor(private _element: ElementRef<HTMLElement>, private cdr: ChangeDetectorRef) {
+  }
+
+  @Input()
+  @Coerce('boolean')
+  get checkbox() {
+    return this._checkbox;
+  }
+
+  set checkbox(value: boolean) {
+    this._checkbox = value;
+    this.cdr.markForCheck();
   }
 
   /**

@@ -3,6 +3,10 @@
      [class.kal-option__selection--highlighted]="isHighlighted"
      [class.kal-option__selection--disabled]="disabled"
      (click)="emitSelectionEvent($event)">
+  <kal-checkbox
+      [formControl]="formControl"
+      *ngIf="checkbox">
+    </kal-checkbox>
   <ng-content></ng-content>
 </div>
 

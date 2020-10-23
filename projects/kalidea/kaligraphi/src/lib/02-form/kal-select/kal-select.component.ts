@@ -26,9 +26,9 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
-import { merge, Subscription } from 'rxjs';
-import { filter, startWith } from 'rxjs/operators';
 import isEqual from 'lodash-es/isEqual';
+import { merge, Subscription } from 'rxjs';
+import { filter, startWith, switchMap, tap } from 'rxjs/operators';
 
 import { KalThemeDirective } from '../../99-utility/directives/kal-theme/kal-theme.directive';
 import { Coerce } from '../../utils';
@@ -40,9 +40,8 @@ import { KalSelectTriggerValueDirective } from './kal-select-trigger-value.direc
 export type KalSelectOptionsTriggerValueFunction = (selection: KalOptionComponent[]) => string;
 
 export interface KalSelectOptions {
-
-  triggerValueFunction: KalSelectOptionsTriggerValueFunction;
-
+  displayCheckboxOnMultipleSelection?: boolean;
+  triggerValueFunction?: KalSelectOptionsTriggerValueFunction;
 }
 
 /** InjectionToken that can be used to specify the global select options. */
@@ -120,22 +119,29 @@ export class KalSelectComponent
   private isPanelOpen: boolean;
 
   /**
-   * Store Subscriptions
-   */
-  private subscriptionsList: Subscription[] = [];
-
-  /**
    * list of custom class added to select overlay
    */
   private _overlayClassList: string[] = [];
 
-  constructor(private overlay: Overlay,
-              private elementRef: ElementRef<HTMLElement>,
-              private cdr: ChangeDetectorRef,
-              private injector: Injector,
-              @Optional() @Host() private themeDirective: KalThemeDirective,
-              @Optional() @Inject(KAL_SELECT_GLOBAL_OPTIONS) private selectOptions: KalSelectOptions) {
+  /**
+   * Store Subscription
+   */
+  private optionsChangeSubscription: Subscription;
+
+  /**
+   * local Overload for KalSelectOptions.displayCheckboxOnMultipleSelection
+   * can't coerce to boolean, because we need undefined value too
+   */
+  @Input() displayCheckboxOnMultipleSelection;
+
+  constructor(private readonly overlay: Overlay,
+              private readonly elementRef: ElementRef<HTMLElement>,
+              private readonly cdr: ChangeDetectorRef,
+              private readonly injector: Injector,
+              @Optional() @Host() private readonly themeDirective: KalThemeDirective,
+              @Optional() @Inject(KAL_SELECT_GLOBAL_OPTIONS) private readonly selectOptions: KalSelectOptions) {
     super();
+    this.selectOptions = this.selectOptions || {};
   }
 
 
@@ -176,6 +182,8 @@ export class KalSelectComponent
       this.reset();
       this.optionSelected(keepOption);
     }
+
+    this.updateCheckboxOnOptions();
   }
 
   /**
@@ -249,6 +257,10 @@ export class KalSelectComponent
     return this.themeDirective ? this.themeDirective.rawThemes : '';
   }
 
+  private get isBlur(): boolean {
+    return this.superControl?.updateOn === 'blur';
+  }
+
   getTriggerValueFunction(): KalSelectOptionsTriggerValueFunction {
     return this.triggerValueFunction || this.selectOptions?.triggerValueFunction;
   }
@@ -295,10 +307,6 @@ export class KalSelectComponent
     if (this.isBlur && !isEqual(this.superControl.value, this.selectedValue)) {
       this.notifyUpdate(this.selectedValue);
     }
-  }
-
-  private get isBlur(): boolean {
-    return this.superControl?.updateOn === 'blur';
   }
 
   /**
@@ -542,17 +550,13 @@ export class KalSelectComponent
   }
 
   /**
-   * Disposes the resources
+   * update checkbox visibility on kal-option
    */
-  private cleanSubscriptionsList(): void {
-    this.subscriptionsList.forEach(
-      subscription => {
-        if (subscription) {
-          subscription.unsubscribe();
-        }
-      });
-
-    this.subscriptionsList = [];
+  private updateCheckboxOnOptions() {
+      // set checkbox on option when select is in multiple selection mode
+    if (this.displayCheckboxOnMultipleSelection ?? this.selectOptions.displayCheckboxOnMultipleSelection) {
+      this.options?.forEach(o => o.checkbox = this.isMultiple);
+    }
   }
 
   ngOnInit() {
@@ -562,32 +566,38 @@ export class KalSelectComponent
 
   ngAfterContentInit() {
     this.initKeyManager();
-
-    this.options.changes
-      .pipe(startWith(0))
-      .subscribe(() => {
-
-        if (this.ngControl && !this.multiple) {
-          this.select(this.ngControl.value);
-
-        } else if (this.value) {
-          this.select(this.value);
-        }
-
-        this.cleanSubscriptionsList();
-        this.subscriptionsList.push(
-          merge<KalOptionComponent>(...this.options.map(option => option.selectionChange))
-            .subscribe(event => {
-              this.focus();
-              this.optionSelected(event, !this.isBlur);
-            })
-        );
-      });
+    this.optionsChangeSubscription = this.options.changes
+      .pipe(
+        startWith(0),
+        tap(() => {
+          this.updateCheckboxOnOptions();
+          // set checkbox for select multiple
+          this.options.forEach(o => o.checkbox = this.isMultiple);
+          // select value according to mode
+          if (this.ngControl && !this.multiple) {
+            this.select(this.ngControl.value);
+          } else if (this.value) {
+            this.select(this.value);
+          }
+        }),
+        switchMap(() => {
+          // watch for selection change event
+          return merge<KalOptionComponent>(...this.options.map(option => option.selectionChange))
+            .pipe(
+              tap(event => {
+                this.focus();
+                this.optionSelected(event, !this.isBlur);
+              })
+            );
+        })
+      )
+      .subscribe();
 
     if (this.options.length === 1 && this.selection.length === 0 && !this.value && !this.disableFirstOptionSelection) {
       this.optionSelected(this.options.first);
       this.hasDefaultValue = true;
     }
+
   }
 
   ngOnDestroy() {
@@ -596,6 +606,6 @@ export class KalSelectComponent
       this.overlayRef.dispose();
     }
 
-    this.cleanSubscriptionsList();
+    this.optionsChangeSubscription?.unsubscribe();
   }
 }
