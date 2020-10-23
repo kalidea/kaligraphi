@@ -126,7 +126,7 @@ export class KalSelectComponent
   /**
    * Store Subscription
    */
-  private optionsChangeSubscription: Subscription;
+  private optionsChangesSubscription: Subscription;
 
   /**
    * local Overload for KalSelectOptions.displayCheckboxOnMultipleSelection
@@ -566,7 +566,7 @@ export class KalSelectComponent
 
   ngAfterContentInit() {
     this.initKeyManager();
-    this.optionsChangeSubscription = this.options.changes
+    this.optionsChangesSubscription = this.options.changes
       .pipe(
         startWith(0),
         tap(() => {
@@ -606,6 +606,6 @@ export class KalSelectComponent
       this.overlayRef.dispose();
     }
 
-    this.optionsChangeSubscription?.unsubscribe();
+    this.optionsChangesSubscription?.unsubscribe();
   }
 }
