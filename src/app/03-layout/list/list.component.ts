@@ -197,7 +197,7 @@ class TestDataSource<T> implements DataSource<{ id: string, name: string }> {
     return this._loading.asObservable();
   }
 
-  loading() {
+  loading(): boolean {
     return this._loading.getValue();
   }
 
