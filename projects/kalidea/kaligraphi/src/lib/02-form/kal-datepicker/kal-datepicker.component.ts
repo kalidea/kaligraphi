@@ -4,7 +4,6 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  forwardRef,
   HostListener,
   Inject,
   Injector,
@@ -14,29 +13,21 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { Overlay, OverlayRef } from '@angular/cdk/overlay';
-import { TemplatePortal } from '@angular/cdk/portal';
-import { ESCAPE } from '@angular/cdk/keycodes';
-import { DOCUMENT } from '@angular/common';
-import { FormControl, NgControl } from '@angular/forms';
-import { fromEvent, merge, Observable, of, Subscription } from 'rxjs';
-import { filter, map, take, tap } from 'rxjs/operators';
+import {Overlay, OverlayRef} from '@angular/cdk/overlay';
+import {TemplatePortal} from '@angular/cdk/portal';
+import {ESCAPE} from '@angular/cdk/keycodes';
+import {DOCUMENT} from '@angular/common';
+import {FormControl, NgControl} from '@angular/forms';
+import {fromEvent, merge, Observable, of, Subscription} from 'rxjs';
+import {filter, map, take, tap} from 'rxjs/operators';
 import dayjs from 'dayjs';
-import localeData from 'dayjs/plugin/localeData';
 
-import { coerceKalDateProperty, KalDate, KalDateType } from './kal-date';
-import { KalMonthCalendarComponent } from './kal-month-calendar/kal-month-calendar.component';
-import { KalDatepickerHeaderComponent } from './kal-datepicker-header/kal-datepicker-header.component';
-import { buildProviders, FormElementComponent } from '../../utils/forms/form-element.component';
-import { KalInputComponent } from '../kal-input/kal-input.component';
-import { Coerce } from '../../utils/decorators/coerce';
-import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
-import { capitalize } from '../../utils/helpers/strings';
+import {coerceKalDateProperty, KalDate, KalDateType} from './kal-date';
+import {buildProviders, FormElementComponent} from '../../utils/forms/form-element.component';
+import {KalInputComponent} from '../kal-input/kal-input.component';
+import {Coerce} from '../../utils/decorators/coerce';
+import {AutoUnsubscribe} from '../../utils/decorators/auto-unsubscribe';
 
-/**
- * Configure DayJS
- */
-dayjs.extend(localeData);
 
 /**
  * Possible views for the calendar.
@@ -45,6 +36,7 @@ export type KalCalendarView = 'month' | 'multi';
 
 @Component({
   selector: 'kal-datepicker',
+  exportAs: 'kalDatepicker',
   templateUrl: './kal-datepicker.component.html',
   styleUrls: ['./kal-datepicker.sass'],
   encapsulation: ViewEncapsulation.None,
@@ -59,24 +51,9 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   @ViewChild('datepickerCalendar', {static: true}) datepickerCalendar: TemplatePortal<any>;
 
   /**
-   * Reference to `KalMonthCalendarComponent`.
-   */
-  @ViewChild(KalMonthCalendarComponent, {static: false}) monthCalendar: KalMonthCalendarComponent;
-
-  /**
-   * Reference to `KalDatepickerHeaderComponent`.
-   */
-  @ViewChild(forwardRef(() => KalDatepickerHeaderComponent), {static: false}) datePickerHeader: KalDatepickerHeaderComponent;
-
-  /**
    * reference to the kal input
    */
   @ViewChild(KalInputComponent, {static: true}) kalInput: KalInputComponent;
-
-  /**
-   * Whether the calendar is in month view.
-   */
-  currentView: KalCalendarView = 'month';
 
   /**
    * base control
@@ -127,10 +104,6 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
    */
   private overlayRef: OverlayRef;
 
-  private _maxYear: number;
-
-  private _minYear = 1940;
-
   constructor(private overlay: Overlay,
               private elementRef: ElementRef<HTMLElement>,
               private cdr: ChangeDetectorRef,
@@ -138,6 +111,8 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
               @Optional() @Inject(DOCUMENT) private _document: any) {
     super();
   }
+
+  private _maxYear: number;
 
   /**
    * Max year that should be displayed in year selection.
@@ -164,6 +139,8 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     this.cdr.markForCheck();
   }
 
+  private _minYear = 1940;
+
   @Input()
   @Coerce('number')
   get minYear(): number {
@@ -181,28 +158,12 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   }
 
   /**
-   * Display the current period : month as string + year.
+   * Returns the date stored in the datepicker if it's valid else the current date.
+   * We should do this to still display something with the datepicker even if the given
+   * date is invalid.
    */
-  get currentPeriod(): string {
-    let date: KalDate = null;
-
-    if (this.monthCalendar) {
-      date = this.monthCalendar.displayedDate;
-    } else if (this.currentDate.valid) {
-      date = this.currentDate;
-    } else {
-      date = new KalDate();
-    }
-
-    const month = dayjs().localeData().months()[date.getMonth()];
-    return month ? capitalize(month) + ' ' + date.getYear() : '';
-  }
-
-  /**
-   * Whether the current view is the `multi` view.
-   */
-  get isMultiView(): boolean {
-    return this.currentView === 'multi';
+  get selectedDate(): KalDate {
+    return this.currentDate.valid ? this.currentDate : new KalDate();
   }
 
   get parentControlValidator() {
@@ -234,17 +195,6 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     }
 
     return this.overlayRef;
-  }
-
-  /**
-   * Switch between views to display.
-   */
-  changeCurrentView() {
-    this.currentView = this.isMultiView ? 'month' : 'multi';
-
-    // We should manually trigger change detection because header arrows depends on `KalDatepickerComponent`
-    // and header doesn't know when it should refresh itself.
-    this.datePickerHeader.markForCheck();
   }
 
   toggle() {
@@ -283,15 +233,6 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     }
 
     this.clickOutsideSubscription.unsubscribe();
-
-    // Set the current view to `month` because if the datepicker is
-    // closed then opened it will keep its last view.
-    this.currentView = 'month';
-
-    // Reset displayed date to avoid keeping selected month and year in multiview.
-    if (this.monthCalendar) {
-      this.monthCalendar.displayedDate = this.currentDate;
-    }
   }
 
   /**
@@ -300,6 +241,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   setInputValue(date: KalDate, event = {emitEvent: true}): void {
     const displayedDate = (date && date.valid) ? date.toString() : '';
     this.control.setValue(displayedDate, event);
+
     // close calendar if user pick
     if (event.emitEvent && this.closeOnPick) {
       this.close();
@@ -328,17 +270,39 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     }
   }
 
-  /**
-   * Update the view according to `$event` parameter.
-   * If we receive a `null` value it means that we're currently displaying the `multi` view and
-   * we wants to display the `month` view.
-   */
-  updateView($event: number | null): void {
-    if ($event === null) {
-      this.changeCurrentView();
-    } else {
-      this.monthCalendar.updateMonth($event);
-    }
+  ngOnDestroy() {
+    super.ngOnDestroy();
+    this.close();
+  }
+
+  ngAfterContentInit(): void {
+
+    this.control = this.createControlAndSubscriptions(this.injector, 'blur');
+
+    // watch value changes
+    const valueChangesSubscription = this.control.valueChanges.pipe(
+      map(value => !!value ? coerceKalDateProperty(value) : null), // transform as date or send null if the input is empty
+      tap((date: KalDate) => {
+        // notify parent for validation
+        super.notifyUpdate(date);
+
+        // emit value
+        this.valueChanges.emit(date);
+
+        // if there's no date or if the given input is invalid, we should apply one
+        // date manually so the datepicker can open at the current date
+        if (date === null || !date.valid) {
+          date = new KalDate();
+        }
+
+        this.currentDate = date;
+      })
+    ).subscribe();
+    this.subscriptions.push(valueChangesSubscription);
+
+    const focusOnKalInputSubscription = fromEvent<MouseEvent>(this.kalInput.inputElement.nativeElement, 'focus')
+      .subscribe(() => this.open());
+    this.subscriptions.push(focusOnKalInputSubscription);
   }
 
   private getOutsideClickStream(): Observable<any> {
@@ -377,44 +341,5 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
       .subscribe(() => this.close());
 
     this.subscriptions.push(escapeKeySubscription);
-  }
-
-  ngOnDestroy() {
-    super.ngOnDestroy();
-    this.close();
-  }
-
-  ngAfterContentInit(): void {
-
-    this.control = this.createControlAndSubscriptions(this.injector, 'blur');
-
-    // watch value changes
-    const valueChangesSubscription = this.control.valueChanges.pipe(
-      map(value => coerceKalDateProperty(value)), // transform as date
-      map(date => date.valid ? date : null), // remove invalid date
-      tap((date: KalDate) => {
-        // notify parent for validation
-        super.notifyUpdate(date);
-
-        // emit value
-        this.valueChanges.emit(date);
-
-        // if there's no date we should apply one manually so the datepicker can open at the current date
-        if (date === null) {
-          date = new KalDate();
-        }
-
-        if (this.monthCalendar) {
-          this.monthCalendar.currentDate = date;
-        }
-
-        this.currentDate = date;
-      })
-    ).subscribe();
-    this.subscriptions.push(valueChangesSubscription);
-
-    const focusOnKalInputSubscription = fromEvent<MouseEvent>(this.kalInput.inputElement.nativeElement, 'focus')
-      .subscribe(() => this.open());
-    this.subscriptions.push(focusOnKalInputSubscription);
   }
 }

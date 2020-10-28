@@ -1,7 +1,8 @@
 import { Directive, ElementRef, Input, Renderer2 } from '@angular/core';
 
 @Directive({
-  selector: '[kalTheme]'
+  selector: '[kalTheme]',
+  exportAs: 'kalTheme'
 })
 export class KalThemeDirective {
 
@@ -28,7 +29,7 @@ export class KalThemeDirective {
 
     // string
     if (!Array.isArray(themes)) {
-      themes = (<string>themes || '').split(/[ ,]+/);
+      themes = (themes as string || '').split(/[ ,]+/);
     }
 
     this.themes = themes as string[];
@@ -41,7 +42,7 @@ export class KalThemeDirective {
   }
 
   get kalThemeAsClassNames(): string[] {
-    return (<string[]>this.themes)
+    return (this.themes as string[])
       .filter(theme => theme !== '')
       .map(theme => KalThemeDirective.prefix + theme);
   }

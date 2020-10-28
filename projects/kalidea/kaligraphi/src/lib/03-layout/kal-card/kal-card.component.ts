@@ -16,6 +16,7 @@ import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 
 @Component({
   selector: 'kal-card',
+  exportAs: 'kalCard',
   template: `
       <ng-content></ng-content>`,
   encapsulation: ViewEncapsulation.None,

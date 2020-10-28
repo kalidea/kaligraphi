@@ -7,12 +7,10 @@ export enum KalCarouselItemStatus {
   Append = 'append' // add to end
 }
 
-const prefix = 'kalCarousel';
-
 @Component({
   selector: 'kal-carousel',
-  template: '<ng-content></ng-content>',
-  exportAs: 'kalCarousel'
+  exportAs: 'kalCarousel',
+  template: '<ng-content></ng-content>'
 })
 export class KalCarouselComponent<T> implements OnInit {
 

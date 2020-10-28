@@ -44,7 +44,7 @@ describe('KalDate class', () => {
   it('should manage invalid date', () => {
 
     // Testing invalid values for parsing : alpha char, undefined, null
-    ['aa', undefined, ''].forEach(invalidValue => {
+    ['aa', undefined, '', '31/02/2020'].forEach(invalidValue => {
       const kalDate = new KalDate(invalidValue);
       expect(kalDate.valid).toBeFalsy();
       expect(kalDate.toString()).toEqual('');
@@ -83,9 +83,19 @@ describe('KalDate class', () => {
     expect(new KalDate('18/11/2019').isAfter('17/11/2019')).toBeTruthy();
     expect(new KalDate('18/11/2019').isAfter(new KalDate('31/12/2019'))).toBeFalsy();
 
+    // is same or before
+    expect(new KalDate('14/05/2020').isSameOrBefore('16/05/2020')).toBeTruthy();
+    expect(new KalDate('14/05/2020').isSameOrBefore('14/05/2020')).toBeTruthy();
+    expect(new KalDate('16/05/2020').isSameOrBefore(new KalDate('14/05/2020'))).toBeFalsy();
+
+    // is same or after
+    expect(new KalDate('16/05/2020').isSameOrAfter('14/05/2020')).toBeTruthy();
+    expect(new KalDate('14/05/2020').isSameOrAfter('14/05/2020')).toBeTruthy();
+    expect(new KalDate('14/05/2020').isSameOrAfter(new KalDate('16/05/2020'))).toBeFalsy();
+
     // is between
     expect(new KalDate('18/11/2019').isBetween('01/11/2019', '31/12/2019')).toBeTruthy();
-    expect(new KalDate('18/11/2019').isBetween(new KalDate('19/11/2019'), new KalDate('31/11/2019'))).toBeFalsy();
+    expect(new KalDate('18/11/2019').isBetween(new KalDate('19/11/2019'), new KalDate('30/11/2019'))).toBeFalsy();
 
     // is between with exclusions
     expect(new KalDate('18/11/2019').isBetween('18/11/2019', '19/11/2019', {start: true, end: false})).toBeFalsy();
@@ -94,6 +104,34 @@ describe('KalDate class', () => {
     // is today
     expect(new KalDate().isToday()).toBeTruthy();
     expect(new KalDate('15/11/2019').isToday()).toBeFalsy();
+  });
+
+  it('should local timezone if not provided', () => {
+    const rawDate = '2020-03-30T15:15:20.110';
+    const date = new KalDate(rawDate, 'yyyy-MM-ddTHH:mm:ss.SSS');
+    expect(date.toFormat('yyyy-MM-ddTHH:mm:ss.SSSZZZZZ')).toBe(rawDate + KalDate.getLocalGMTOffset());
+  });
+
+  it('should manage timezone and validity', () => {
+
+    const datesList = [
+      {raw: '2020-03-05T14:36:48.687Z', format: 'yyyy-MM-ddTHH:mm:ss.SSSZZZZZ', valid: true},
+      {raw: '2020-03-05T14:36:48.687-00:00', format: 'yyyy-MM-ddTHH:mm:ss.SSSZZZZZ', valid: true},
+      {raw: '2020-03-05T14:36:48.687+00:00', format: 'yyyy-MM-ddTHH:mm:ss.SSSZZZZZ', valid: true},
+      {raw: '2020-03-05T14:36:48.687+01:00', format: 'yyyy-MM-ddTHH:mm:ss.SSSZZZZZ', valid: true},
+      {raw: '2020-03-05T14:36:48.687-08:00', format: 'yyyy-MM-ddTHH:mm:ss.SSSZZZZZ', valid: true},
+      {raw: '2020-03-05T14:36:48.687Z', format: 'yyyy-MM-ddTHH:mm:ss.SSS', valid: true},
+      {raw: '2020-03-05T14:36:48.687', format: 'yyyy-MM-ddTHH:mm:ss.SSS', valid: true},
+      {raw: '2020-03-05T14:36:48.687', format: 'yyyy-MM-ddTHH:mm:ss.SSSZZZZZ', valid: true},
+      {raw: '2020-02-32T14:36:48.687Z', format: 'yyyy-MM-ddTHH:mm:ss.SSSZZZZZ', valid: false},
+      {raw: '2020-02-32T14:36:48.687', format: 'yyyy-MM-ddTHH:mm:ss.SSS', valid: false},
+    ];
+
+    datesList.forEach(({raw, format, valid}) => {
+      const date = new KalDate(raw, format);
+      expect(date.valid).toBe(valid, `${raw} validity should be ${valid}`);
+    });
+
   });
 
 });

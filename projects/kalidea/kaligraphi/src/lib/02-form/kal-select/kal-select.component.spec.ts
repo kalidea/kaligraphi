@@ -28,6 +28,8 @@ describe('TestSelectComponent', () => {
     let overlayContainerElement: HTMLElement;
     let trigger: HTMLElement;
 
+    const getOverlaySelectDiv = () => overlayContainerElement.querySelector(`.${KalSelectComponent.overlayClassName}`);
+
     beforeEach(async(() => {
       configureTestingModule([TestSelectComponent]);
     }));
@@ -76,7 +78,26 @@ describe('TestSelectComponent', () => {
     it('should display given optionsComponent', () => {
       trigger.click();
 
-      component.options.map(o => expect(overlayContainerElement.textContent).toContain(o.viewValue));
+      component.options.map(o => expect(overlayContainerElement.textContent).toContain(o.getLabel()));
+    });
+
+    it('should add information class ( "multiple" ) on overlay', () => {
+      component.select.multiple = true;
+      trigger.click();
+      const multipleClassName = KalSelectComponent.multipleClassName;
+      const overlaySelectDivClasses = getOverlaySelectDiv().classList;
+      expect(overlaySelectDivClasses.contains(multipleClassName))
+        .toBeTruthy(`classList "${overlaySelectDivClasses.value}" should contain class ${multipleClassName}`);
+    });
+
+    it('should add custom class to overlay', () => {
+      const classes = ['unit-test-is-awesome', 'continous-integration-too'];
+      component.select.overlayClassList = classes;
+      trigger.click();
+      const overlaySelectDivClasses = getOverlaySelectDiv().classList;
+      classes.forEach(c => expect(overlaySelectDivClasses.contains(c)).toBeTruthy(
+        `classList "${overlaySelectDivClasses.value}" should contain class ${c}`
+      ));
     });
 
     it('should set a default label', () => {
@@ -216,8 +237,8 @@ describe('TestSelectComponent', () => {
   });
 
   describe('TestSelectOneComponent', () => {
-    let component: TestSelectComponent;
-    let fixture: ComponentFixture<TestSelectComponent>;
+    let component: TestSelectOneComponent;
+    let fixture: ComponentFixture<TestSelectOneComponent>;
 
     beforeEach(async(() => {
       configureTestingModule([TestSelectOneComponent]);
@@ -226,12 +247,19 @@ describe('TestSelectComponent', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(TestSelectOneComponent);
       component = fixture.componentInstance;
-      fixture.detectChanges();
     });
 
     it('should select the first option when there is only one option', () => {
+      fixture.detectChanges();
       const selectedOption = component.select.selected as KalOptionComponent;
-      expect(selectedOption.viewValue).toEqual(component.options.first.viewValue);
+      expect(selectedOption.getLabel()).toEqual(component.options.first.getLabel());
+    });
+
+    it('should disable the first option selection when there is one option in options list', () => {
+      component.disableFirstOptionSelection = true;
+      fixture.detectChanges();
+      const selectedOption = component.select.selected as KalOptionComponent;
+      expect(selectedOption).toEqual(null);
     });
 
   });
@@ -251,14 +279,18 @@ class TestSelectComponent {
   @ViewChildren(KalOptionComponent) options: QueryList<KalOptionComponent>;
 }
 
+// tslint:disable-next-line:max-classes-per-file
 @Component({
   selector: 'kal-test-select-one',
   template: `
-    <kal-select>
+    <kal-select [disableFirstOptionSelection]="disableFirstOptionSelection">
       <kal-option>Steak</kal-option>
     </kal-select>`
 })
 class TestSelectOneComponent {
+
+  disableFirstOptionSelection = false;
+
   @ViewChild(KalSelectComponent, {static: true}) select: KalSelectComponent;
 
   @ViewChildren(KalOptionComponent) options: QueryList<KalOptionComponent>;

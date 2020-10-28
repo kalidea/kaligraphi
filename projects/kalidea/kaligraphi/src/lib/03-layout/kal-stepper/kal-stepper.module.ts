@@ -9,6 +9,7 @@ import { KalStepLabelDirective } from './kal-step-label.directive';
 export * from './kal-stepper.component';
 export * from './kal-step.component';
 export * from './kal-step-header.component';
+export { KalStepLabelDirective } from './kal-step-label.directive';
 
 const exports = [
   KalStepperComponent,
@@ -22,7 +23,7 @@ const exports = [
   imports: [
     CommonModule
   ],
-  exports: exports,
+  exports,
   declarations: exports
 })
 export class KalStepperModule {

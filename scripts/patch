@@ -1,19 +1,54 @@
-#!/bin/sh
+#!/bin/bash
+#### script to manage patch updates for this library
+
+## test for args length
+if [ "$#" -ne 1 ]; then
+    echo "Illegal number of parameters"
+    echo "Usage: $0 [master|v8|v9|...]"
+    exit 1
+fi
+
+## if master , we should checkout from master
+if [ "$1" == "master" ]; then
+  if ! git checkout master; then
+    echo "[ERR] can't checkout master"
+    exit 1
+  fi
+  echo "Creating release branch from master branch"
+## if not, we should get current branch and check that we are not on master
+else
+  CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+  if [ "$CURRENT_BRANCH" == "master" ]; then
+    echo "[ERR] can't create release for previous version(version: $1) from master"
+    exit 1
+  fi
+  echo "Creating release branch (version: $1) from current branch"
+fi
+
+
+CHANGED=$(git diff-index --name-only HEAD --)
+if [ -n "$CHANGED" ]; then
+  echo "[ERR] your local version has unstashed changes"
+  echo "$CHANGED"
+  exit 1
+fi
 
 #### patch version ####
+
 echo "going to lib dir"
-cd ./projects/kalidea/kaligraphi
+cd ./projects/kalidea/kaligraphi  || exit
 
 echo "update version"
-version=`npm version patch`
+version=$(npm version patch)
+branch=releases/$version
+
+echo "create release branch"
+git checkout -b "$branch"
+
+echo "add tag"
+git tag "$version"
 
 echo "commit files"
 git add .
 git commit -m "version $version"
-
-echo "push to master"
-git push
-
-echo "add tag"
-git tag $version
-git push --tags
+git push --tags --set-upstream origin "$branch"

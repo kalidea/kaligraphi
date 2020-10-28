@@ -21,6 +21,7 @@ import { KalTabContentDirective } from '../kal-tab-content.directive';
 
 @Component({
   selector: 'kal-tab',
+  exportAs: 'kalTab',
   template: `
     <ng-template>
       <ng-content>
@@ -46,6 +47,8 @@ export class KalTabComponent implements OnInit {
    * Template inside the MatTab view that contains an `<ng-content>`.
    */
   @ViewChild(TemplateRef, {static: true}) _implicitContent: TemplateRef<any>;
+
+  @Input() value = null;
 
   /**
    * Is a tab selected

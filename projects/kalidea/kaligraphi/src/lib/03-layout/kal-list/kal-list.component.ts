@@ -40,6 +40,7 @@ export interface KalVirtualScrollConfig {
 
 @Component({
   selector: 'kal-list',
+  exportAs: 'kalList',
   templateUrl: './kal-list.component.html',
   styleUrls: ['./kal-list.sass'],
   encapsulation: ViewEncapsulation.None,
@@ -281,6 +282,10 @@ export class KalListComponent<T>
     }
 
     this.countItems();
+  }
+
+  markForCheck() {
+    this.cdr.markForCheck();
   }
 
   selectAll() {

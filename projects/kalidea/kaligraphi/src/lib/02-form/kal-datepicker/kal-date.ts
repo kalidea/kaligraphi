@@ -1,6 +1,9 @@
 import dayjs, { Dayjs, OpUnitType, UnitType } from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import isBetween from 'dayjs/plugin/isBetween';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import localeData from 'dayjs/plugin/localeData';
 import { formatDate } from './kal-date-converter';
 
 export type KalDateType = string | Dayjs | Date | KalDate;
@@ -10,6 +13,9 @@ export type KalDateType = string | Dayjs | Date | KalDate;
  */
 dayjs.extend(customParseFormat);
 dayjs.extend(isBetween);
+dayjs.extend(isSameOrBefore);
+dayjs.extend(isSameOrAfter);
+dayjs.extend(localeData);
 
 /**
  * Helper
@@ -25,7 +31,7 @@ export class KalDate {
    */
   private value: Dayjs;
 
-  constructor(date?: KalDateType, format = 'dd/MM/yyyy') {
+  constructor(date?: KalDateType, format: string = 'dd/MM/yyyy') {
     if (arguments.length === 0 || date === null) {
       this.value = dayjs();
     } else {
@@ -48,6 +54,17 @@ export class KalDate {
   }
 
   /**
+   * get current GMT offset as string
+   * E.G.: +02:00
+   */
+  static getLocalGMTOffset(): string {
+    const timeZoneOffset = (new Date().getTimezoneOffset() / -60);
+    const sign = Math.sign(timeZoneOffset) < 0 ? '-' : '+';
+    const value = Math.abs(timeZoneOffset) + '';
+    return sign + (value.length < 2 ? '0' + value : value) + ':00';
+  }
+
+  /**
    * Returns a DayJS object
    * @param format Date format to provide if date is a `string`
    */
@@ -61,7 +78,8 @@ export class KalDate {
         throw new Error('You should provide a date format');
       }
 
-      date = dayjs(rawDate, formatDate(format));
+
+      date = this.parseRawDate(rawDate, format);
     } else if (rawDate instanceof KalDate) {
       date = (rawDate as KalDate).getDate();
     } else {
@@ -70,6 +88,34 @@ export class KalDate {
     }
 
     return date;
+  }
+
+  private static parseRawDate(rawDate: string, format: string): Dayjs {
+    const dayJsParseFormat = formatDate(format);
+
+    // we should replace 'Z' timezone flag by +00:00
+    if (rawDate.endsWith('Z')) {
+      rawDate = rawDate.slice(0, -1) + '+00:00';
+    }
+
+    // remove timezone for comparaison
+    const timeZoneRegexp = '(Z|(\\+|-)([0-9]{4}|([0-9]{2}:[0-9]{2})))$';
+    const timeZoneOffset = KalDate.getLocalGMTOffset();
+    const timeZoneMatch = rawDate.match(new RegExp(timeZoneRegexp));
+    // timeZone is current timezone if not provided
+    let timeZone = timeZoneMatch && timeZoneMatch.length > 0 ? timeZoneMatch[1] : timeZoneOffset;
+    if (timeZone === '-00:00') {
+      timeZone = '+00:00';
+    }
+    const rawDateWithoutTimeZone = rawDate.replace(new RegExp('^(.*)' + timeZoneRegexp), '$1');
+    const dayJsParseFormatWithoutTimeZone = dayJsParseFormat.replace('Z', '');
+
+    // @ts-ignore
+    if (dayjs(rawDateWithoutTimeZone, dayJsParseFormatWithoutTimeZone).format(dayJsParseFormatWithoutTimeZone) !== rawDateWithoutTimeZone) {
+      return dayjs(new Date(NaN));
+    } else {
+      return dayjs(rawDateWithoutTimeZone + timeZone, dayJsParseFormat);
+    }
   }
 
   /**
@@ -145,11 +191,27 @@ export class KalDate {
   }
 
   /**
+   * Returns a boolean indicating whether the current date is before the supplied date.
+   */
+  isSameOrBefore(date: KalDateType, unit: OpUnitType = 'day'): boolean {
+    const comparisonDate = KalDate.getDate(date);
+    return this.value.isSameOrBefore(comparisonDate, unit);
+  }
+
+  /**
    * Returns a boolean indicating whether the current date is after the supplied date.
    */
   isAfter(date: KalDateType, unit: OpUnitType = 'day'): boolean {
     const comparisonDate = KalDate.getDate(date);
     return this.value.isAfter(comparisonDate, unit);
+  }
+
+  /**
+   * Returns a boolean indicating whether the current date is after the supplied date.
+   */
+  isSameOrAfter(date: KalDateType, unit: OpUnitType = 'day'): boolean {
+    const comparisonDate = KalDate.getDate(date);
+    return this.value.isSameOrAfter(comparisonDate, unit);
   }
 
   /**

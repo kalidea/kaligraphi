@@ -36,6 +36,7 @@ export class AppComponent {
   // Layout
   itemsLayout: KalNavItem[] = [
     {label: 'accordion', route: '/layout/accordion'},
+    {label: 'calendar', route: '/layout/calendar'},
     {label: 'card', route: '/layout/card'},
     {label: 'carousel', route: '/layout/carousel'},
     {label: 'list', route: '/layout/list'},

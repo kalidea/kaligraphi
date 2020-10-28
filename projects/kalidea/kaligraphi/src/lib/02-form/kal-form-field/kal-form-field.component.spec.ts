@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
@@ -55,8 +55,7 @@ describe('KalFormFieldComponent', () => {
   });
 
   it('should update required', () => {
-    const required = true;
-    component.required = required;
+    component.required = true;
     fixture.detectChanges();
     const requiredElement = fixture.debugElement.query(By.css('label'));
     expect(requiredElement).toBeDefined();
@@ -75,6 +74,7 @@ describe('KalFormFieldComponent', () => {
 
 });
 
+// tslint:disable-next-line:max-classes-per-file
 @Component({
   selector: 'kal-test',
   template: `
@@ -84,10 +84,13 @@ describe('KalFormFieldComponent', () => {
   `
 })
 export class Test2Component {
-  inputCtrl = new FormControl('', Validators.email);
+  @ViewChild(KalFormFieldComponent, {static: true})
+  formField: KalFormFieldComponent;
+
+  inputCtrl = new FormControl('', [Validators.email, Validators.required]);
 }
 
-describe('KalFormFieldComponent 2', () => {
+describe('KalFormFieldComponent Reactive form', () => {
   let component: Test2Component;
   let fixture: ComponentFixture<Test2Component>;
 
@@ -105,13 +108,18 @@ describe('KalFormFieldComponent 2', () => {
     fixture.detectChanges();
   });
 
+
+  it('shoud detect required validator', () => {
+    expect(component.formField.required).toBeTruthy();
+  });
+
   it('should not show error if field is pristine', () => {
     const wrapper = (fixture.debugElement.nativeElement as HTMLElement).querySelector('.kal-form-field__wrapper');
 
     expect(component.inputCtrl.pristine).toBeTruthy();
     expect(wrapper.classList.contains('kal-form-field--error')).toBeFalsy('should not add error class on pristine');
 
-    const event = new KeyboardEvent('input', { key: '2' });
+    const event = new KeyboardEvent('input', {key: '2'});
     const input = (fixture.nativeElement as HTMLElement).querySelector('input');
     input.value = '2';
     input.dispatchEvent(event);

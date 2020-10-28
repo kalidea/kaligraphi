@@ -28,6 +28,7 @@ import { uniqid } from '../../utils/helpers/uniq';
 
 @Component({
   selector: 'kal-radio-group',
+  exportAs: 'kalRadioGroup',
   template: `
       <ng-content></ng-content>`,
   providers: buildProviders(KalRadioGroupComponent),
@@ -203,6 +204,8 @@ export class KalRadioGroupComponent extends FormElementComponent<any> implements
 
 }
 
+
+// tslint:disable-next-line:max-classes-per-file
 @Component({
   selector: 'kal-radio',
   templateUrl: './kal-radio.component.html',

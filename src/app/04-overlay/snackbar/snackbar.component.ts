@@ -20,10 +20,10 @@ export class SnackbarComponent implements OnInit {
   }
 
   addSnackbar() {
-    const config = new KalSnackbarConfig({
+    const config: KalSnackbarConfig = {
       title: this.title,
       duration: this.duration
-    });
+    };
     if (this.actionLabel) {
       config.action = {
         callback: () => {

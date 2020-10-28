@@ -4,8 +4,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   KAL_FORM_FIELDS_GLOBAL_OPTIONS,
   KAL_INPUT_GLOBAL_OPTIONS,
+  KAL_SELECT_GLOBAL_OPTIONS,
   KalFormFieldOptions,
   KaligraphiModule,
+  KalSelectOptions,
   KalInputOptions
 } from '@kalidea/kaligraphi';
 
@@ -27,11 +29,15 @@ import localeData from 'dayjs/plugin/localeData';
 import weekday from 'dayjs/plugin/weekday';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import isBetween from 'dayjs/plugin/isBetween';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 
 dayjs.extend(localeData);
 dayjs.extend(weekday);
 dayjs.extend(customParseFormat);
 dayjs.extend(isBetween);
+dayjs.extend(isSameOrBefore);
+dayjs.extend(isSameOrAfter);
 
 @NgModule({
   imports: [
@@ -53,9 +59,15 @@ dayjs.extend(isBetween);
     RaterComponent,
     SelectComponent,
     SliderComponent,
-    TextareaComponent
+    TextareaComponent,
   ],
   providers: [
+    {
+      provide: KAL_SELECT_GLOBAL_OPTIONS,
+      useValue: {
+        displayCheckboxOnMultipleSelection: true
+      } as KalSelectOptions
+    },
     {
       provide: KAL_FORM_FIELDS_GLOBAL_OPTIONS,
       useValue: {

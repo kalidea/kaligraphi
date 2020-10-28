@@ -21,7 +21,7 @@ const exports = [
       useClass: GestureConfig
     }
   ],
-  exports: exports,
+  exports,
   declarations: exports
 })
 export class KalSliderModule {

@@ -11,6 +11,7 @@
         [formControl]="controlChange"
         [type]="type"
         [clearable]="clearable"
+        [defaultValue]="defaultValue"
         [placeholder]="placeholder"></kal-input>
       <div class="technical-value">
         <div class="technical-value__item">
@@ -66,7 +67,7 @@
       <kal-option value="number">number</kal-option>
       <kal-option value="currency">currency</kal-option>
       <kal-option value="phone">phone</kal-option>
-      <kal-option value="text">text</kal-option>
+      <kal-option value="time">time</kal-option>
     </kal-select>
   </kal-form-field>
 
@@ -80,6 +81,10 @@
 
   <kal-form-field>
     <kal-checkbox [ngModel]="disabled" (ngModelChange)="updateDisable($event)" label="disabled"></kal-checkbox>
+  </kal-form-field>
+
+  <kal-form-field>
+    <kal-input [(ngModel)]="defaultValue" label="defaultValue"></kal-input>
   </kal-form-field>
 
   <kal-form-field>

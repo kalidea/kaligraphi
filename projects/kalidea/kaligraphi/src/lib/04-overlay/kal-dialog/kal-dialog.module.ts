@@ -36,9 +36,6 @@ const exports = [
     OverlayModule,
     PortalModule
   ],
-  entryComponents: [
-    KalDialogContainerComponent,
-  ],
   exports: [...exports, OverlayModule, PortalModule],
   declarations: exports
 })

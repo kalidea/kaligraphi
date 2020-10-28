@@ -22,6 +22,7 @@ import { KalThemeDirective } from '../../99-utility/directives/kal-theme/kal-the
 
 @Component({
   selector: 'kal-menu',
+  exportAs: 'kalMenu',
   template: `
     <ng-template>
       <div

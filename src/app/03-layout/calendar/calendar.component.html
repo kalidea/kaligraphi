@@ -1,0 +1,41 @@
+<h1>Calendar</h1>
+
+<div class="example">
+
+  <div>
+    <kal-calendar
+      (datePicked)="datePicked($event)"
+      [selectedDate]="date"
+      [activatedDates]="selectedDates">
+    </kal-calendar>
+
+    <div class="technical-value">
+
+      <div class="technical-value__item">
+
+        <span>Date Picked</span>
+        <span>{{ date }}</span>
+
+      </div>
+
+      <div class="technical-value__item">
+
+        <span>Selected Dates</span>
+        <span>{{selectedDates | json}}</span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<div class="configurator">
+
+  <kal-form-field>
+    <kal-datepicker [(ngModel)]="newdate" (ngModelChange)="selectedDates.push($event)"
+                    label="Select new date"></kal-datepicker>
+  </kal-form-field>
+
+</div>

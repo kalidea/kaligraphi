@@ -1,20 +1,39 @@
-<div class="kal-select__trigger"
+<div (click)="toggleOverlay()"
      (focus)="toggleOverlay()"
-     (click)="toggleOverlay()"
-     [id]="id">
+     [id]="id"
+     class="kal-select__trigger">
+
   <div>
-    <ng-container *ngIf="triggerValue; else placeHolderTemplate">
-      <div class="kal-select__triggervalue">{{triggerValue}}</div>
+
+    <ng-container *ngIf="selection?.length > 0; else placeHolderTemplate">
+
+      <div class="kal-select__triggervalue">
+
+        <ng-container
+          *ngTemplateOutlet="triggerValue ? triggerValueTemplate : kalSelectPlaceholder?.view; context: {selection: selection}">
+        </ng-container>
+
+        <ng-template #triggerValueTemplate>
+          {{ triggerValue }}
+        </ng-template>
+
+      </div>
+
     </ng-container>
+
     <ng-template #placeHolderTemplate>
       <div class="kal-select__placeholder">{{ placeholder }}</div>
     </ng-template>
     <kal-icon>keyboard_arrow_down</kal-icon>
+
   </div>
+
 </div>
 
-<ng-template cdkPortal #optionsPortal="cdkPortal">
-  <div class="kal-select__overlay" [kalTheme]="theme">
+<ng-template #optionsPortal="cdkPortal" cdkPortal>
+  <div
+    [class]="overlayClassList"
+    [kalTheme]="theme">
     <ng-content></ng-content>
   </div>
 </ng-template>

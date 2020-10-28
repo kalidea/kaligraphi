@@ -16,6 +16,7 @@ export class KalTreeNode {
   }
 }
 
+// tslint:disable-next-line:max-classes-per-file
 export class KalFlatTreeNode {
 
   id: string;
@@ -35,6 +36,7 @@ export class KalFlatTreeNode {
         const key = k as keyof KalFlatTreeNode;
 
         if (typeof options[key] !== 'undefined') {
+          // @ts-ignore
           this[key] = options[key];
         }
       });

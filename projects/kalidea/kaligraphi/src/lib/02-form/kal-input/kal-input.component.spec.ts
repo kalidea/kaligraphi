@@ -1,15 +1,18 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { Component, LOCALE_ID, ViewChild } from '@angular/core';
-import localeFr from '@angular/common/locales/fr';
 import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+import { ChangeDetectorRef, Component, LOCALE_ID, ViewChild } from '@angular/core';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 import {
+  KalIconComponent,
+  KalIconModule
+} from 'projects/kalidea/kaligraphi/src/lib/01-typography/kal-icon/kal-icon.module';
+import {
+  KAL_INPUT_GLOBAL_OPTIONS,
   KalInputComponent,
   KalInputOptions
 } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-input/kal-input.component';
-import { KalIconComponent, KalIconModule } from 'projects/kalidea/kaligraphi/src/lib/01-typography/kal-icon/kal-icon.module';
-import { KAL_INPUT_GLOBAL_OPTIONS } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-input/kal-input.component';
 
 @Component({
   selector: 'kal-test',
@@ -21,6 +24,7 @@ import { KAL_INPUT_GLOBAL_OPTIONS } from 'projects/kalidea/kaligraphi/src/lib/02
       [limit]="limit"
       [icon]="icon"
       [clearable]="clearable"
+      [defaultValue]="defaultValue"
       [placeholder]="placeholder"></kal-input>
 
     <kal-input
@@ -44,9 +48,14 @@ class TestComponent {
 
   clearable = false;
 
+  defaultValue: any = '';
+
   @ViewChild('inputChange', {static: true}) inputComponent: KalInputComponent;
 
   @ViewChild('inputBlur', {static: true}) inputComponentBlur: KalInputComponent;
+
+  constructor(private cdr: ChangeDetectorRef) {
+  }
 
   get valueChanges() {
     return this.inputControl.valueChanges;
@@ -59,6 +68,12 @@ class TestComponent {
   set value(value: any) {
     this.inputControl.patchValue(value);
     this.inputControlBlur.patchValue(value, {emitEvent: false});
+  }
+
+  patchAndGet(value: any) {
+    this.inputControl.patchValue(value);
+    this.cdr.markForCheck();
+    return this.inputComponent.value + '';
   }
 }
 
@@ -111,7 +126,7 @@ describe('KalInputComponent', () => {
     expect(getInput().getAttribute('placeholder')).toEqual(placeholder);
   });
 
-  it('format number on patch value', () => {
+  it('should format [type=number] on patch value', () => {
     component.type = 'number';
     fixture.detectChanges();
     const userInput = '2,2';
@@ -119,12 +134,61 @@ describe('KalInputComponent', () => {
 
   });
 
-  it('format currency on patch value', () => {
+  it('should use defaultValue (0) for [type=number] on patch value ', () => {
+    component.type = 'number';
+
+    // replace '' / undefined / null
+    component.defaultValue = '0';
+    fixture.detectChanges();
+    ['', undefined, null].forEach(v => expect(component.patchAndGet(v)).toBe(component.defaultValue, `for value ${v}`));
+
+  });
+
+  it('should use defaultValue (true) for [type=number] on patch value ', fakeAsync(() => {
+    component.type = 'number';
+
+    component.defaultValue = 'true';
+    fixture.detectChanges();
+    ['', null].forEach(v => {
+      expect(component.patchAndGet(v)).toBe(component.defaultValue, `for value ${v}`);
+    });
+  }));
+
+ it('should let initial value for [type=number] on patch value ', () => {
+    component.type = 'number';
+
+    component.defaultValue = undefined;
+    // detect once before patching the value to have the writeValue method working as expected
+    fixture.detectChanges();
+
+    component.inputControl.patchValue('');
+    fixture.detectChanges();
+    expect(component.inputComponent.control.value).toBe('', '\'\' value should not be formatted when nullable');
+
+    component.inputControl.patchValue(null);
+    fixture.detectChanges();
+    expect(component.inputComponent.control.value).toBe(null, 'null value should not be formatted when nullable');
+  });
+
+  it('should format [type=currency] on patch value', () => {
+
+    // set type before patch value to update to formatter
     component.type = 'currency';
     fixture.detectChanges();
 
-    const userInput = '12.0';
-    expect(component.inputComponent.formater.toUser(userInput)).toBe('12,00', 'user input should be formatted');
+    // round up
+    const userInput1 = '12.078';
+    component.inputControl.patchValue(userInput1);
+
+    expect(component.inputComponent.formater.toUser(userInput1)).toBe('12,08', ' displayed value should be rounded');
+    expect(component.inputComponent.value + '').toEqual('12.08', ' form control value should be rounded');
+
+    // round down
+    const userInput2 = '2.522';
+    component.inputControl.patchValue(userInput2);
+
+    expect(component.inputComponent.formater.toUser(userInput2)).toBe('2,52', ' displayed value should be rounded');
+    expect(component.inputComponent.value + '').toEqual('2.52', ' form control value should be rounded');
   });
 
   it('format currency on patch value with wrong value', () => {
@@ -135,8 +199,7 @@ describe('KalInputComponent', () => {
     expect(component.inputComponent.formater.toUser(userInput)).toBe('12,00', 'user input should be formatted');
   });
 
-
-  it('format phone number on patch value', () => {
+  it('should format [type=phone] on patch value', () => {
     component.type = 'phone';
     fixture.detectChanges();
 

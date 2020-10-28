@@ -29,7 +29,7 @@ const exports = [
     CommonModule,
     ...exports
   ],
-  exports: exports,
+  exports,
   declarations: [],
 })
 export class KalOverlayModule {

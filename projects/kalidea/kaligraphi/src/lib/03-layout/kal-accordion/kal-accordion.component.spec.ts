@@ -130,6 +130,7 @@ class SetOfItemsComponent {
   multi = false;
 }
 
+// tslint:disable-next-line:max-classes-per-file
 @Component({
   template: `
     <kal-accordion>

@@ -25,9 +25,18 @@ export class AutocompleteComponent implements OnDestroy {
     'Louis XV the Beloved',
     'Louis XVI the Restorer of French Liberty',
     'Napoleon I',
+    'Jean VI',
+    'Pierre Ier',
+    'Pierre II',
+    'Huangdi (黄帝)',
+    'Zhuanxu (颛顼)',
+    'Da Yu (大禹)',
+    'Zhong Kang (仲康)',
   ];
 
   clearOnPick = false;
+
+  loading = false;
 
   @AutoUnsubscribe()
   private subscription = Subscription.EMPTY;
