@@ -13,7 +13,7 @@ Online Demo with last build available here : https://kalidea.github.io/kaligraph
 
 ### Installation
 
-* install package `npm i @kalidea/kaligraphi`
+* install package and dependencies`npm i @kalidea/kaligraphi lodash-es dayjs`
 * add main module to your app.module.ts : 
   ```
   @NgModule({
@@ -39,7 +39,7 @@ Online Demo with last build available here : https://kalidea.github.io/kaligraph
     @import ~@kalidea/kaligraphi/styles/parameters
     @import ~@kalidea/kaligraphi/styles/kaligraphi
     
-    +kaligraphi($parameters)
+    +kaligraphi($kal-parameters)
     ```
 
 ### Customization
