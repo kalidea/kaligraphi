@@ -2,6 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { KalTextareaComponent } from './kal-textarea.component';
+import { KalTextareaModule } from './kal-textarea.module';
+import { createDuplicateIdTest } from '../../utils/forms/form-element.spec';
 
 describe('KalTextareaComponent', () => {
   let component: KalTextareaComponent;
@@ -29,3 +31,5 @@ describe('KalTextareaComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+
+createDuplicateIdTest('kal-textarea', KalTextareaComponent, [KalTextareaModule]);

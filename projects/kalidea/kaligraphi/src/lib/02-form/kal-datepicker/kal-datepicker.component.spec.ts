@@ -12,6 +12,8 @@ import { KalDate } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-datepic
 import { FormElementComponent } from 'projects/kalidea/kaligraphi/src/lib/utils';
 import { KalUtilityModule } from 'projects/kalidea/kaligraphi/src/lib/99-utility/kal-utility.module';
 import { KalCalendarModule } from 'projects/kalidea/kaligraphi/src/lib/03-layout/kal-calendar/kal-calendar.module';
+import { createDuplicateIdTest } from '../../utils/forms/form-element.spec';
+import { KalDatepickerModule } from './kal-datepicker.module';
 
 describe('KalDatepickerComponent', () => {
   let component: KalDatepickerComponent;
@@ -71,3 +73,5 @@ describe('KalDatepickerComponent', () => {
     expect(JSON.parse(JSON.stringify(kalDate))).toEqual(kalDate.toString());
   });
 });
+
+createDuplicateIdTest('kal-datepicker', KalDatepickerComponent, [KalDatepickerModule]);

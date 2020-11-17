@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { KalCheckboxComponent } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-checkbox/kal-checkbox.component';
 import { FormElementComponent } from 'projects/kalidea/kaligraphi/src/lib/utils';
+import { createDuplicateIdTest } from '../../utils/forms/form-element.spec';
 import { KalCheckboxModule } from './kal-checkbox.module';
 
 describe('KalCheckboxComponent', () => {
@@ -17,8 +18,7 @@ describe('KalCheckboxComponent', () => {
       imports: [ReactiveFormsModule],
       declarations: [
         KalCheckboxComponent,
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
+      ]
     })
       .compileComponents();
   }));
@@ -126,38 +126,4 @@ describe('KalCheckboxComponent', () => {
 });
 
 
-const checkboxId = 'my_checkbox';
-
-@Component({
-  selector: 'kal-test',
-  template: `<kal-checkbox id="${checkboxId}"></kal-checkbox>`
-})
-class TestComponent {
-
-}
-
-describe('KalCheckboxComponent with id provided', () => {
-  let fixture: ComponentFixture<TestComponent>;
-
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [KalCheckboxModule],
-      declarations: [
-        TestComponent,
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
-  }));
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(TestComponent);
-    fixture.detectChanges();
-
-  });
-
-  it('should not duplicate id attribute', () => {
-    const HTMLElementsWithSameId = (fixture.nativeElement as HTMLElement).querySelectorAll('#' + checkboxId);
-    expect(HTMLElementsWithSameId.length).toEqual(1);
-  });
-});
+createDuplicateIdTest('kal-checkbox', KalCheckboxComponent, [KalCheckboxModule]);

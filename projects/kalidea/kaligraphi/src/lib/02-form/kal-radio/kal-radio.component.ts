@@ -235,10 +235,6 @@ export class KalRadioComponent implements OnInit, OnDestroy {
    */
   @Output() valueChange = new EventEmitter<KalRadioChange>();
 
-  // empty id attribute
-  @HostBinding('attr.id')
-  attributeId = null;
-
   /**
    * The position of the label after or before the radio button. Defaults to after
    */

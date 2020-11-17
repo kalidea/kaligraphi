@@ -5,6 +5,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { KalRadioModule } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-radio/kal-radio.module';
 import { KalRadioComponent, KalRadioGroupComponent } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-radio/kal-radio.component';
 import { KalRadioChange } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-radio/kal-radio-change';
+import { createDuplicateIdTest } from '../../utils/forms/form-element.spec';
 
 @Component({
   template: `
@@ -312,3 +313,5 @@ describe('Radio buttons inside a group with event', () => {
   });
 
 });
+
+createDuplicateIdTest('kal-radio', KalRadioComponent, [KalRadioModule]);
