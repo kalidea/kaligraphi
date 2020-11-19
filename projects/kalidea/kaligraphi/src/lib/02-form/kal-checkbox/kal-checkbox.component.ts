@@ -41,10 +41,6 @@ export class KalCheckboxComponent extends FormElementComponent<boolean> implemen
   @AutoUnsubscribe()
   controlSubscription: Subscription;
 
-  // empty id attribute
-  @HostBinding('attr.id')
-  attributeId = null;
-
   @ViewChild('input', {static: true}) input: ElementRef<HTMLInputElement>;
 
   constructor(private cdr: ChangeDetectorRef) {
@@ -52,6 +48,10 @@ export class KalCheckboxComponent extends FormElementComponent<boolean> implemen
   }
 
   private _value = false;
+
+  get checkboxId(): string {
+    return this.id + '_checkbox';
+  }
 
   get value() {
     return this._value;

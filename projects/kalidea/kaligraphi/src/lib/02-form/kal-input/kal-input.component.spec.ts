@@ -13,6 +13,8 @@ import {
   KalInputComponent,
   KalInputOptions
 } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-input/kal-input.component';
+import { createDuplicateIdTest } from '../../utils/forms/form-element.spec';
+import { KalInputModule } from './kal-input.module';
 
 @Component({
   selector: 'kal-test',
@@ -363,3 +365,5 @@ describe('KalInputComponent with injected kal-input options', () => {
   });
 
 });
+
+createDuplicateIdTest('kal-input', KalInputComponent, [KalInputModule]);

@@ -93,10 +93,6 @@ export class KalInputComponent extends FormElementComponent implements OnChanges
    */
   @ViewChild('input', {static: true}) inputElement: ElementRef<HTMLInputElement>;
 
-  // empty id attribute
-  @HostBinding('attr.id')
-  attributeId = null;
-
   // set tabindex to be able to receive focus event (KalAutoFocus)
   @HostBinding('attr.tabindex')
   tabIndex = 0;

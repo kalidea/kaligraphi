@@ -9,6 +9,8 @@ import { KalSelectComponent } from 'projects/kalidea/kaligraphi/src/lib/02-form/
 import { KalOptionComponent, KalOptionModule } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-option/kal-option.module';
 import { KalIconModule } from 'projects/kalidea/kaligraphi/src/lib/01-typography/kal-icon/kal-icon.module';
 import { KalUtilityModule } from 'projects/kalidea/kaligraphi/src/lib/99-utility/kal-utility.module';
+import { createDuplicateIdTest } from '../../utils/forms/form-element.spec';
+import { KalSelectModule } from './kal-select.module';
 
 function configureTestingModule(declarations: any[]) {
   TestBed.configureTestingModule({
@@ -296,3 +298,4 @@ class TestSelectOneComponent {
   @ViewChildren(KalOptionComponent) options: QueryList<KalOptionComponent>;
 }
 
+createDuplicateIdTest('kal-select', KalSelectComponent, [KalSelectModule]);

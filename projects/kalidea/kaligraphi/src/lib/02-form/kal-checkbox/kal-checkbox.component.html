@@ -1,6 +1,7 @@
+<!-- required to build an id for checkbox because of label -->
 <input #input
        type="checkbox"
-       [id]="id"
+       [attr.id]="checkboxId"
        [formControl]="control"/>
-<label [for]="id" >{{  label }}<span></span></label>
+<label [for]="checkboxId" >{{  label }}<span></span></label>
 
