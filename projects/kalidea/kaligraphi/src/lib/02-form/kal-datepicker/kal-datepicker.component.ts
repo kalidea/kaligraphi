@@ -163,12 +163,12 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
    * date is invalid.
    */
   get selectedDate(): KalDate {
-    return this.currentDate.valid ? this.currentDate : new KalDate();
+    return this.currentDate?.valid ? this.currentDate : new KalDate();
   }
 
   get parentControlValidator() {
     const parentControl = this.injector.get(NgControl, null);
-    return parentControl.control.validator;
+    return parentControl?.control?.validator;
   }
 
   private get positionStrategy() {
@@ -198,9 +198,9 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   }
 
   toggle() {
-    if (this.getOverlayRef().hasAttached()) {
-      this.close();
-    } else {
+    // when clicking on icon, input get focus
+    // we should only open if closed
+    if (!this.getOverlayRef().hasAttached()) {
       this.open(null, 'icon');
     }
   }
