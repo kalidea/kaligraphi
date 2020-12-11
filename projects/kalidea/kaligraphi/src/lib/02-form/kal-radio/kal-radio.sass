@@ -124,6 +124,46 @@
   kal-radio-group
     display: inline-block
     background-color: #ffffff
+    &.kal-theme--bascule
+      display: inline-flex
+      kal-radio
+        padding: 0
+        label
+          display: inline-flex
+          flex-flow: row wrap
+          justify-content: flex-start
+          align-items: center
+          border: 1px solid #D6D6D6
+          padding: 8px 12px 8px 12px
+          height: auto
+        &:not(:last-child) label
+          border-right: none
+        div
+          display: none
+        label::after
+          display: none
+
+        [type="radio"]
+          + label
+            &::before
+              position: static
+              display: inline-block
+              content: "\00A0"
+              width: auto
+              height: auto
+              border: none
+              border-radius: 0
+              background-color: transparent
+          &:checked
+            + label
+              background-color: #11C992
+              border: 1px solid #11C992
+              color: white
+              &::before
+                content: "\2713"
+                background-color: #11C992
+                padding-right: 10px
+
     &.kal-theme--reverse
       background-color: #1f1f1f
 
