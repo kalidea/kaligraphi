@@ -22,7 +22,6 @@
     "luxon": "^1.25.0"
   },
   "dependencies": {
-    "luxon": "^1.25.0",
     "tslib": "^2.0.0"
   }
 }
