@@ -7,12 +7,11 @@ import {
   Output,
   ViewEncapsulation
 } from '@angular/core';
-import dayjs, { UnitType } from 'dayjs';
-import { KalDate } from '../../../02-form/kal-datepicker/kal-date';
+import { KalDurationUnit, KalDate } from '../../../02-form/kal-datepicker/kal-date';
 
 
 export interface DateUnits {
-  unit: UnitType;
+  unit: KalDurationUnit;
   value: number;
 }
 
@@ -56,7 +55,7 @@ export class KalCalendarMultiViewComponent implements AfterViewInit {
    * @example ['Jan', 'Feb', ...]
    */
   get shortMonths(): string[] {
-    return dayjs().localeData().monthsShort();
+    return KalDate.months('short');
   }
 
   /**

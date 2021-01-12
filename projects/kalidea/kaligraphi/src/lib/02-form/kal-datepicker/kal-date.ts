@@ -1,21 +1,15 @@
-import dayjs, { Dayjs, OpUnitType, UnitType } from 'dayjs';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
-import isBetween from 'dayjs/plugin/isBetween';
-import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-import localeData from 'dayjs/plugin/localeData';
+import { DateTime, DurationUnit, Info, Interval, StringUnitLength, ToRelativeUnit, UnitLength } from 'luxon';
 import { formatDate } from './kal-date-converter';
 
-export type KalDateType = string | Dayjs | Date | KalDate;
-
+// factorize types of Object used internally
+type D = DateTime;
+// we should not use unit name without final 's'
+// because it's not handle correctly in luxon in diff method for exemple.
+export type KalDurationUnit = ToRelativeUnit;
 /**
- * Configure DayJS
+ * global type
  */
-dayjs.extend(customParseFormat);
-dayjs.extend(isBetween);
-dayjs.extend(isSameOrBefore);
-dayjs.extend(isSameOrAfter);
-dayjs.extend(localeData);
+export type KalDateType = string | DateTime | Date | KalDate;
 
 /**
  * Helper
@@ -27,13 +21,13 @@ export function coerceKalDateProperty(rawDate: KalDateType): KalDate {
 export class KalDate {
 
   /**
-   * Current DayJS class object.
+   * Current "Type D" object.
    */
-  private value: Dayjs;
+  private value: D;
 
   constructor(date?: KalDateType, format: string = 'dd/MM/yyyy') {
     if (arguments.length === 0 || date === null) {
-      this.value = dayjs();
+      this.value = DateTime.local();
     } else {
       this.value = KalDate.getDate(date, format);
     }
@@ -43,7 +37,7 @@ export class KalDate {
    * Whether the KalDate is valid.
    */
   get valid(): boolean {
-    return this.value && this.value.isValid();
+    return this.value && this.value.isValid;
   }
 
   /**
@@ -61,68 +55,62 @@ export class KalDate {
     const timeZoneOffset = (new Date().getTimezoneOffset() / -60);
     const sign = Math.sign(timeZoneOffset) < 0 ? '-' : '+';
     const value = Math.abs(timeZoneOffset) + '';
+    console.log(timeZoneOffset)
     return sign + (value.length < 2 ? '0' + value : value) + ':00';
   }
 
+  static now(): D {
+    return DateTime.local();
+  }
+
+  static months(format: UnitLength = 'long'): string[]  {
+    return Info.months(format);
+  }
+
+  static days(format: StringUnitLength = 'long'): string[]  {
+    return Info.weekdays(format);
+  }
+
   /**
-   * Returns a DayJS object
+   * Returns a "type D" object
+   * @param rawDate Date as string
    * @param format Date format to provide if date is a `string`
    */
-  private static getDate(rawDate: KalDateType, format = 'dd/MM/yyyy'): Dayjs {
-    let date: Dayjs;
+  private static getDate(rawDate: KalDateType, format = 'dd/MM/yyyy'): D {
+    let date: DateTime;
 
     if (rawDate instanceof Date) {
-      date = dayjs(rawDate);
+      date = DateTime.fromJSDate(rawDate);
     } else if (rawDate + '' === rawDate) {
       if (!format) {
-        throw new Error('You should provide a date format');
+        date = DateTime.fromISO(rawDate);
+      } else {
+        date = this.parseRawDate(rawDate, format);
       }
-
-
-      date = this.parseRawDate(rawDate, format);
     } else if (rawDate instanceof KalDate) {
       date = (rawDate as KalDate).getDate();
     } else {
-      // else this is a DayJS date
-      date = rawDate as Dayjs;
+      // else this is a "type D" date
+      date = rawDate as D;
     }
 
     return date;
   }
 
-  private static parseRawDate(rawDate: string, format: string): Dayjs {
-    const dayJsParseFormat = formatDate(format);
+  private static parseRawDate(rawDate: string, format: string): D {
 
-    // we should replace 'Z' timezone flag by +00:00
     if (rawDate.endsWith('Z')) {
       rawDate = rawDate.slice(0, -1) + '+00:00';
     }
 
-    // remove timezone for comparaison
-    const timeZoneRegexp = '(Z|(\\+|-)([0-9]{4}|([0-9]{2}:[0-9]{2})))$';
-    const timeZoneOffset = KalDate.getLocalGMTOffset();
-    const timeZoneMatch = rawDate.match(new RegExp(timeZoneRegexp));
-    // timeZone is current timezone if not provided
-    let timeZone = timeZoneMatch && timeZoneMatch.length > 0 ? timeZoneMatch[1] : timeZoneOffset;
-    if (timeZone === '-00:00') {
-      timeZone = '+00:00';
-    }
-    const rawDateWithoutTimeZone = rawDate.replace(new RegExp('^(.*)' + timeZoneRegexp), '$1');
-    const dayJsParseFormatWithoutTimeZone = dayJsParseFormat.replace('Z', '');
-
-    // @ts-ignore
-    if (dayjs(rawDateWithoutTimeZone, dayJsParseFormatWithoutTimeZone).format(dayJsParseFormatWithoutTimeZone) !== rawDateWithoutTimeZone) {
-      return dayjs(new Date(NaN));
-    } else {
-      return dayjs(rawDateWithoutTimeZone + timeZone, dayJsParseFormat);
-    }
+    return DateTime.fromFormat(rawDate, format);
   }
 
   /**
    * Return JS Date format
    */
   toDate(): Date | null {
-    return this.valid ? this.getDate().toDate() : null;
+    return this.valid ? this.getDate().toJSDate() : null;
   }
 
   /**
@@ -130,9 +118,8 @@ export class KalDate {
    */
   toFormat(format = 'dd/MM/yyyy'): string {
     const date = this.getDate();
-
-    if (date && date.isValid()) {
-      return date.format(formatDate(format));
+    if (date && this.valid) {
+      return date.toFormat(format);
     } else {
       return '';
     }
@@ -142,105 +129,128 @@ export class KalDate {
    * Get day.
    */
   getDay(): number {
-    return this.value.date();
+    return this.value.day;
   }
 
   /**
    * Get month.
    */
   getMonth(): number {
-    return this.value.month();
+    return this.value.month;
   }
 
   /**
    * Get year.
    */
   getYear(): number {
-    return this.value.year();
+    return this.value.year;
   }
 
   /**
    * add {amount} {unit} to this date
    */
-  add(amount: number, unit: OpUnitType): KalDate {
-    this.value = this.value.add(amount, unit);
-    return this;
+  add(amount: number, unit: KalDurationUnit = 'days'): KalDate {
+    return new KalDate(this.value.plus({[unit]: amount}));
+  }
+
+  /**
+   * substract {amount} {unit} to this date
+   */
+  substract(amount: number, unit: KalDurationUnit = 'days'): KalDate {
+    return new KalDate(this.value.minus({[unit]: amount}));
+  }
+
+  /**
+   * calcul start of specified unit ( like startOf('week') for example )
+   */
+  startOf(unit: KalDurationUnit): KalDate {
+    return new KalDate(this.getDate().startOf(unit));
+  }
+
+  /**
+   * calcul start of specified unit ( like startOf('week') for example )
+   */
+  endOf(unit: KalDurationUnit): KalDate {
+    return new KalDate(this.getDate().endOf(unit));
   }
 
   /**
    * Returns DayJS representation of KalDate.
    */
-  getDate(): Dayjs {
+  getDate(): D {
     return this.value;
   }
 
   /**
    * Returns a boolean indicating whether the current date is the same as the supplied date.
    */
-  isSame(date: KalDateType, unit: OpUnitType = 'day'): boolean {
+  isSame(date: KalDateType, unit: KalDurationUnit = 'days'): boolean {
     const comparisonDate = KalDate.getDate(date);
-    return this.value.isSame(comparisonDate, unit);
+    return this.value.hasSame(comparisonDate, unit);
   }
 
   /**
    * Returns a boolean indicating whether the current date is before the supplied date.
    */
-  isBefore(date: KalDateType, unit: OpUnitType = 'day'): boolean {
+  isBefore(date: KalDateType, unit: KalDurationUnit = 'days'): boolean {
+    // TODO: create decorator to manage this redundent code
     const comparisonDate = KalDate.getDate(date);
-    return this.value.isBefore(comparisonDate, unit);
+    // we can have floating value like 0.5
+    // that's why we compare with more than 1
+    return this.diff(comparisonDate, unit) <= 1;
   }
 
   /**
    * Returns a boolean indicating whether the current date is before the supplied date.
    */
-  isSameOrBefore(date: KalDateType, unit: OpUnitType = 'day'): boolean {
+  isSameOrBefore(date: KalDateType, unit: KalDurationUnit = 'days'): boolean {
     const comparisonDate = KalDate.getDate(date);
-    return this.value.isSameOrBefore(comparisonDate, unit);
+    return this.isSame(comparisonDate, unit) || this.isBefore(comparisonDate, unit);
   }
 
   /**
    * Returns a boolean indicating whether the current date is after the supplied date.
    */
-  isAfter(date: KalDateType, unit: OpUnitType = 'day'): boolean {
+  isAfter(date: KalDateType, unit: KalDurationUnit = 'days'): boolean {
     const comparisonDate = KalDate.getDate(date);
-    return this.value.isAfter(comparisonDate, unit);
+    // we can have floating value like 0.5
+    // that's why we compare with more than 1
+    return this.diff(comparisonDate, unit) >= 1;
   }
 
   /**
    * Returns a boolean indicating whether the current date is after the supplied date.
    */
-  isSameOrAfter(date: KalDateType, unit: OpUnitType = 'day'): boolean {
+  isSameOrAfter(date: KalDateType, unit: KalDurationUnit = 'days'): boolean {
     const comparisonDate = KalDate.getDate(date);
-    return this.value.isSameOrAfter(comparisonDate, unit);
+    return this.isSame(comparisonDate, unit) || this.isAfter(comparisonDate, unit);
   }
 
   /**
    * return true if current date is today
    */
   isToday(): boolean {
-    return this.isSame(dayjs());
+    return this.isSame(KalDate.now());
   }
 
   /**
    * Whether the current date is between the `start` and `end` dates.
-   * @see https://github.com/iamkun/dayjs/blob/dev/docs/en/Plugin.md#isbetween
    */
   isBetween(start: KalDateType,
-            end: KalDateType,
-            exclusions = {start: false, end: false}): boolean {
+            end: KalDateType): boolean {
     const startDate = coerceKalDateProperty(start).getDate();
     const endDate = coerceKalDateProperty(end).getDate();
 
-    const exclusionsString = (exclusions.start ? '(' : '[') + (exclusions.end ? ')' : ']');
+    const interval: Interval = Interval.fromDateTimes(startDate, endDate);
 
-    return this.value.isBetween(startDate, endDate, null, exclusionsString);
+    return interval.contains(this.getDate());
   }
 
   /**
    * set current date for this object
    */
-  set(unit: UnitType, value: number): KalDate {
-    this.value = this.value.set(unit, value);
+  set(unit: KalDurationUnit, value: number): KalDate {
+    this.value = this.value.set({[unit]: value});
     return this;
   }
 
@@ -252,7 +262,11 @@ export class KalDate {
   }
 
   toJSON(): string {
-    return this.toString();
+    return this.getDate().toJSON();
+  }
+
+  diff(compare: D, unit: KalDurationUnit = 'days') {
+    return this.value.diff(compare, [unit])[unit];
   }
 
 }

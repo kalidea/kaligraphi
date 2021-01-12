@@ -12,19 +12,10 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import {AbstractControl} from '@angular/forms';
-import dayjs from 'dayjs';
-import weekday from 'dayjs/plugin/weekday';
 
 import { KalDate } from '../../../02-form/kal-datepicker/kal-date';
 import { KalDatepickerComponent } from '../../../02-form/kal-datepicker/kal-datepicker.component';
-import { move } from '../../../utils/helpers/arrays';
 import { DateUnits } from '../kal-calendar-multi-view/kal-calendar-multi-view.component';
-
-
-/**
- * Configure DayJS
- */
-dayjs.extend(weekday);
 
 @Component({
   selector: 'kal-calendar-month',
@@ -79,13 +70,7 @@ export class KalCalendarMonthComponent implements OnInit {
    * @example ['M', 'T', ...]
    */
   get narrowWeekDays(): string[] {
-    const days: string[] = dayjs().localeData().weekdaysMin().map(day => day.charAt(0).toLocaleUpperCase());
-    const firstDayOfWeek: number = dayjs().localeData().firstDayOfWeek();
-
-    // Handle the display depending on the beginning of the week.
-    // On european countries the week starts on `Monday` but on DayJS, days array starts with `Sunday`.
-    // We move `Sunday` at the end of the array if needed.
-    return firstDayOfWeek > 0 ? move(days, 0, days.length - 1) : days;
+    return KalDate.days().map(day => day.charAt(0).toLocaleUpperCase());
   }
 
   /**
@@ -93,16 +78,16 @@ export class KalCalendarMonthComponent implements OnInit {
    */
   refreshMonthDatesList(): void {
     this.monthDatesList = [];
-    const firstDayOfCurrentMonth = this._currentDate.getDate().startOf('month');
-    const firstDayOfLastWeekOfPreviousMonth = firstDayOfCurrentMonth.startOf('week');
-    const lastDayOfNextWeekOfNextMonth = firstDayOfCurrentMonth.add(5, 'week').endOf('week');
+    const firstDayOfCurrentMonth = this._currentDate.startOf('months');
+    const firstDayOfLastWeekOfPreviousMonth = firstDayOfCurrentMonth.startOf('weeks');
+    const lastDayOfNextWeekOfNextMonth = firstDayOfCurrentMonth.add(5, 'weeks').endOf('weeks');
 
     // number of days with float part to not miss a day
-    const numberOfDays = lastDayOfNextWeekOfNextMonth.diff(firstDayOfLastWeekOfPreviousMonth, 'day', true);
+    const numberOfDays = lastDayOfNextWeekOfNextMonth.diff(firstDayOfLastWeekOfPreviousMonth.getDate(), 'days');
 
     // create an array with all days in selected date month
     for (let i = 0; i < (numberOfDays); i++) {
-      this.monthDatesList.push(new KalDate(firstDayOfLastWeekOfPreviousMonth.add(i, 'day')));
+      this.monthDatesList.push(new KalDate(firstDayOfLastWeekOfPreviousMonth.add(i, 'days')));
     }
   }
 
@@ -118,7 +103,7 @@ export class KalCalendarMonthComponent implements OnInit {
    * Change displayed month according to which arrow was clicked on datepicker header.
    */
   updateMonth(amount: number) {
-    this.currentDate = this.currentDate.add(amount, 'month');
+    this.currentDate = this.currentDate.add(amount, 'months');
     this.cdr.markForCheck();
   }
 

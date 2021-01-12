@@ -3,11 +3,14 @@
  * inspired by https://stackoverflow.com/a/49554548
  */
 import { coerceArray, coerceBooleanProperty, coerceCssPixelValue, coerceNumberProperty } from '@angular/cdk/coercion';
+import { coerceKalDateProperty } from '../../02-form/kal-datepicker/kal-date';
 
-export type KAL_COERCE_TYPES = 'boolean' | 'number' | 'cssPixelValue' | 'array';
+export type KAL_COERCE_TYPES = 'boolean' | 'number' | 'cssPixelValue' | 'array' | 'date';
 
 function coerceFromType(value: any, type: KAL_COERCE_TYPES, fallback) {
   switch (type) {
+    case 'date':
+      return coerceKalDateProperty(value);
     case 'array':
       return coerceArray(value);
     case 'number':
@@ -18,6 +21,12 @@ function coerceFromType(value: any, type: KAL_COERCE_TYPES, fallback) {
       return coerceCssPixelValue(value);
   }
   return null;
+}
+
+export function CoerceP(type: KAL_COERCE_TYPES): ParameterDecorator {
+  return (target: any, propertyKey: string | symbol, parameterIndex: number) => {
+    console.log({target, propertyKey, parameterIndex});
+  };
 }
 
 export function Coerce(type: KAL_COERCE_TYPES, fallback?): PropertyDecorator & MethodDecorator {

@@ -12,7 +12,6 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
-import dayjs from 'dayjs';
 import { KalDate } from '../../02-form/kal-datepicker/kal-date';
 import { KalCalendarView } from '../../02-form/kal-datepicker/kal-datepicker.component';
 import { buildProviders, Coerce } from '../../utils';
@@ -76,7 +75,7 @@ export class KalCalendarComponent implements AfterViewInit {
     if (this._maxYear) {
       return this._maxYear;
     } else {
-      return dayjs().year() + this.yearsIncrement;
+      return KalDate.now().year + this.yearsIncrement;
     }
   }
 
@@ -112,7 +111,7 @@ export class KalCalendarComponent implements AfterViewInit {
   get currentPeriod(): string {
     const date = this.calendarMonth?.currentDate ?? new KalDate();
 
-    const month = dayjs().localeData().months()[date.getMonth()];
+    const month = date.getDate().toLocaleString({ month: 'long'});
     return month ? capitalize(month) + ' ' + date.getYear() : '';
   }
 

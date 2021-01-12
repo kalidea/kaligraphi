@@ -20,7 +20,6 @@ import {DOCUMENT} from '@angular/common';
 import {FormControl, NgControl} from '@angular/forms';
 import {fromEvent, merge, Observable, of, Subscription} from 'rxjs';
 import {filter, map, take, tap} from 'rxjs/operators';
-import dayjs from 'dayjs';
 
 import {coerceKalDateProperty, KalDate, KalDateType} from './kal-date';
 import {buildProviders, FormElementComponent} from '../../utils/forms/form-element.component';
@@ -116,6 +115,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
 
   /**
    * Max year that should be displayed in year selection.
+   * TODO: factorize with kal-calendar
    */
   @Input()
   @Coerce('number')
@@ -125,7 +125,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     } else if (this.isCurrentDateValid) {
       return this.currentDate.getYear() + this.yearsIncrement;
     } else {
-      return dayjs().year() + this.yearsIncrement;
+      return KalDate.now().year + this.yearsIncrement;
     }
   }
 
