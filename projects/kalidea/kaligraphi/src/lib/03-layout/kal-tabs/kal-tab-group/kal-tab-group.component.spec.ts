@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { PortalModule } from '@angular/cdk/portal';
@@ -39,7 +39,7 @@ describe('KalTabGroupComponent', () => {
   let tabHeaderInstances: KalTabHeaderComponent[];
   let headers: DebugElement[];
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         PortalModule
@@ -224,7 +224,7 @@ describe('KalTabGroupComponent', () => {
   let groupInstance: KalTabGroupComponent;
   let tabHeaderInstances: KalTabHeaderComponent[];
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,

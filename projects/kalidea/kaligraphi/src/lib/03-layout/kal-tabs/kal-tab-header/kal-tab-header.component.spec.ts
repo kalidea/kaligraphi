@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { KalTabHeaderComponent } from 'projects/kalidea/kaligraphi/src/lib/03-layout/kal-tabs/kal-tab-header/kal-tab-header.component';
@@ -7,7 +7,7 @@ describe('KalTabHeaderComponent', () => {
   let component: KalTabHeaderComponent;
   let fixture: ComponentFixture<KalTabHeaderComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         KalTabHeaderComponent

@@ -1,7 +1,7 @@
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 import { ChangeDetectorRef, Component, LOCALE_ID, ViewChild } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import {
@@ -92,7 +92,7 @@ describe('KalInputComponent', () => {
     registerLocaleData(localeFr, 'fr');
   });
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       providers: [{provide: LOCALE_ID, useValue: 'fr-FR'}],
       imports: [
@@ -316,7 +316,7 @@ describe('KalInputComponent with injected kal-input options', () => {
   let fixture: ComponentFixture<TestComponent>;
   let kalInputInstance;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       providers: [{
         provide: KAL_INPUT_GLOBAL_OPTIONS,

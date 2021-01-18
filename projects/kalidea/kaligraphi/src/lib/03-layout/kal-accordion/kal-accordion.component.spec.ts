@@ -1,4 +1,4 @@
-import { async, inject, TestBed } from '@angular/core/testing';
+import { inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { Component, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FocusMonitor } from '@angular/cdk/a11y';
@@ -11,7 +11,7 @@ import { KalAccordionModule } from 'projects/kalidea/kaligraphi/src/lib/03-layou
 describe('KalAccordionComponent', () => {
   let focusMonitor: FocusMonitor;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         KalAccordionModule,

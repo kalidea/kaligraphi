@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { PortalModule } from '@angular/cdk/portal';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
@@ -9,7 +9,7 @@ describe('KalTabBodyComponent', () => {
   let component: KalTabBodyComponent;
   let fixture: ComponentFixture<KalTabBodyComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         PortalModule

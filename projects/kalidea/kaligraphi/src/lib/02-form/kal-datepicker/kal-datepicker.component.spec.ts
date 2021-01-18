@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { Overlay } from '@angular/cdk/overlay';
 import { PortalModule } from '@angular/cdk/portal';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -19,7 +19,7 @@ describe('KalDatepickerComponent', () => {
   let component: KalDatepickerComponent;
   let fixture: ComponentFixture<KalDatepickerComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         KalIconModule,

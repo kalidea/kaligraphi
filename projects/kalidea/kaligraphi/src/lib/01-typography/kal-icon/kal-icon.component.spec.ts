@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { Component } from '@angular/core';
@@ -16,7 +16,7 @@ describe('KalIconComponent', () => {
   let component: TestKalIconComponent;
   let fixture: ComponentFixture<TestKalIconComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         KalIconModule

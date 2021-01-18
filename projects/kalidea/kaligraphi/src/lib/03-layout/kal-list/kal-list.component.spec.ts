@@ -1,4 +1,4 @@
-import { async, ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, TestBed, waitForAsync } from '@angular/core/testing';
 import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
@@ -186,7 +186,7 @@ describe('TestListItemComponent', () => {
   let disabled: DebugElement[];
   let kalListInstances: KalListComponent<any>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         KalListModule,
@@ -362,7 +362,7 @@ describe('TestListItemWithObservableComponent', () => {
   let component: TestListItemWithObservableComponent;
   let fixture: ComponentFixture<TestListItemWithObservableComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         KalListModule,

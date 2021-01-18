@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { PortalModule } from '@angular/cdk/portal';
 
 import { KalTabComponent } from 'projects/kalidea/kaligraphi/src/lib/03-layout/kal-tabs/kal-tab/kal-tab.component';
@@ -7,7 +7,7 @@ describe('KalTabComponent', () => {
   let component: KalTabComponent;
   let fixture: ComponentFixture<KalTabComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         PortalModule

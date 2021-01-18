@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { Component, ViewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
@@ -8,7 +8,7 @@ describe('KalSliderComponent logic', () => {
   let component: KalSliderComponent;
   let fixture: ComponentFixture<KalSliderComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [KalSliderComponent]
     })
@@ -157,7 +157,7 @@ describe('KalSliderComponent view', () => {
   let component: KalTestComponent;
   let fixture: ComponentFixture<KalTestComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [ReactiveFormsModule],
       declarations: [KalSliderComponent, KalTestComponent]
