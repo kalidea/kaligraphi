@@ -48,7 +48,7 @@ export class KalStepperComponent extends CdkStepper implements AfterContentInit 
 
   /** Steps that the stepper holds. */
   @ContentChildren(forwardRef(() => KalStepComponent))
-  _steps: QueryList<KalStepComponent>;
+  steps: QueryList<KalStepComponent>;
 
   @ContentChildren(KalStepHeaderDirective)
   _stepHeader: QueryList<KalStepHeaderDirective>;
@@ -64,7 +64,7 @@ export class KalStepperComponent extends CdkStepper implements AfterContentInit 
   }
 
   ngAfterContentInit(): void {
-    this._steps.changes.pipe(
+    this.steps.changes.pipe(
       takeUntil(this._destroyed)
     ).subscribe(() => this._stateChanged());
   }

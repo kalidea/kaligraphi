@@ -106,7 +106,7 @@ describe('KalDate class', () => {
     expect(new KalDate('15/11/2019').isToday()).toBeFalsy();
   });
 
-  it('should local timezone if not provided', () => {
+  it('should add local timezone if not provided', () => {
     const rawDate = '2020-03-30T15:15:20.110';
     const date = new KalDate(rawDate, 'yyyy-MM-ddTHH:mm:ss.SSS');
     expect(date.toFormat('yyyy-MM-ddTHH:mm:ss.SSSZZZZZ')).toBe(rawDate + KalDate.getLocalGMTOffset());
