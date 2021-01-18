@@ -18,8 +18,8 @@ import { Directionality } from '@angular/cdk/bidi';
 })
 export class KalTreeNodePaddingDirective<T> extends CdkTreeNodePadding<T> {
 
-  constructor(treeNode: CdkTreeNode<T>, tree: CdkTree<T>, renderer: Renderer2, element: ElementRef<HTMLElement>, dir: Directionality) {
-    super(treeNode, tree, renderer, element, dir);
+  constructor(treeNode: CdkTreeNode<T>, tree: CdkTree<T>, element: ElementRef<HTMLElement>, dir: Directionality) {
+    super(treeNode, tree, element, dir);
   }
 
   /** The indent for each level. Default number 40px from material design menu sub-menu spec. */
