@@ -47,7 +47,7 @@ export class KalCheckboxComponent extends FormElementComponent<boolean> implemen
     super();
   }
 
-  private _value = false;
+  protected _value = false;
 
   get checkboxId(): string {
     return this.id + '_checkbox';

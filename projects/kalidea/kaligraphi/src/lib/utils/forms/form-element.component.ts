@@ -36,15 +36,30 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
    * id of this form element
    */
   @Input() id = uniqid('form-');
+
   /**
    * name of this form element
    */
-  @Input() name = this.id;
+  @Input()
+  get name(): string {
+    return this._name;
+  }
+
+  set name(value: string) {
+    this._name = value;
+  }
 
   /**
    * value for this form element
    */
-  @Input() value: T;
+  @Input()
+  get value(): T {
+    return this._value;
+  }
+
+  set value(value: T) {
+    this._value = value;
+  }
 
   /**
    * tab index for this element
@@ -87,6 +102,17 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
   public ngControl: NgControl;
 
   public control: FormControl;
+
+  /**
+   * private property storing value for this form element
+   */
+  protected _name = this.id;
+
+  /**
+   * private property storing value for this form element
+   */
+  protected _value: T;
+
   /**
    * is this form element disabled
    */
@@ -209,7 +235,7 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
 
     let disabled = this.disabled;
     let updateOn: FormHooks = this.updateOnEvent;
-    let value = this.value;
+    let value = this._value;
 
     if (!this.superControl) {
       return new FormControl({value, disabled}, {updateOn});
