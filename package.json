@@ -47,7 +47,6 @@
     "cpx": "^1.5.0",
     "node-sass": "^4.9.4",
     "scss-bundle": "^2.4.0",
-    "tsickle": "^0.38.1",
     "tslint-jasmine-rules": "^1.5.1",
     "@types/node": "^12.11.1",
     "@types/jasmine": "~3.5.0",
