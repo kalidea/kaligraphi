@@ -9,7 +9,10 @@ import { KalStepLabelDirective } from './kal-step-label.directive';
   exportAs: 'kalstep',
   template: '<ng-template><ng-content></ng-content></ng-template>',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    {provide: CdkStep, useExisting: KalStepComponent},
+  ]
 })
 export class KalStepComponent extends CdkStep {
 

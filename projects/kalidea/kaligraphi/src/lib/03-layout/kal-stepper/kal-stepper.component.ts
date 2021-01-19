@@ -5,10 +5,9 @@ import {
   ContentChildren,
   Directive,
   ElementRef,
-  forwardRef,
   HostBinding,
-  Input,
   QueryList,
+  ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
 import { CdkStepper, StepperOrientation } from '@angular/cdk/stepper';
@@ -44,29 +43,26 @@ export class KalStepHeaderDirective implements FocusableOption {
 })
 export class KalStepperComponent extends CdkStepper implements AfterContentInit {
 
-  @HostBinding('attr.role') role = 'tablist';
+  @HostBinding('attr.role')
+  role = 'tablist';
 
-  /** Steps that the stepper holds. */
-  @ContentChildren(forwardRef(() => KalStepComponent))
-  steps: QueryList<KalStepComponent>;
+  @HostBinding('attr.aria-orientation')
+  protected _orientation: StepperOrientation = 'horizontal';
 
-  @ContentChildren(KalStepHeaderDirective)
+  @ViewChildren(KalStepHeaderDirective)
   _stepHeader: QueryList<KalStepHeaderDirective>;
 
-  @Input()
-  @HostBinding('attr.aria-orientation')
-  get orientation() {
-    return this._orientation;
-  }
+  /** Full list of steps inside the stepper, including inside nested steppers. */
+  @ContentChildren(KalStepComponent, {descendants: true}) _steps: QueryList<KalStepComponent>;
 
-  set orientation(orientation: StepperOrientation) {
-    this._orientation = orientation;
-  }
+  /** Steps that belong to the current stepper, excluding ones from nested steppers. */
+  readonly steps: QueryList<KalStepComponent> = new QueryList<KalStepComponent>();
 
-  ngAfterContentInit(): void {
-    this.steps.changes.pipe(
-      takeUntil(this._destroyed)
-    ).subscribe(() => this._stateChanged());
+  ngAfterContentInit() {
+    super.ngAfterContentInit();
+    // Mark the component for change detection whenever the content children query changes
+    this.steps.changes.pipe(takeUntil(this._destroyed)).subscribe(() => {
+      this._stateChanged();
+    });
   }
-
 }
