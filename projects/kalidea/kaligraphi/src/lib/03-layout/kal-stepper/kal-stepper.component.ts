@@ -6,6 +6,7 @@ import {
   Directive,
   ElementRef,
   HostBinding,
+  Input,
   QueryList,
   ViewChildren,
   ViewEncapsulation
@@ -46,8 +47,17 @@ export class KalStepperComponent extends CdkStepper implements AfterContentInit 
   @HostBinding('attr.role')
   role = 'tablist';
 
-  @HostBinding('attr.aria-orientation')
   protected _orientation: StepperOrientation = 'horizontal';
+
+  @HostBinding('attr.aria-orientation')
+  @Input()
+  get orientation() {
+    return this._orientation;
+  }
+
+  set orientation(orientation: StepperOrientation){
+    this._orientation = orientation;
+  }
 
   @ViewChildren(KalStepHeaderDirective)
   _stepHeader: QueryList<KalStepHeaderDirective>;
