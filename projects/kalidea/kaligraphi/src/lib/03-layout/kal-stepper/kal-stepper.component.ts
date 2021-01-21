@@ -47,18 +47,6 @@ export class KalStepperComponent extends CdkStepper implements AfterContentInit 
   @HostBinding('attr.role')
   role = 'tablist';
 
-  protected _orientation: StepperOrientation = 'horizontal';
-
-  @HostBinding('attr.aria-orientation')
-  @Input()
-  get orientation() {
-    return this._orientation;
-  }
-
-  set orientation(orientation: StepperOrientation){
-    this._orientation = orientation;
-  }
-
   @ViewChildren(KalStepHeaderDirective)
   _stepHeader: QueryList<KalStepHeaderDirective>;
 
@@ -67,6 +55,18 @@ export class KalStepperComponent extends CdkStepper implements AfterContentInit 
 
   /** Steps that belong to the current stepper, excluding ones from nested steppers. */
   readonly steps: QueryList<KalStepComponent> = new QueryList<KalStepComponent>();
+
+  protected _orientation: StepperOrientation = 'horizontal';
+
+  @HostBinding('attr.aria-orientation')
+  @Input()
+  get orientation() {
+    return this._orientation;
+  }
+
+  set orientation(orientation: StepperOrientation) {
+    this._orientation = orientation;
+  }
 
   ngAfterContentInit() {
     super.ngAfterContentInit();
