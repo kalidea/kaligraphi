@@ -18,7 +18,9 @@
     "build:playground": "ng build playground --prod",
     "build:all": "ng build --prod && npm run build:playground",
     "verify": "ng lint @kalidea/kaligraphi && npm run test:ci && npm run build:all",
-    "verify:windows": "ng lint @kalidea/kaligraphi && npm run build:all && npm run test"
+    "verify:windows": "ng lint @kalidea/kaligraphi && npm run build:all && npm run test",
+    "prepublish-next": "npm run build; cp README.md dist/kalidea/kaligraphi/;cd dist/kalidea/kaligraphi/",
+    "publish-next": "npm publish --access public --tag next"
   },
   "private": true,
   "dependencies": {
