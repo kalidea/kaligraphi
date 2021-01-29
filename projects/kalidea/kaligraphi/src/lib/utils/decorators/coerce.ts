@@ -3,7 +3,7 @@
  * inspired by https://stackoverflow.com/a/49554548
  */
 import { coerceArray, coerceBooleanProperty, coerceCssPixelValue, coerceNumberProperty } from '@angular/cdk/coercion';
-import { coerceKalDateProperty } from '../../02-form/kal-date/kal-date';
+import { coerceKalDateProperty } from '../../99-utility/kal-date/kal-date';
 
 export type KAL_COERCE_TYPES = 'boolean' | 'number' | 'cssPixelValue' | 'array' | 'date';
 

@@ -12,7 +12,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
-import { KalDate } from '../../02-form/kal-date/kal-date';
+import { KalDate } from '../../99-utility/kal-date/kal-date';
 import { KalCalendarView } from '../../02-form/kal-datepicker/kal-datepicker.component';
 import { buildProviders, Coerce } from '../../utils';
 import { capitalize } from '../../utils/helpers/strings';

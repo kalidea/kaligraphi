@@ -1,7 +1,6 @@
 import { coerceArray } from '@angular/cdk/coercion';
 import { InjectionToken } from '@angular/core';
 import { DateTime, Info, Interval, StringUnitLength, ToRelativeUnit, UnitLength } from 'luxon';
-import { KalDateOptions } from 'src/kaligraphi/lib/02-form/kal-datepicker/kal-datepicker.component';
 
 
 /**
@@ -17,6 +16,12 @@ import { KalDateOptions } from 'src/kaligraphi/lib/02-form/kal-datepicker/kal-da
  *       }],
  * </code>
  */
+
+export interface KalDateOptions {
+  parseFormats?: KalDateFormat;
+  displayFormat?: string;
+}
+
 export const KAL_DATE_GLOBAL_OPTIONS =
   new InjectionToken<KalDateOptions>('KAL_DATE_GLOBAL_OPTIONS');
 

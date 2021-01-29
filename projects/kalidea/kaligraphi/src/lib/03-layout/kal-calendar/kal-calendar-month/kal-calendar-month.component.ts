@@ -13,7 +13,7 @@ import {
 } from '@angular/core';
 import {AbstractControl} from '@angular/forms';
 
-import { KalDate } from '../../../02-form/kal-date/kal-date';
+import { KalDate } from '../../../99-utility/kal-date/kal-date';
 import { KalDatepickerComponent } from '../../../02-form/kal-datepicker/kal-datepicker.component';
 import { DateUnits } from '../kal-calendar-multi-view/kal-calendar-multi-view.component';
 

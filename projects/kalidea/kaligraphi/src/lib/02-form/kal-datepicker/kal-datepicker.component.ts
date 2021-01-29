@@ -21,27 +21,18 @@ import { DOCUMENT } from '@angular/common';
 import { FormControl, NgControl } from '@angular/forms';
 import { fromEvent, merge, Observable, of, Subscription } from 'rxjs';
 import { filter, map, take, tap } from 'rxjs/operators';
-import { KalDateService } from 'src/kaligraphi/lib/02-form/kal-date/kal-date.service';
 
-import {
-  KalDate,
-  KalDateFormat,
-  KalDateType
-} from '../kal-date/kal-date';
 import { buildProviders, FormElementComponent } from '../../utils/forms/form-element.component';
 import { KalInputComponent } from '../kal-input/kal-input.component';
 import { Coerce } from '../../utils/decorators/coerce';
 import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
+import { KalDate, KalDateFormat, KalDateType } from '../../99-utility/kal-date/kal-date';
+import { KalDateService } from '../../99-utility/kal-date/kal-date.service';
 
 /**
  * Possible views for the calendar.
  */
 export type KalCalendarView = 'month' | 'multi';
-
-export interface KalDateOptions {
-  parseFormats?: KalDateFormat;
-  displayFormat?: string;
-}
 
 @Component({
   selector: 'kal-datepicker',

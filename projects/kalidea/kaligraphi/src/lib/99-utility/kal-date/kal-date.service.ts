@@ -5,9 +5,9 @@ import {
   KAL_DATE_GLOBAL_OPTIONS,
   KalDate,
   KalDateFormat,
-  KalDateType
-} from 'src/kaligraphi/lib/02-form/kal-date/kal-date';
-import { KalDateOptions } from 'src/kaligraphi/lib/02-form/kal-datepicker/kal-datepicker.component';
+  KalDateType,
+  KalDateOptions
+} from '../kal-date/kal-date';
 
 @Injectable({
   providedIn: 'root'
