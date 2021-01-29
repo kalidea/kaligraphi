@@ -6,7 +6,7 @@ import { DateTime, Info, Interval, StringUnitLength, ToRelativeUnit, UnitLength 
 /**
  * InjectionToken that can be used to specify the global date options.
  * example :
- * <code>
+ * <pre>
  *     providers: [{
  *           provide: KAL_DATE_GLOBAL_OPTIONS,
  *           useValue: {
@@ -14,7 +14,7 @@ import { DateTime, Info, Interval, StringUnitLength, ToRelativeUnit, UnitLength 
  *               displayFormat: 'dd/MM/yyyy'
  *           } as KalDateOptions
  *       }],
- * </code>
+ * </pre>
  */
 
 export interface KalDateOptions {
