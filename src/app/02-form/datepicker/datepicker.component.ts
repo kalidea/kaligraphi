@@ -2,13 +2,7 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewEncapsulatio
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { AutoUnsubscribe, KalDate } from '@kalidea/kaligraphi';
 import { Subscription } from 'rxjs';
-import dayjs from 'dayjs';
-import 'dayjs/locale/fr';
 
-/**
- * Configure DayJS
- */
-dayjs.locale('fr');
 
 @Component({
   selector: 'app-datepicker',

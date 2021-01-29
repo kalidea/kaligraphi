@@ -16,8 +16,6 @@ import { KalDatepickerComponent } from './kal-datepicker.component';
 
 export * from './kal-datepicker.component';
 
-export { KalDate } from './kal-date';
-
 const exports = [
   KalDatepickerComponent,
 ];

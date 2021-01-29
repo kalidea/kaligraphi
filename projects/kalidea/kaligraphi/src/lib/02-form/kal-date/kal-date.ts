@@ -1,5 +1,25 @@
-import { DateTime, DurationUnit, Info, Interval, StringUnitLength, ToRelativeUnit, UnitLength } from 'luxon';
-import { formatDate } from './kal-date-converter';
+import { coerceArray } from '@angular/cdk/coercion';
+import { InjectionToken } from '@angular/core';
+import { DateTime, Info, Interval, StringUnitLength, ToRelativeUnit, UnitLength } from 'luxon';
+import { KalDateOptions } from 'src/kaligraphi/lib/02-form/kal-datepicker/kal-datepicker.component';
+
+
+/**
+ * InjectionToken that can be used to specify the global date options.
+ * example :
+ * <code>
+ *     providers: [{
+ *           provide: KAL_DATE_GLOBAL_OPTIONS,
+ *           useValue: {
+ *               parseFormats: ['dd/MM/yyyy', 'ddMMyyyy', 'yy-MM-dd'],
+ *               displayFormat: 'dd/MM/yyyy'
+ *           } as KalDateOptions
+ *       }],
+ * </code>
+ */
+export const KAL_DATE_GLOBAL_OPTIONS =
+  new InjectionToken<KalDateOptions>('KAL_DATE_GLOBAL_OPTIONS');
+
 
 // factorize types of Object used internally
 type D = DateTime;
@@ -11,12 +31,16 @@ export type KalDurationUnit = ToRelativeUnit;
  */
 export type KalDateType = string | DateTime | Date | KalDate;
 
+export type KalDateFormat = string | string[];
+
 /**
  * Helper
  */
-export function coerceKalDateProperty(rawDate: KalDateType): KalDate {
-  return KalDate.parseDate(rawDate);
+export function coerceKalDateProperty(rawDate: KalDateType, format?: KalDateFormat): KalDate {
+  return KalDate.parseDate(rawDate, format);
 }
+
+export const kalDefaultDateFormat = 'dd/MM/yyyy';
 
 export class KalDate {
 
@@ -25,7 +49,8 @@ export class KalDate {
    */
   private value: D;
 
-  constructor(date?: KalDateType, format: string = 'dd/MM/yyyy') {
+  constructor(date?: KalDateType, format: KalDateFormat = kalDefaultDateFormat) {
+
     if (arguments.length === 0 || date === null) {
       this.value = DateTime.local();
     } else {
@@ -43,8 +68,8 @@ export class KalDate {
   /**
    * Parse a raw date and returns a KalDate object.
    */
-  static parseDate(rawDate: KalDateType): KalDate {
-    return new KalDate(rawDate);
+  static parseDate(rawDate: KalDateType, format?: KalDateFormat): KalDate {
+    return new KalDate(rawDate, format);
   }
 
   /**
@@ -55,7 +80,6 @@ export class KalDate {
     const timeZoneOffset = (new Date().getTimezoneOffset() / -60);
     const sign = Math.sign(timeZoneOffset) < 0 ? '-' : '+';
     const value = Math.abs(timeZoneOffset) + '';
-    console.log(timeZoneOffset)
     return sign + (value.length < 2 ? '0' + value : value) + ':00';
   }
 
@@ -63,11 +87,11 @@ export class KalDate {
     return DateTime.local();
   }
 
-  static months(format: UnitLength = 'long'): string[]  {
+  static months(format: UnitLength = 'long'): string[] {
     return Info.months(format);
   }
 
-  static days(format: StringUnitLength = 'long'): string[]  {
+  static days(format: StringUnitLength = 'long'): string[] {
     return Info.weekdays(format);
   }
 
@@ -76,7 +100,7 @@ export class KalDate {
    * @param rawDate Date as string
    * @param format Date format to provide if date is a `string`
    */
-  private static getDate(rawDate: KalDateType, format = 'dd/MM/yyyy'): D {
+  private static getDate(rawDate: KalDateType, format: KalDateFormat = kalDefaultDateFormat): D {
     let date: DateTime;
 
     if (rawDate instanceof Date) {
@@ -97,13 +121,20 @@ export class KalDate {
     return date;
   }
 
-  private static parseRawDate(rawDate: string, format: string): D {
+  private static parseRawDate(rawDate: string, formatsList: KalDateFormat): D {
 
     if (rawDate.endsWith('Z')) {
       rawDate = rawDate.slice(0, -1) + '+00:00';
     }
 
-    return DateTime.fromFormat(rawDate, format);
+    if (typeof formatsList === 'string' ) {
+      formatsList = coerceArray(formatsList);
+    }
+
+    const matchingFormat = formatsList.find( f => DateTime.fromFormat(rawDate, f).isValid);
+
+    return matchingFormat ? DateTime.fromFormat(rawDate, matchingFormat) : DateTime.invalid('unmatched format');
+
   }
 
   /**
@@ -116,7 +147,7 @@ export class KalDate {
   /**
    * Returns a string that contains the date formatted with the given format.
    */
-  toFormat(format = 'dd/MM/yyyy'): string {
+  toFormat(format = kalDefaultDateFormat): string {
     const date = this.getDate();
     if (date && this.valid) {
       return date.toFormat(format);

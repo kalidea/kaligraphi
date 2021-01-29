@@ -1,3 +1,4 @@
+
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -13,25 +14,34 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import {Overlay, OverlayRef} from '@angular/cdk/overlay';
-import {TemplatePortal} from '@angular/cdk/portal';
-import {ESCAPE} from '@angular/cdk/keycodes';
-import {DOCUMENT} from '@angular/common';
-import {FormControl, NgControl} from '@angular/forms';
-import {fromEvent, merge, Observable, of, Subscription} from 'rxjs';
-import {filter, map, take, tap} from 'rxjs/operators';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { TemplatePortal } from '@angular/cdk/portal';
+import { ESCAPE } from '@angular/cdk/keycodes';
+import { DOCUMENT } from '@angular/common';
+import { FormControl, NgControl } from '@angular/forms';
+import { fromEvent, merge, Observable, of, Subscription } from 'rxjs';
+import { filter, map, take, tap } from 'rxjs/operators';
+import { KalDateService } from 'src/kaligraphi/lib/02-form/kal-date/kal-date.service';
 
-import {coerceKalDateProperty, KalDate, KalDateType} from './kal-date';
-import {buildProviders, FormElementComponent} from '../../utils/forms/form-element.component';
-import {KalInputComponent} from '../kal-input/kal-input.component';
-import {Coerce} from '../../utils/decorators/coerce';
-import {AutoUnsubscribe} from '../../utils/decorators/auto-unsubscribe';
-
+import {
+  KalDate,
+  KalDateFormat,
+  KalDateType
+} from '../kal-date/kal-date';
+import { buildProviders, FormElementComponent } from '../../utils/forms/form-element.component';
+import { KalInputComponent } from '../kal-input/kal-input.component';
+import { Coerce } from '../../utils/decorators/coerce';
+import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 
 /**
  * Possible views for the calendar.
  */
 export type KalCalendarView = 'month' | 'multi';
+
+export interface KalDateOptions {
+  parseFormats?: KalDateFormat;
+  displayFormat?: string;
+}
 
 @Component({
   selector: 'kal-datepicker',
@@ -47,7 +57,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   /**
    * Reference to calendar template.
    */
-  @ViewChild('datepickerCalendar', {static: true}) datepickerCalendar: TemplatePortal<any>;
+  @ViewChild('datepickerCalendar', {static: true}) datepickerCalendar: TemplatePortal;
 
   /**
    * reference to the kal input
@@ -63,6 +73,8 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
    * Current displayed date.
    */
   currentDate: KalDate;
+
+  @Input() format: KalDateFormat;
 
   /**
    * close datepicker when user select a date
@@ -86,6 +98,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   @AutoUnsubscribe()
   private backdropClickSubscription = Subscription.EMPTY;
 
+  // noinspection JSMismatchedCollectionQueryUpdate
   /**
    * Subscriptions to watch.
    */
@@ -107,6 +120,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
               private elementRef: ElementRef<HTMLElement>,
               private cdr: ChangeDetectorRef,
               private injector: Injector,
+              private readonly dateService: KalDateService,
               @Optional() @Inject(DOCUMENT) private _document: any) {
     super();
   }
@@ -248,12 +262,13 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     }
   }
 
+
   /**
    * @inheritDoc
    */
   writeValue(value: KalDateType) {
     // transform given value as date
-    const kalDate = coerceKalDateProperty(value);
+    const kalDate = this.dateService.coerce(value);
 
     // store the date
     this.currentDate = kalDate;
@@ -268,41 +283,6 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
       this.setInputValue(value ? kalDate : null, {emitEvent: false});
 
     }
-  }
-
-  ngOnDestroy() {
-    super.ngOnDestroy();
-    this.close();
-  }
-
-  ngAfterContentInit(): void {
-
-    this.control = this.createControlAndSubscriptions(this.injector, 'blur');
-
-    // watch value changes
-    const valueChangesSubscription = this.control.valueChanges.pipe(
-      map(value => !!value ? coerceKalDateProperty(value) : null), // transform as date or send null if the input is empty
-      tap((date: KalDate) => {
-        // notify parent for validation
-        super.notifyUpdate(date);
-
-        // emit value
-        this.valueChanges.emit(date);
-
-        // if there's no date or if the given input is invalid, we should apply one
-        // date manually so the datepicker can open at the current date
-        if (date === null || !date.valid) {
-          date = new KalDate();
-        }
-
-        this.currentDate = date;
-      })
-    ).subscribe();
-    this.subscriptions.push(valueChangesSubscription);
-
-    const focusOnKalInputSubscription = fromEvent<MouseEvent>(this.kalInput.inputElement.nativeElement, 'focus')
-      .subscribe(() => this.open());
-    this.subscriptions.push(focusOnKalInputSubscription);
   }
 
   private getOutsideClickStream(): Observable<any> {
@@ -341,5 +321,39 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
       .subscribe(() => this.close());
 
     this.subscriptions.push(escapeKeySubscription);
+  }
+
+  ngOnDestroy() {
+    super.ngOnDestroy();
+    this.close();
+  }
+
+  ngAfterContentInit(): void {
+
+    this.control = this.createControlAndSubscriptions(this.injector, 'blur');
+
+    // watch value changes
+    const valueChangesSubscription = this.control.valueChanges.pipe(
+      map(value => !!value ? this.dateService.coerce(value) : null), // transform as date or send null if the input is empty
+      tap((date: KalDate) => {
+        // notify parent for validation
+        super.notifyUpdate(date);
+        // emit value
+        this.valueChanges.emit(date);
+
+        // if there's no date or if the given input is invalid, we should apply one
+        // date manually so the datepicker can open at the current date
+        if (!date.valid) {
+          date = new KalDate();
+        }
+
+        this.currentDate = date;
+      })
+    ).subscribe();
+    this.subscriptions.push(valueChangesSubscription);
+
+    const focusOnKalInputSubscription = fromEvent<MouseEvent>(this.kalInput.inputElement.nativeElement, 'focus')
+      .subscribe(() => this.open());
+    this.subscriptions.push(focusOnKalInputSubscription);
   }
 }

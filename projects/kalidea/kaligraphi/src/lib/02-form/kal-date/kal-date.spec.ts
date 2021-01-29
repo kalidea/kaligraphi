@@ -1,9 +1,9 @@
 import { DateTime } from 'luxon';
-import { KalDate } from './kal-date';
+import { KalDate, kalDefaultDateFormat } from './kal-date';
 
 // config
 const dates = [
-  {format: 'dd/MM/yyyy', date: '08/09/2018'},
+  {format: kalDefaultDateFormat, date: '08/09/2018'},
   {format: 'dd/MM/yy', date: '08/09/18'},
   {format: 'dd/M/yy', date: '08/9/18'},
   {format: 'd/MM/yy', date: '8/09/18'},
@@ -15,13 +15,12 @@ let currentDate: string;
 describe('KalDate class', () => {
 
   beforeEach(() => {
-    currentDate = DateTime.local().toFormat('dd/MM/yyyy');
+    currentDate = DateTime.local().toFormat(kalDefaultDateFormat);
   });
 
   it('should parse all types of date', () => {
 
     const stringDate = '24/09/2018';
-    const format = 'dd/MM/yyyy';
 
     // string format
     expect(new KalDate(stringDate).toString())
@@ -29,13 +28,13 @@ describe('KalDate class', () => {
       .toEqual(stringDate);
 
     // Luxon format
-    const dateTypeD = DateTime.fromFormat(stringDate, format);
+    const dateTypeD = DateTime.fromFormat(stringDate, kalDefaultDateFormat);
     expect(new KalDate(dateTypeD).toString())
       .withContext('should be able to parse luxon format')
       .toEqual(stringDate);
 
     // KalDate format
-    const kalDate = new KalDate(stringDate, format);
+    const kalDate = new KalDate(stringDate, kalDefaultDateFormat);
     expect(new KalDate(kalDate).toString())
       .withContext('should be able to parse KalDate format')
       .toEqual(stringDate);
@@ -108,8 +107,6 @@ describe('KalDate class', () => {
   it('should add local timezone if not provided', () => {
     const rawDate = '2020-03-30T15:15:20.110';
     const date = new KalDate(rawDate, 'yyyy-MM-dd\'T\'HH:mm:ss.SSS');
-    console.log(date, date.getDate().zoneName, date.getDate().toString());
-    console.log(KalDate.getLocalGMTOffset());
     expect(date.toFormat('yyyy-MM-dd\'T\'HH:mm:ss.SSSZZ')).toBe(rawDate + KalDate.getLocalGMTOffset());
   });
 

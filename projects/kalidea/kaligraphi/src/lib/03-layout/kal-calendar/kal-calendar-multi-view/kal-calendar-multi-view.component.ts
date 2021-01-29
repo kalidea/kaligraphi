@@ -7,7 +7,7 @@ import {
   Output,
   ViewEncapsulation
 } from '@angular/core';
-import { KalDurationUnit, KalDate } from '../../../02-form/kal-datepicker/kal-date';
+import { KalDurationUnit, KalDate } from '../../../02-form/kal-date/kal-date';
 
 
 export interface DateUnits {
