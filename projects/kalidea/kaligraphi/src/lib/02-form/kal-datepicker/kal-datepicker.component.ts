@@ -26,7 +26,7 @@ import { buildProviders, FormElementComponent } from '../../utils/forms/form-ele
 import { KalInputComponent } from '../kal-input/kal-input.component';
 import { Coerce } from '../../utils/decorators/coerce';
 import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
-import { KalDate, KalDateFormat, KalDateType } from '../../99-utility/kal-date/kal-date';
+import { coerceKalDateProperty, KalDate, KalDateFormat, KalDateType } from '../../99-utility/kal-date/kal-date';
 
 /**
  * Possible views for the calendar.
@@ -256,7 +256,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
    */
   writeValue(value: KalDateType) {
     // transform given value as date
-    const kalDate = KalDate.parseDate(value);
+    const kalDate = coerceKalDateProperty(value);
 
     // store the date
     this.currentDate = kalDate;
@@ -322,7 +322,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
 
     // watch value changes
     const valueChangesSubscription = this.control.valueChanges.pipe(
-      map(value => !!value ? KalDate.parseDate(value) : null), // transform as date or send null if the input is empty
+      map(value => !!value ? coerceKalDateProperty(value) : null), // transform as date or send null if the input is empty
       tap((date: KalDate) => {
         // notify parent for validation
         super.notifyUpdate(date);

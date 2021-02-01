@@ -31,7 +31,6 @@ const exports = [
     KalIconModule,
     KalUtilityModule,
     KalCalendarModule,
-    KalDateModule,
   ],
   exports,
   declarations: [
