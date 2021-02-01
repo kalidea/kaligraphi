@@ -75,7 +75,7 @@ export class KalCalendarComponent implements AfterViewInit {
     if (this._maxYear) {
       return this._maxYear;
     } else {
-      return KalDate.now().year + this.yearsIncrement;
+      return new KalDate().getDate().year + this.yearsIncrement;
     }
   }
 

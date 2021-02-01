@@ -128,7 +128,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     } else if (this.isCurrentDateValid) {
       return this.currentDate.getYear() + this.yearsIncrement;
     } else {
-      return KalDate.now().year + this.yearsIncrement;
+      return new KalDate().getDate().year + this.yearsIncrement;
     }
   }
 
@@ -256,7 +256,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
    */
   writeValue(value: KalDateType) {
     // transform given value as date
-    const kalDate = coerceKalDateProperty(value);
+    const kalDate = coerceKalDateProperty(value, this.format);
 
     // store the date
     this.currentDate = kalDate;
@@ -322,7 +322,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
 
     // watch value changes
     const valueChangesSubscription = this.control.valueChanges.pipe(
-      map(value => !!value ? coerceKalDateProperty(value) : null), // transform as date or send null if the input is empty
+      map(value => !!value ? coerceKalDateProperty(value, this.format) : null), // transform as date or send null if the input is empty
       tap((date: KalDate) => {
         // notify parent for validation
         super.notifyUpdate(date);

@@ -73,7 +73,7 @@ export class KalDate {
    * Whether the KalDate is valid.
    */
   get valid(): boolean {
-    return this.value && this.value.isValid;
+    return this.value?.isValid;
   }
 
   /**
@@ -94,8 +94,8 @@ export class KalDate {
     return sign + (value.length < 2 ? '0' + value : value) + ':00';
   }
 
-  static now(): D {
-    return DateTime.local();
+  static now(): KalDate {
+    return new KalDate();
   }
 
   static months(format: UnitLength = 'long'): string[] {
@@ -272,7 +272,7 @@ export class KalDate {
    * return true if current date is today
    */
   isToday(): boolean {
-    return this.isSame(KalDate.now());
+    return this.isSame(DateTime.local());
   }
 
   /**
