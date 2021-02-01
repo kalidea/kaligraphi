@@ -10,7 +10,6 @@ export * from './directives/kal-click-outside/kal-click-outside.directive';
 export * from './directives/kal-autofocus/kal-autofocus.directive';
 export * from './directives/kal-theme/kal-theme.directive';
 export * from './kal-date/kal-date';
-export * from './kal-date/kal-date.service';
 
 const exports = [
   KalClickOutsideDirective,

@@ -1,7 +1,7 @@
 import { coerceArray } from '@angular/cdk/coercion';
 import { InjectionToken } from '@angular/core';
 import { DateTime, Info, Interval, StringUnitLength, ToRelativeUnit, UnitLength } from 'luxon';
-
+import { KalDateModule } from '../../99-utility/kal-date/kal-date.module';
 
 /**
  * InjectionToken that can be used to specify the global date options.
@@ -24,7 +24,6 @@ export interface KalDateOptions {
 
 export const KAL_DATE_GLOBAL_OPTIONS =
   new InjectionToken<KalDateOptions>('KAL_DATE_GLOBAL_OPTIONS');
-
 
 // factorize types of Object used internally
 type D = DateTime;
@@ -54,13 +53,20 @@ export class KalDate {
    */
   private value: D;
 
-  constructor(date?: KalDateType, format: KalDateFormat = kalDefaultDateFormat) {
-
+  constructor(date?: KalDateType, format?: KalDateFormat) {
     if (arguments.length === 0 || date === null) {
       this.value = DateTime.local();
     } else {
+      format = [
+        ...coerceArray(format),
+        ...coerceArray(KalDate.getOption('parseFormats', kalDefaultDateFormat))
+      ].filter(f => !!f);
       this.value = KalDate.getDate(date, format);
     }
+  }
+
+  private static getOption<U extends keyof KalDateOptions, R>(key: U, fallback?: KalDateOptions[U]): KalDateOptions[U] {
+    return KalDateModule.kalDateOptions?.[key] || fallback;
   }
 
   /**
@@ -152,7 +158,7 @@ export class KalDate {
   /**
    * Returns a string that contains the date formatted with the given format.
    */
-  toFormat(format = kalDefaultDateFormat): string {
+  toFormat(format = KalDate.getOption('displayFormat', kalDefaultDateFormat)): string {
     const date = this.getDate();
     if (date && this.valid) {
       return date.toFormat(format);

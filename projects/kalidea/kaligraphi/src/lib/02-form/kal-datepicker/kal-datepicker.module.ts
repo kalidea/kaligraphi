@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { PortalModule } from '@angular/cdk/portal';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { ReactiveFormsModule } from '@angular/forms';
+import { KalDateModule } from '../../99-utility/kal-date/kal-date.module';
 
 import { KalInputModule } from '../kal-input/kal-input.module';
 import { KalIconModule } from '../../01-typography/kal-icon/kal-icon.module';
@@ -29,7 +30,8 @@ const exports = [
     KalInputModule,
     KalIconModule,
     KalUtilityModule,
-    KalCalendarModule
+    KalCalendarModule,
+    KalDateModule,
   ],
   exports,
   declarations: [
