@@ -341,7 +341,10 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
     this.subscriptions.push(valueChangesSubscription);
 
     const focusOnKalInputSubscription = fromEvent<MouseEvent>(this.kalInput.inputElement.nativeElement, 'focus')
-      .subscribe(() => this.open());
+      .pipe(
+        tap(() => this.open())
+      )
+      .subscribe();
     this.subscriptions.push(focusOnKalInputSubscription);
   }
 }
