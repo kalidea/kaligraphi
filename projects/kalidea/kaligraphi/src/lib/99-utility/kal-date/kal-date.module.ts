@@ -3,7 +3,7 @@ import { KAL_DATE_GLOBAL_OPTIONS, KalDateOptions } from './kal-date';
 
 @NgModule()
 export class KalDateModule {
-  static kalDateOptions: KalDateOptions;
+  static kalDateOptions: KalDateOptions = {};
 
   constructor(@Optional() @Inject(KAL_DATE_GLOBAL_OPTIONS) kalDateOptions: KalDateOptions) {
     // trick to use injected options in decorators
