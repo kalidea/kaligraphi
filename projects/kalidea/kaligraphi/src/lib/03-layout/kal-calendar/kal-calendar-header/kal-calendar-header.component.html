@@ -1,12 +1,12 @@
 <div class="kal-calendar-header__wrapper">
-  <kal-icon (click)="updateMonth(-1)">
+  <kal-icon (click)="updateMonthAmount(-1)">
     navigate_before
   </kal-icon>
 
   <ng-content></ng-content>
 
   <kal-icon *ngIf="!isMultiView"
-            (click)="updateMonth(1)">
+            (click)="updateMonthAmount(1)">
     navigate_next
   </kal-icon>
 

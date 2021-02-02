@@ -57,7 +57,6 @@ export class KalCarouselItemDirective<T> implements OnInit, OnDestroy {
     private viewContainerRef: ViewContainerRef,
     private template: TemplateRef<CarouselContext<T>>,
     private builder: AnimationBuilder,
-    private elementRef: ElementRef,
     @Host() @Optional() @Inject(forwardRef(() => KalCarouselComponent)) private carousel: KalCarouselComponent<T>) {
   }
 

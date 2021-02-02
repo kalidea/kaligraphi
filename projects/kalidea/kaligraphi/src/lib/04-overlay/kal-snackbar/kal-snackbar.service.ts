@@ -1,5 +1,4 @@
-import { ComponentRef, Injectable, Injector, Optional } from '@angular/core';
-import { Location } from '@angular/common';
+import { ComponentRef, Injectable, Injector } from '@angular/core';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal, PortalInjector } from '@angular/cdk/portal';
 
@@ -7,6 +6,7 @@ import { KalSnackbarConfig } from './kal-snackbar-config';
 import { KalSnackbarComponent } from './kal-snackbar.component';
 import { KAL_SNACKBAR_CONFIG } from './kal-snackbar.injector';
 import { KalOverlayManager } from '../../utils/classes/kal-overlay-manager';
+import { take, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -24,8 +24,7 @@ export class KalSnackbarService extends KalOverlayManager {
   private waitingSnackbarsList: KalSnackbarConfig[] = [];
 
   constructor(protected overlay: Overlay,
-              private injector: Injector,
-              @Optional() private location?: Location) {
+              private injector: Injector) {
     super(overlay, 'snackbar');
   }
 
@@ -44,6 +43,13 @@ export class KalSnackbarService extends KalOverlayManager {
       config.active = true;
 
       const snackbarRef = this.attachSnackbar<D>(overlayRef, config);
+
+      // wait for time end, we do not need to store subscription
+      // because: only one exist at a time ( take(1) here + complete from component )
+      snackbarRef.instance.timeEnd.pipe(
+        take(1),
+        tap($event => this.close($event))
+      ).subscribe();
 
       // // register snackbarRef
       this.activeSnackbar = snackbarRef;

@@ -31,11 +31,6 @@ export class KalDialogRef<T, D = any> {
    */
   private subscriptionsList: SubscriptionLike[] = [];
 
-  /**
-   * register last result
-   */
-  private lastResult: D = null;
-
   constructor(readonly overlayRef: OverlayRef,
               private container: KalDialogContainerComponent,
               private kalDialogService: KalDialogService,
@@ -75,10 +70,6 @@ export class KalDialogRef<T, D = any> {
    * triggered when dialog is closed
    */
   close(result?: D) {
-    // store last result
-    if (result) {
-      this.lastResult = result;
-    }
 
     this.afterClosedSubject.next(result);
 

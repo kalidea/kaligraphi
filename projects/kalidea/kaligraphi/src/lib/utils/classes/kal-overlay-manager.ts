@@ -6,7 +6,7 @@ import {
   PositionStrategy,
   ScrollStrategyOptions
 } from '@angular/cdk/overlay';
-import { ScrollStrategy } from '@angular/cdk/overlay/scroll';
+import { ScrollStrategy } from '@angular/cdk/overlay';
 
 export abstract class KalOverlayManager {
 
