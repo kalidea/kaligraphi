@@ -8,6 +8,7 @@ import {
   forwardRef,
   Inject,
   Input,
+  OnDestroy,
   Optional,
   Output,
   ViewEncapsulation
@@ -18,6 +19,7 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Coerce } from '../../utils';
 import { KalOptionGroupComponent } from './kal-option-group/kal-option-group.component';
 import { tap } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'kal-option',
@@ -27,7 +29,7 @@ import { tap } from 'rxjs/operators';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalOptionComponent implements AfterViewInit, Highlightable{
+export class KalOptionComponent implements AfterViewInit, Highlightable, OnDestroy {
 
   /**
    * The value of the option
@@ -38,41 +40,40 @@ export class KalOptionComponent implements AfterViewInit, Highlightable{
    * label for this option, if not provided get textContent
    */
   @Input() label: string;
+  /**
+   * Event emitted when the option is selected or deselected
+   */
+  @Output() readonly selectionChange = new EventEmitter<KalOptionComponent>();
+  /**
+   *  Whether or not the option is currently highlighted
+   */
+  isHighlighted: boolean;
+  /**
+   *  Form Control on the active property
+   */
+  formControl: FormControl = new FormControl(false);
+  /**
+   *  Whether or not the option is currently active / selected
+   */
+  private isActive: boolean;
+  /**
+   *  Whether or not the option is disabled
+   */
+  private isDisabled: boolean;
+  /**
+   * Store subscription
+   */
+  private optionGroupDisabledSubscription: Subscription;
+
+  constructor(private _element: ElementRef<HTMLElement>,
+              private cdr: ChangeDetectorRef,
+              @Optional() @Inject(forwardRef(() => KalOptionGroupComponent)) public group: KalOptionGroupComponent) {
+  }
 
   /**
    * should we display a checkbox on this option ?
    */
   private _checkbox = false;
-
-  /**
-   * Event emitted when the option is selected or deselected
-   */
-  @Output() readonly selectionChange = new EventEmitter<KalOptionComponent>();
-
-  /**
-   *  Whether or not the option is currently highlighted
-   */
-  isHighlighted: boolean;
-
-  /**
-   *  Form Control on the active property
-   */
-  formControl: FormControl = new FormControl(false);
-
-  /**
-   *  Whether or not the option is currently active / selected
-   */
-  private isActive: boolean;
-
-  /**
-   *  Whether or not the option is disabled
-   */
-  private isDisabled: boolean;
-
-  constructor(private _element: ElementRef<HTMLElement>,
-              private cdr: ChangeDetectorRef,
-              @Optional() @Inject(forwardRef(() => KalOptionGroupComponent)) public group: KalOptionGroupComponent){
-  }
 
   @Input()
   @Coerce('boolean')
@@ -126,7 +127,7 @@ export class KalOptionComponent implements AfterViewInit, Highlightable{
    */
   getLabel(): string {
     if (this.group && this.group.label) {
-      return `${this.group.label} > ${this.label || this._element.nativeElement.textContent || ''}`
+      return `${this.group.label} > ${this.label || this._element.nativeElement.textContent || ''}`;
     }
 
     return (this.label || this._element.nativeElement.textContent || '').trim();
@@ -172,9 +173,15 @@ export class KalOptionComponent implements AfterViewInit, Highlightable{
     }
 
     if (this.group) {
-      this.group.disabled$.pipe(
+      this.optionGroupDisabledSubscription = this.group.disabled$.pipe(
         tap(() => this.cdr.markForCheck())
-      ).subscribe()
+      ).subscribe();
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.optionGroupDisabledSubscription) {
+      this.optionGroupDisabledSubscription.unsubscribe();
     }
   }
 

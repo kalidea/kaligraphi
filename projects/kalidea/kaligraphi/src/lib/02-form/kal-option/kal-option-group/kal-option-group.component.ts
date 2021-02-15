@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation, } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, ViewEncapsulation, } from '@angular/core';
 import { Coerce } from '../../../utils';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -9,18 +9,18 @@ import { BehaviorSubject, Observable } from 'rxjs';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalOptionGroupComponent {
+export class KalOptionGroupComponent implements OnDestroy {
 
   @Input() label: string;
 
   private _disabled$ = new BehaviorSubject<boolean>(false);
 
-  get disabled(): boolean {
-    return this._disabled$.value;
-  }
-
   get disabled$(): Observable<boolean> {
     return this._disabled$.asObservable();
+  }
+
+  get disabled(): boolean {
+    return this._disabled$.value;
   }
 
   @Coerce('boolean')
@@ -28,4 +28,9 @@ export class KalOptionGroupComponent {
   set disabled(v) {
     this._disabled$.next(v);
   }
+
+  ngOnDestroy() {
+    this._disabled$.complete();
+  }
+
 }
