@@ -5,7 +5,10 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  forwardRef,
+  Inject,
   Input,
+  Optional,
   Output,
   ViewEncapsulation
 } from '@angular/core';
@@ -13,6 +16,8 @@ import { Highlightable } from '@angular/cdk/a11y';
 import { FormControl } from '@angular/forms';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Coerce } from '../../utils';
+import { KalOptionGroupComponent } from './kal-option-group/kal-option-group.component';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'kal-option',
@@ -22,7 +27,7 @@ import { Coerce } from '../../utils';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalOptionComponent implements AfterViewInit, Highlightable {
+export class KalOptionComponent implements AfterViewInit, Highlightable{
 
   /**
    * The value of the option
@@ -64,7 +69,9 @@ export class KalOptionComponent implements AfterViewInit, Highlightable {
    */
   private isDisabled: boolean;
 
-  constructor(private _element: ElementRef<HTMLElement>, private cdr: ChangeDetectorRef) {
+  constructor(private _element: ElementRef<HTMLElement>,
+              private cdr: ChangeDetectorRef,
+              @Optional() @Inject(forwardRef(() => KalOptionGroupComponent)) public group: KalOptionGroupComponent){
   }
 
   @Input()
@@ -83,7 +90,7 @@ export class KalOptionComponent implements AfterViewInit, Highlightable {
    */
   @Input()
   get disabled(): boolean {
-    return this.isDisabled;
+    return this.isDisabled || (this.group && this.group.disabled);
   }
 
   set disabled(disabled: boolean) {
@@ -118,6 +125,10 @@ export class KalOptionComponent implements AfterViewInit, Highlightable {
    * get label for this option
    */
   getLabel(): string {
+    if (this.group && this.group.label) {
+      return `${this.group.label} > ${this.label || this._element.nativeElement.textContent || ''}`
+    }
+
     return (this.label || this._element.nativeElement.textContent || '').trim();
   }
 
@@ -158,6 +169,12 @@ export class KalOptionComponent implements AfterViewInit, Highlightable {
   ngAfterViewInit(): void {
     if (this.value === undefined) {
       this.value = this.getLabel();
+    }
+
+    if (this.group) {
+      this.group.disabled$.pipe(
+        tap(() => this.cdr.markForCheck())
+      ).subscribe()
     }
   }
 
