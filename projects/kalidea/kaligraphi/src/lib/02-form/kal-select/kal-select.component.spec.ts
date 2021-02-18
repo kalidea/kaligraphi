@@ -6,7 +6,11 @@ import { Platform } from '@angular/cdk/platform';
 import { Overlay, OverlayContainer } from '@angular/cdk/overlay';
 
 import { KalSelectComponent } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-select/kal-select.component';
-import { KalOptionComponent, KalOptionModule } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-option/kal-option.module';
+import {
+  KalOptionComponent,
+  KalOptionGroupComponent,
+  KalOptionModule
+} from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-option/kal-option.module';
 import { KalIconModule } from 'projects/kalidea/kaligraphi/src/lib/01-typography/kal-icon/kal-icon.module';
 import { KalUtilityModule } from 'projects/kalidea/kaligraphi/src/lib/99-utility/kal-utility.module';
 import { createDuplicateIdTest } from '../../utils/forms/form-element.spec';
@@ -184,6 +188,31 @@ describe('TestSelectComponent', () => {
       expect(spy).toHaveBeenCalledWith(component.select.selectedValue);
     });
 
+    it('should unselect an option when its has been disabled', () => {
+      trigger.click()
+
+      component.select.select('Option 2');
+      expect(component.select.selectedValue).toEqual('Option 2');
+      const selectedOption = component.select.selected as KalOptionComponent;
+      selectedOption.disabled = true;
+      expect(component.select.selectedValue).toBeNull();
+    });
+
+    it('should unselect an option which has been disabled in multiple select', () => {
+      trigger.click()
+      component.select.multiple = true;
+
+      const options = fixture.debugElement.queryAll(By.css('.kal-option__selection'));
+      options.map(o => o.nativeElement.click());
+      component.select.selection.filter((o, i) => i % 2 === 0).forEach(o => o.disabled = true);
+
+      expect(component.select.options.filter(o => o.active).length).toEqual(component.options.length / 2);
+
+
+      const selectedOption = component.select.selected as KalOptionComponent;
+      selectedOption.disabled = true;
+      expect(component.select.selectedValue).toEqual(component.options.filter((o, i) => i % 2 === 1).map(o => o.value));
+    });
 
     // todo @frank repare for angular 7
     // it('should select optionsComponent via the UP/DOWN arrow keys', () => {
@@ -266,6 +295,62 @@ describe('TestSelectComponent', () => {
 
   });
 
+  fdescribe('TestSelectOptionGroupComponent', () => {
+    let component: TestSelectOptionGroupComponent;
+    let fixture: ComponentFixture<TestSelectOptionGroupComponent>;
+    let overlayContainer: OverlayContainer;
+    let platform: Platform;
+    let overlayContainerElement: HTMLElement;
+    let trigger: HTMLElement;
+
+    beforeEach(async(() => {
+      configureTestingModule([TestSelectOptionGroupComponent]);
+    }));
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(TestSelectOptionGroupComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+      trigger = fixture.debugElement.query(By.css('.kal-select__trigger')).nativeElement;
+      overlayContainer = fixture.debugElement.injector.get(OverlayContainer);
+      overlayContainerElement = overlayContainer.getContainerElement();
+      platform = fixture.debugElement.injector.get(Platform);
+    });
+
+    it('should display given optionGroup and optionsComponent', () => {
+      trigger.click();
+      fixture.detectChanges();
+
+      component.optionsGroup.map(o => expect(overlayContainerElement.textContent).toContain(o.label));
+      component.options.map(o => expect(overlayContainerElement.textContent).toContain(o.getLabel()));
+    });
+
+    it('should select an option and display opt-group label and its label', () => {
+      const spy = spyOn(component.select.valueChanges, 'emit');
+      trigger.click();
+      const options = fixture.debugElement.query(By.css('.kal-option__selection')).nativeElement;
+      options.click();
+
+      const selectedOption = component.select.selected as KalOptionComponent;
+
+      expect(component.select.selected).toEqual(component.options.first);
+      expect(selectedOption.active).toBeTruthy();
+      expect(spy).toHaveBeenCalledWith(component.select.selectedValue);
+
+      expect(component.select.triggerValue).toEqual(selectedOption.displayLabel)
+    });
+
+    it('should unselect an option when its parent option group has been disabled', () => {
+
+      component.select.select('Fixt > Celldweller');
+
+      expect(component.select.selectedValue).toEqual('Fixt > Celldweller');
+      (component.select.selected as KalOptionComponent).group.disabled = true;
+      expect(component.select.selectedValue).toBeNull();
+    });
+
+  });
+
 });
 
 @Component({
@@ -277,6 +362,33 @@ describe('TestSelectComponent', () => {
 })
 class TestSelectComponent {
   @ViewChild(KalSelectComponent, {static: true}) select: KalSelectComponent;
+
+  @ViewChildren(KalOptionComponent) options: QueryList<KalOptionComponent>;
+}
+
+// tslint:disable-next-line:max-classes-per-file
+@Component({
+  selector: 'kal-test-select-option-group',
+  template: `
+    <kal-select>
+      <kal-option-group label="Fixt">
+        <kal-option>Celldweller</kal-option>
+        <kal-option>Blue Stahli</kal-option>
+        <kal-option>The Algorithm</kal-option>
+      </kal-option-group>
+      <kal-option-group label="Nuclear Blast">
+        <kal-option>Alestorm</kal-option>
+        <kal-option>Lord Of The Lost</kal-option>
+        <kal-option>Ensiferum</kal-option>
+      </kal-option-group>
+    </kal-select>
+  `
+})
+class TestSelectOptionGroupComponent {
+
+  @ViewChild(KalSelectComponent, {static: true}) select: KalSelectComponent;
+
+  @ViewChildren(KalOptionGroupComponent) optionsGroup: QueryList<KalOptionGroupComponent>;
 
   @ViewChildren(KalOptionComponent) options: QueryList<KalOptionComponent>;
 }

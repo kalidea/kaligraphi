@@ -28,7 +28,7 @@ import {
 import { NgControl } from '@angular/forms';
 import isEqual from 'lodash-es/isEqual';
 import { merge, Subscription } from 'rxjs';
-import { filter, startWith, switchMap, tap } from 'rxjs/operators';
+import { filter, first, startWith, switchMap, tap } from 'rxjs/operators';
 
 import { KalThemeDirective } from '../../99-utility/directives/kal-theme/kal-theme.directive';
 import { Coerce } from '../../utils';
@@ -90,49 +90,38 @@ export class KalSelectComponent
    * The currently selected option
    */
   selection: KalOptionComponent[];
-
-  private hasDefaultValue = false;
-
-  /**
-   * Whether the component is in multiple selection mode
-   */
-  private isMultiple: boolean;
-
-  /**
-   * Overlay Reference
-   */
-  private overlayRef: OverlayRef;
-
-  /**
-   * Manages keyboard events for optionsComponent in the panel
-   */
-  private keyManager: ActiveDescendantKeyManager<KalOptionComponent>;
-
-  /**
-   * Whether or not the select is focus
-   */
-  private isFocused: boolean;
-
-  /**
-   * Whether or not the overlay panel is open
-   */
-  private isPanelOpen: boolean;
-
-  /**
-   * list of custom class added to select overlay
-   */
-  private _overlayClassList: string[] = [];
-
-  /**
-   * Store Subscription
-   */
-  private optionsChangesSubscription: Subscription;
-
   /**
    * local Overload for KalSelectOptions.displayCheckboxOnMultipleSelection
    * can't coerce to boolean, because we need undefined value too
    */
   @Input() displayCheckboxOnMultipleSelection;
+  private hasDefaultValue = false;
+  /**
+   * Whether the component is in multiple selection mode
+   */
+  private isMultiple: boolean;
+  /**
+   * Overlay Reference
+   */
+  private overlayRef: OverlayRef;
+  /**
+   * Manages keyboard events for optionsComponent in the panel
+   */
+  private keyManager: ActiveDescendantKeyManager<KalOptionComponent>;
+  /**
+   * Whether or not the select is focus
+   */
+  private isFocused: boolean;
+  /**
+   * Whether or not the overlay panel is open
+   */
+  private isPanelOpen: boolean;
+  /**
+   * Store Subscription
+   */
+  private optionsChangesSubscription: Subscription;
+
+  private optionsDisabledSubscriptionMap: {[key: string]: Subscription} = {};
 
   constructor(private readonly overlay: Overlay,
               private readonly elementRef: ElementRef<HTMLElement>,
@@ -144,6 +133,10 @@ export class KalSelectComponent
     this.selectOptions = this.selectOptions || {};
   }
 
+  /**
+   * list of custom class added to select overlay
+   */
+  private _overlayClassList: string[] = [];
 
   /**
    * get classes of overlay container
@@ -211,7 +204,7 @@ export class KalSelectComponent
       return triggerValueFunction(this.selection);
     }
 
-    return this.multiple ? this.selection.map(option => option.getLabel()).join(', ') : this.selection[0].getLabel();
+    return this.multiple ? this.selection.map(option => option.displayLabel).join(', ') : this.selection[0].displayLabel;
   }
 
   /**
@@ -323,6 +316,22 @@ export class KalSelectComponent
         this.optionSelected(this.keyManager.activeItem, withNotify);
       } else if (value === null) {
         this.reset();
+      }
+    }
+  }
+
+  /**
+   * Unselect an option by its value
+   */
+  unselect(value: any, withNotify = false): void {
+    if (this.isMultiple && value instanceof Array) {
+      const multipleOptions = this.selection.filter((item) => value.indexOf(item.value) >= 0);
+      this.multipleOptionsUnselected(multipleOptions, withNotify);
+    } else {
+      const optionSelect = this.selection.find(item => item.value === value);
+      if (optionSelect) {
+
+        this.optionUnselected(optionSelect, withNotify);
       }
     }
   }
@@ -501,6 +510,10 @@ export class KalSelectComponent
 
     option.active = true;
     this.selection = [option];
+    this.optionsDisabledSubscriptionMap[option.value] = option.disabled$.pipe(
+      first(v => v === true),
+      tap(() => this.unselect(option.value, !this.isBlur)),
+    ).subscribe();
     this.close();
   }
 
@@ -510,14 +523,64 @@ export class KalSelectComponent
   private optionSelectedOnMultipleMode(option: KalOptionComponent): void {
     if (option.active) {
       option.active = false;
+      this.optionsDisabledSubscriptionMap[option.value].unsubscribe();
       this.selection.splice(this.selection.indexOf(option), 1);
     } else {
       option.active = true;
       this.selection.push(option);
+
+      this.optionsDisabledSubscriptionMap[option.value] = option.disabled$.pipe(
+        first(v => v === true),
+        tap(() => this.unselect(option.value, !this.isBlur)),
+      ).subscribe();
       this.sortSelection();
     }
 
     this.checkResetActiveItem();
+  }
+
+  /**
+   * unselect multiple options
+   */
+  private multipleOptionsUnselected(options: KalOptionComponent[], withNotify: boolean) {
+    if (!this.multiple) {
+      return;
+    }
+
+    // unselect options
+    this.selection.filter(option => options.includes(option))
+      .forEach(option => {
+        option.active = false;
+        this.optionsDisabledSubscriptionMap[option.value].unsubscribe();
+        this.selection.splice(this.selection.indexOf(option), 1);
+      });
+
+    this.sortSelection();
+
+    if (withNotify) {
+      super.notifyUpdate(this.selectedValue);
+      this.valueChanges.emit(this.selectedValue);
+    }
+
+    this.cdr.markForCheck();
+  }
+
+  /**
+   * unselect an option
+   */
+  private optionUnselected(option: KalOptionComponent, withNotify: boolean) {
+
+    option.active = false;
+    this.selection.splice(this.selection.indexOf(option), 1);
+
+    this.optionsDisabledSubscriptionMap[option.value].unsubscribe();
+
+    if (withNotify) {
+      super.notifyUpdate(this.selectedValue);
+      this.valueChanges.emit(this.selectedValue);
+    }
+
+    this.cdr.markForCheck();
   }
 
   /**
@@ -553,7 +616,7 @@ export class KalSelectComponent
    * update checkbox visibility on kal-option
    */
   private updateCheckboxOnOptions() {
-      // set checkbox on option when select is in multiple selection mode
+    // set checkbox on option when select is in multiple selection mode
     if (this.displayCheckboxOnMultipleSelection ?? this.selectOptions.displayCheckboxOnMultipleSelection) {
       this.options?.forEach(o => o.checkbox = this.isMultiple);
     }
@@ -607,5 +670,6 @@ export class KalSelectComponent
     }
 
     this.optionsChangesSubscription?.unsubscribe();
+    Object.keys(this.optionsDisabledSubscriptionMap).forEach(key => this.optionsDisabledSubscriptionMap[key].unsubscribe())
   }
 }
