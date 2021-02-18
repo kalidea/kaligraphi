@@ -93,7 +93,7 @@ export class KalOptionComponent implements AfterViewInit, Highlightable, OnDestr
    */
   @Input()
   get disabled(): boolean {
-    return this.isDisabled || (this.group && this.group.disabled);
+    return this.isDisabled || (this.group?.disabled);
   }
 
   set disabled(disabled: boolean) {
