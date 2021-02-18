@@ -189,7 +189,7 @@ describe('TestSelectComponent', () => {
     });
 
     it('should unselect an option when its has been disabled', () => {
-      trigger.click()
+      trigger.click();
 
       component.select.select('Option 2');
       expect(component.select.selectedValue).toEqual('Option 2');
@@ -199,7 +199,7 @@ describe('TestSelectComponent', () => {
     });
 
     it('should unselect an option which has been disabled in multiple select', () => {
-      trigger.click()
+      trigger.click();
       component.select.multiple = true;
 
       const options = fixture.debugElement.queryAll(By.css('.kal-option__selection'));
@@ -295,7 +295,7 @@ describe('TestSelectComponent', () => {
 
   });
 
-  fdescribe('TestSelectOptionGroupComponent', () => {
+  describe('TestSelectOptionGroupComponent', () => {
     let component: TestSelectOptionGroupComponent;
     let fixture: ComponentFixture<TestSelectOptionGroupComponent>;
     let overlayContainer: OverlayContainer;
@@ -337,7 +337,7 @@ describe('TestSelectComponent', () => {
       expect(selectedOption.active).toBeTruthy();
       expect(spy).toHaveBeenCalledWith(component.select.selectedValue);
 
-      expect(component.select.triggerValue).toEqual(selectedOption.displayLabel)
+      expect(component.select.triggerValue).toEqual(selectedOption.displayLabel);
     });
 
     it('should unselect an option when its parent option group has been disabled', () => {

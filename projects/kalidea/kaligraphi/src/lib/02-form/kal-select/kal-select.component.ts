@@ -670,6 +670,6 @@ export class KalSelectComponent
     }
 
     this.optionsChangesSubscription?.unsubscribe();
-    Object.keys(this.optionsDisabledSubscriptionMap).forEach(key => this.optionsDisabledSubscriptionMap[key].unsubscribe())
+    Object.keys(this.optionsDisabledSubscriptionMap).forEach(key => this.optionsDisabledSubscriptionMap[key].unsubscribe());
   }
 }
