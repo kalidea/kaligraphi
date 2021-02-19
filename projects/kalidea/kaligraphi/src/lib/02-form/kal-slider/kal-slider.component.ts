@@ -63,7 +63,7 @@ export class KalSliderComponent extends FormElementComponent<number> implements 
 
   @ViewChild('sliderWrapper', {static: true}) private sliderWrapper: ElementRef;
 
-  private _value = 0;
+  protected _value = 0;
 
   constructor(private readonly cdr: ChangeDetectorRef) {
     super();

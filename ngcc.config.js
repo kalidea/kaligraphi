@@ -4,7 +4,6 @@ module.exports = {
     '@kalidea/kaligraphi': {
       ignorableDeepImportMatchers: [
         /lodash-es\//,
-        /dayjs\//
       ]
     },
   },

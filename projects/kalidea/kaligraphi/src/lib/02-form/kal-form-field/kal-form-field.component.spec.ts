@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { Component, ViewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -27,7 +27,7 @@ describe('KalFormFieldComponent', () => {
   let component: TestComponent;
   let fixture: ComponentFixture<TestComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [KalFormFieldModule, KalInputModule],
       declarations: [TestComponent]
@@ -94,7 +94,7 @@ describe('KalFormFieldComponent Reactive form', () => {
   let component: Test2Component;
   let fixture: ComponentFixture<Test2Component>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [KalFormFieldModule, KalInputModule, ReactiveFormsModule],
       declarations: [Test2Component]

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { KalProgressBarComponent } from './kal-progress-bar.component';
@@ -7,7 +7,7 @@ describe('KalProgressBarComponent', () => {
   let component: KalProgressBarComponent;
   let fixture: ComponentFixture<KalProgressBarComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [KalProgressBarComponent]
     })

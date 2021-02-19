@@ -1,11 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { KalCalendarMultiViewComponent } from './kal-calendar-multi-view.component';
 
 describe('KalDatepickerMultiViewComponent', () => {
   let component: KalCalendarMultiViewComponent;
   let fixture: ComponentFixture<KalCalendarMultiViewComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ KalCalendarMultiViewComponent ]
     })

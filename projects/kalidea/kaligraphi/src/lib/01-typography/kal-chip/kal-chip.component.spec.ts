@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { Component } from '@angular/core';
 
 import { KalChipComponent } from 'projects/kalidea/kaligraphi/src/lib/01-typography/kal-chip/kal-chip.component';
@@ -23,7 +23,7 @@ describe('KalChipComponent', () => {
   let component: TestComponent;
   let fixture: ComponentFixture<TestComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [TestComponent],
       imports: [KalIconModule, KalChipModule]

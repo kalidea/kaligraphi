@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { KalRaterComponent } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-rater/kal-rater.component';
@@ -9,7 +9,7 @@ describe('KalRaterComponent', () => {
   let component: KalRaterComponent;
   let fixture: ComponentFixture<KalRaterComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         KalIconModule,

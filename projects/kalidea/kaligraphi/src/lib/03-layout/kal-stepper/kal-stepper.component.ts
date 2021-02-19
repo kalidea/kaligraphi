@@ -11,6 +11,7 @@ import {
   Inject,
   Input,
   QueryList,
+  ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
 import { CdkStep, CdkStepper, StepperOrientation } from '@angular/cdk/stepper';
@@ -44,7 +45,10 @@ export class KalStepHeaderDirective implements FocusableOption {
   exportAs: 'kalstep',
   template: '<ng-template><ng-content></ng-content></ng-template>',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    {provide: CdkStep, useExisting: KalStepComponent},
+  ]
 })
 export class KalStepComponent extends CdkStep {
 
@@ -67,17 +71,22 @@ export class KalStepComponent extends CdkStep {
 })
 export class KalStepperComponent extends CdkStepper implements AfterContentInit {
 
-  @HostBinding('attr.role') role = 'tablist';
+  @HostBinding('attr.role')
+  role = 'tablist';
 
-  /** Steps that the stepper holds. */
-  @ContentChildren(forwardRef(() => KalStepComponent))
-  _steps: QueryList<KalStepComponent>;
-
-  @ContentChildren(KalStepHeaderDirective)
+  @ViewChildren(KalStepHeaderDirective)
   _stepHeader: QueryList<KalStepHeaderDirective>;
 
-  @Input()
+  /** Full list of steps inside the stepper, including inside nested steppers. */
+  @ContentChildren(KalStepComponent, {descendants: true}) _steps: QueryList<KalStepComponent>;
+
+  /** Steps that belong to the current stepper, excluding ones from nested steppers. */
+  readonly steps: QueryList<KalStepComponent> = new QueryList<KalStepComponent>();
+
+  protected _orientation: StepperOrientation = 'horizontal';
+
   @HostBinding('attr.aria-orientation')
+  @Input()
   get orientation() {
     return this._orientation;
   }
@@ -86,10 +95,11 @@ export class KalStepperComponent extends CdkStepper implements AfterContentInit 
     this._orientation = orientation;
   }
 
-  ngAfterContentInit(): void {
-    this._steps.changes.pipe(
-      takeUntil(this._destroyed)
-    ).subscribe(() => this._stateChanged());
+  ngAfterContentInit() {
+    super.ngAfterContentInit();
+    // Mark the component for change detection whenever the content children query changes
+    this.steps.changes.pipe(takeUntil(this._destroyed)).subscribe(() => {
+      this._stateChanged();
+    });
   }
-
 }

@@ -1,5 +1,5 @@
 import { Component, Type } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 /**
  * create a test suite with a single test component displaying a component selector
@@ -23,7 +23,7 @@ export function createDuplicateIdTest(
   describe(`${componentSelector} with id provided`, () => {
     let fixture: ComponentFixture<TestComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
       TestBed.configureTestingModule({
         imports,
         declarations: [

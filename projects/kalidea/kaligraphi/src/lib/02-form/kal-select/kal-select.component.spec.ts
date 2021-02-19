@@ -1,5 +1,5 @@
 import { Component, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { CdkPortal } from '@angular/cdk/portal';
 import { Platform } from '@angular/cdk/platform';
@@ -36,7 +36,7 @@ describe('TestSelectComponent', () => {
 
     const getOverlaySelectDiv = () => overlayContainerElement.querySelector(`.${KalSelectComponent.overlayClassName}`);
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
       configureTestingModule([TestSelectComponent]);
     }));
 
@@ -271,7 +271,7 @@ describe('TestSelectComponent', () => {
     let component: TestSelectOneComponent;
     let fixture: ComponentFixture<TestSelectOneComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
       configureTestingModule([TestSelectOneComponent]);
     }));
 
@@ -303,7 +303,7 @@ describe('TestSelectComponent', () => {
     let overlayContainerElement: HTMLElement;
     let trigger: HTMLElement;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
       configureTestingModule([TestSelectOptionGroupComponent]);
     }));
 
