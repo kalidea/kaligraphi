@@ -1,23 +1,21 @@
+import { TemplatePortal } from '@angular/cdk/portal';
 import {
   ChangeDetectionStrategy,
   Component,
   ContentChild,
-  forwardRef,
-  Inject,
   Input,
   OnInit,
-  Optional,
   TemplateRef,
   ViewChild,
   ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
-import { TemplatePortal } from '@angular/cdk/portal';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { Subject } from 'rxjs';
+import { shareReplay } from 'rxjs/operators';
+import { Coerce } from '../../../utils/decorators/coerce';
+import { KalTabContentDirective } from '../kal-tab-content.directive';
 
 import { KalTabLabelDirective } from '../kal-tab-label.directive';
-import { KalTabGroupComponent } from '../kal-tab-group/kal-tab-group.component';
-import { KalTabContentDirective } from '../kal-tab-content.directive';
 
 @Component({
   selector: 'kal-tab',
@@ -44,31 +42,30 @@ export class KalTabComponent implements OnInit {
   @ContentChild(KalTabContentDirective, {read: TemplateRef, static: true}) _explicitContent: TemplateRef<any>;
 
   /**
-   * Template inside the MatTab view that contains an `<ng-content>`.
+   * Template inside the Tab view that contains an `<ng-content>`.
    */
   @ViewChild(TemplateRef, {static: true}) _implicitContent: TemplateRef<any>;
 
   @Input() value = null;
 
+  private updateSubject$ = new Subject<void>();
   /**
    * Is a tab selected
    */
   private selectedTab = false;
-
   /**
    * Is a tab disabled
    */
   private isDisabled = false;
-
   /**
    * Label of the header
    */
   private tabLabel = '';
-
   private _contentPortal: TemplatePortal | null = null;
 
-  constructor(@Optional() @Inject(forwardRef(() => KalTabGroupComponent)) public tabGroup: KalTabGroupComponent,
-              private _viewContainerRef: ViewContainerRef) {
+  update$ = this.updateSubject$.asObservable().pipe(shareReplay());
+
+  constructor(private _viewContainerRef: ViewContainerRef) {
   }
 
   /**
@@ -81,33 +78,34 @@ export class KalTabComponent implements OnInit {
 
   set label(value: string) {
     this.tabLabel = value;
-    if (this.tabGroup) {
-      this.tabGroup.markForTabGroupCheck();
-    }
+    // notify observer that interface should be redrawed
+    this.updateSubject$.next();
   }
 
   /**
    * Is the tab disabled
    */
   @Input()
+  @Coerce('boolean')
   get disabled(): boolean {
     return this.isDisabled;
   }
 
   set disabled(value: boolean) {
-    this.isDisabled = coerceBooleanProperty(value);
+    this.isDisabled = value;
   }
 
   /**
    * Is the tab selected
    */
   @Input()
+  @Coerce('boolean')
   get selected(): boolean {
     return this.selectedTab;
   }
 
   set selected(value: boolean) {
-    this.selectedTab = coerceBooleanProperty(value);
+    this.selectedTab = value;
   }
 
   /**
@@ -119,6 +117,9 @@ export class KalTabComponent implements OnInit {
 
   ngOnInit(): void {
     this._contentPortal = new TemplatePortal(
-      this._explicitContent || this._implicitContent, this._viewContainerRef);
+      this._explicitContent || this._implicitContent,
+      this._viewContainerRef
+    );
   }
+
 }

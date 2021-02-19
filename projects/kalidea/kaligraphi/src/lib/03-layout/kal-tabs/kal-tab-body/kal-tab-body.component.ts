@@ -1,18 +1,5 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  forwardRef,
-  Inject,
-  Input,
-  Optional,
-  ViewChild,
-  ViewEncapsulation
-} from '@angular/core';
-import { CdkPortalOutlet, TemplatePortal } from '@angular/cdk/portal';
-
-import { KalTabGroupComponent } from '../kal-tab-group/kal-tab-group.component';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+import { KalTabArea } from '../kal-tab-area';
 
 @Component({
   selector: 'kal-tab-body',
@@ -23,25 +10,5 @@ import { KalTabGroupComponent } from '../kal-tab-group/kal-tab-group.component';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalTabBodyComponent implements AfterViewInit {
-
-  /**
-   * Content to display in template
-   */
-  @Input() content: TemplatePortal<any>;
-
-  /**
-   * The reference to the cdk portal outlet
-   */
-  @ViewChild(CdkPortalOutlet, {static: true}) portalOutlet: CdkPortalOutlet;
-
-  constructor(private cdr: ChangeDetectorRef,
-              @Optional() @Inject(forwardRef(() => KalTabGroupComponent)) public tabGroup: KalTabGroupComponent) {
-  }
-
-  ngAfterViewInit() {
-    if (this.tabGroup) {
-      this.tabGroup.attachTemplatePortal(this.portalOutlet, this.content, this.cdr);
-    }
-  }
+export class KalTabBodyComponent extends KalTabArea implements AfterViewInit {
 }

@@ -2,7 +2,7 @@
       [class.kal-tab-header-selected]="selected"
       [class.kal-tab-header-highlighted]="highlighted">
 
-  <ng-container *ngIf="!templateLabel; else improvedLabel">
+  <ng-container *ngIf="!content; else improvedLabel">
 
     {{ label }}
 

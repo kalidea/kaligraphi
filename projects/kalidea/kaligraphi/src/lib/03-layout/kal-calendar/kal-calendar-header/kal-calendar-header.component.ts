@@ -2,11 +2,12 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  forwardRef,
-  Inject,
-  ViewEncapsulation
+  ViewEncapsulation,
+  EventEmitter,
+  Output,
+  Input
 } from '@angular/core';
-import { KalCalendarComponent } from '../kal-calendar.component';
+import { Coerce } from '../../../utils/decorators/coerce';
 
 @Component({
   selector: 'kal-calendar-header',
@@ -17,23 +18,21 @@ import { KalCalendarComponent } from '../kal-calendar.component';
 })
 export class KalCalendarHeaderComponent {
 
-  constructor(@Inject(forwardRef(() => KalCalendarComponent)) public calendar: KalCalendarComponent,
-              private cdr: ChangeDetectorRef) {
-  }
+  @Coerce('boolean')
+  @Input()
+  isMultiView: boolean;
 
-  /**
-   * Whether the current view is the `month` view.
-   */
-  get isMultiView(): boolean {
-    return this.calendar.isMultiView;
+  @Output() updateMonth = new EventEmitter<number>();
+
+  constructor(private cdr: ChangeDetectorRef) {
   }
 
   /**
    * Emit event with the new month that should be displayed.
    * @param amount The amount is `1` or `-1`
    */
-  updateMonth(amount: number) {
-    this.calendar.updateView(this.isMultiView ? null : amount);
+  updateMonthAmount(amount: number) {
+    this.updateMonth.next(amount);
   }
 
   /**

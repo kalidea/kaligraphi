@@ -18,9 +18,8 @@ import { KalCalendarView } from '../../02-form/kal-datepicker/kal-datepicker.com
 import { buildProviders, Coerce } from '../../utils';
 import { capitalize } from '../../utils/helpers/strings';
 
-import { KalCalendarHeaderComponent } from './kal-calendar-header/kal-calendar-header.component';
 import { KalCalendarMonthComponent } from './kal-calendar-month/kal-calendar-month.component';
-
+import { KalCalendarHeaderComponent } from './kal-calendar-header/kal-calendar-header.component';
 
 @Component({
   selector: 'kal-calendar',
@@ -152,7 +151,7 @@ export class KalCalendarComponent implements AfterViewInit {
    * we wants to display the `month` view.
    */
   updateView($event: number | null): void {
-    if ($event === null) {
+    if (this.isMultiView) {
       this.changeCurrentView();
     } else {
       this.calendarMonth.updateMonth($event);

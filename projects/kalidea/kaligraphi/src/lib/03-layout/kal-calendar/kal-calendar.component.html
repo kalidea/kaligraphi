@@ -1,5 +1,7 @@
 <div>
-  <kal-calendar-header>
+  <kal-calendar-header
+    [isMultiView]="isMultiView"
+    (updateMonth)="updateView($event)">
 
     <p (click)="changeCurrentView()">
       {{ currentPeriod }}

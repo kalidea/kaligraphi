@@ -1,9 +1,18 @@
-import { ChangeDetectionStrategy, Component, HostBinding, Inject, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  HostBinding,
+  Inject,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewEncapsulation,
+  EventEmitter
+} from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 
 import { KAL_SNACKBAR_CONFIG } from './kal-snackbar.injector';
 import { KalSnackbarConfig } from './kal-snackbar-config';
-import { KalSnackbarService } from './kal-snackbar.service';
 
 @Component({
   selector: 'kal-snackbar',
@@ -27,11 +36,11 @@ export class KalSnackbarComponent implements OnInit, OnDestroy {
 
   @HostBinding('@slideInOut') animation = true;
 
+  @Output() timeEnd = new EventEmitter<KalSnackbarConfig>();
+
   private timer;
 
-  constructor(
-    @Inject(KAL_SNACKBAR_CONFIG) public config: KalSnackbarConfig,
-    private snackbarService: KalSnackbarService) {
+  constructor(@Inject(KAL_SNACKBAR_CONFIG) public config: KalSnackbarConfig) {
   }
 
   actionClicked() {
@@ -44,7 +53,8 @@ export class KalSnackbarComponent implements OnInit, OnDestroy {
 
     this.timer = setTimeout(
       () => {
-        this.snackbarService.close(this.config);
+        this.timeEnd.emit(this.config);
+        this.timeEnd.complete();
       },
       duration
     );

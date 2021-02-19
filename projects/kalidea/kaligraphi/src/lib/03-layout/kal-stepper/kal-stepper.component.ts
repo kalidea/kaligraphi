@@ -2,20 +2,22 @@ import {
   AfterContentInit,
   ChangeDetectionStrategy,
   Component,
+  ContentChild,
   ContentChildren,
   Directive,
   ElementRef,
   forwardRef,
   HostBinding,
+  Inject,
   Input,
   QueryList,
   ViewEncapsulation
 } from '@angular/core';
-import { CdkStepper, StepperOrientation } from '@angular/cdk/stepper';
+import { CdkStep, CdkStepper, StepperOrientation } from '@angular/cdk/stepper';
 import { FocusableOption } from '@angular/cdk/a11y';
 import { takeUntil } from 'rxjs/operators';
-import { KalStepComponent } from './kal-step.component';
 
+import { KalStepLabelDirective } from './kal-step-label.directive';
 
 // bug in cdk, should provide this class ourselves
 // https://github.com/angular/material2/pull/10614/files#diff-6c5ad0b93867d084db7acfd30f02d32bR247
@@ -33,6 +35,27 @@ export class KalStepHeaderDirective implements FocusableOption {
     this._elementRef.nativeElement.focus();
   }
 }
+
+// can't put classes in separate files, because of CDK implementation :
+// => CdkStepper need CdkStep // CdkStep need CdkStepper
+// tslint:disable-next-line:max-classes-per-file
+@Component({
+  selector: 'kal-step',
+  exportAs: 'kalstep',
+  template: '<ng-template><ng-content></ng-content></ng-template>',
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class KalStepComponent extends CdkStep {
+
+  @ContentChild(KalStepLabelDirective, {static: false}) stepLabel: KalStepLabelDirective;
+
+  constructor(@Inject(forwardRef(() => KalStepperComponent)) stepper: KalStepperComponent) {
+    super(stepper);
+  }
+
+}
+
 
 // tslint:disable-next-line:max-classes-per-file
 @Component({

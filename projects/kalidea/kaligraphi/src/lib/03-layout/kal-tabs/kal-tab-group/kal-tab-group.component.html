@@ -2,7 +2,7 @@
 
   <kal-tab-header *ngFor="let tab of tabs; index as i"
                   [label]="tab.label"
-                  [templateLabel]="tab.templateLabel"
+                  [content]="tab.templateLabel"
                   [selected]="i === selectedIndex"
                   [disabled]="tab.disabled"
                   (click)="selectTabHeader(tab, i)">
