@@ -303,7 +303,7 @@ describe('TestSelectComponent', () => {
     let overlayContainerElement: HTMLElement;
     let trigger: HTMLElement;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
       configureTestingModule([TestSelectOptionGroupComponent]);
     }));
 
