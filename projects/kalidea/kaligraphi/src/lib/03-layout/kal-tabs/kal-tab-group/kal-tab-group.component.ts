@@ -13,10 +13,10 @@ import {
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
-import { CdkPortalOutlet, TemplatePortal } from '@angular/cdk/portal';
 import { ENTER, SPACE } from '@angular/cdk/keycodes';
 import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
-import { Subscription } from 'rxjs';
+import { merge, Subscription } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 import { KalTabComponent } from '../kal-tab/kal-tab.component';
 import { KalTabChange } from '../kal-tab-change';
@@ -71,6 +71,9 @@ export class KalTabGroupComponent extends FormElementComponent<any> implements A
   @AutoUnsubscribe()
   private subscription = Subscription.EMPTY;
 
+  @AutoUnsubscribe()
+  private tabUpdateSubscription = Subscription.EMPTY;
+
   constructor(private cdr: ChangeDetectorRef) {
     super();
   }
@@ -80,13 +83,6 @@ export class KalTabGroupComponent extends FormElementComponent<any> implements A
    */
   get selectedIndex(): number {
     return this.selectedTabIndex;
-  }
-
-  /**
-   * Mark for check on tab group
-   */
-  markForTabGroupCheck() {
-    this.cdr.markForCheck();
   }
 
   /**
@@ -125,16 +121,6 @@ export class KalTabGroupComponent extends FormElementComponent<any> implements A
       if (params.emitEvent) {
         this.notifyUpdate(typeof value === 'string' ? value : tabIndex);
       }
-    }
-  }
-
-  /**
-   * Attach a template portal
-   */
-  attachTemplatePortal(portalOutlet: CdkPortalOutlet, content: TemplatePortal, cdr: ChangeDetectorRef) {
-    if (content) {
-      portalOutlet.attachTemplatePortal(content);
-      cdr.detectChanges();
     }
   }
 
@@ -178,17 +164,31 @@ export class KalTabGroupComponent extends FormElementComponent<any> implements A
     }
   }
 
+  private watchTabsUpdate() {
+    // stop watching tabs QueryList changes
+    this.tabUpdateSubscription.unsubscribe();
+    // watch for tab update
+    this.tabUpdateSubscription = merge(...this.tabs.map(t => t.update$)).pipe(
+      tap(() => this.cdr.markForCheck())
+    ).subscribe();
+  }
+
   ngAfterContentInit() {
-    this.subscription = this.tabs.changes.subscribe(
-      () => {
-        this.cdr.markForCheck();
-      }
-    );
+    // watch for tabs QueryList changes
+    this.subscription = this.tabs.changes.pipe(
+        tap(() => {
+          // restart tabs component updates
+          this.watchTabsUpdate();
+          this.cdr.markForCheck();
+        })
+      ).subscribe();
 
+    // start tabs component updates
+    this.watchTabsUpdate();
+
+    // if we should select tab
     if (this.tabToSelect) {
-
       this.selectedTabIndex = this.getTabIndex(this.tabToSelect);
-
     } else {
       this.tabs.forEach(
         (tab, index) => {
@@ -204,6 +204,7 @@ export class KalTabGroupComponent extends FormElementComponent<any> implements A
   }
 
   ngAfterViewInit(): void {
+
     this.keyManager = new ActiveDescendantKeyManager<KalTabHeaderComponent>(this.headers).withHorizontalOrientation('ltr');
   }
 

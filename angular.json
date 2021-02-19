@@ -17,8 +17,7 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "allowedCommonJsDependencies": [
-              "hammerjs",
-              "dayjs/locale/fr"
+              "hammerjs"
             ],
             "outputPath": "dist/playground",
             "stylePreprocessorOptions": {

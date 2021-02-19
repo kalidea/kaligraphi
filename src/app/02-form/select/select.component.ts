@@ -14,12 +14,16 @@ export class SelectComponent implements OnInit {
   themes = [];
 
   selection;
+  optionGroupSelection;
 
   hasCheckbox = false;
 
   isMultiple = false;
 
+  disableOptionGroup2 = false;
+
   options: { value: number, disabled: boolean }[] = [];
+  secondOptionsGroup: { value: number, disabled: boolean }[] = [];
 
   toggleOptionStateControl = new FormControl();
 
@@ -30,6 +34,10 @@ export class SelectComponent implements OnInit {
     this.options = [];
     for (let i = 0; i < count; i++) {
       this.options.push({disabled: false, value: i});
+    }
+    this.secondOptionsGroup = []
+    for (let i = count; i < count * 2; i++) {
+      this.secondOptionsGroup.push({disabled: false, value: i});
     }
   }
 

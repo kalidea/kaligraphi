@@ -1,52 +1,64 @@
 <h1>Datepicker</h1>
 
-<div class="example" [class.reverse]="reverse">
+<div [class.reverse]="reverse" class="example">
   <kal-form-field>
-    <kal-datepicker [formControl]="control"
-                    [closeOnPick]="closeOnPick"
-                    [kalTheme]="themes" name="datepicker"
+    <kal-datepicker [closeOnPick]="closeOnPick"
+                    [formControl]="control"
+                    [format]="getFormat()"
+                    [kalTheme]="themes" [maxYear]="maxYear"
                     [minYear]="minYear"
-                    [maxYear]="maxYear"
+                    name="datepicker"
     ></kal-datepicker>
   </kal-form-field>
 </div>
 
-<div class="configurator">
+<div class="configurator" style="align-items: flex-start">
 
-
-  <kal-form-field>
-    <kal-checkbox [(ngModel)]="reverse" label="reverse"></kal-checkbox>
-  </kal-form-field>
-  <kal-form-field>
-    <kal-checkbox [(ngModel)]="closeOnPick" label="Close on Date pick"></kal-checkbox>
-  </kal-form-field>
-  <kal-form-field>
-    <kal-checkbox [(ngModel)]="openOnClick" label="open datepicker on input click"></kal-checkbox>
-  </kal-form-field>
-  <kal-form-field>
-    <kal-input [ngModel]="updateDate" (ngModelChange)="update($event)" [ngModelOptions]="{updateOn: 'blur'}"
-               label="set date">
-    </kal-input>
-  </kal-form-field>
-
-  <ng-container [formGroup]="dateValidatorForm">
+  <div>
     <kal-form-field>
-      <kal-datepicker formControlName="minDate" label="Min date"></kal-datepicker>
+      <kal-checkbox [(ngModel)]="reverse" label="reverse"></kal-checkbox>
+    </kal-form-field>
+    <kal-form-field>
+      <kal-checkbox [(ngModel)]="closeOnPick" label="Close on Date pick"></kal-checkbox>
+    </kal-form-field>
+    <kal-form-field>
+      <kal-checkbox [(ngModel)]="openOnClick" label="open datepicker on input click"></kal-checkbox>
+    </kal-form-field>
+  </div>
+
+  <div>
+    <kal-form-field legend="multiple format separated by: comma, pipe, space">
+      <kal-input [(ngModel)]="format" label="parsing format"></kal-input>
+    </kal-form-field>
+    <kal-form-field>
+      <kal-input (ngModelChange)="update($event)" [ngModelOptions]="{updateOn: 'blur'}" [ngModel]="updateDate"
+                 label="set date">
+      </kal-input>
+    </kal-form-field>
+
+  </div>
+
+  <div>
+
+    <ng-container [formGroup]="dateValidatorForm">
+      <kal-form-field>
+        <kal-datepicker formControlName="minDate" label="Min date"></kal-datepicker>
+      </kal-form-field>
+
+      <kal-form-field>
+        <kal-datepicker formControlName="maxDate" label="Max date"></kal-datepicker>
+      </kal-form-field>
+    </ng-container>
+    <kal-form-field>
+      <kal-input [(ngModel)]="maxYear" label="Max year"></kal-input>
     </kal-form-field>
 
     <kal-form-field>
-      <kal-datepicker formControlName="maxDate" label="Max date"></kal-datepicker>
+      <kal-input [(ngModel)]="minYear" label="Min year"></kal-input>
     </kal-form-field>
-  </ng-container>
 
-  <kal-button (click)="clearValidators()" kalTheme="secondary">Clear validators</kal-button>
+    <kal-button (click)="clearValidators()" kalTheme="secondary">Clear validators</kal-button>
+  </div>
 
-  <kal-form-field>
-    <kal-input [(ngModel)]="maxYear" label="Max year"></kal-input>
-  </kal-form-field>
-
-  <kal-form-field>
-    <kal-input [(ngModel)]="minYear" label="Min year"></kal-input>
-  </kal-form-field>
 
 </div>

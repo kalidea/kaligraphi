@@ -5,7 +5,11 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  forwardRef,
+  Inject,
   Input,
+  OnDestroy,
+  Optional,
   Output,
   ViewEncapsulation
 } from '@angular/core';
@@ -13,6 +17,9 @@ import { Highlightable } from '@angular/cdk/a11y';
 import { FormControl } from '@angular/forms';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Coerce } from '../../utils';
+import { KalOptionGroupComponent } from './kal-option-group/kal-option-group.component';
+import { tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'kal-option',
@@ -22,7 +29,7 @@ import { Coerce } from '../../utils';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalOptionComponent implements AfterViewInit, Highlightable {
+export class KalOptionComponent implements AfterViewInit, Highlightable, OnDestroy {
 
   /**
    * The value of the option
@@ -33,39 +40,42 @@ export class KalOptionComponent implements AfterViewInit, Highlightable {
    * label for this option, if not provided get textContent
    */
   @Input() label: string;
+  /**
+   * Event emitted when the option is selected or deselected
+   */
+  @Output() readonly selectionChange = new EventEmitter<KalOptionComponent>();
+  /**
+   *  Whether or not the option is currently highlighted
+   */
+  isHighlighted: boolean;
+  /**
+   *  Form Control on the active property
+   */
+  formControl: FormControl = new FormControl(false);
+  /**
+   *  Whether or not the option is currently active / selected
+   */
+  private isActive: boolean;
+  /**
+   *  Whether or not the option is disabled
+   */
+  private isDisabled: boolean;
+  /**
+   * Store subscription
+   */
+  private optionGroupDisabledSubscription: Subscription;
+
+  private _disabledSubject = new BehaviorSubject(false);
+
+  constructor(private _element: ElementRef<HTMLElement>,
+              private cdr: ChangeDetectorRef,
+              @Optional() @Inject(forwardRef(() => KalOptionGroupComponent)) public group: KalOptionGroupComponent) {
+  }
 
   /**
    * should we display a checkbox on this option ?
    */
   private _checkbox = false;
-
-  /**
-   * Event emitted when the option is selected or deselected
-   */
-  @Output() readonly selectionChange = new EventEmitter<KalOptionComponent>();
-
-  /**
-   *  Whether or not the option is currently highlighted
-   */
-  isHighlighted: boolean;
-
-  /**
-   *  Form Control on the active property
-   */
-  formControl: FormControl = new FormControl(false);
-
-  /**
-   *  Whether or not the option is currently active / selected
-   */
-  private isActive: boolean;
-
-  /**
-   *  Whether or not the option is disabled
-   */
-  private isDisabled: boolean;
-
-  constructor(private _element: ElementRef<HTMLElement>, private cdr: ChangeDetectorRef) {
-  }
 
   @Input()
   @Coerce('boolean')
@@ -83,11 +93,16 @@ export class KalOptionComponent implements AfterViewInit, Highlightable {
    */
   @Input()
   get disabled(): boolean {
-    return this.isDisabled;
+    return this.isDisabled || (this.group?.disabled);
   }
 
   set disabled(disabled: boolean) {
     this.isDisabled = coerceBooleanProperty(disabled);
+    this._disabledSubject.next(this.disabled);
+  }
+
+  get disabled$(): Observable<boolean> {
+    return this._disabledSubject.asObservable();
   }
 
   /**
@@ -112,6 +127,13 @@ export class KalOptionComponent implements AfterViewInit, Highlightable {
    */
   get viewValue(): string {
     return this.getLabel();
+  }
+
+  /**
+   * Get display label of the option
+   */
+  get displayLabel(): string {
+    return (this.group?.label ? this.group.label + ' > ' : '' ) + this.getLabel();
   }
 
   /**
@@ -157,7 +179,23 @@ export class KalOptionComponent implements AfterViewInit, Highlightable {
 
   ngAfterViewInit(): void {
     if (this.value === undefined) {
-      this.value = this.getLabel();
+      // setting displayLabel as value to have the kalOptionGroupLabel in the value if present (in case options in different groups have the same name)
+      this.value = this.displayLabel;
+    }
+
+    if (this.group) {
+      this.optionGroupDisabledSubscription = this.group.disabled$.pipe(
+        tap(() => {
+          this._disabledSubject.next(this.disabled);
+          this.cdr.markForCheck();
+        })
+      ).subscribe();
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.optionGroupDisabledSubscription) {
+      this.optionGroupDisabledSubscription.unsubscribe();
     }
   }
 

@@ -1,16 +1,22 @@
-import { KalDate } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-datepicker/kal-date';
-import dayjs from 'dayjs';
+import { DateTime } from 'luxon';
+import { KalDate, kalDefaultDateFormat } from './kal-date';
 
 // config
 const dates = [
-  {format: 'dd/MM/yyyy', date: '08/09/2018'},
+  {format: kalDefaultDateFormat, date: '08/09/2018'},
   {format: 'dd/MM/yy', date: '08/09/18'},
   {format: 'dd/M/yy', date: '08/9/18'},
   {format: 'd/MM/yy', date: '8/09/18'},
   {format: 'd/M/yy', date: '8/9/18'},
 ];
 
+let currentDate: string;
+
 describe('KalDate class', () => {
+
+  beforeEach(() => {
+    currentDate = DateTime.local().toFormat(kalDefaultDateFormat);
+  });
 
   it('should parse all types of date', () => {
 
@@ -18,17 +24,20 @@ describe('KalDate class', () => {
 
     // string format
     expect(new KalDate(stringDate).toString())
-      .toEqual(stringDate, 'should be able to parse string format');
+      .withContext('should be able to parse string format')
+      .toEqual(stringDate);
 
-    // DayJS format
-    const currentDateDayJS = dayjs(stringDate, 'DD/MM/YYYY');
-    expect(new KalDate(currentDateDayJS).toString())
-      .toEqual(stringDate, 'should be able to parse luxon format');
+    // Luxon format
+    const dateTypeD = DateTime.fromFormat(stringDate, kalDefaultDateFormat);
+    expect(new KalDate(dateTypeD).toString())
+      .withContext('should be able to parse luxon format')
+      .toEqual(stringDate);
 
     // KalDate format
-    const kalDate = new KalDate(stringDate);
+    const kalDate = new KalDate(stringDate, kalDefaultDateFormat);
     expect(new KalDate(kalDate).toString())
-      .toEqual(stringDate, 'should be able to parse KalDate format');
+      .withContext('should be able to parse KalDate format')
+      .toEqual(stringDate);
   });
 
   it('should manage formats : ' + Object.keys(dates).join(','), () => {
@@ -46,11 +55,10 @@ describe('KalDate class', () => {
     // Testing invalid values for parsing : alpha char, undefined, null
     ['aa', undefined, '', '31/02/2020'].forEach(invalidValue => {
       const kalDate = new KalDate(invalidValue);
-      expect(kalDate.valid).toBeFalsy();
-      expect(kalDate.toString()).toEqual('');
+      expect(kalDate.valid).withContext(invalidValue + ' should be invalid').toBeFalsy();
+      expect(kalDate.toString()).withContext(invalidValue + ' should be formatted to empty string').toEqual('');
     });
 
-    const currentDate = dayjs().format('DD/MM/YYYY');
     const validKalDate = new KalDate(null);
     expect(validKalDate.valid).toBeTruthy();
     expect(validKalDate.toString()).toEqual(currentDate);
@@ -58,15 +66,9 @@ describe('KalDate class', () => {
   });
 
   it('should use current date if not provided', () => {
-    const currentDate = dayjs().format('DD/MM/YYYY');
     const kalDate = new KalDate();
     expect(kalDate.valid).toBeTruthy();
     expect(kalDate.toString()).toEqual(currentDate);
-  });
-
-  it('should thow an error if there\'s no default parse format provided', () => {
-    // https://ajsblackbelt.wordpress.com/2014/05/18/jasmine-tests-expect-tothrow/
-    expect(() => new KalDate('18/11/2019', null)).toThrowError('You should provide a date format');
   });
 
   it('should handle comparison functions', () => {
@@ -97,10 +99,6 @@ describe('KalDate class', () => {
     expect(new KalDate('18/11/2019').isBetween('01/11/2019', '31/12/2019')).toBeTruthy();
     expect(new KalDate('18/11/2019').isBetween(new KalDate('19/11/2019'), new KalDate('30/11/2019'))).toBeFalsy();
 
-    // is between with exclusions
-    expect(new KalDate('18/11/2019').isBetween('18/11/2019', '19/11/2019', {start: true, end: false})).toBeFalsy();
-    expect(new KalDate('19/11/2019').isBetween('18/11/2019', '19/11/2019', {start: false, end: true})).toBeFalsy();
-
     // is today
     expect(new KalDate().isToday()).toBeTruthy();
     expect(new KalDate('15/11/2019').isToday()).toBeFalsy();
@@ -108,23 +106,21 @@ describe('KalDate class', () => {
 
   it('should add local timezone if not provided', () => {
     const rawDate = '2020-03-30T15:15:20.110';
-    const date = new KalDate(rawDate, 'yyyy-MM-ddTHH:mm:ss.SSS');
-    expect(date.toFormat('yyyy-MM-ddTHH:mm:ss.SSSZZZZZ')).toBe(rawDate + KalDate.getLocalGMTOffset());
+    const date = new KalDate(rawDate, 'yyyy-MM-dd\'T\'HH:mm:ss.SSS');
+    expect(date.toFormat('yyyy-MM-dd\'T\'HH:mm:ss.SSSZZ')).toBe(rawDate + KalDate.getLocalGMTOffset());
   });
 
   it('should manage timezone and validity', () => {
 
     const datesList = [
-      {raw: '2020-03-05T14:36:48.687Z', format: 'yyyy-MM-ddTHH:mm:ss.SSSZZZZZ', valid: true},
-      {raw: '2020-03-05T14:36:48.687-00:00', format: 'yyyy-MM-ddTHH:mm:ss.SSSZZZZZ', valid: true},
-      {raw: '2020-03-05T14:36:48.687+00:00', format: 'yyyy-MM-ddTHH:mm:ss.SSSZZZZZ', valid: true},
-      {raw: '2020-03-05T14:36:48.687+01:00', format: 'yyyy-MM-ddTHH:mm:ss.SSSZZZZZ', valid: true},
-      {raw: '2020-03-05T14:36:48.687-08:00', format: 'yyyy-MM-ddTHH:mm:ss.SSSZZZZZ', valid: true},
-      {raw: '2020-03-05T14:36:48.687Z', format: 'yyyy-MM-ddTHH:mm:ss.SSS', valid: true},
-      {raw: '2020-03-05T14:36:48.687', format: 'yyyy-MM-ddTHH:mm:ss.SSS', valid: true},
-      {raw: '2020-03-05T14:36:48.687', format: 'yyyy-MM-ddTHH:mm:ss.SSSZZZZZ', valid: true},
-      {raw: '2020-02-32T14:36:48.687Z', format: 'yyyy-MM-ddTHH:mm:ss.SSSZZZZZ', valid: false},
-      {raw: '2020-02-32T14:36:48.687', format: 'yyyy-MM-ddTHH:mm:ss.SSS', valid: false},
+      {raw: '2020-03-05T14:36:48.687Z', format: 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ', valid: true},
+      {raw: '2020-03-05T14:36:48.687-00:00', format: 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZZ', valid: true},
+      {raw: '2020-03-05T14:36:48.687+00:00', format: 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZZ', valid: true},
+      {raw: '2020-03-05T14:36:48.687+01:00', format: 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZZ', valid: true},
+      {raw: '2020-03-05T14:36:48.687-08:00', format: 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZZ', valid: true},
+      {raw: '2020-03-05T14:36:48.687', format: 'yyyy-MM-dd\'T\'HH:mm:ss.SSS', valid: true},
+      {raw: '2020-02-32T14:36:48.687Z', format: 'yyyy-MM-dd\'T\'HH:mm:ss.SSSZ', valid: false},
+      {raw: '2020-02-32T14:36:48.687', format: 'yyyy-MM-dd\'T\'HH:mm:ss.SSS', valid: false},
     ];
 
     datesList.forEach(({raw, format, valid}) => {

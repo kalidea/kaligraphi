@@ -3,7 +3,6 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  HostBinding,
   Input,
   OnChanges,
   OnDestroy,

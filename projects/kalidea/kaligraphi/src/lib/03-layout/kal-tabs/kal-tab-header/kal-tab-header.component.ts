@@ -1,13 +1,7 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, Inject, Input, OnInit, Optional, ViewChild,
-  ViewEncapsulation
-} from '@angular/core';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { CdkPortalOutlet, TemplatePortal } from '@angular/cdk/portal';
 import { Highlightable } from '@angular/cdk/a11y';
-
-import { KalTabGroupComponent } from '../kal-tab-group/kal-tab-group.component';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { AfterViewInit, ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core';
+import { KalTabArea } from '../kal-tab-area';
 
 @Component({
   selector: 'kal-tab-header',
@@ -15,7 +9,7 @@ import { KalTabGroupComponent } from '../kal-tab-group/kal-tab-group.component';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalTabHeaderComponent implements AfterViewInit, Highlightable {
+export class KalTabHeaderComponent extends KalTabArea implements AfterViewInit, Highlightable {
 
   /**
    * The label of the header
@@ -23,33 +17,17 @@ export class KalTabHeaderComponent implements AfterViewInit, Highlightable {
   @Input() label = '';
 
   /**
-   * If the label contains icons, we need to use the templateLabel
+   * Is a tab highlighted
    */
-  @Input() templateLabel: TemplatePortal<any> = null;
-
+  highlighted: boolean;
   /**
    * Is the header selected
    */
   private isSelected = false;
-
   /**
    * Is the header disabled
    */
   private isDisabled = false;
-
-  /**
-   * Is a tab highlighted
-   */
-  highlighted: boolean;
-
-  /**
-   * The reference to the cdk portal outlet
-   */
-  @ViewChild(CdkPortalOutlet, {static: false}) portalOutlet: CdkPortalOutlet;
-
-  constructor(private cdr: ChangeDetectorRef,
-              @Optional() @Inject(forwardRef(() => KalTabGroupComponent)) public tabGroup: KalTabGroupComponent) {
-  }
 
   /**
    * Is the header disabled
@@ -87,9 +65,4 @@ export class KalTabHeaderComponent implements AfterViewInit, Highlightable {
     this.cdr.markForCheck();
   }
 
-  ngAfterViewInit() {
-    if (this.tabGroup) {
-      this.tabGroup.attachTemplatePortal(this.portalOutlet, this.templateLabel, this.cdr);
-    }
-  }
 }
