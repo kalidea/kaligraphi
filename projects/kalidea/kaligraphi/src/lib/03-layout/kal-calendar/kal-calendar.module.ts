@@ -5,6 +5,7 @@ import { KalIconModule } from '../../01-typography/kal-icon/kal-icon.module';
 
 // KalUtilityModule is used for ``KalAutoFocusDirective`
 import { KalUtilityModule } from '../../99-utility/kal-utility.module';
+import { KalDateModule } from '../../99-utility/kal-date/kal-date.module';
 
 // local import
 import { KalCalendarHeaderComponent } from './kal-calendar-header/kal-calendar-header.component';
@@ -29,7 +30,8 @@ const exports = [
   imports: [
     CommonModule,
     KalIconModule,
-    KalUtilityModule
+    KalUtilityModule,
+    KalDateModule
   ],
   exports,
   declarations: [

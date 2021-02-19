@@ -1,12 +1,12 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { HammerModule } from '@angular/platform-browser';
 
 import { KalTypographyModule } from './01-typography/kal-typography.module';
 import { KalFormModule } from './02-form/kal-form.module';
 import { KalLayoutModule } from './03-layout/kal-layout.module';
 import { KalOverlayModule } from './04-overlay/kal-overlay.module';
 import { KalUtilityModule } from './99-utility/kal-utility.module';
-import { HammerModule } from '@angular/platform-browser';
 
 export * from './01-typography/kal-typography.module';
 export * from './02-form/kal-form.module';

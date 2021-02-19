@@ -1,14 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors } from '@angular/forms';
-import { AutoUnsubscribe, KalDate } from '@kalidea/kaligraphi';
+import { AutoUnsubscribe, KalDate, kalDefaultDateFormat } from '@kalidea/kaligraphi';
 import { Subscription } from 'rxjs';
-import dayjs from 'dayjs';
-import 'dayjs/locale/fr';
 
-/**
- * Configure DayJS
- */
-dayjs.locale('fr');
 
 @Component({
   selector: 'app-datepicker',
@@ -18,7 +12,6 @@ dayjs.locale('fr');
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DatepickerComponent implements OnInit, OnDestroy {
-
   reverse = false;
 
   minYear = 1900;
@@ -40,6 +33,8 @@ export class DatepickerComponent implements OnInit, OnDestroy {
 
   constructor(private fb: FormBuilder) {
   }
+
+  format = kalDefaultDateFormat;
 
   get themes() {
     return this.reverse ? 'reverse' : '';
@@ -81,6 +76,10 @@ export class DatepickerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+  }
+
+  getFormat() {
+    return this.format.split(/([|, ])/);
   }
 }
 

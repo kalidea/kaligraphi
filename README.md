@@ -13,7 +13,7 @@ Online Demo with last build available here : https://kalidea.github.io/kaligraph
 
 ### Installation
 
-* install package and dependencies`npm i @kalidea/kaligraphi lodash-es dayjs @angular/cdk`
+* install package and dependencies`npm i @kalidea/kaligraphi lodash-es luxon @angular/cdk`
 * add main module to your app.module.ts : 
   ```
   import { BrowserAnimationsModule } from '@angular/platform-browser/animations';

@@ -6,14 +6,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { KalInputModule } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-input/kal-input.module';
 import { KalIconModule } from 'projects/kalidea/kaligraphi/src/lib/01-typography/kal-icon/kal-icon.module';
 
-import { KalDatepickerComponent } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-datepicker/kal-datepicker.component';
 
-import { KalDate } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-datepicker/kal-date';
 import { FormElementComponent } from 'projects/kalidea/kaligraphi/src/lib/utils';
 import { KalUtilityModule } from 'projects/kalidea/kaligraphi/src/lib/99-utility/kal-utility.module';
 import { KalCalendarModule } from 'projects/kalidea/kaligraphi/src/lib/03-layout/kal-calendar/kal-calendar.module';
 import { createDuplicateIdTest } from '../../utils/forms/form-element.spec';
-import { KalDatepickerModule } from './kal-datepicker.module';
+import { KalDatepickerComponent, KalDatepickerModule } from './kal-datepicker.module';
+import { KalDate } from '../../99-utility/kal-date/kal-date';
 
 describe('KalDatepickerComponent', () => {
   let component: KalDatepickerComponent;
@@ -67,11 +66,6 @@ describe('KalDatepickerComponent', () => {
     expect(spyNotif).toHaveBeenCalled();
   });
 
-  it('should returns a right format when parsed to JSON', () => {
-    const date = new Date();
-    const kalDate = new KalDate(date);
-    expect(JSON.parse(JSON.stringify(kalDate))).toEqual(kalDate.toString());
-  });
 });
 
 createDuplicateIdTest('kal-datepicker', KalDatepickerComponent, [KalDatepickerModule]);
