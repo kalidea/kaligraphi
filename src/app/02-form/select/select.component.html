@@ -2,28 +2,61 @@
 
 <div class="example">
   <article>
+    <div>
+      <kal-select
+        [(ngModel)]="selection"
+        [kalTheme]="themes"
+        [multiple]="isMultiple"
+        placeholder="Select an item"
+        tabindex="1">
+        <kal-option
+          *ngFor="let option of options"
+          [disabled]="option.disabled">
+          OPTION {{ option.value }}
+        </kal-option>
 
-    <kal-select
-      [kalTheme]="themes"
-      [multiple]="isMultiple"
-      [(ngModel)]="selection"
-      tabindex="1"
-      placeholder="Select an item">
-      <kal-option
-        *ngFor="let option of options"
-        [disabled]="option.disabled">
-        OPTION {{ option.value }}
-      </kal-option>
+      </kal-select>
 
-    </kal-select>
 
-    <div class="technical-value">
-      <div class="technical-value__item">
-        <span>selection</span>
-        <span>{{ selection | json }}</span>
+      <div class="technical-value">
+        <div class="technical-value__item">
+          <span>selection</span>
+          <span>{{ selection | json }}</span>
+        </div>
       </div>
     </div>
 
+    <div id="with-option-group">
+      <kal-select
+        [(ngModel)]="optionGroupSelection"
+        [kalTheme]="themes"
+        [multiple]="isMultiple"
+        placeholder="Select an item with option groups"
+        tabindex="1">
+        <kal-option-group label="1st half">
+          <kal-option
+            *ngFor="let option of options"
+            [disabled]="option.disabled">
+            OPTION {{ option.value }}
+          </kal-option>
+        </kal-option-group>
+
+        <kal-option-group label="2nd half" [disabled]="disableOptionGroup2">
+          <kal-option
+            *ngFor="let option of secondOptionsGroup">
+            OPTION {{ option.value }}
+          </kal-option>
+        </kal-option-group>
+
+      </kal-select>
+
+      <div class="technical-value">
+        <div class="technical-value__item">
+          <span>selection</span>
+          <span>{{ optionGroupSelection | json }}</span>
+        </div>
+      </div>
+    </div>
   </article>
 
 </div>
@@ -32,7 +65,7 @@
 <div class="configurator">
 
   <kal-form-field>
-    <kal-select label="themes" [multiple]="true" [(ngModel)]="themes">
+    <kal-select [(ngModel)]="themes" [multiple]="true" label="themes">
       <kal-option value="">default</kal-option>
       <kal-option value="secondary">secondary</kal-option>
       <kal-option value="reverse">reverse</kal-option>
@@ -43,21 +76,25 @@
     <kal-checkbox [(ngModel)]="isMultiple" label="multiple selection"></kal-checkbox>
   </kal-form-field>
 
+
   <kal-form-field>
     <kal-select
-      tabindex="1"
+      [formControl]="toggleOptionStateControl"
       label="toggle disabled state"
       placeholder="select option to toggle"
-      [formControl]="toggleOptionStateControl">
+      tabindex="1">
       <kal-option
         (selectionChange)="toggleOptionByValue($event.value)"
-        [value]="option.value"
-        *ngFor="let option of options">
+        *ngFor="let option of options"
+        [value]="option.value">
         OPTION {{ option.value }}
       </kal-option>
 
     </kal-select>
   </kal-form-field>
 
+  <kal-form-field>
+    <kal-checkbox [(ngModel)]="disableOptionGroup2" label="disable the 2nd Option Group"></kal-checkbox>
+  </kal-form-field>
 
 </div>
