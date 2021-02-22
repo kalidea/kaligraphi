@@ -93,6 +93,8 @@ export class KalTabComponent implements OnInit {
 
   set disabled(value: boolean) {
     this.isDisabled = value;
+    // notify observer that interface should be redrawed
+    this.updateSubject$.next();
   }
 
   /**
@@ -106,6 +108,8 @@ export class KalTabComponent implements OnInit {
 
   set selected(value: boolean) {
     this.selectedTab = value;
+    // notify observer that interface should be redrawed
+    this.updateSubject$.next();
   }
 
   /**
