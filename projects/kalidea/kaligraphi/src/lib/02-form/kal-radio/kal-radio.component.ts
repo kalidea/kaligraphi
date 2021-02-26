@@ -343,7 +343,7 @@ export class KalRadioComponent implements OnInit, OnDestroy {
    */
   @Input()
   get id(): string {
-    return this._id
+    return this._id;
   }
 
   set id(id: string) {
