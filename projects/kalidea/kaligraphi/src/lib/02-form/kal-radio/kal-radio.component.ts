@@ -226,9 +226,9 @@ export class KalRadioComponent implements OnInit, OnDestroy {
   @Input() name: string;
 
   /**
-   * The unique id
+   * Id for the input element
    */
-  @Input() id = uniqid('kal-radio-button-id-');
+  inputId;
 
   /**
    * Triggered when the radio button value has changed
@@ -239,6 +239,11 @@ export class KalRadioComponent implements OnInit, OnDestroy {
    * The position of the label after or before the radio button. Defaults to after
    */
   labelRadioPosition: 'before' | 'after';
+
+  /**
+   * The unique id
+   */
+  private _id = uniqid('kal-radio-button-id-');
 
   /**
    * Is the radio button checked
@@ -334,7 +339,20 @@ export class KalRadioComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Mark for check on the raio button
+   * Id of the radio
+   */
+  @Input()
+  get id(): string {
+    return this._id
+  }
+
+  set id(id: string) {
+    this._id = id;
+    this.inputId = this._id  + '-input';
+  }
+
+  /**
+   * Mark for check on the radio button
    */
   markForCheck() {
     this.cdr.markForCheck();
@@ -372,6 +390,8 @@ export class KalRadioComponent implements OnInit, OnDestroy {
       this.name = this.radioGroup.name;
       this.checked = this.radioGroup.value === this.value;
     }
+
+    this.inputId = this._id + 'input';
   }
 
   ngOnDestroy() {

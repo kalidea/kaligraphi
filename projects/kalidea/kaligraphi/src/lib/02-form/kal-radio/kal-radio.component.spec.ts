@@ -219,6 +219,7 @@ describe('Radio buttons inside a group with event', () => {
   let groupDebugElement;
   let radioDebugElements: DebugElement[];
   let radiosList: DebugElement[];
+  let radioLabelsList: DebugElement[];
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -247,6 +248,7 @@ describe('Radio buttons inside a group with event', () => {
     radioInstances = radioDebugElements.map(debugEl => debugEl.componentInstance);
 
     radiosList = fixture.debugElement.queryAll(By.css('input[type=radio]'));
+    radioLabelsList = fixture.debugElement.queryAll(By.css('label'));
 
   });
 
@@ -288,6 +290,30 @@ describe('Radio buttons inside a group with event', () => {
     expect(groupInstance.value).toEqual('test2');
 
     radiosList[2].nativeElement.click();
+
+    expect(component.displayValue).toHaveBeenCalledWith(new KalRadioChange(radioInstances[2], 'test3'));
+
+    expect(groupInstance.value).toEqual('test3');
+  });
+
+  it('should set the value when a radio label is clicked', () => {
+    spyOn(component, 'displayValue');
+
+    expect(groupInstance.value).toEqual('');
+
+    radioLabelsList[0].nativeElement.click();
+
+    expect(component.displayValue).toHaveBeenCalledWith(new KalRadioChange(radioInstances[0], 'test1'));
+
+    expect(groupInstance.value).toEqual('test1');
+
+    radioLabelsList[1].nativeElement.click();
+
+    expect(component.displayValue).toHaveBeenCalledWith(new KalRadioChange(radioInstances[1], 'test2'));
+
+    expect(groupInstance.value).toEqual('test2');
+
+    radioLabelsList[2].nativeElement.click();
 
     expect(component.displayValue).toHaveBeenCalledWith(new KalRadioChange(radioInstances[2], 'test3'));
 

@@ -1,11 +1,12 @@
 <input
        type="radio"
+       [attr.id]="inputId"
        [name]="name"
        [checked]="checked"
        [value]="value"
        [disabled]="disabled"
        (change)="changeSelectedRadio($event)"/>
-<label [for]="id" [class.kal-radio__label--left]="labelPosition === 'before'">
+<label [for]="inputId" [class.kal-radio__label--left]="labelPosition === 'before'">
     <ng-content></ng-content>
 </label>
 <div></div>
