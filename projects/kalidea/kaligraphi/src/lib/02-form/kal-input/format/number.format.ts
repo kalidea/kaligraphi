@@ -4,6 +4,8 @@ import { InputFormater } from './input-formater';
 
 export class NumberFormat extends InputFormater {
 
+  private static readonly numberRegexp = /[^0-9\.\,\-]/g;
+
   protected digitsInfo = '.0-4';
 
   protected style = 'decimal';
@@ -16,7 +18,7 @@ export class NumberFormat extends InputFormater {
       return value;
     }
     value = (value + '')
-      .replace(/[^0-9\.\,]/g, '') // keep only numbers
+      .replace(NumberFormat.numberRegexp, '') // keep only numbers
       .replace(',', '.'); // replace comma by decimal point
     return value ? +value : 0;
   }
@@ -29,7 +31,7 @@ export class NumberFormat extends InputFormater {
       return value;
     }
     value = (value + '')
-      .replace(/[^0-9\.\,]/g, '') // keep only numbers
+      .replace(NumberFormat.numberRegexp, '') // keep only numbers
       .replace(',', '.'); // replace comma by decimal point
 
     return formatNumber(+value, this.locale, this.digitsInfo);

@@ -309,6 +309,14 @@ describe('KalInputComponent', () => {
   it('should transfert updateOn property from main control', () => {
     expect(component.inputComponentBlur.control.updateOn).toEqual(component.inputControlBlur.updateOn);
   });
+
+  it('should accept relative number', () => {
+    component.type = 'number';
+    fixture.detectChanges();
+    const userInput = '-2,2';
+    expect(component.inputComponent.formater.toUser(userInput)).toBe(userInput, 'user input should be untouched');
+  });
+
 });
 
 describe('KalInputComponent with injected kal-input options', () => {
