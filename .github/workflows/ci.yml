@@ -10,7 +10,7 @@ on:
   pull_request:
     branches:
       - master
-      - 'releases/**'
+      - 'releases_v*'
 
 env:
   NODE_RELEASE_VERSION: 10 # release version created by NODE 10
