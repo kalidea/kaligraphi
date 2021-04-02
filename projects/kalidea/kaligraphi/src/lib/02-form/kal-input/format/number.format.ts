@@ -4,7 +4,7 @@ import { InputFormater } from './input-formater';
 
 export class NumberFormat extends InputFormater {
 
-  private static readonly numberRegexp = /[^0-9\.\,\-]/g;
+  private static readonly numberRegexp = new RegExp('[^0-9\.\,\-]', 'g');
 
   protected digitsInfo = '.0-4';
 
