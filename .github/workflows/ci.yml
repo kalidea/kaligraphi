@@ -69,11 +69,12 @@ jobs:
           version=`npm view @kalidea/kaligraphi version`
           cd ../../../
 
-      - name: Build library & Playground
+      # deploy PKG
+      - name: Build library
+        # do not build playground now, or @kalidea/kaligraphi will compiled at esm2015
         run: |
           npm i
           npm run build
-          npm run build:playground -- --base-href /kaligraphi/
           cp README.md dist/kalidea/kaligraphi/
 
       - name: Set REGISTRY NPMJS
@@ -96,16 +97,22 @@ jobs:
           registry-url: 'https://npm.pkg.github.com'
           scope: '@kalidea'
 
-      - name: Upload to Github Pages
-        uses: JamesIves/github-pages-deploy-action@3.7.1
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages # The branch the action should deploy to.
-          FOLDER: dist/playground # The folder the action should deploy.
-
       - name: Deploy to github package
         run: |
           cd dist/kalidea/kaligraphi
           npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # deploy Playground
+      - name: Build playground
+        run: |
+          npm i
+          npm run build:playground -- --base-href /kaligraphi/
+
+      - name: Upload to Github Pages
+        uses: JamesIves/github-pages-deploy-action@3.7.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages # The branch the action should deploy to.
+          FOLDER: dist/playground # The folder the action should deploy.
