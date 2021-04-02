@@ -106,11 +106,13 @@ jobs:
 
       # deploy Playground
       - name: Build playground
+        if: github.ref == 'refs/heads/master'
         run: |
           npm i
           npm run build:playground -- --base-href /kaligraphi/
 
       - name: Upload to Github Pages
+        if: github.ref == 'refs/heads/master'
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
