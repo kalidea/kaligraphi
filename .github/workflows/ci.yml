@@ -48,15 +48,6 @@ jobs:
           npm run build
           npm run build:playground -- --base-href /kaligraphi/
 
-      - name: Upload to Github Pages
-        # deploy only once to github page
-        if: matrix.node == env.NODE_RELEASE_VERSION
-        uses: JamesIves/github-pages-deploy-action@3.7.1
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages # The branch the action should deploy to.
-          FOLDER: dist/playground # The folder the action should deploy.
-
   deploy:
     needs: test-and-build
     name: Deploy package
@@ -78,10 +69,11 @@ jobs:
           version=`npm view @kalidea/kaligraphi version`
           cd ../../../
 
-      - name: Build library
+      - name: Build library & Playground
         run: |
           npm i
           npm run build
+          npm run build:playground -- --base-href /kaligraphi/
           cp README.md dist/kalidea/kaligraphi/
 
       - name: Set REGISTRY NPMJS
@@ -103,6 +95,13 @@ jobs:
           node-version: ${{ env.NODE_RELEASE_VERSION }}
           registry-url: 'https://npm.pkg.github.com'
           scope: '@kalidea'
+
+      - name: Upload to Github Pages
+        uses: JamesIves/github-pages-deploy-action@3.7.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages # The branch the action should deploy to.
+          FOLDER: dist/playground # The folder the action should deploy.
 
       - name: Deploy to github package
         run: |
