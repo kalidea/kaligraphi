@@ -85,7 +85,7 @@ jobs:
       - name: Deploy to NPMJS
         run: |
           cd dist/kalidea/kaligraphi
-          npm publish --access public
+          npm publish --access public --ignore-scripts
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPMJS_TOKEN }}
 
