@@ -239,7 +239,7 @@ export class KalDate {
     const comparisonDate = KalDate.getDate(date);
     // we can have floating value like 0.5
     // that's why we compare with more than 1
-    return this.diff(comparisonDate, unit) <= 1;
+    return this.diff(comparisonDate, unit) < 0;
   }
 
   /**
@@ -257,7 +257,7 @@ export class KalDate {
     const comparisonDate = KalDate.getDate(date);
     // we can have floating value like 0.5
     // that's why we compare with more than 1
-    return this.diff(comparisonDate, unit) >= 1;
+    return this.diff(comparisonDate, unit) > 0;
   }
 
   /**
