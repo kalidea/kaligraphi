@@ -86,6 +86,13 @@ export class KalTabGroupComponent extends FormElementComponent<any> implements A
   }
 
   /**
+   * Mark for check on tab group
+   */
+  markForTabGroupCheck() {
+    this.cdr.markForCheck();
+  }
+
+  /**
    * @inheritDoc
    */
   writeValue(value = null) {
