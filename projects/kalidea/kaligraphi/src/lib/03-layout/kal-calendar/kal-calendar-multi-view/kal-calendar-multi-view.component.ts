@@ -55,7 +55,7 @@ export class KalCalendarMultiViewComponent implements AfterViewInit {
    * @example ['Jan', 'Feb', ...]
    */
   get shortMonths(): string[] {
-    return KalDate.months('short');
+    return ['', ...KalDate.months('short')];
   }
 
   /**
@@ -69,7 +69,7 @@ export class KalCalendarMultiViewComponent implements AfterViewInit {
    * Whether the month is the displayed month.
    */
   isMonthSelected(month: number): boolean {
-    return this.displayedDate && this.displayedDate.getMonth() === month;
+    return this.displayedDate && (this.displayedDate.getMonth()) === month;
   }
 
   /**
