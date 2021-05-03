@@ -438,6 +438,9 @@ export class KalSelectComponent
       scrollStrategy: this.overlay.scrollStrategies.reposition()
     });
 
+    // add custom class on overlay wrapper
+    this.overlayRef.hostElement.classList.add('kal-overlay--select');
+
     this.overlayRef.backdropClick().subscribe(() => {
       this.isFocused = false;
       this.close();
