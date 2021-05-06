@@ -235,7 +235,7 @@ export class KalDate {
    * Returns a boolean indicating whether the current date is before the supplied date.
    */
   isBefore(date: KalDateType, unit: KalDurationUnit = 'days'): boolean {
-    // TODO: create decorator to manage this redundent code
+    // TODO: create decorator to manage this redundant code
     const comparisonDate = KalDate.getDate(date);
     // we can have floating value like 0.5
     // that's why we compare with more than 1

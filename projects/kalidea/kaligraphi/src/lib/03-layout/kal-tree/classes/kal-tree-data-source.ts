@@ -11,6 +11,7 @@ import { map, take } from 'rxjs/operators';
 import { KalFlatTreeNode, KalTreeNode } from './kal-tree-node';
 import { KalTreeControl } from './kal-tree-control';
 
+type KalTreeNodeOrId = KalTreeNode | string;
 
 /**
  * Tree flattener to convert a normal type of node to node with children & level information.
@@ -127,20 +128,28 @@ export class KalTreeDataSource extends DataSource<KalTreeNode> {
   /**
    * get flat node from node
    */
-  getFlatNode(nodeOrId: KalTreeNode | string) {
+  getFlatNode(nodeOrId: KalTreeNodeOrId) {
     const id = nodeOrId instanceof KalTreeNode ? nodeOrId.id : nodeOrId;
     return this._flattenedData.value.find(flatNode => flatNode.id === id);
   }
 
   /**
+   * Ability to expand multiples nodes in a row
+   * @param nodesOrIds list of nodes ref, or Ids to select
+   */
+  expandNodes(...nodesOrIds: KalTreeNodeOrId[]) {
+    this.treeControl.expansionModel.select( ...nodesOrIds.map(id => this.getFlatNode(id)));
+  }
+
+  /**
    * select flatNode by node
    */
-  selectNode(nodeOrId: KalTreeNode | string) {
+  selectNode(nodeOrId: KalTreeNodeOrId) {
     const node = this.getFlatNode(nodeOrId);
     if (node) {
       this.treeControl.selectionModel.select(node);
       // expand ascendants
-      this.treeControl.expansionModel.select(...this.treeControl.getAscendants(node));
+      this.expandNodes(...this.treeControl.getAscendants(node));
     }
   }
 
