@@ -620,6 +620,9 @@ export class KalSelectComponent
     }
   }
 
+  /**
+   * adds a subscription into a map to remove the option if it becomes disabled
+   */
   private addOptionToDisabledSubscriptionMap(option: KalOptionComponent) {
     this.optionsDisabledSubscriptionMap[option.value] = option.disabled$.pipe(
       first(v => v === true),
