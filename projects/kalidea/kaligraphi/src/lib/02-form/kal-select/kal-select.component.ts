@@ -470,7 +470,7 @@ export class KalSelectComponent
     // select options that were not already selected
     options.filter(option => !this.selection.includes(option)).forEach(option => {
       option.active = true;
-      this.addOptionToDisabledSubscriptionMap(option)
+      this.addOptionToDisabledSubscriptionMap(option);
       this.selection.push(option);
     });
 
