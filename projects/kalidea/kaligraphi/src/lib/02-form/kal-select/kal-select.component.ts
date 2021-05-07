@@ -121,7 +121,7 @@ export class KalSelectComponent
    */
   private optionsChangesSubscription: Subscription;
 
-  private optionsDisabledSubscriptionMap: {[key: string]: Subscription} = {};
+  private optionsDisabledSubscriptionMap: { [key: string]: Subscription } = {};
 
   constructor(private readonly overlay: Overlay,
               private readonly elementRef: ElementRef<HTMLElement>,
@@ -470,6 +470,7 @@ export class KalSelectComponent
     // select options that were not already selected
     options.filter(option => !this.selection.includes(option)).forEach(option => {
       option.active = true;
+      this.addOptionToDisabledSubscriptionMap(option);
       this.selection.push(option);
     });
 
@@ -513,10 +514,7 @@ export class KalSelectComponent
 
     option.active = true;
     this.selection = [option];
-    this.optionsDisabledSubscriptionMap[option.value] = option.disabled$.pipe(
-      first(v => v === true),
-      tap(() => this.unselect(option.value, !this.isBlur)),
-    ).subscribe();
+    this.addOptionToDisabledSubscriptionMap(option);
     this.close();
   }
 
@@ -532,10 +530,7 @@ export class KalSelectComponent
       option.active = true;
       this.selection.push(option);
 
-      this.optionsDisabledSubscriptionMap[option.value] = option.disabled$.pipe(
-        first(v => v === true),
-        tap(() => this.unselect(option.value, !this.isBlur)),
-      ).subscribe();
+      this.addOptionToDisabledSubscriptionMap(option);
       this.sortSelection();
     }
 
@@ -623,6 +618,16 @@ export class KalSelectComponent
     if (this.displayCheckboxOnMultipleSelection ?? this.selectOptions.displayCheckboxOnMultipleSelection) {
       this.options?.forEach(o => o.checkbox = this.isMultiple);
     }
+  }
+
+  /**
+   * adds a subscription into a map to remove the option if it becomes disabled
+   */
+  private addOptionToDisabledSubscriptionMap(option: KalOptionComponent) {
+    this.optionsDisabledSubscriptionMap[option.value] = option.disabled$.pipe(
+      first(v => v === true),
+      tap(() => this.unselect(option.value, !this.isBlur)),
+    ).subscribe();
   }
 
   ngOnInit() {
