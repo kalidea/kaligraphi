@@ -124,9 +124,11 @@ export class KalDate {
       }
     } else if (rawDate instanceof KalDate) {
       date = (rawDate as KalDate).getDate();
-    } else {
+    } else if (rawDate instanceof DateTime) {
       // else this is a "type D" date
-      date = rawDate as D;
+      date = rawDate;
+    } else {
+      date = DateTime.invalid(`'${rawDate}' is not a valid date`);
     }
 
     return date;
