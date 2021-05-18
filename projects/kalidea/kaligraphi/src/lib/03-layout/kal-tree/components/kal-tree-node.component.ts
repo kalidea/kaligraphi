@@ -43,7 +43,7 @@ export class KalTreeNodeComponent extends CdkTreeNode<KalTreeNode> implements On
 
   tabIndex;
 
-  @ContentChildren(KalTreeNodeOutletDirective) nodeOutlet: QueryList<KalTreeNodeOutletDirective>;
+  @ContentChildren(KalTreeNodeOutletDirective, {descendants: true}) nodeOutlet: QueryList<KalTreeNodeOutletDirective>;
 
   constructor(protected elementRef: ElementRef<HTMLElement>,
               protected tree: KalTreeComponent,
