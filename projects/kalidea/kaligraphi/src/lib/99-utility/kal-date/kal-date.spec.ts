@@ -18,6 +18,11 @@ describe('KalDate class', () => {
     currentDate = DateTime.local().toFormat(kalDefaultDateFormat);
   });
 
+  it('should prevent parsing unusable date', () => {
+
+    expect(new KalDate(15).valid).toBeFalse();
+  });
+
   it('should parse all types of date', () => {
 
     const stringDate = '24/09/2018';
