@@ -235,37 +235,32 @@ export class KalDate {
    * Returns a boolean indicating whether the current date is before the supplied date.
    */
   isBefore(date: KalDateType, unit: KalDurationUnit = 'days'): boolean {
-    // TODO: create decorator to manage this redundant code
-    const comparisonDate = KalDate.getDate(date);
     // we can have floating value like 0.5
     // that's why we compare with more than 1
-    return this.diff(comparisonDate, unit) < 0;
+    return this.diff(date, unit) < 0;
   }
 
   /**
    * Returns a boolean indicating whether the current date is before the supplied date.
    */
   isSameOrBefore(date: KalDateType, unit: KalDurationUnit = 'days'): boolean {
-    const comparisonDate = KalDate.getDate(date);
-    return this.isSame(comparisonDate, unit) || this.isBefore(comparisonDate, unit);
+    return this.isSame(date, unit) || this.isBefore(date, unit);
   }
 
   /**
    * Returns a boolean indicating whether the current date is after the supplied date.
    */
   isAfter(date: KalDateType, unit: KalDurationUnit = 'days'): boolean {
-    const comparisonDate = KalDate.getDate(date);
     // we can have floating value like 0.5
     // that's why we compare with more than 1
-    return this.diff(comparisonDate, unit) > 0;
+    return this.diff(date, unit) > 0;
   }
 
   /**
    * Returns a boolean indicating whether the current date is after the supplied date.
    */
   isSameOrAfter(date: KalDateType, unit: KalDurationUnit = 'days'): boolean {
-    const comparisonDate = KalDate.getDate(date);
-    return this.isSame(comparisonDate, unit) || this.isAfter(comparisonDate, unit);
+    return this.isSame(date, unit) || this.isAfter(date, unit);
   }
 
   /**
@@ -307,8 +302,9 @@ export class KalDate {
     return this.getDate().toJSON();
   }
 
-  diff(compare: D, unit: KalDurationUnit = 'days') {
-    return this.value.diff(compare, [unit])[unit];
+  diff(compare: KalDateType, unit: KalDurationUnit = 'days') {
+    const comparisonDate = KalDate.getDate(compare);
+    return this.value.diff(comparisonDate, [unit])[unit];
   }
 
 }
