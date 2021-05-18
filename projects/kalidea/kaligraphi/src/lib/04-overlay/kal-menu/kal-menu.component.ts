@@ -39,7 +39,7 @@ export class KalMenuComponent implements AfterContentInit, OnDestroy {
 
   theme: string | string[];
 
-  @ContentChildren(KalOptionComponent) options: QueryList<KalOptionComponent>;
+  @ContentChildren(KalOptionComponent, {descendants: true}) options: QueryList<KalOptionComponent>;
 
   @ViewChild(TemplateRef, { static: true }) templateRef: TemplateRef<any>;
 
