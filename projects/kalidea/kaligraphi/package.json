@@ -1,6 +1,6 @@
 {
   "name": "@kalidea/kaligraphi",
-  "version": "8.0.8",
+  "version": "8.0.8-FIX-TREE",
   "public": "true",
   "publishConfig": {
     "access": "public"

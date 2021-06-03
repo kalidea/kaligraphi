@@ -1,8 +1,21 @@
-import { Directive, EventEmitter, HostBinding, HostListener, Input, OnDestroy, Output } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Directive,
+  ElementRef,
+  EventEmitter,
+  HostBinding,
+  HostListener,
+  Input, NgZone,
+  OnDestroy,
+  Output
+} from '@angular/core';
 import { coerceArray } from '@angular/cdk/coercion';
 
 import { KalDragService } from '../services/kal-drag.service';
 import { Memoize } from '../../../utils/decorators/memoize';
+import { fromEvent, Subscription } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 export enum KalDropPosition {
   Top = 'top',
@@ -24,8 +37,7 @@ interface KalDropPositionConfig {
 @Directive({
   selector: '[kalDrop]'
 })
-export class KalDropDirective implements OnDestroy {
-
+export class KalDropDirective implements OnDestroy, AfterViewInit {
 
   /**
    * event emitted when user drop element
@@ -54,7 +66,13 @@ export class KalDropDirective implements OnDestroy {
    */
   private _kalDropPositions = [KalDropPosition.Top, KalDropPosition.Bot, KalDropPosition.Middle];
 
-  constructor(private draggingService: KalDragService) {
+  /** watch event subscription **/
+  private subscription = Subscription.EMPTY;
+
+  constructor(private draggingService: KalDragService,
+              private cdr: ChangeDetectorRef,
+              private zone: NgZone,
+              private element: ElementRef<HTMLElement>) {
   }
 
   /**
@@ -92,15 +110,19 @@ export class KalDropDirective implements OnDestroy {
     this.dropPosition = null;
   }
 
-  @HostListener('dragover', ['$event'])
   dragOver($event: DragEvent) {
     // dragover DOES NOT HAVE THE RIGHTS to see the data in the drag event.
     const draggingElement = this.draggingService.dragging;
 
+    let dropPosition;
     if (this.kalDropAllowed && !this.kalDropAllowed(draggingElement)) {
-      this.dropPosition = null;
+      dropPosition = null;
     } else {
-      this.dropPosition = this.getZoneHovered($event, this.positions);
+      dropPosition = this.getZoneHovered($event, this.positions);
+    }
+    if (this.dropPosition !== dropPosition) {
+      this.dropPosition = dropPosition;
+      this.zone.run(() => this.cdr.markForCheck());
     }
 
     // https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API#Define_a_drop_zone
@@ -201,6 +223,15 @@ export class KalDropDirective implements OnDestroy {
 
   ngOnDestroy(): void {
     this.kalDrop.complete();
+    this.subscription.unsubscribe();
+  }
+
+  ngAfterViewInit(): void {
+    this.zone.runOutsideAngular(() => {
+      this.subscription = fromEvent<DragEvent>(this.element.nativeElement, 'dragover').pipe(
+        tap(event => this.dragOver(event))
+      ).subscribe();
+    });
   }
 
 }
