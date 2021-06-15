@@ -23,6 +23,7 @@ import { KalInputModule } from './kal-input.module';
       #inputChange
       [formControl]="inputControl"
       [type]="type"
+      [readonly]="readonly"
       [limit]="limit"
       [icon]="icon"
       [clearable]="clearable"
@@ -49,12 +50,14 @@ class TestComponent {
   icon = 'calendar_today';
 
   clearable = false;
+  readonly = false;
 
   defaultValue: any = '';
 
   @ViewChild('inputChange', {static: true}) inputComponent: KalInputComponent;
 
   @ViewChild('inputBlur', {static: true}) inputComponentBlur: KalInputComponent;
+
 
   constructor(private cdr: ChangeDetectorRef) {
   }
@@ -342,6 +345,18 @@ describe('KalInputComponent with injected kal-input options', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should add an attribute readonly to input', () => {
+    expect(component.inputComponent.inputElement.nativeElement.hasAttribute('readonly')).toBeFalse();
+
+    component.readonly = true;
+    fixture.detectChanges();
+    expect(component.inputComponent.inputElement.nativeElement.hasAttribute('readonly')).toBeTrue();
+
+    component.readonly = false;
+    fixture.detectChanges();
+    expect(component.inputComponent.inputElement.nativeElement.hasAttribute('readonly')).toBeFalse();
   });
 
   it('should add an icon to clear field', () => {
