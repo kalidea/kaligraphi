@@ -9,6 +9,7 @@
         [kalTheme]="themes"
         [icon]="icon"
         [formControl]="controlChange"
+        [readonly]="readonly"
         [type]="type"
         [clearable]="clearable"
         [defaultValue]="defaultValue"
@@ -77,6 +78,10 @@
 
   <kal-form-field>
     <kal-checkbox [(ngModel)]="clearable" label="clearable"></kal-checkbox>
+  </kal-form-field>
+
+  <kal-form-field>
+    <kal-checkbox [(ngModel)]="readonly" label="readonly"></kal-checkbox>
   </kal-form-field>
 
   <kal-form-field>
