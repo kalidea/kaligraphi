@@ -16,7 +16,7 @@ export class InputComponent {
   placeholder = '';
 
   clearable = false;
-
+  readonly = false;
   disabled = false;
 
   defaultValue = '0';
@@ -30,6 +30,7 @@ export class InputComponent {
   controlBlur = new FormControl('', {updateOn: 'blur'});
 
   lastIconClicked;
+
 
   constructor() {
   }

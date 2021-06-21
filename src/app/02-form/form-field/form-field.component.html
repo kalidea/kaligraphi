@@ -6,6 +6,7 @@
   <kal-form-field [legend]="legend" [kalTheme]="themes" [displayErrors]="displayErrors">
     <kal-input [formControl]="control1"
                [kalTheme]="themes"
+               [readonly]="readonly"
                label="Input label"
                required="true">
     </kal-input>
@@ -48,6 +49,19 @@
   <kal-checkbox [(ngModel)]="reverse" label="reverse"></kal-checkbox>
 
   <kal-checkbox [(ngModel)]="displayErrors" label="show error"></kal-checkbox>
+
+  <kal-form-field>
+    <kal-checkbox [(ngModel)]="readonly" label="readonly"></kal-checkbox>
+  </kal-form-field>
+
+  <kal-form-field>
+    <kal-input
+      [ngModel]="newValue"
+      (ngModelChange)="updateValue($event)"
+      [ngModelOptions]="{updateOn: 'blur'}"
+      label="newValue"
+    ></kal-input>
+  </kal-form-field>
 
   <kal-form-field>
     <kal-input

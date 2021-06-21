@@ -31,6 +31,7 @@ export class FormFieldComponent {
    * Is form element disabled
    */
   disabled = false;
+  readonly = false;
 
   reverse = false;
 
@@ -38,8 +39,14 @@ export class FormFieldComponent {
 
   displayErrors = true;
 
+  newValue = '';
+
   get themes() {
     return this.reverse ? 'reverse' : '';
   }
 
+  updateValue($event: string) {
+    this.control1.setValue($event);
+    this.control1.updateValueAndValidity();
+  }
 }
