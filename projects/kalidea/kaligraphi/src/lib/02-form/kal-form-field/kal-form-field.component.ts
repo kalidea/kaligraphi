@@ -1,4 +1,5 @@
 import {
+  AfterContentChecked,
   AfterContentInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -21,6 +22,7 @@ import { FormElementComponent } from '../../utils/forms/form-element.component';
 import { KalFormFieldLabelDirective } from './kal-form-field-label.directive';
 import { AbstractControl } from '@angular/forms';
 import isNil from 'lodash-es/isNil';
+import { Coerce } from '../../utils/decorators/coerce';
 
 export interface KalFormFieldOptions {
 
@@ -60,7 +62,7 @@ export const KAL_FORM_FIELDS_GLOBAL_OPTIONS =
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalFormFieldComponent implements AfterContentInit, OnDestroy {
+export class KalFormFieldComponent implements AfterContentInit, OnDestroy, AfterContentChecked {
 
   /**
    * Does the field has an error
@@ -90,6 +92,7 @@ export class KalFormFieldComponent implements AfterContentInit, OnDestroy {
   /**
    * show error message
    */
+  @Coerce('boolean')
   @Input() displayErrors: boolean;
 
   @ContentChild(forwardRef(() => FormElementComponent), {static: false})
@@ -155,12 +158,19 @@ export class KalFormFieldComponent implements AfterContentInit, OnDestroy {
   }
 
   private checkErrorAndDirtyness() {
-    this.hasError = (!!this.formFieldOptions.showErrorAtDisplay || this.formElement.dirty) && this.formElement.hasError;
+    this.hasError = (!!this.formFieldOptions.showErrorAtDisplay || this.formElement.dirty)
+      && this.formElement.hasError;
+    this.cdr.markForCheck();
+  }
+
+  ngAfterContentChecked(): void {
+    // we should check validity each time content is checked
+    // fix for initial error display with async validators
+    this.checkErrorAndDirtyness();
   }
 
   ngAfterContentInit(): void {
     if (this.formElement) {
-
       this.configureFormField();
 
       // watch input change
@@ -170,11 +180,8 @@ export class KalFormFieldComponent implements AfterContentInit, OnDestroy {
       const valueChanges = this.formElement.valueChanges
         .subscribe(() => this.cdr.markForCheck());
 
-      const stateChanges = this.formElement.statusChange
-        .subscribe(() => {
-          this.checkErrorAndDirtyness();
-          this.cdr.markForCheck();
-        });
+      const stateChanges = this.formElement.statusChanges
+        .subscribe(() => this.checkErrorAndDirtyness());
 
       this.subscriptionsList.push(inputChanges, valueChanges, stateChanges);
 
