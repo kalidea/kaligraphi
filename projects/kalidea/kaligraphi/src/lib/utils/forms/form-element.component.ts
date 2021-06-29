@@ -195,8 +195,14 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
 
   /**
    * observe state change
+   * @deprecated missing trailing 's'
+   * @see statusChanges
    */
   get statusChange(): Observable<any> {
+    return this.statusChanges;
+  }
+
+  get statusChanges(): Observable<any> {
     if (this.ngControl) {
       return this.ngControl.statusChanges.pipe(distinctUntilChanged());
     } else {
@@ -232,7 +238,6 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
   protected createControlAndSubscriptions(injector: Injector, updateOnOverride?: FormHooks): FormControl {
 
     this.ngControl = injector.get(NgControl, null);
-
     let disabled = this.disabled;
     let updateOn: FormHooks = this.updateOnEvent;
     let value = this._value;
