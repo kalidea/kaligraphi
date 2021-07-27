@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
  * type of data
  */
 export interface ExampleDialogData {
-  user: {
+  user?: {
     firstname,
     lastname
   };
