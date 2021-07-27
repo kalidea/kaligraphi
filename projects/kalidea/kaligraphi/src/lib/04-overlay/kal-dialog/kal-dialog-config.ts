@@ -37,7 +37,7 @@ export class KalDialogConfig<D = any> extends KalOverlayConfig {
 
   protected configName ? = 'dialog';
 
-  constructor(config?: KalDialogConfig) {
+  constructor(config?: KalDialogConfig<D>) {
     super(config);
 
     if (config) {
