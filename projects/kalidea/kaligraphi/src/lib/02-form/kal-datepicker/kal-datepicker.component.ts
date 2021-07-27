@@ -331,7 +331,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
 
         // if there's no date or if the given input is invalid, we should apply one
         // date manually so the datepicker can open at the current date
-        if (!date.valid) {
+        if (!date || !date.valid) {
           date = new KalDate();
         }
 
