@@ -158,6 +158,10 @@ export class KalFormFieldComponent implements AfterContentInit, OnDestroy, After
   }
 
   private checkErrorAndDirtyness() {
+    // if no formElement, nothing to process
+    if (!this.formElement) {
+      return;
+    }
     this.hasError = (!!this.formFieldOptions.showErrorAtDisplay || this.formElement.dirty)
       && this.formElement.hasError;
     this.cdr.markForCheck();
