@@ -8,6 +8,7 @@ import { KalTabHeaderComponent } from './kal-tab-header/kal-tab-header.component
 import { KalTabBodyComponent } from './kal-tab-body/kal-tab-body.component';
 import { KalTabLabelDirective } from './kal-tab-label.directive';
 import { KalTabContentDirective } from './kal-tab-content.directive';
+import {CdkScrollableModule} from '@angular/cdk/scrolling';
 
 export * from './kal-tab/kal-tab.component';
 export * from './kal-tab-change';
@@ -23,10 +24,11 @@ const exports = [
 ];
 
 @NgModule({
-  imports: [
-    CommonModule,
-    PortalModule,
-  ],
+    imports: [
+        CommonModule,
+        PortalModule,
+        CdkScrollableModule,
+    ],
   exports,
   declarations: [
     ...exports,

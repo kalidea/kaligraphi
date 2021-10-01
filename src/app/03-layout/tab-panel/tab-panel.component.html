@@ -34,6 +34,15 @@
       reprehenderit!
     </kal-tab>
 
+    <kal-tab label="drag'n'drop">
+      <main>
+        <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)" style="height: 500px;">
+          <div style="height: 50px"
+            *ngFor="let i of movies" class="example-box" cdkDrag>{{ i }}</div>
+        </div>
+      </main>
+    </kal-tab>
+
   </kal-tab-group>
 </div>
 

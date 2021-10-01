@@ -13,6 +13,7 @@
 <div>
 
   <kal-tab-body *ngFor="let tab of tabs; index as i"
+                cdkScrollable
                 [class.kal-tab-body-is-active]="i === selectedIndex"
                 [content]="tab.content">
   </kal-tab-body>

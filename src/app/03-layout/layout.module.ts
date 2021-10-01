@@ -13,15 +13,17 @@ import { StepperComponent } from 'src/app/03-layout/stepper/stepper.component';
 import { TabPanelComponent } from 'src/app/03-layout/tab-panel/tab-panel.component';
 import { TreeComponent } from 'src/app/03-layout/tree/tree.component';
 import { CalendarComponent } from './calendar/calendar.component';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    FormsModule,
-    LayoutRoutingModule,
-    KaligraphiModule,
-  ],
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        FormsModule,
+        LayoutRoutingModule,
+        KaligraphiModule,
+        DragDropModule,
+    ],
   declarations: [
     AccordionComponent,
     CalendarComponent,
