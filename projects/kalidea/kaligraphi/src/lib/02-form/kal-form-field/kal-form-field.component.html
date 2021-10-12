@@ -4,7 +4,7 @@
   <label [attr.for]="for"
          [class.kal-form-field--required]="required"
          class="kal-form-field__label">
-    <ng-container *ngIf="!labelTemplate; else labelTemplate.templateRef">
+    <ng-container *ngIf="!labelTemplate else labelTemplate?.templateRef">
       {{ label }}&nbsp;
     </ng-container>
   </label>
