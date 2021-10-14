@@ -25,7 +25,7 @@ import {KAL_FORM_FIELDS_GLOBAL_OPTIONS, KalFormFieldOptions} from '@kalidea/kali
 })
 export class FormFieldComponent {
   control1 = new FormControl('john', [Validators.email, Validators.minLength(4)]);
-  control2 = new FormControl('jeanne', [Validators.email, Validators.maxLength(10)]);
+  control2 = new FormControl('jeanne', [Validators.email, Validators.maxLength(10), Validators.required]);
 
   /**
    * Is form element disabled

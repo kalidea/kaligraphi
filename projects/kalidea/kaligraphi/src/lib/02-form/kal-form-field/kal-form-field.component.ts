@@ -5,6 +5,7 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChild,
+  ElementRef,
   forwardRef,
   Inject,
   InjectionToken,
@@ -63,6 +64,7 @@ export const KAL_FORM_FIELDS_GLOBAL_OPTIONS =
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class KalFormFieldComponent implements AfterContentInit, OnDestroy, AfterContentChecked {
+  static formFieldInFormFieldError = 'form-field in form-field detected, maybe not relevant';
 
   /**
    * Does the field has an error
@@ -99,12 +101,16 @@ export class KalFormFieldComponent implements AfterContentInit, OnDestroy, After
   formElement: FormElementComponent;
 
   @ContentChild(KalFormFieldLabelDirective, {static: true})
-  labelTemplate;
+  labelTemplate: KalFormFieldLabelDirective;
 
   @AutoUnsubscribe()
   private subscriptionsList: Subscription[] = [];
 
-  constructor(private cdr: ChangeDetectorRef,
+  // is this formField initialized ?
+  private internalState: 'dirty' | 'initialized' = 'dirty';
+
+  constructor(private readonly cdr: ChangeDetectorRef,
+              private readonly elementRef: ElementRef<HTMLElement>,
               @Optional() @Inject(KAL_FORM_FIELDS_GLOBAL_OPTIONS) private formFieldOptions: KalFormFieldOptions) {
     this.formFieldOptions = formFieldOptions || {};
   }
@@ -113,7 +119,7 @@ export class KalFormFieldComponent implements AfterContentInit, OnDestroy, After
     return !!this.formFieldOptions.showError && isNil(this.displayErrors) || this.displayErrors === true;
   }
 
-  get errors() {
+  get errors(): Record<string, any> {
     return this.formElement.errors;
   }
 
@@ -167,14 +173,8 @@ export class KalFormFieldComponent implements AfterContentInit, OnDestroy, After
     this.cdr.markForCheck();
   }
 
-  ngAfterContentChecked(): void {
-    // we should check validity each time content is checked
-    // fix for initial error display with async validators
-    this.checkErrorAndDirtyness();
-  }
-
-  ngAfterContentInit(): void {
-    if (this.formElement) {
+  private initializeFormField() {
+    if (this.formElement && this.formElement.inputChanges && this.formElement.valueChanges && this.formElement.statusChanges) {
       this.configureFormField();
 
       // watch input change
@@ -189,7 +189,30 @@ export class KalFormFieldComponent implements AfterContentInit, OnDestroy, After
 
       this.subscriptionsList.push(inputChanges, valueChanges, stateChanges);
 
+      // store state
+      this.internalState = 'initialized';
     }
+  }
+
+  ngAfterContentChecked(): void {
+
+    // if formfield is dirty, we should give it another try
+    if (this.internalState === 'dirty') {
+      this.initializeFormField();
+    }
+
+    // we should check validity each time content is checked
+    // fix for initial error display with async validators
+    if (this.internalState === 'initialized') {
+      this.checkErrorAndDirtyness();
+    }
+  }
+
+  ngAfterContentInit(): void {
+    if (this.elementRef?.nativeElement.querySelectorAll('kal-form-field').length > 0) {
+      console.warn(KalFormFieldComponent.formFieldInFormFieldError);
+    }
+    this.initializeFormField();
   }
 
   ngOnDestroy(): void {

@@ -1,20 +1,13 @@
 <div [class.kal-form-field--error]="hasError"
      class="kal-form-field__wrapper">
 
-  <label *ngIf="!labelTemplate; else complexeLabel" [attr.for]="for"
+  <label [attr.for]="for"
          [class.kal-form-field--required]="required"
          class="kal-form-field__label">
-    {{ label }}&nbsp;
+    <ng-container *ngIf="!labelTemplate else labelTemplate?.templateRef">
+      {{ label }}&nbsp;
+    </ng-container>
   </label>
-
-
-  <ng-template #complexeLabel>
-    <label
-      class="kal-form-field__label">
-      <ng-container *ngTemplateOutlet="labelTemplate.templateRef"></ng-container>
-    </label>
-  </ng-template>
-
 
   <div *ngIf="legend" class="kal-form-field__legend">{{ legend }}</div>
   <ng-content></ng-content>
