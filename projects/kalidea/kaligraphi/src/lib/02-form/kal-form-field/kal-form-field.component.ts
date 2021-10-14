@@ -5,6 +5,7 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChild,
+  ElementRef,
   forwardRef,
   Inject,
   InjectionToken,
@@ -63,6 +64,7 @@ export const KAL_FORM_FIELDS_GLOBAL_OPTIONS =
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class KalFormFieldComponent implements AfterContentInit, OnDestroy, AfterContentChecked {
+  static formFieldInFormFieldError = 'form-field in form-field detected, maybe not relevant';
 
   /**
    * Does the field has an error
@@ -107,7 +109,8 @@ export class KalFormFieldComponent implements AfterContentInit, OnDestroy, After
   // is this formField initialized ?
   private internalState: 'dirty' | 'initialized' = 'dirty';
 
-  constructor(private cdr: ChangeDetectorRef,
+  constructor(private readonly cdr: ChangeDetectorRef,
+              private readonly elementRef: ElementRef<HTMLElement>,
               @Optional() @Inject(KAL_FORM_FIELDS_GLOBAL_OPTIONS) private formFieldOptions: KalFormFieldOptions) {
     this.formFieldOptions = formFieldOptions || {};
   }
@@ -206,6 +209,9 @@ export class KalFormFieldComponent implements AfterContentInit, OnDestroy, After
   }
 
   ngAfterContentInit(): void {
+    if (this.elementRef?.nativeElement.querySelectorAll('kal-form-field').length > 0) {
+      console.warn(KalFormFieldComponent.formFieldInFormFieldError);
+    }
     this.initializeFormField();
   }
 

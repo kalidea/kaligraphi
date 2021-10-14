@@ -74,6 +74,10 @@ describe('KalFormFieldComponent', () => {
 
 });
 
+/*****************************************************************/
+/****************************** Reactive forms ************************/
+/*****************************************************************/
+
 // tslint:disable-next-line:max-classes-per-file
 @Component({
   selector: 'kal-test',
@@ -128,5 +132,145 @@ describe('KalFormFieldComponent Reactive form', () => {
 
     expect(component.inputCtrl.dirty).toBeTruthy();
     expect(wrapper.classList.contains('kal-form-field--error')).toBeTruthy('should add error class on pristine');
+  });
+});
+
+/*****************************************************************/
+/****************************** INCEPTION ************************/
+/*****************************************************************/
+
+// tslint:disable-next-line:max-classes-per-file
+@Component({
+  selector: 'kal-inception1',
+  template: `
+    <kal-form-field>
+      <kal-form-field>
+        <kal-input [formControl]="inputCtrl"></kal-input>
+      </kal-form-field>
+    </kal-form-field>
+  `
+})
+export class InceptionComponent {
+  @ViewChild(KalFormFieldComponent, {static: true})
+  formField: KalFormFieldComponent;
+
+  inputCtrl = new FormControl('', [Validators.email, Validators.required]);
+}
+
+describe('KalFormFieldComponent Inception', () => {
+  let component: InceptionComponent;
+  let fixture: ComponentFixture<InceptionComponent>;
+  let spy;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [KalFormFieldModule, KalInputModule, ReactiveFormsModule],
+      declarations: [InceptionComponent]
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    spy = spyOn(console, 'warn');
+    fixture = TestBed.createComponent(InceptionComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should raise a warning when form-field in form-field', () => {
+    expect(spy).toHaveBeenCalledOnceWith(KalFormFieldComponent.formFieldInFormFieldError);
+  });
+});
+
+// tslint:disable-next-line:max-classes-per-file
+@Component({
+  selector: 'kal-inception2',
+  template: `
+    <kal-form-field>
+      <kal-test></kal-test>
+    </kal-form-field>
+  `
+})
+export class Inception2Component {
+  @ViewChild(KalFormFieldComponent, {static: true})
+  formField: KalFormFieldComponent;
+  inputCtrl = new FormControl('', [Validators.email, Validators.required]);
+}
+
+describe('KalFormFieldComponent Inception2', () => {
+  let component: Inception2Component;
+  let fixture: ComponentFixture<Inception2Component>;
+  let spy;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [KalFormFieldModule, KalInputModule, ReactiveFormsModule],
+      declarations: [Inception2Component, TestComponent]
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    spy = spyOn(console, 'warn');
+    fixture = TestBed.createComponent(Inception2Component);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should raise a warning when form-field in form-field', () => {
+    expect(spy).toHaveBeenCalledOnceWith(KalFormFieldComponent.formFieldInFormFieldError);
+  });
+});
+
+
+/*************************************************************************/
+/****************************** REQUIRED ASTERISK ************************/
+/*************************************************************************/
+
+// tslint:disable-next-line:max-classes-per-file
+@Component({
+  selector: 'kal-test',
+  template: `
+    <kal-form-field id="first">
+      <ng-template kalFormFieldLabel>{{ label }}</ng-template>
+      <kal-input [formControl]="inputCtrl"></kal-input>
+    </kal-form-field>
+
+    <kal-form-field id="second">
+      <kal-input [formControl]="inputCtrl" [label]="label"></kal-input>
+    </kal-form-field>
+  `
+})
+export class RequiredAsteriskInLabelComponent {
+  label = 'my label';
+
+  inputCtrl = new FormControl('', [Validators.email, Validators.required]);
+}
+
+describe('KalFormFieldComponent Inception', () => {
+  let component: RequiredAsteriskInLabelComponent;
+  let fixture: ComponentFixture<RequiredAsteriskInLabelComponent>;
+
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [KalFormFieldModule, KalInputModule, ReactiveFormsModule],
+      declarations: [RequiredAsteriskInLabelComponent]
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(RequiredAsteriskInLabelComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should display an asterisk on all labels when required', () => {
+    const check = selector => {
+      const labelElement = fixture.debugElement.query(By.css(`${selector} label`));
+      expect(labelElement).toBeDefined();
+      expect(labelElement.classes['kal-form-field--required']).toBeTruthy('missing classe required on label ' + selector);
+    };
+
+    check('#first');
+    check('#second');
+
   });
 });
