@@ -15,12 +15,13 @@ import { KalIconModule } from 'projects/kalidea/kaligraphi/src/lib/01-typography
 import { KalUtilityModule } from 'projects/kalidea/kaligraphi/src/lib/99-utility/kal-utility.module';
 import { createDuplicateIdTest } from '../../utils/forms/form-element.spec';
 import { KalSelectModule } from './kal-select.module';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
-function configureTestingModule(declarations: any[]) {
+function configureTestingModule(declarations: any[], modules: any[] = []) {
   TestBed.configureTestingModule({
     declarations: [KalSelectComponent, CdkPortal, ...declarations],
     providers: [Overlay],
-    imports: [KalOptionModule, KalIconModule, KalUtilityModule]
+    imports: [KalOptionModule, KalIconModule, KalUtilityModule, ...modules]
   }).compileComponents();
 }
 
@@ -351,7 +352,29 @@ describe('TestSelectComponent', () => {
 
   });
 
+  describe('TestSelectOptionGroupComponent', () => {
+    let component: TestBlurSelectComponent;
+    let fixture: ComponentFixture<TestBlurSelectComponent>;
+
+    beforeEach(waitForAsync(() => {
+      configureTestingModule([TestBlurSelectComponent], [ReactiveFormsModule]);
+    }));
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(TestBlurSelectComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    });
+
+    it('should be declared as blur', () => {
+      expect(component.select1.isBlur).withContext('select1').toBeTrue();
+      expect(component.select2.isBlur).withContext('select2').toBeTrue();
+      expect(component.select3.isBlur).withContext('select3').toBeFalse();
+      expect(component.select4.isBlur).withContext('select4').toBeFalse();
+    });
+  });
 });
+
 
 @Component({
   selector: 'kal-test-select',
@@ -411,3 +434,29 @@ class TestSelectOneComponent {
 }
 
 createDuplicateIdTest('kal-select', KalSelectComponent, [KalSelectModule]);
+
+@Component({
+  selector: 'kal-test-select',
+  template: `
+    <kal-select updateOnEvent="blur" #select1>
+      <kal-option *ngFor="let i of [0, 1, 2, 3]">Option {{i}}</kal-option>
+    </kal-select>
+    <kal-select [formControl]="control1" #select2>
+      <kal-option *ngFor="let i of [0, 1, 2, 3]">Option {{i}}</kal-option>
+    </kal-select>
+    <kal-select updateOnEvent="submit" #select3>
+      <kal-option *ngFor="let i of [0, 1, 2, 3]">Option {{i}}</kal-option>
+    </kal-select>
+    <kal-select [formControl]="control2" #select4>
+      <kal-option *ngFor="let i of [0, 1, 2, 3]">Option {{i}}</kal-option>
+    </kal-select>
+`
+})
+class TestBlurSelectComponent {
+  control1 = new FormControl('', {updateOn: 'blur'});
+  control2 = new FormControl('', {updateOn: 'submit'});
+  @ViewChild('select1', {static: true}) select1: KalSelectComponent;
+  @ViewChild('select2', {static: true}) select2: KalSelectComponent;
+  @ViewChild('select3', {static: true}) select3: KalSelectComponent;
+  @ViewChild('select4', {static: true}) select4: KalSelectComponent;
+}
