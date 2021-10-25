@@ -251,7 +251,7 @@ export class KalSelectComponent
   }
 
   private get isBlur(): boolean {
-    return this.superControl?.updateOn === 'blur';
+    return this.superControl?.updateOn === 'blur' || this.updateOnEvent === 'blur';
   }
 
   getTriggerValueFunction(): KalSelectOptionsTriggerValueFunction {
