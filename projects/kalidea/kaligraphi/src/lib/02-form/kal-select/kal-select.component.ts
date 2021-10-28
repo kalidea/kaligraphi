@@ -250,8 +250,8 @@ export class KalSelectComponent
     return this.themeDirective ? this.themeDirective.rawThemes : '';
   }
 
-  private get isBlur(): boolean {
-    return this.superControl?.updateOn === 'blur';
+  get isBlur(): boolean {
+    return this.superControl?.updateOn === 'blur' || this.updateOnEvent === 'blur';
   }
 
   getTriggerValueFunction(): KalSelectOptionsTriggerValueFunction {
