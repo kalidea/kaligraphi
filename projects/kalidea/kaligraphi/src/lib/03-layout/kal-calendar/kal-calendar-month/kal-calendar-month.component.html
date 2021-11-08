@@ -12,6 +12,7 @@
           [class.kal-active]="isDayActivated(date)"
           [class.kal-selected]="date.isSame(currentDate)"
           [disabled]="shouldDisable(date)"
+          [ngClass]="getClassesForDate(date)"
           (click)="pickDate($event, date)">
     {{ date.getDay() }}
   </button>

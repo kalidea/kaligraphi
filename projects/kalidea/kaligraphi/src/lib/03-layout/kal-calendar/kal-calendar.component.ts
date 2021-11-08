@@ -17,7 +17,10 @@ import { KalCalendarView } from '../../02-form/kal-datepicker/kal-datepicker.com
 import { buildProviders, Coerce } from '../../utils';
 import { capitalize } from '../../utils/helpers/strings';
 
-import { KalCalendarMonthComponent } from './kal-calendar-month/kal-calendar-month.component';
+import {
+  KalCalendarMonthComponent,
+  KalClassesListBuilderType
+} from './kal-calendar-month/kal-calendar-month.component';
 import { KalCalendarHeaderComponent } from './kal-calendar-header/kal-calendar-header.component';
 
 @Component({
@@ -42,7 +45,6 @@ export class KalCalendarComponent implements AfterViewInit {
    */
   @Output() readonly datePicked = new EventEmitter<KalDate>();
 
-
   /**
    * Reference to `KalDatepickerHeaderComponent`.
    */
@@ -57,13 +59,14 @@ export class KalCalendarComponent implements AfterViewInit {
    * Whether the calendar is in month view.
    */
   currentView: KalCalendarView = 'month';
+
   private readonly yearsIncrement = 30;
-  private _maxYear: number;
-  private _minYear = 1940;
 
   constructor(private cdr: ChangeDetectorRef,
               private injector: Injector) {
   }
+
+  private _maxYear: number;
 
   /**
    * Max year that should be displayed in year selection.
@@ -88,6 +91,8 @@ export class KalCalendarComponent implements AfterViewInit {
     this.cdr.markForCheck();
   }
 
+  private _minYear = 1940;
+
   @Input()
   @Coerce('number')
   get minYear(): number {
@@ -110,7 +115,7 @@ export class KalCalendarComponent implements AfterViewInit {
   get currentPeriod(): string {
     const date = this.calendarMonth?.currentDate ?? new KalDate();
 
-    const month = date.getDate().toLocaleString({ month: 'long'});
+    const month = date.getDate().toLocaleString({month: 'long'});
     return month ? capitalize(month) + ' ' + date.getYear() : '';
   }
 
@@ -125,6 +130,11 @@ export class KalCalendarComponent implements AfterViewInit {
     const parentControl = this.injector.get(NgControl, null);
     return parentControl.control.validator;
   }
+
+  /**
+   * add specific classes for date
+   */
+  @Input() classesListBuilder: KalClassesListBuilderType = () => ({});
 
   /**
    * Switch between views to display.
