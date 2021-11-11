@@ -13,8 +13,8 @@
       <kal-calendar (datePicked)="setInputValue($event)"
                     [selectedDate]="this.selectedDate"
                     [maxYear]="maxYear"
+                    [validator]="parentControlValidator"
                     [minYear]="minYear"></kal-calendar>
-
     </div>
   </ng-template>
 </div>

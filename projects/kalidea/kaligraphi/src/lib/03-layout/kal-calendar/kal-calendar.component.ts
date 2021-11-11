@@ -11,14 +11,18 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { NgControl } from '@angular/forms';
+import { NgControl, ValidatorFn } from '@angular/forms';
 import { KalDate } from '../../99-utility/kal-date/kal-date';
-import { KalCalendarView } from '../../02-form/kal-datepicker/kal-datepicker.component';
 import { buildProviders, Coerce } from '../../utils';
 import { capitalize } from '../../utils/helpers/strings';
 
 import { KalCalendarMonthComponent } from './kal-calendar-month/kal-calendar-month.component';
 import { KalCalendarHeaderComponent } from './kal-calendar-header/kal-calendar-header.component';
+
+/**
+ * Possible views for the calendar.
+ */
+export type KalCalendarView = 'month' | 'multi';
 
 @Component({
   selector: 'kal-calendar',
@@ -63,6 +67,11 @@ export class KalCalendarComponent implements AfterViewInit {
 
   constructor(private cdr: ChangeDetectorRef,
               private injector: Injector) {
+  }
+
+  @Input()
+  set validator(validator: ValidatorFn) {
+    this.calendarMonth.validator = validator;
   }
 
   /**

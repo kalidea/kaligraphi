@@ -1,15 +1,20 @@
 {
   "extends": "../../../tsconfig.json",
   "compilerOptions": {
-    "sourceMap": true,
     "outDir": "../../../out-tsc/spec",
+    "forceConsistentCasingInFileNames": true,
+    "strict": false,
+    "noImplicitOverride": false,
+    "noPropertyAccessFromIndexSignature": false,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
     "types": [
       "jasmine",
       "node"
     ]
   },
   "files": [
-    "src/test.ts"
+    "src/test.ts",
   ],
   "include": [
     "**/*.spec.ts",

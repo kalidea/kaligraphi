@@ -11,10 +11,9 @@ import {
   Output,
   ViewEncapsulation
 } from '@angular/core';
-import {AbstractControl} from '@angular/forms';
+import { AbstractControl, ValidatorFn } from '@angular/forms';
 
 import { KalDate } from '../../../99-utility/kal-date/kal-date';
-import { KalDatepickerComponent } from '../../../02-form/kal-datepicker/kal-datepicker.component';
 import { DateUnits } from '../kal-calendar-multi-view/kal-calendar-multi-view.component';
 
 @Component({
@@ -43,10 +42,15 @@ export class KalCalendarMonthComponent implements OnInit {
 
   monthDatesList: KalDate[] = [];
 
-  constructor(@Optional() @Inject(forwardRef(() => KalDatepickerComponent)) public datepicker: KalDatepickerComponent,
-              public cdr: ChangeDetectorRef) {
+  constructor(public cdr: ChangeDetectorRef) {
   }
 
+  @Input()
+  set validator(validator: ValidatorFn) {
+    this._validator = validator;
+  }
+
+  private _validator: ValidatorFn;
   private _currentDate: KalDate;
 
   /**
@@ -129,8 +133,7 @@ export class KalCalendarMonthComponent implements OnInit {
    * It allows us to enable and disable the buttons.
    */
   shouldDisable(date: KalDate) {
-    const parentValidator = this.datepicker?.parentControlValidator;
-    return parentValidator ? parentValidator({value: date} as AbstractControl) !== null : false;
+    return this.validator?.({value: date} as AbstractControl) !== null;
   }
 
   /**

@@ -61,7 +61,7 @@ describe('KalMenu', () => {
   const getContent = () => document.querySelector<HTMLElement>('.' + component.menu.contentClass);
 
 
-  it('should open menu on click', () => {
+  it('should open menu on click', (done) => {
 
     expect(getContent()).toBeFalsy();
 
@@ -69,6 +69,7 @@ describe('KalMenu', () => {
 
     fixture.whenStable().then(() => {
       expect(getContent()).toBeTruthy();
+      done();
     });
   });
 

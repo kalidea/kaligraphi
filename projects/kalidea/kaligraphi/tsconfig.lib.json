@@ -2,30 +2,16 @@
   "extends": "../../../tsconfig.json",
   "compilerOptions": {
     "outDir": "../../../out-tsc/lib",
-    "target": "es2015",
-    "declarationMap": true,
     "baseUrl": "./",
-    "module": "es2015",
-    "moduleResolution": "node",
-    "strict": false,
     "declaration": true,
-    "sourceMap": true,
+    "declarationMap": true,
     "inlineSources": true,
-    "experimentalDecorators": true,
-    "importHelpers": true,
-    "types": [],
-    "lib": [
-      "dom",
-      "es2018"
-    ]
-  },
-  "angularCompilerOptions": {
-    "annotateForClosureCompiler": true,
-    "skipTemplateCodegen": true,
-    "strictMetadataEmit": true,
-    "fullTemplateTypeCheck": true,
-    "strictInjectionParameters": true,
-    "enableResourceInlining": true
+    "strict": false,
+    "noImplicitOverride": false,
+    "noPropertyAccessFromIndexSignature": false,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "types": []
   },
   "exclude": [
     "src/test.ts",
