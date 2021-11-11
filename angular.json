@@ -81,18 +81,6 @@
           "options": {
             "browserTarget": "playground:build"
           }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "src/tsconfig.app.json",
-              "src/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
         }
       }
     },
@@ -110,15 +98,6 @@
             "production": {
               "devServerTarget": "playground:serve:production"
             }
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": "e2e/tsconfig.e2e.json",
-            "exclude": [
-              "**/node_modules/**"
-            ]
           }
         }
       }
@@ -146,18 +125,6 @@
             "main": "projects/kalidea/kaligraphi/src/test.ts",
             "tsConfig": "projects/kalidea/kaligraphi/tsconfig.spec.json",
             "karmaConfig": "projects/kalidea/kaligraphi/karma.conf.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "projects/kalidea/kaligraphi/tsconfig.lib.json",
-              "projects/kalidea/kaligraphi/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
           }
         }
       }
