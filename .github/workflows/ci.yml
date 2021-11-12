@@ -23,7 +23,7 @@ jobs:
     # run this workflow on multiple node version
     strategy:
       matrix:
-        node: [10, 12]
+        node: [12, 14]
     steps:
       - name: Checkout project
         uses: actions/checkout@v2
