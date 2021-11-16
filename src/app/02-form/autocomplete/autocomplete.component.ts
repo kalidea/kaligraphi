@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 export class AutocompleteComponent implements OnDestroy {
 
   dataSource: KalAutocompleteOption<string>[] = [];
+
   themes = [];
 
   result;

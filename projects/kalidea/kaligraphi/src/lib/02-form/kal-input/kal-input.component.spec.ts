@@ -87,9 +87,7 @@ describe('KalInputComponent', () => {
   let fixture: ComponentFixture<TestComponent>;
   let kalInputInstance;
 
-  const getInput = (): HTMLInputElement => {
-    return fixture.debugElement.query(By.css('input')).nativeElement;
-  };
+  const getInput = (): HTMLInputElement => fixture.debugElement.query(By.css('input')).nativeElement;
 
   beforeAll(() => {
     registerLocaleData(localeFr, 'fr');

@@ -1,4 +1,4 @@
-/* tslint:disable:max-line-length */
+/* eslint-disable max-len */
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
@@ -36,9 +36,7 @@ export class CarouselComponent {
   vignetteVisible = 4;
 
   constructor() {
-    this.elements = this.elements.map(({title, image}) => {
-      return ({title, image: 'data:image/png;base64,' + image});
-    });
+    this.elements = this.elements.map(({title, image}) => ({title, image: 'data:image/png;base64,' + image}));
   }
 
   isEndOfViewport(index) {

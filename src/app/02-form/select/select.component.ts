@@ -22,8 +22,8 @@ export class SelectComponent implements OnInit {
 
   disableOptionGroup2 = false;
 
-  options: { value: number, disabled: boolean }[] = [];
-  secondOptionsGroup: { value: number, disabled: boolean }[] = [];
+  options: { value: number; disabled: boolean }[] = [];
+  secondOptionsGroup: { value: number; disabled: boolean }[] = [];
 
   toggleOptionStateControl = new FormControl();
 
@@ -35,7 +35,7 @@ export class SelectComponent implements OnInit {
     for (let i = 0; i < count; i++) {
       this.options.push({disabled: false, value: i});
     }
-    this.secondOptionsGroup = []
+    this.secondOptionsGroup = [];
     for (let i = count; i < count * 2; i++) {
       this.secondOptionsGroup.push({disabled: false, value: i});
     }

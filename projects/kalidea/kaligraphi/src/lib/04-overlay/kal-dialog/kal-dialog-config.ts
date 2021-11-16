@@ -8,7 +8,7 @@ export class KalDialogConfig<D = any> extends KalOverlayConfig {
   /**
    * title for this Dialog
    */
-  title ?: string;
+  title?: string;
 
   /**
    * Whether the dialog has a backdrop.
@@ -28,12 +28,12 @@ export class KalDialogConfig<D = any> extends KalOverlayConfig {
   /**
    * Max-width of the dialog. If a number is provided, pixel units are assumed. Defaults to 80vw
    */
-  maxWidth ?: number | string = '80vw';
+  maxWidth?: number | string = '80vw';
 
   /**
    * Data being injected into the child component.
    */
-  data ?: D | null;
+  data?: D | null;
 
   protected configName ? = 'dialog';
 

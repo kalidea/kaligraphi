@@ -86,27 +86,27 @@ export class DatepickerComponent implements OnInit, OnDestroy {
 export function minDateValidator(minDate: KalDate) {
   return (control: AbstractControl): ValidationErrors | null => {
     if (!control.value) {
-      return {'minDate': true};
+      return {minDate: true};
     }
 
     const minDateTime = minDate.getDate();
     const currentDateTime = (control.value as KalDate).getDate();
     const diffBetweenDates = currentDateTime.diff(minDateTime, 'day');
 
-    return Math.trunc(diffBetweenDates) < 0 ? {'minDate': true} : null;
+    return Math.trunc(diffBetweenDates) < 0 ? {minDate: true} : null;
   };
 }
 
 export function maxDateValidator(maxDate: KalDate) {
   return (control: AbstractControl): ValidationErrors | null => {
     if (!control.value) {
-      return {'maxDate': true};
+      return {maxDate: true};
     }
 
     const maxDateTime = maxDate.getDate();
     const currentDateTime = (control.value as KalDate).getDate();
     const diffBetweenDates = currentDateTime.diff(maxDateTime, 'day');
 
-    return Math.trunc(diffBetweenDates) > 0 ? {'maxDate': true} : null;
+    return Math.trunc(diffBetweenDates) > 0 ? {maxDate: true} : null;
   };
 }

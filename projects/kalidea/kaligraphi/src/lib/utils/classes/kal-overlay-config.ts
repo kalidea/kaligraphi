@@ -14,7 +14,7 @@ export abstract class KalOverlayConfig extends OverlayConfig {
    * component instantiated inside of the attached component. This does not affect where the component
    * content will be rendered.
    */
-  viewContainerRef ?: ViewContainerRef;
+  viewContainerRef?: ViewContainerRef;
 
   /**
    * uniq id

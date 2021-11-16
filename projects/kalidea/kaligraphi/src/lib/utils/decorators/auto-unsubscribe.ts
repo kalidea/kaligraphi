@@ -43,8 +43,7 @@ export function AutoUnsubscribe() {
   };
 }
 
-const destroy = (componentInstance: any, originialDestroy: any) => {
-  return function () {
+const destroy = (componentInstance: any, originialDestroy: any) => function() {
     componentInstance[decoratorSubscriptionsListKey].forEach((property) => {
       const subscriptions: Subscription[] = Array.isArray(this[property]) ? this[property] : [this[property]];
 
@@ -59,4 +58,3 @@ const destroy = (componentInstance: any, originialDestroy: any) => {
       originialDestroy.apply(this, arguments);
     }
   };
-};

@@ -274,11 +274,9 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
         map(event => event.target as HTMLElement),
         // we should not have clicked on KalInput to continue the process
         filter(target => !this.elementRef.nativeElement.contains(target)),
-        filter(target => {
-          return this.overlayRef.hasAttached() &&
+        filter(target => this.overlayRef.hasAttached() &&
             target !== this.elementRef.nativeElement &&
-            (!!this._overlayRef && !this._overlayRef.overlayElement.contains(target));
-        })
+            (!!this._overlayRef && !this._overlayRef.overlayElement.contains(target)))
       );
   }
 

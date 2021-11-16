@@ -1,4 +1,4 @@
-/* tslint:disable:max-classes-per-file */
+/* eslint-disable max-classes-per-file */
 import { Component, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -390,7 +390,7 @@ class TestSelectComponent {
   @ViewChildren(KalOptionComponent) options: QueryList<KalOptionComponent>;
 }
 
-// tslint:disable-next-line:max-classes-per-file
+// eslint-disable-next-line max-classes-per-file
 @Component({
   selector: 'kal-test-select-option-group',
   template: `
@@ -417,7 +417,7 @@ class TestSelectOptionGroupComponent {
   @ViewChildren(KalOptionComponent) options: QueryList<KalOptionComponent>;
 }
 
-// tslint:disable-next-line:max-classes-per-file
+// eslint-disable-next-line max-classes-per-file
 @Component({
   selector: 'kal-test-select-one',
   template: `

@@ -7,16 +7,16 @@ export class KalSnackbarConfig<D = any> extends KalOverlayConfig {
 
   active ? = false;
 
-  title ?: string;
+  title?: string;
 
-  overlayRef ?: OverlayRef;
+  overlayRef?: OverlayRef;
 
-  action ?: {
-    label: string,
-    callback: () => void
+  action?: {
+    label: string;
+    callback: () => void;
   };
 
-  data ?: D;
+  data?: D;
 
   duration ? = 4;
 

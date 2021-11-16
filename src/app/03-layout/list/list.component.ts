@@ -1,3 +1,4 @@
+// eslint-disable-next-line max-classes-per-file
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -61,7 +62,7 @@ export class ListComponent implements OnInit {
 
   highlightedItem = null;
 
-  @ViewChild(KalListComponent, {static: true}) kalListComponent: KalListComponent<{ id: string, name: string, disabled: boolean }>;
+  @ViewChild(KalListComponent, {static: true}) kalListComponent: KalListComponent<{ id: string; name: string; disabled: boolean }>;
 
   selectRow($event: KalSelectionModel<{ id: string }>) {
     this.listSelection = $event;
@@ -75,13 +76,11 @@ export class ListComponent implements OnInit {
     this.virtualScrollConfig = null;
 
     this.dataSource = range(1, 20000).map(
-      index => {
-        return {
+      index => ({
           id: '' + index,
           name: (index !== 4 ? 'aTest' : 'bTest') + index,
           disabled: index === 1
-        };
-      }
+        })
     );
 
     this.listSelection = new KalSelectionModel({numberOfItems: this.dataSource.length});
@@ -157,8 +156,8 @@ const list = (page: number, numberOfElements: number) => {
   return of({data: listItem, meta: {total}});
 };
 
-// tslint:disable-next-line:max-classes-per-file
-class TestDataSource<T> implements DataSource<{ id: string, name: string }> {
+// eslint-disable-next-line max-classes-per-file
+class TestDataSource<T> implements DataSource<{ id: string; name: string }> {
 
   private subscriptionsList: Subscription[] = [];
   private datastream: BehaviorSubject<T[]> = new BehaviorSubject([]);
@@ -187,7 +186,7 @@ class TestDataSource<T> implements DataSource<{ id: string, name: string }> {
     return this.page * this.countElement;
   }
 
-  get list(): Observable<{ data, meta }> {
+  get list(): Observable<{ data; meta }> {
     return list(this.page, this.countElement);
   }
 

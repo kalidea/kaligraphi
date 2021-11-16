@@ -14,10 +14,10 @@
 
 /** @docs-private */
 export interface HammerInput {
-  preventDefault: () => {};
+  preventDefault: () => unknown;
   deltaX: number;
   deltaY: number;
-  center: { x: number; y: number; };
+  center: { x: number; y: number };
 }
 
 /** @docs-private */
@@ -31,7 +31,7 @@ export interface HammerStatic {
 
 /** @docs-private */
 export interface Recognizer {
-  // tslint:disable-next-line:no-misused-new
+  // eslint-disable-next-line @typescript-eslint/no-misused-new
   new(options?: any): Recognizer;
   recognizeWith(otherRecognizer: Recognizer | string): Recognizer;
 }

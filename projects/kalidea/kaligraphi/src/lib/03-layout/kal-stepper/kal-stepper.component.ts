@@ -40,7 +40,7 @@ export class KalStepHeaderDirective extends CdkStepHeader implements FocusableOp
 
 // can't put classes in separate files, because of CDK implementation :
 // => CdkStepper need CdkStep // CdkStep need CdkStepper
-// tslint:disable-next-line:max-classes-per-file
+// eslint-disable-next-line max-classes-per-file
 @Component({
   selector: 'kal-step',
   exportAs: 'kalstep',
@@ -62,7 +62,7 @@ export class KalStepComponent extends CdkStep {
 }
 
 
-// tslint:disable-next-line:max-classes-per-file
+// eslint-disable-next-line max-classes-per-file
 @Component({
   selector: 'kal-stepper',
   templateUrl: './kal-stepper.component.html',

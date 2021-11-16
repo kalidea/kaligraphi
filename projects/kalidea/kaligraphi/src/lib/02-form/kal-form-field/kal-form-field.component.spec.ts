@@ -78,7 +78,7 @@ describe('KalFormFieldComponent', () => {
 /****************************** Reactive forms ************************/
 /*****************************************************************/
 
-// tslint:disable-next-line:max-classes-per-file
+// eslint-disable-next-line max-classes-per-file
 @Component({
   selector: 'kal-test',
   template: `
@@ -139,7 +139,7 @@ describe('KalFormFieldComponent Reactive form', () => {
 /****************************** INCEPTION ************************/
 /*****************************************************************/
 
-// tslint:disable-next-line:max-classes-per-file
+// eslint-disable-next-line max-classes-per-file
 @Component({
   selector: 'kal-inception1',
   template: `
@@ -181,7 +181,7 @@ describe('KalFormFieldComponent Inception', () => {
   });
 });
 
-// tslint:disable-next-line:max-classes-per-file
+// eslint-disable-next-line max-classes-per-file
 @Component({
   selector: 'kal-inception2',
   template: `
@@ -225,7 +225,7 @@ describe('KalFormFieldComponent Inception2', () => {
 /****************************** REQUIRED ASTERISK ************************/
 /*************************************************************************/
 
-// tslint:disable-next-line:max-classes-per-file
+// eslint-disable-next-line max-classes-per-file
 @Component({
   selector: 'kal-test',
   template: `

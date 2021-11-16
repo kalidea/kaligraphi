@@ -9,6 +9,7 @@ import { of } from 'rxjs';
  * 3) provide custom providers build by buildProviders(ComponentName)
  * 4) override validate method if needed
  * 5) call notifyUpdate to notify changes
+ *
  *   @Component({
  *     selector: 'app-custom-component',
  *     providers: [buildProviders(CustomComponent)]
@@ -73,13 +74,13 @@ export abstract class FormControlAccessComponent<T = any> implements ControlValu
    * function called when control is changed
    */
   protected onChange: any = () => {
-  }
+  };
 
   /**
    * function called when control is touched
    */
   protected onTouched: any = () => {
-  }
+  };
 
   /**
    * compare 2 value of this control and return equality

@@ -147,6 +147,7 @@ export class KalExpansionPanelHeaderComponent implements OnDestroy, FocusableOpt
 
   /**
    * Focuses the panel header. Implemented as a part of `FocusableOption`.
+   *
    * @param origin Origin of the action that triggered the focus.
    */
   focus(origin: FocusOrigin = 'program') {

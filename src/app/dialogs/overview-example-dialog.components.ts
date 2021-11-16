@@ -7,8 +7,8 @@ import { Subscription } from 'rxjs';
  */
 export interface ExampleDialogData {
   user?: {
-    firstname,
-    lastname
+    firstname;
+    lastname;
   };
   confirm?: boolean;
   closed?: number;

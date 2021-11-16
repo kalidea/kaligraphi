@@ -25,23 +25,23 @@ function coerceFromType(value: any, type: KAL_COERCE_TYPES, formatOrDefaultNumbe
 
 export function Coerce(type: KAL_COERCE_TYPES, formatOrDefaultNumber?): PropertyDecorator & MethodDecorator {
   // Vu la complexité du code, il est plus judicieux de garder cette fonction, elle utilise this qui est scopé
-  // tslint:disable-next-line:only-arrow-functions
-  return function (target: any, key: string | symbol, propDesc?: PropertyDescriptor): void | any {
+  // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+  return function(target: any, key: string | symbol, propDesc?: PropertyDescriptor): void | any {
     const privateKey = '_coerce_' + key.toString();
 
     propDesc = propDesc || {
       configurable: true,
       enumerable: true,
     };
-    propDesc.get = propDesc.get || (function (this: any) {
+    propDesc.get = propDesc.get || (function(this: any) {
       return this[privateKey];
     });
 
-    const originalSetter = propDesc.set || (function (this: any, val: any) {
+    const originalSetter = propDesc.set || (function(this: any, val: any) {
       this[privateKey] = val;
     });
 
-    propDesc.set = function (this: any, val: any) {
+    propDesc.set = function(this: any, val: any) {
       const oldValue = this[key];
       const newVal = coerceFromType(val, type, formatOrDefaultNumber);
       if (val !== oldValue) {

@@ -39,7 +39,7 @@ class CarouselContext<T> {
 
 const prefix = 'kalCarouselItem';
 
-// tslint:disable-next-line:max-classes-per-file
+// eslint-disable-next-line max-classes-per-file
 @Directive({
   selector: '[' + prefix + ']',
   exportAs: prefix,
@@ -90,11 +90,11 @@ export class KalCarouselItemDirective<T> implements OnInit, OnDestroy {
   }
 
   private getVariables(status: KalCarouselItemStatus): {
-    positionFrom: number,
-    positionTo: number,
-    marginFrom: number,
-    marginTo: number,
-    moveAfterAnimation: boolean
+    positionFrom: number;
+    positionTo: number;
+    marginFrom: number;
+    marginTo: number;
+    moveAfterAnimation: boolean;
   } {
 
     const end = this.length - 1;

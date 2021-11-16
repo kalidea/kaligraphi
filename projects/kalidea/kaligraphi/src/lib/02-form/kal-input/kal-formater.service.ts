@@ -18,11 +18,11 @@ export class KalFormaterService {
 
   constructor(@Inject(LOCALE_ID) locale: string) {
     this.formatersList = {
-      'number': new NumberFormat(locale),
-      'currency': new CurrencyFormat(locale),
-      'phone': new PhoneFormat(locale),
-      'text': new StringFormat(locale),
-      'password': new StringFormat(locale)
+      number: new NumberFormat(locale),
+      currency: new CurrencyFormat(locale),
+      phone: new PhoneFormat(locale),
+      text: new StringFormat(locale),
+      password: new StringFormat(locale)
     };
   }
 

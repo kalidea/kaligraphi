@@ -113,7 +113,7 @@ export class KalListComponent<T>
   @AutoUnsubscribe()
   private countSubscription: Subscription = Subscription.EMPTY;
 
-  private groupedByParams: { previous: T, slug: string } = {previous: null, slug: ''};
+  private groupedByParams: { previous: T; slug: string } = {previous: null, slug: ''};
 
   constructor(private cdr: ChangeDetectorRef) {
   }
@@ -395,7 +395,7 @@ export class KalListComponent<T>
     }
   }
 
-  private setResults(dataSource$: Observable<T[] | ReadonlyArray<T>>) {
+  private setResults(dataSource$: Observable<T[] | readonly T[]>) {
     this.subscription = dataSource$
       .pipe(
         tap((items: T[]) => {

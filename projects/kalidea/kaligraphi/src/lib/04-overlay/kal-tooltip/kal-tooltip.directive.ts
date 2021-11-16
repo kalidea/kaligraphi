@@ -33,7 +33,7 @@ export class KalTooltipConfig {
   theme?: string | string[];
 }
 
-// tslint:disable-next-line:max-classes-per-file
+// eslint-disable-next-line max-classes-per-file
 @Directive({
   selector: '[kalTooltip]',
   exportAs: 'kalTooltip',
@@ -159,7 +159,7 @@ export class KalTooltipDirective extends KalOverlayManager implements OnDestroy 
 
 const ANIMATION_TIMINGS = '300ms cubic-bezier(0.25, 0.8, 0.25, 1)';
 
-// tslint:disable-next-line:max-classes-per-file
+// eslint-disable-next-line max-classes-per-file
 @Component({
   selector: 'kal-tooltip',
   template: `

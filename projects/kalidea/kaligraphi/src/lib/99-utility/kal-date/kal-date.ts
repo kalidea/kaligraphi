@@ -108,6 +108,7 @@ export class KalDate {
 
   /**
    * Returns a "type D" object
+   *
    * @param rawDate Date as string
    * @param format Date format to provide if date is a `string`
    */

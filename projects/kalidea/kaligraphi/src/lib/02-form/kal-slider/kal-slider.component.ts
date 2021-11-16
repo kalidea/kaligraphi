@@ -167,8 +167,8 @@ export class KalSliderComponent extends FormElementComponent<number> implements 
     this.value = this.positionInSliderToValue(position);
   }
 
-  selectionContainerStyles(): { 'width.%': number, backgroundColor?: string } {
-    const styles: { 'width.%': number, backgroundColor?: string } = {
+  selectionContainerStyles(): { 'width.%': number; backgroundColor?: string } {
+    const styles: { 'width.%': number; backgroundColor?: string } = {
       'width.%': this.valueToPercent(this.value),
     };
 

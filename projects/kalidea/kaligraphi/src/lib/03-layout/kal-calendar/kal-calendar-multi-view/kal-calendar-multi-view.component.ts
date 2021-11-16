@@ -52,6 +52,7 @@ export class KalCalendarMultiViewComponent implements AfterViewInit {
 
   /**
    * Returns an array of standalone short month names.
+   *
    * @example ['Jan', 'Feb', ...]
    */
   get shortMonths(): string[] {

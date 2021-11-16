@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 /**
  * create a test suite with a single test component displaying a component selector
+ *
  * @param componentSelector selector of component ( e.g: kal-checkbox )
  * @param componentClass class of component ( e.g: KalCheckbox )
  * @param imports array of imports required for this test (e.g: [KalCheckboxModule] )

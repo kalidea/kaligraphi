@@ -36,12 +36,12 @@ export class KalSelection<T> {
   numberOfSelectedItems ? = 0;
 }
 
-// tslint:disable-next-line:max-classes-per-file
+// eslint-disable-next-line max-classes-per-file
 class SubSelectionModel<T> extends SelectionModel<T> {
 
   getItem(item: (T & { id?: string })): T {
     if (!isNil(item.id)) {
-      return this.selected.find((element: T & { id?: string }) => !!('' + element.id === '' + item.id));
+      return this.selected.find((element: T & { id?: string }) => '' + element.id === '' + item.id);
     } else {
       return item;
     }
@@ -70,7 +70,7 @@ class SubSelectionModel<T> extends SelectionModel<T> {
 
 }
 
-// tslint:disable-next-line:max-classes-per-file
+// eslint-disable-next-line max-classes-per-file
 export class KalSelectionModel<T> extends SelectionModel<T> {
 
   numberOfItems = 0;
@@ -138,19 +138,19 @@ export class KalSelectionModel<T> extends SelectionModel<T> {
   }
 
   select(...items: T[]): void;
-  select(params: { values: T[], emitEvent?: boolean }): void;
+  select(params: { values: T[]; emitEvent?: boolean }): void;
   select(...params: any): void {
     this.editSelection('select', ...params);
   }
 
   deselect(...items: T[]): void;
-  deselect(params: { values: T[], emitEvent?: boolean }): void;
+  deselect(params: { values: T[]; emitEvent?: boolean }): void;
   deselect(...params: any): void {
     this.editSelection('deselect', ...params);
   }
 
   toggle(item: T): void {
-    this._all ? this.removedSelection.toggle(item) : this.addedSelection.toggle(item);
+    (this._all ? this.removedSelection : this.addedSelection).toggle(item);
     this.changes$.next(this.format());
   }
 
@@ -210,7 +210,7 @@ export class KalSelectionModel<T> extends SelectionModel<T> {
   }
 
   private editSelection(action: 'select' | 'deselect', ...items: T[]): void;
-  private editSelection(action: 'select' | 'deselect', params: { values: T[], emitEvent?: boolean }): void;
+  private editSelection(action: 'select' | 'deselect', params: { values: T[]; emitEvent?: boolean }): void;
   private editSelection(action: 'select' | 'deselect', ...params: any) {
     if (Array.isArray(params) && params.length === 0) {
       return;

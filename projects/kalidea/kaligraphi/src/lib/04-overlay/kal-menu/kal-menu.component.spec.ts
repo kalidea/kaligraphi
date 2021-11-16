@@ -10,6 +10,7 @@ import { KalOptionModule } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal
 /**
  * Custom component to test directive
  * => isolated test unit
+ *
  * @link https://angular.io/docs/ts/latest/testing/#!#isolated-unit-tests
  */
 @Component({

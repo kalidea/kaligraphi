@@ -142,7 +142,7 @@ export class KalDropDirective implements OnDestroy {
     const bot = targetHeight * (1 - this.kalDropThreshold);
 
     // list of defaut config
-    const positionsConfig: { [key: string]: { min: number, max: number } } = {
+    const positionsConfig: { [key: string]: { min: number; max: number } } = {
       [KalDropPosition.Top]: {min: 0, max: top},
       [KalDropPosition.Middle]: {min: top, max: bot},
       [KalDropPosition.Bot]: {min: bot, max: targetHeight}

@@ -185,7 +185,7 @@ describe('KalTabGroupComponent', () => {
   // }));
 });
 
-// tslint:disable-next-line:max-classes-per-file
+// eslint-disable-next-line max-classes-per-file
 @Component({
   template: `
     <kal-tab-group [formControl]="tabControl">

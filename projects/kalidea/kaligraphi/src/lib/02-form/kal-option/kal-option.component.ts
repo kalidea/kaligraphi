@@ -123,6 +123,7 @@ export class KalOptionComponent implements AfterViewInit, Highlightable, OnDestr
 
   /**
    * Get display value of the option
+   *
    * @deprecated
    */
   get viewValue(): string {

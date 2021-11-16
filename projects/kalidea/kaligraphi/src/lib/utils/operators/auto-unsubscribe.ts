@@ -14,7 +14,7 @@ export const autoUnsubscribe = (componentInstance) => <T>(source: BehaviorSubjec
 
   componentInstance[destroy] = new Subject();
 
-  componentInstance.ngOnDestroy = function () {
+  componentInstance.ngOnDestroy = function() {
     if (original) {
       original.apply(this, arguments);
     }

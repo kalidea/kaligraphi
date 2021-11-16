@@ -29,6 +29,7 @@ export class KalCalendarHeaderComponent {
 
   /**
    * Emit event with the new month that should be displayed.
+   *
    * @param amount The amount is `1` or `-1`
    */
   updateMonthAmount(amount: number) {

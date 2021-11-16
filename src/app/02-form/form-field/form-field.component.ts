@@ -15,9 +15,9 @@ import {KAL_FORM_FIELDS_GLOBAL_OPTIONS, KalFormFieldOptions} from '@kalidea/kali
         showError: true,
         showErrorAtDisplay: true,
         errors: {
-          'email': 'wrong email',
-          'maxlength': '{value} length ({actualLength}) exceed maximal {requiredLength}',
-          'minlength': '{value} length ({actualLength}) below minimal {requiredLength}'
+          email: 'wrong email',
+          maxlength: '{value} length ({actualLength}) exceed maximal {requiredLength}',
+          minlength: '{value} length ({actualLength}) below minimal {requiredLength}'
         }
       } as KalFormFieldOptions
     }

@@ -60,8 +60,8 @@ import { TextareaComponent } from 'src/app/02-form/textarea/textarea.component';
         showError: true,
         showErrorAtDisplay: true,
         errors: {
-          'email': 'email "{value}" is not an email',
-          'maxlength': '{value} length {actualLength} exceed maximal {requiredLength}'
+          email: 'email "{value}" is not an email',
+          maxlength: '{value} length {actualLength} exceed maximal {requiredLength}'
         }
       } as KalFormFieldOptions
     },

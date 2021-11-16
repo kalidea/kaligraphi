@@ -605,9 +605,7 @@ export class KalSelectComponent
    * Multiple selection sort option to keep order
    */
   private sortSelection() {
-    this.selection.sort((x, y) => {
-      return this.options.toArray().indexOf(x) > this.options.toArray().indexOf(y) ? 1 : -1;
-    });
+    this.selection.sort((x, y) => this.options.toArray().indexOf(x) > this.options.toArray().indexOf(y) ? 1 : -1);
   }
 
   /**
@@ -651,16 +649,16 @@ export class KalSelectComponent
             this.select(this.value);
           }
         }),
-        switchMap(() => {
+        switchMap(() =>
           // watch for selection change event
-          return merge<KalOptionComponent>(...this.options.map(option => option.selectionChange))
+           merge<KalOptionComponent>(...this.options.map(option => option.selectionChange))
             .pipe(
               tap(event => {
                 this.focus();
                 this.optionSelected(event, !this.isBlur);
               })
-            );
-        })
+            )
+        )
       )
       .subscribe();
 

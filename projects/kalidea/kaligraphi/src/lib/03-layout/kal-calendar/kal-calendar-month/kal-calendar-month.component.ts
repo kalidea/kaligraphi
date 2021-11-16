@@ -71,6 +71,7 @@ export class KalCalendarMonthComponent implements OnInit {
 
   /**
    * Returns an array of standalone narrowed weekdays.
+   *
    * @example ['M', 'T', ...]
    */
   get narrowWeekDays(): string[] {
