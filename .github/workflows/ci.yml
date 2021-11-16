@@ -13,7 +13,7 @@ on:
       - 'releases/**'
 
 env:
-  NODE_RELEASE_VERSION: 10 # release version created by NODE 10
+  NODE_RELEASE_VERSION: 12 # release version created by NODE 10
 
 jobs:
   test-and-build:
