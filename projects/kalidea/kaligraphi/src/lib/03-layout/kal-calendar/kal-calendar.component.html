@@ -10,6 +10,7 @@
   </kal-calendar-header>
 
   <kal-calendar-month #monthCalendar
+                      [classesListBuilder]="classesListBuilder"
                       [hidden]="isMultiView"
                       [selectedDate]="selectedDate"
                       [activatedDates]="activatedDates"

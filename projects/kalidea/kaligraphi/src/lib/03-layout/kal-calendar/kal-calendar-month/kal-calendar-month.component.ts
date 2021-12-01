@@ -11,11 +11,13 @@ import {
   Output,
   ViewEncapsulation
 } from '@angular/core';
-import {AbstractControl} from '@angular/forms';
+import { AbstractControl } from '@angular/forms';
 
 import { KalDate } from '../../../99-utility/kal-date/kal-date';
 import { KalDatepickerComponent } from '../../../02-form/kal-datepicker/kal-datepicker.component';
 import { DateUnits } from '../kal-calendar-multi-view/kal-calendar-multi-view.component';
+
+export type KalClassesListBuilderType = (date: KalDate) => Record<string, boolean>;
 
 @Component({
   selector: 'kal-calendar-month',
@@ -72,6 +74,11 @@ export class KalCalendarMonthComponent implements OnInit {
   get narrowWeekDays(): string[] {
     return KalDate.days().map(day => day.charAt(0).toLocaleUpperCase());
   }
+
+  /**
+   * add specific classes for date
+   */
+  @Input() classesListBuilder: KalClassesListBuilderType = () => ({});
 
   /**
    * Getter to display dates of displayed month.
@@ -138,6 +145,10 @@ export class KalCalendarMonthComponent implements OnInit {
    */
   isDayActivated(date: KalDate): boolean {
     return !!this.activatedDates.find(d => date.isSame(d));
+  }
+
+  getClassesForDate(date: KalDate): Record<string, boolean> {
+    return this.classesListBuilder(date);
   }
 
   ngOnInit(): void {

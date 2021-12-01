@@ -5,6 +5,7 @@
   <div>
     <kal-calendar
       (datePicked)="datePicked($event)"
+      [classesListBuilder]="buildClassForDate"
       [selectedDate]="date"
       [activatedDates]="selectedDates">
     </kal-calendar>

@@ -16,10 +16,21 @@ export class CalendarComponent implements OnInit {
     new KalDate('02/09/2020'),
     new KalDate('20/09/2020')
   ];
+
   newdate: KalDate;
 
   constructor() {
   }
+
+  buildClassForDate = (date: KalDate) => {
+    const day = date.getDay();
+    if (day > 8 && day < 18) {
+      return {green: true};
+    } else if (day > 20 && day < 25) {
+      return {blue: true};
+    }
+    return {};
+  };
 
   datePicked($event: KalDate) {
     this.date = $event;
