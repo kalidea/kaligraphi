@@ -8,6 +8,7 @@
     "ng": "ng",
     "build": "ng build --configuration production",
     "build:lib": "npm run build",
+    "copy:styles": "cpx \"./projects/kalidea/kaligraphi/src/**/*.{sass,scss,css}\" ./dist/kalidea/kaligraphi",
     "compile:styles": "sass ./projects/kalidea/kaligraphi/src/styles/styles.sass ./dist/kalidea/kaligraphi/styles/styles.css",
     "postbuild": "npm run compile:styles",
     "test:ci": "ng test @kalidea/kaligraphi --karma-config=./projects/kalidea/kaligraphi/karma.test.conf.js",
@@ -17,8 +18,8 @@
     "build:all": "ng build --configuration production && npm run build:playground",
     "verify": "ng lint @kalidea/kaligraphi && npm run test:ci && npm run build:all",
     "verify:windows": "ng lint @kalidea/kaligraphi && npm run build:all && npm run test",
-    "prepublish-next": "npm run build; cp README.md dist/kalidea/kaligraphi/;cd dist/kalidea/kaligraphi/",
-    "publish-next": "npm publish --access public --tag next"
+    "prepublish-next": "npm run build; cp README.md dist/kalidea/kaligraphi/; npm run copy:styles",
+    "publish-next": "cd dist/kalidea/kaligraphi/; npm publish --access public --tag next"
   },
   "private": true,
   "dependencies": {

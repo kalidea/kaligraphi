@@ -3,8 +3,5 @@
   "dest": "../../../dist/kalidea/kaligraphi",
   "lib": {
     "entryFile": "src/public-api.ts"
-  },
-  "assets": [
-    "src/**/*.{sass,scss,css}"
-  ]
+  }
 }
