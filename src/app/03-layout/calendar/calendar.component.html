@@ -38,5 +38,10 @@
     <kal-datepicker [(ngModel)]="newdate" (ngModelChange)="selectedDates.push($event)"
                     label="Select new date"></kal-datepicker>
   </kal-form-field>
+  <kal-form-field>
+    <kal-button (click)="updateColors()" kalTheme="primary" label="trigger rerender of calendar">
+      Trigger change
+    </kal-button>
+  </kal-form-field>
 
 </div>

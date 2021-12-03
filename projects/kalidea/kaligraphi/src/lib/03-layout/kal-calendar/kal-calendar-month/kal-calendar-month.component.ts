@@ -81,6 +81,14 @@ export class KalCalendarMonthComponent implements OnInit {
   @Input() classesListBuilder: KalClassesListBuilderType = () => ({});
 
   /**
+   * refresh calendar display
+   */
+  refresh(): void {
+    this.cdr.detectChanges();
+  }
+
+
+  /**
    * Getter to display dates of displayed month.
    */
   refreshMonthDatesList(): void {

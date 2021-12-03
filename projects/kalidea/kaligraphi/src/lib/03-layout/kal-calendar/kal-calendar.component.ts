@@ -137,6 +137,14 @@ export class KalCalendarComponent implements AfterViewInit {
   @Input() classesListBuilder: KalClassesListBuilderType = () => ({});
 
   /**
+   * refresh calendar display
+   */
+  refresh(): void {
+    this.calendarMonth.refresh();
+    this.cdr.detectChanges();
+  }
+
+  /**
    * Switch between views to display.
    */
   changeCurrentView() {

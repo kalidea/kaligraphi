@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
-import { KalDate } from '@kalidea/kaligraphi';
+import { ChangeDetectionStrategy, Component, ViewChild, ViewEncapsulation } from '@angular/core';
+import { KalCalendarComponent, KalDate } from '@kalidea/kaligraphi';
 
 @Component({
   selector: 'app-month-calendar',
@@ -8,7 +8,9 @@ import { KalDate } from '@kalidea/kaligraphi';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CalendarComponent implements OnInit {
+export class CalendarComponent {
+
+  @ViewChild(KalCalendarComponent) calendar: KalCalendarComponent;
 
   date: KalDate;
 
@@ -19,24 +21,32 @@ export class CalendarComponent implements OnInit {
 
   newdate: KalDate;
 
-  constructor() {
+  list = [
+    'green',
+    'blue',
+    'red',
+    'yellow'
+  ];
+
+  updateColors(){
+    const [first, ...rest] = this.list;
+    this.list = [...rest, first];
+    this.calendar.refresh();
+    console.log(this.list);
   }
 
   buildClassForDate = (date: KalDate) => {
     const day = date.getDay();
     if (day > 8 && day < 18) {
-      return {green: true};
+      return {[this.list[0]]: true};
     } else if (day > 20 && day < 25) {
-      return {blue: true};
+      return {[this.list[1]]: true};
     }
     return {};
   };
 
   datePicked($event: KalDate) {
     this.date = $event;
-  }
-
-  ngOnInit(): void {
   }
 
 
