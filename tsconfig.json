@@ -2,23 +2,19 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
-    "downlevelIteration": true,
-    "importHelpers": true,
     "outDir": "./dist/out-tsc",
-    "sourceMap": true,
-    "declaration": false,
+    "forceConsistentCasingInFileNames": true,
     "strict": false,
-    "module": "es2020",
-    "moduleResolution": "node",
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "declaration": false,
     "experimentalDecorators": true,
-    "esModuleInterop": true,
-    "target": "es5",
+    "moduleResolution": "node",
+    "importHelpers": true,
     "typeRoots": [
       "node_modules/@types"
-    ],
-    "lib": [
-      "es2017",
-      "dom"
     ],
     "paths": {
       "@kalidea/kaligraphi": [
@@ -27,6 +23,12 @@
       "@kalidea/kaligraphi/*": [
         "dist/kalidea/kaligraphi/*"
       ]
-    }
+    },
+    "target": "es2017",
+    "module": "es2020",
+    "lib": [
+      "es2020",
+      "dom"
+    ]
   }
 }

@@ -1,8 +1,14 @@
 {
   "extends": "../../../tsconfig.json",
   "compilerOptions": {
-    "sourceMap": true,
+    "declarationMap": false,
     "outDir": "../../../out-tsc/spec",
+    "forceConsistentCasingInFileNames": true,
+    "strict": false,
+    "noImplicitOverride": false,
+    "noPropertyAccessFromIndexSignature": false,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
     "types": [
       "jasmine",
       "node"
