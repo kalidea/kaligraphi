@@ -11,7 +11,8 @@
       "schematics": {
         "@schematics/angular:component": {
           "style": "sass"
-        }},
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -103,9 +104,9 @@
             "production": {
               "tsConfig": "projects/kalidea/kaligraphi/tsconfig.lib.prod.json"
             },
-              "development": {}
+            "development": {}
           },
-            "defaultConfiguration": "production"
+          "defaultConfiguration": "production"
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
@@ -113,6 +114,15 @@
             "main": "projects/kalidea/kaligraphi/src/test.ts",
             "tsConfig": "projects/kalidea/kaligraphi/tsconfig.spec.json",
             "karmaConfig": "projects/kalidea/kaligraphi/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/kalidea/kaligraphi/**/*.ts",
+              "projects/kalidea/kaligraphi/**/*.html"
+            ]
           }
         }
       }
@@ -130,6 +140,7 @@
     }
   },
   "cli": {
-    "analytics": "3932d92d-82cf-4dfe-9914-ad99ab89761d"
+    "analytics": "3932d92d-82cf-4dfe-9914-ad99ab89761d",
+    "defaultCollection": "@angular-eslint/schematics"
   }
 }

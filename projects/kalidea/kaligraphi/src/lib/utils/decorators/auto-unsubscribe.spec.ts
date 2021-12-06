@@ -20,9 +20,7 @@ export class TestComponent implements OnDestroy {
     interval(2).subscribe()
   ];
 
-  constructor() {
-  }
-
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
   }
 }

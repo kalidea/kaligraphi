@@ -12,7 +12,7 @@ import { FormHooks } from '../forms/form-hooks';
 
 // required decorator for Ivy
 @Directive()
-// tslint:disable-next-line:directive-class-suffix
+// eslint-disable-next-line @angular-eslint/directive-class-suffix
 export class FormElementComponent<T = string> extends FormControlAccessComponent<T> implements OnChanges, OnDestroy {
 
   /**

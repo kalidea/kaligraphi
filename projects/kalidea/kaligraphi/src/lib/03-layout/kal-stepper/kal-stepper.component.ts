@@ -1,6 +1,7 @@
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ContentChild,
   ContentChildren,
@@ -10,6 +11,7 @@ import {
   HostBinding,
   Inject,
   Input,
+  Optional,
   QueryList,
   ViewChildren,
   ViewEncapsulation
@@ -19,6 +21,8 @@ import { FocusableOption } from '@angular/cdk/a11y';
 import { takeUntil } from 'rxjs/operators';
 
 import { KalStepLabelDirective } from './kal-step-label.directive';
+import { Directionality } from '@angular/cdk/bidi';
+import { DOCUMENT } from '@angular/common';
 
 // bug in cdk, should provide this class ourselves
 // https://github.com/angular/material2/pull/10614/files#diff-6c5ad0b93867d084db7acfd30f02d32bR247
@@ -40,7 +44,7 @@ export class KalStepHeaderDirective extends CdkStepHeader implements FocusableOp
 
 // can't put classes in separate files, because of CDK implementation :
 // => CdkStepper need CdkStep // CdkStep need CdkStepper
-// tslint:disable-next-line:max-classes-per-file
+// eslint-disable-next-line max-classes-per-file
 @Component({
   selector: 'kal-step',
   exportAs: 'kalstep',
@@ -62,7 +66,7 @@ export class KalStepComponent extends CdkStep {
 }
 
 
-// tslint:disable-next-line:max-classes-per-file
+// eslint-disable-next-line max-classes-per-file
 @Component({
   selector: 'kal-stepper',
   templateUrl: './kal-stepper.component.html',
@@ -83,6 +87,14 @@ export class KalStepperComponent extends CdkStepper implements AfterContentInit 
 
   /** Steps that belong to the current stepper, excluding ones from nested steppers. */
   readonly steps: QueryList<KalStepComponent> = new QueryList<KalStepComponent>();
+
+  // need to add constructor for test:ci
+  constructor(@Optional() dir: Directionality,
+              changeDetectorRef: ChangeDetectorRef,
+              elementRef: ElementRef<HTMLElement>,
+              @Inject(DOCUMENT) document: any) {
+    super(dir, changeDetectorRef, elementRef, document);
+  }
 
   protected _orientation: StepperOrientation = 'horizontal';
 

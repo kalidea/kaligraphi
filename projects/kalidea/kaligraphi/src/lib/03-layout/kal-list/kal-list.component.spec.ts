@@ -67,7 +67,7 @@ const itemsList = [
   },
 ];
 
-// tslint:disable-next-line:max-classes-per-file
+// eslint-disable-next-line max-classes-per-file
 class TestDataSource<T> implements DataSource<{ id: string, name: string }> {
 
   datastream: BehaviorSubject<T[]> = new BehaviorSubject([]);
@@ -138,7 +138,7 @@ class TestDataSource<T> implements DataSource<{ id: string, name: string }> {
   }
 }
 
-// tslint:disable-next-line:max-classes-per-file
+// eslint-disable-next-line max-classes-per-file
 @Component({
   template: `
       <kal-list [dataSource]="dataSource"

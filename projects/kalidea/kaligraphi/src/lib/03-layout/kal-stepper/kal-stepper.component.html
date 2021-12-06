@@ -8,7 +8,7 @@
       [attr.aria-label]="step.ariaLabel || null"
       [attr.aria-labelledby]="(!step.ariaLabel && step.ariaLabelledby) ? step.ariaLabelledby : null"
       [attr.aria-posinset]="i + 1"
-      [attr.aria-selected]="selectedIndex == i"
+      [attr.aria-selected]="selectedIndex === i"
       [attr.aria-setsize]="steps.length"
       [id]="_getStepLabelId(i)"
       [index]="i"

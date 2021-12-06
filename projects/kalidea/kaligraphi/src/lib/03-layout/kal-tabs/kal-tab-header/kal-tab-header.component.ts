@@ -1,6 +1,13 @@
 import { Highlightable } from '@angular/cdk/a11y';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { AfterViewInit, ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  ViewEncapsulation
+} from '@angular/core';
 import { KalTabArea } from '../kal-tab-area';
 
 @Component({
@@ -28,6 +35,10 @@ export class KalTabHeaderComponent extends KalTabArea implements AfterViewInit, 
    * Is the header disabled
    */
   private isDisabled = false;
+
+  constructor(protected cdr: ChangeDetectorRef) {
+    super(cdr);
+  }
 
   /**
    * Is the header disabled

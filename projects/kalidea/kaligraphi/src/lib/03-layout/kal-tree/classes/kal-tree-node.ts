@@ -16,7 +16,7 @@ export class KalTreeNode {
   }
 }
 
-// tslint:disable-next-line:max-classes-per-file
+// eslint-disable-next-line max-classes-per-file
 export class KalFlatTreeNode {
 
   id: string;

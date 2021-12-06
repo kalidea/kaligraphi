@@ -39,7 +39,7 @@ class CarouselContext<T> {
 
 const prefix = 'kalCarouselItem';
 
-// tslint:disable-next-line:max-classes-per-file
+// eslint-disable-next-line max-classes-per-file
 @Directive({
   selector: '[' + prefix + ']',
   exportAs: prefix,

@@ -14,11 +14,12 @@ module.exports = function (config) {
     ],
     client: {
       clearContext: false // leave Jasmine Spec Runner output visible in browser
-    },    jasmineHtmlReporter: {
+    },
+    jasmineHtmlReporter: {
       suppressAll: true // removes the duplicated traces
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, '../../coverage/kalidea/kaligraphi'),
+      dir: require('path').join(__dirname, '../../../coverage/kalidea/kaligraphi'),
       subdir: '.',
       reporters: [
         { type: 'html' },

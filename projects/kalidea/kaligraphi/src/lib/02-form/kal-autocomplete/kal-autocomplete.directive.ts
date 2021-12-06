@@ -119,8 +119,11 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
 
   private _optionsList: KalAutocompleteOption<T>[];
 
-  @Input('kalAutocomplete')
-  set optionsList(optionsList: KalAutocompleteOption<T>[]) {
+  /**
+   * set optionsList
+   */
+  @Input()
+  set kalAutocomplete(optionsList: KalAutocompleteOption<T>[]) {
     this._optionsList = optionsList;
     this.updateOptionsList();
   }
@@ -131,9 +134,9 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
     return this._loading;
   }
 
-  @Input('kalAutocompleteLoading')
+  @Input()
   @Coerce('boolean')
-  set loading(loading: boolean) {
+  set kalAutocompleteLoading(loading: boolean) {
     this._loading = loading;
 
     if (!!this.autocompleteComponent) {

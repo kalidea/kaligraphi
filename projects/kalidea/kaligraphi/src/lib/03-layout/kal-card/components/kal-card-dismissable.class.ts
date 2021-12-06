@@ -3,7 +3,7 @@ import { Coerce } from '../../../utils/decorators/coerce';
 
 // required decorator for Ivy
 @Directive()
-// tslint:disable-next-line:directive-class-suffix
+// eslint-disable-next-line @angular-eslint/directive-class-suffix
 export class KalCardDismissable {
 
   /**
