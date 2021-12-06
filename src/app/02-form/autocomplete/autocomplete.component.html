@@ -46,11 +46,5 @@
     ></kal-checkbox>
   </kal-form-field>
 
-  <kal-form-field>
-    <kal-select [ngModel]="emperors" (ngModelChange)="updateEmperors()" label="Type" multiple>
-      <kal-option [value]="emp" *ngFor="let emp of emperorsList">{{ emp }}</kal-option>
-    </kal-select>
-  </kal-form-field>
-
 
 </div>

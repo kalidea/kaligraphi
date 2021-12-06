@@ -8,7 +8,7 @@ import { KalStepLabelDirective } from './kal-step-label.directive';
   template: `
     <div class="kal-step-header-ripple" ></div>
     <div [class.kal-step-icon]="state !== 'number' || selected"
-         [class.kal-step-icon-not-touched]="state == 'number' && !selected"
+         [class.kal-step-icon-not-touched]="state === 'number' && !selected"
          [ngSwitch]="state">
 
     </div>

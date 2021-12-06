@@ -1,15 +1,24 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  OnDestroy,
+  Output,
+  ViewEncapsulation
+} from '@angular/core';
 
 @Component({
   selector: 'kal-chip',
   template: `
-    <div><ng-content></ng-content></div>
+    <div>
+      <ng-content></ng-content>
+    </div>
     <kal-icon (click)="iconClicked()">clear</kal-icon>
   `,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class KalChipComponent implements OnInit, OnDestroy {
+export class KalChipComponent implements OnDestroy {
 
   @Output() dismiss: EventEmitter<void> = new EventEmitter();
 
@@ -21,9 +30,6 @@ export class KalChipComponent implements OnInit, OnDestroy {
    */
   iconClicked() {
     this.dismiss.emit();
-  }
-
-  ngOnInit() {
   }
 
   ngOnDestroy(): void {

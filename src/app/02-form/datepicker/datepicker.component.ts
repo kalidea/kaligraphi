@@ -88,9 +88,8 @@ export function minDateValidator(minDate: KalDate) {
     if (!control.value) {
       return {'minDate': true};
     }
-
     const minDateTime = minDate.getDate();
-    const currentDateTime = (control.value as KalDate).getDate();
+    const currentDateTime = new KalDate(control.value).getDate();
     const diffBetweenDates = currentDateTime.diff(minDateTime, 'day');
 
     return Math.trunc(diffBetweenDates) < 0 ? {'minDate': true} : null;

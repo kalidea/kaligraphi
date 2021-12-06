@@ -31,7 +31,7 @@ export interface HammerStatic {
 
 /** @docs-private */
 export interface Recognizer {
-  // tslint:disable-next-line:no-misused-new
+  // eslint-disable-next-line @typescript-eslint/no-misused-new
   new(options?: any): Recognizer;
   recognizeWith(otherRecognizer: Recognizer | string): Recognizer;
 }

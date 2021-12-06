@@ -3,18 +3,14 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
-  forwardRef,
-  Inject,
   Input,
   OnInit,
-  Optional,
   Output,
   ViewEncapsulation
 } from '@angular/core';
-import { AbstractControl } from '@angular/forms';
+import { AbstractControl, ValidatorFn } from '@angular/forms';
 
 import { KalDate } from '../../../99-utility/kal-date/kal-date';
-import { KalDatepickerComponent } from '../../../02-form/kal-datepicker/kal-datepicker.component';
 import { DateUnits } from '../kal-calendar-multi-view/kal-calendar-multi-view.component';
 
 export type KalClassesListBuilderType = (date: KalDate) => Record<string, boolean>;
@@ -43,10 +39,12 @@ export class KalCalendarMonthComponent implements OnInit {
    */
   @Input() activatedDates: KalDate[] = [];
 
-  monthDatesList: KalDate[] = [];
+  /**
+   * list of days in that month
+   */
+  daysList: KalDate[] = [];
 
-  constructor(@Optional() @Inject(forwardRef(() => KalDatepickerComponent)) public datepicker: KalDatepickerComponent,
-              public cdr: ChangeDetectorRef) {
+  constructor(public cdr: ChangeDetectorRef) {
   }
 
   private _currentDate: KalDate;
@@ -57,7 +55,6 @@ export class KalCalendarMonthComponent implements OnInit {
    * date is invalid.
    */
   get currentDate(): KalDate {
-    // return this.datepicker?.currentDate?.valid ? this.datepicker?.currentDate : new KalDate();
     return this._currentDate;
   }
 
@@ -74,6 +71,17 @@ export class KalCalendarMonthComponent implements OnInit {
   get narrowWeekDays(): string[] {
     return KalDate.days().map(day => day.charAt(0).toLocaleUpperCase());
   }
+
+  @Input()
+  set validator(validator: ValidatorFn) {
+    this._validator = validator;
+  }
+
+  get validator() {
+    return this._validator;
+  }
+
+  private _validator: ValidatorFn;
 
   /**
    * add specific classes for date
@@ -92,7 +100,7 @@ export class KalCalendarMonthComponent implements OnInit {
    * Getter to display dates of displayed month.
    */
   refreshMonthDatesList(): void {
-    this.monthDatesList = [];
+    this.daysList = [];
     const firstDayOfCurrentMonth = this._currentDate.startOf('months');
     const firstDayOfLastWeekOfPreviousMonth = firstDayOfCurrentMonth.startOf('weeks');
     const lastDayOfNextWeekOfNextMonth = firstDayOfCurrentMonth.add(5, 'weeks').endOf('weeks');
@@ -102,7 +110,7 @@ export class KalCalendarMonthComponent implements OnInit {
 
     // create an array with all days in selected date month
     for (let i = 0; i < (numberOfDays); i++) {
-      this.monthDatesList.push(new KalDate(firstDayOfLastWeekOfPreviousMonth.add(i, 'days')));
+      this.daysList.push(new KalDate(firstDayOfLastWeekOfPreviousMonth.add(i, 'days')));
     }
   }
 
@@ -144,8 +152,7 @@ export class KalCalendarMonthComponent implements OnInit {
    * It allows us to enable and disable the buttons.
    */
   shouldDisable(date: KalDate) {
-    const parentValidator = this.datepicker?.parentControlValidator;
-    return parentValidator ? parentValidator({value: date} as AbstractControl) !== null : false;
+    return this.validator && this.validator({value: date} as AbstractControl) !== null;
   }
 
   /**

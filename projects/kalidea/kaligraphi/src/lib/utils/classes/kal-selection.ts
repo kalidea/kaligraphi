@@ -36,7 +36,7 @@ export class KalSelection<T> {
   numberOfSelectedItems ? = 0;
 }
 
-// tslint:disable-next-line:max-classes-per-file
+// eslint-disable-next-line max-classes-per-file
 class SubSelectionModel<T> extends SelectionModel<T> {
 
   getItem(item: (T & { id?: string })): T {
@@ -70,7 +70,7 @@ class SubSelectionModel<T> extends SelectionModel<T> {
 
 }
 
-// tslint:disable-next-line:max-classes-per-file
+// eslint-disable-next-line max-classes-per-file
 export class KalSelectionModel<T> extends SelectionModel<T> {
 
   numberOfItems = 0;

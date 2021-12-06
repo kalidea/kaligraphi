@@ -2,7 +2,7 @@ import { CdkPortalOutlet, TemplatePortal } from '@angular/cdk/portal';
 import { AfterViewInit, ChangeDetectorRef, Directive, Input, ViewChild } from '@angular/core';
 
 @Directive()
-// tslint:disable-next-line:directive-class-suffix
+// eslint-disable-next-line @angular-eslint/directive-class-suffix
 export class KalTabArea implements AfterViewInit {
 
   /**

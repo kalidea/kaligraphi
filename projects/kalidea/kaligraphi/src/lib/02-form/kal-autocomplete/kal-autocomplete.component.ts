@@ -178,6 +178,7 @@ export class KalAutocompleteComponent<T> implements AfterViewInit, OnDestroy {
         [this.className]: true
       };
     }
+    return {};
   }
 
   private initKeyManager() {
@@ -196,6 +197,7 @@ export class KalAutocompleteComponent<T> implements AfterViewInit, OnDestroy {
 
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnDestroy(): void {
   }
 }

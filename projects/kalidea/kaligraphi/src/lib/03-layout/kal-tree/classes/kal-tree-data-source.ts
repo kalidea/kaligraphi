@@ -89,7 +89,7 @@ class KalTreeFlattener {
   }
 }
 
-// tslint:disable-next-line:max-classes-per-file
+// eslint-disable-next-line max-classes-per-file
 export class KalTreeDataSource extends DataSource<KalTreeNode> {
   _flattenedData = new BehaviorSubject<KalTreeNode[]>([]);
 
@@ -129,7 +129,7 @@ export class KalTreeDataSource extends DataSource<KalTreeNode> {
    * get flat node from node
    */
   getFlatNode(nodeOrId: KalTreeNodeOrId) {
-    const id = nodeOrId instanceof KalTreeNode ? nodeOrId.id : nodeOrId;
+    const id = typeof nodeOrId === 'string' ? nodeOrId : nodeOrId.id;
     return this._flattenedData.value.find(flatNode => flatNode.id === id);
   }
 
@@ -156,9 +156,9 @@ export class KalTreeDataSource extends DataSource<KalTreeNode> {
   connect(collectionViewer: CollectionViewer): Observable<KalFlatTreeNode[]> {
     const changes = [
       collectionViewer.viewChange,
-      this.treeControl.expansionModel.changed,
-      this.treeControl.selectionModel.changed,
-      this._flattenedData
+      this.treeControl.expansionModel.changed.asObservable(),
+      this.treeControl.selectionModel.changed.asObservable(),
+      this._flattenedData.asObservable()
     ];
     return merge(...changes).pipe(
       map(() => {

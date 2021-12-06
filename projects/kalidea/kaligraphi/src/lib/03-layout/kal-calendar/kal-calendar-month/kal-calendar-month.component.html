@@ -5,7 +5,7 @@
 
 <div class="kal-day-calendar__number">
 
-  <button *ngFor="let date of monthDatesList"
+  <button *ngFor="let date of daysList"
           type="button"
           [class.kal-other-month-day]="isDateFromAnotherMonth(date)"
           [class.kal-today]="date.isToday()"
