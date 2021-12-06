@@ -12,6 +12,7 @@
     <div class="kal-datepicker__calendar">
       <kal-calendar (datePicked)="setInputValue($event)"
                     [selectedDate]="this.selectedDate"
+                    [validator]="parentControlValidator"
                     [maxYear]="maxYear"
                     [minYear]="minYear"></kal-calendar>
 

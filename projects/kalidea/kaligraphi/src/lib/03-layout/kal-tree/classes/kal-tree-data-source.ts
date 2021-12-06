@@ -129,7 +129,7 @@ export class KalTreeDataSource extends DataSource<KalTreeNode> {
    * get flat node from node
    */
   getFlatNode(nodeOrId: KalTreeNodeOrId) {
-    const id = nodeOrId instanceof KalTreeNode ? nodeOrId.id : nodeOrId;
+    const id = typeof nodeOrId === 'string' ? nodeOrId : nodeOrId.id;
     return this._flattenedData.value.find(flatNode => flatNode.id === id);
   }
 

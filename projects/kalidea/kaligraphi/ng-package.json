@@ -2,13 +2,6 @@
   "$schema": "../../../node_modules/ng-packagr/ng-package.schema.json",
   "dest": "../../../dist/kalidea/kaligraphi",
   "lib": {
-    "entryFile": "src/public-api.ts",
-    "umdModuleIds": {
-      "lodash-es/isEqual": "lodash-is-equal",
-      "lodash-es/round": "lodash-round",
-      "lodash-es/memoize": "lodash-memoize",
-      "lodash-es/isNil": "lodash-is-nil",
-      "lodash-es/xor": "lodash-xor"
-    }
+    "entryFile": "src/public-api.ts"
   }
 }

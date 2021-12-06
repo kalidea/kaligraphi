@@ -12,6 +12,7 @@
   <kal-calendar-month #monthCalendar
                       [classesListBuilder]="classesListBuilder"
                       [hidden]="isMultiView"
+                      [validator]="validator"
                       [selectedDate]="selectedDate"
                       [activatedDates]="activatedDates"
                       (datePicked)="pickDate($event)">

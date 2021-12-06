@@ -1,4 +1,4 @@
-import { Component, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { AutoUnsubscribe, KalAutocompleteOption } from '@kalidea/kaligraphi';
 import { Subscription } from 'rxjs';
@@ -58,4 +58,5 @@ export class AutocompleteComponent implements OnDestroy {
 
   ngOnDestroy(): void {
   }
+
 }

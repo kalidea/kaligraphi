@@ -28,11 +28,6 @@ import { Coerce } from '../../utils/decorators/coerce';
 import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 import { coerceKalDateProperty, KalDate, KalDateFormat, KalDateType } from '../../99-utility/kal-date/kal-date';
 
-/**
- * Possible views for the calendar.
- */
-export type KalCalendarView = 'month' | 'multi';
-
 @Component({
   selector: 'kal-datepicker',
   exportAs: 'kalDatepicker',
