@@ -14,7 +14,7 @@ import {
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
-import { CdkStep, CdkStepper, StepperOrientation } from '@angular/cdk/stepper';
+import { CdkStep, CdkStepHeader, CdkStepper, StepperOrientation } from '@angular/cdk/stepper';
 import { FocusableOption } from '@angular/cdk/a11y';
 import { takeUntil } from 'rxjs/operators';
 
@@ -26,9 +26,10 @@ import { KalStepLabelDirective } from './kal-step-label.directive';
 @Directive({
   selector: '[kalStepHeader]',
 })
-export class KalStepHeaderDirective implements FocusableOption {
+export class KalStepHeaderDirective extends CdkStepHeader implements FocusableOption {
 
-  constructor(protected _elementRef: ElementRef<HTMLElement>) {
+  constructor(_elementRef: ElementRef<HTMLElement>) {
+    super(_elementRef);
   }
 
   /** Focuses the step header. */

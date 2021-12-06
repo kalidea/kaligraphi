@@ -1,6 +1,6 @@
 {
   "name": "@kalidea/kaligraphi",
-  "version": "11.0.16",
+  "version": "12.0.1",
   "public": "true",
   "publishConfig": {
     "access": "public"
@@ -10,11 +10,11 @@
     "url": "https://github.com/kalidea/kaligraphi"
   },
   "peerDependencies": {
-    "@angular/animations": "~11.0.9",
-    "@angular/cdk": "~11.0.4",
-    "@angular/common": "~11.0.9",
-    "@angular/core": "~11.0.9",
-    "@angular/forms": "~11.0.9",
+    "@angular/animations": "~12.2.14",
+    "@angular/cdk": "~12.2.13",
+    "@angular/common": "~12.2.14",
+    "@angular/core": "~12.2.14",
+    "@angular/forms": "~12.2.14",
     "rxjs": "~6.6.0",
     "lodash-es": "^4.17.15",
     "hammerjs": "^2.0.8",
