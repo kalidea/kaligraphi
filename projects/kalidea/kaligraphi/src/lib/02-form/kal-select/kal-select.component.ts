@@ -653,7 +653,7 @@ export class KalSelectComponent
         }),
         switchMap(() => {
           // watch for selection change event
-          return merge<KalOptionComponent>(...this.options.map(option => option.selectionChange))
+          return merge(...this.options.map(option => option.selectionChange))
             .pipe(
               tap(event => {
                 this.focus();

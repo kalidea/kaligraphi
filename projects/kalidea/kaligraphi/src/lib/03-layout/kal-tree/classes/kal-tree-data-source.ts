@@ -156,9 +156,9 @@ export class KalTreeDataSource extends DataSource<KalTreeNode> {
   connect(collectionViewer: CollectionViewer): Observable<KalFlatTreeNode[]> {
     const changes = [
       collectionViewer.viewChange,
-      this.treeControl.expansionModel.changed,
-      this.treeControl.selectionModel.changed,
-      this._flattenedData
+      this.treeControl.expansionModel.changed.asObservable(),
+      this.treeControl.selectionModel.changed.asObservable(),
+      this._flattenedData.asObservable()
     ];
     return merge(...changes).pipe(
       map(() => {

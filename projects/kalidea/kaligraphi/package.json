@@ -15,7 +15,7 @@
     "@angular/common": "~12.2.14",
     "@angular/core": "~12.2.14",
     "@angular/forms": "~12.2.14",
-    "rxjs": "~6.6.0",
+    "rxjs": "~7.4.0",
     "lodash-es": "^4.17.15",
     "hammerjs": "^2.0.8",
     "luxon": "^1.25.0"

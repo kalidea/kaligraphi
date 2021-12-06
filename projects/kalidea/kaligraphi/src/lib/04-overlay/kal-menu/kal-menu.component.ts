@@ -107,7 +107,7 @@ export class KalMenuComponent implements AfterContentInit, OnDestroy {
     this.tabSubscription = this.keyManager.tabOut.subscribe(() => this.closed.emit('tab'));
 
     // watch for selection and close this dropdown
-    this.selectionSubscription = merge<KalOptionComponent>(...this.options.map(option => option.selectionChange))
+    this.selectionSubscription = merge(...this.options.map(option => option.selectionChange))
       .subscribe(
         (value) => {
           this.selectionChange.emit(value);
