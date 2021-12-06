@@ -10,11 +10,11 @@
     "url": "https://github.com/kalidea/kaligraphi"
   },
   "peerDependencies": {
-    "@angular/animations": "~12.2.14",
-    "@angular/cdk": "~12.2.13",
-    "@angular/common": "~12.2.14",
-    "@angular/core": "~12.2.14",
-    "@angular/forms": "~12.2.14",
+    "@angular/animations": "~13.0.3",
+    "@angular/cdk": "~13.0.3",
+    "@angular/common": "~13.0.3",
+    "@angular/core": "~13.0.3",
+    "@angular/forms": "~13.0.3",
     "rxjs": "~7.4.0",
     "lodash-es": "^4.17.15",
     "hammerjs": "^2.0.8",
