@@ -21,6 +21,7 @@
     "luxon": "^1.25.0"
   },
   "dependencies": {
+    "@angular/core": "14.2.0",
     "tslib": "^2.3.1"
   }
 }
