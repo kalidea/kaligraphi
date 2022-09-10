@@ -19,7 +19,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { AbstractControl, FormControl } from '@angular/forms';
+import { AbstractControl, UntypedFormControl } from '@angular/forms';
 import { of, Subscription } from 'rxjs';
 import { AutoUnsubscribe } from '../../utils/decorators/auto-unsubscribe';
 import { Coerce } from '../../utils/decorators/coerce';
@@ -53,7 +53,7 @@ export class KalInputComponent extends FormElementComponent implements OnChanges
   /**
    * form control for this component
    */
-  control: FormControl;
+  control: UntypedFormControl;
 
   @Input() autocomplete: string;
 

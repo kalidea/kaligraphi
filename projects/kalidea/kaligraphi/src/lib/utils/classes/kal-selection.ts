@@ -37,7 +37,7 @@ export class KalSelection<T> {
 }
 
 // eslint-disable-next-line max-classes-per-file
-class SubSelectionModel<T> extends SelectionModel<T> {
+class SubSelectionModel<T> extends SelectionModel<T> implements Omit<SelectionModel<T>, 'clear'> {
 
   getItem(item: (T & { id?: string })): T {
     if (!isNil(item.id)) {
@@ -155,18 +155,18 @@ export class KalSelectionModel<T> extends SelectionModel<T> {
   }
 
   selectAll() {
-    this.clear({emitEvent: false});
+    this.clear(false);
     this._all = true;
 
     this.changes$.next(this.format());
   }
 
-  clear({emitEvent}: { emitEvent: boolean } = {emitEvent: true}): void {
+  clear(flushEvent = false): void {
     this.addedSelection.clear();
     this.removedSelection.clear();
     this._all = false;
 
-    if (emitEvent) {
+    if (flushEvent) {
       this.changes$.next(this.format());
     }
   }

@@ -2,7 +2,7 @@ import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 import { ChangeDetectorRef, Component, LOCALE_ID, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import {
   KalIconComponent,
@@ -37,9 +37,9 @@ import { KalInputModule } from './kal-input.module';
 })
 class TestComponent {
 
-  inputControl: FormControl = new FormControl();
+  inputControl: UntypedFormControl = new UntypedFormControl();
 
-  inputControlBlur: FormControl = new FormControl('', {updateOn: 'blur'});
+  inputControlBlur: UntypedFormControl = new UntypedFormControl('', {updateOn: 'blur'});
 
   limit: number;
 

@@ -98,7 +98,7 @@
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
             "tsConfig": "projects/kalidea/kaligraphi/tsconfig.lib.json",
-            "project": "projects/kalidea/kaligraphi/ng-package.json"
+            "project": "projects/kalidea/kaligraphi/ng-package.json",
           },
           "configurations": {
             "production": {
@@ -128,7 +128,6 @@
       }
     }
   },
-  "defaultProject": "@kalidea/kaligraphi",
   "schematics": {
     "@schematics/angular:component": {
       "viewEncapsulation": "None",
@@ -141,6 +140,8 @@
   },
   "cli": {
     "analytics": "3932d92d-82cf-4dfe-9914-ad99ab89761d",
-    "defaultCollection": "@angular-eslint/schematics"
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   }
 }

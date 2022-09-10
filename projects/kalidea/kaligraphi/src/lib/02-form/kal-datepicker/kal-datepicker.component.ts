@@ -18,7 +18,7 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { DOCUMENT } from '@angular/common';
-import { FormControl, NgControl } from '@angular/forms';
+import { UntypedFormControl, NgControl } from '@angular/forms';
 import { fromEvent, merge, Observable, of, Subscription } from 'rxjs';
 import { filter, map, take, tap } from 'rxjs/operators';
 
@@ -52,7 +52,7 @@ export class KalDatepickerComponent extends FormElementComponent<KalDate> implem
   /**
    * base control
    */
-  control: FormControl;
+  control: UntypedFormControl;
 
   /**
    * Current displayed date.

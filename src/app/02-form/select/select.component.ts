@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-select',
@@ -25,7 +25,7 @@ export class SelectComponent implements OnInit {
   options: { value: number, disabled: boolean }[] = [];
   secondOptionsGroup: { value: number, disabled: boolean }[] = [];
 
-  toggleOptionStateControl = new FormControl();
+  toggleOptionStateControl = new UntypedFormControl();
 
   constructor() {
   }

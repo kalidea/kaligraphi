@@ -11,7 +11,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
 import { buildProviders, FormElementComponent } from '../../utils/forms/form-element.component';
@@ -32,7 +32,7 @@ export class KalCheckboxComponent extends FormElementComponent<boolean> implemen
   /**
    * The form control that contains the checkbox value
    */
-  control: FormControl;
+  control: UntypedFormControl;
 
   /**
    * Subscription of the valueChanges control
@@ -102,7 +102,7 @@ export class KalCheckboxComponent extends FormElementComponent<boolean> implemen
   }
 
   ngOnInit() {
-    this.control = new FormControl(
+    this.control = new UntypedFormControl(
       {
         value: this.value,
         disabled: this.disabled

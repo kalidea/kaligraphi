@@ -59,7 +59,7 @@ export class KalStepComponent extends CdkStep {
 
   @ContentChild(KalStepLabelDirective, {static: false}) stepLabel: KalStepLabelDirective;
 
-  constructor(@Inject(forwardRef(() => KalStepperComponent)) stepper: KalStepperComponent) {
+  constructor(@Inject(forwardRef(() => KalStepperComponent)) stepper: CdkStepper) {
     super(stepper);
   }
 
@@ -93,19 +93,17 @@ export class KalStepperComponent extends CdkStepper implements AfterContentInit 
               changeDetectorRef: ChangeDetectorRef,
               elementRef: ElementRef<HTMLElement>,
               @Inject(DOCUMENT) document: any) {
-    super(dir, changeDetectorRef, elementRef, document);
+    super(dir, changeDetectorRef, elementRef);
   }
-
-  protected _orientation: StepperOrientation = 'horizontal';
 
   @HostBinding('attr.aria-orientation')
   @Input()
   get orientation() {
-    return this._orientation;
+    return super.orientation;
   }
 
   set orientation(orientation: StepperOrientation) {
-    this._orientation = orientation;
+    super.orientation = orientation;
   }
 
   ngAfterContentInit() {

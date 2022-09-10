@@ -14,7 +14,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { Highlightable } from '@angular/cdk/a11y';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Coerce } from '../../utils';
 import { KalOptionGroupComponent } from './kal-option-group/kal-option-group.component';
@@ -51,7 +51,7 @@ export class KalOptionComponent implements AfterViewInit, Highlightable, OnDestr
   /**
    *  Form Control on the active property
    */
-  formControl: FormControl = new FormControl(false);
+  formControl: UntypedFormControl = new UntypedFormControl(false);
   /**
    *  Whether or not the option is currently active / selected
    */

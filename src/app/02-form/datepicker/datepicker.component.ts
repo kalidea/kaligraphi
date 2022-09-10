@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors } from '@angular/forms';
+import { AbstractControl, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, ValidationErrors } from '@angular/forms';
 import { AutoUnsubscribe, KalDate, kalDefaultDateFormat } from '@kalidea/kaligraphi';
 import { Subscription } from 'rxjs';
 
@@ -18,9 +18,9 @@ export class DatepickerComponent implements OnInit, OnDestroy {
 
   maxYear = 2100;
 
-  control = new FormControl(new KalDate());
+  control = new UntypedFormControl(new KalDate());
 
-  dateValidatorForm: FormGroup;
+  dateValidatorForm: UntypedFormGroup;
 
   closeOnPick = true;
 
@@ -31,7 +31,7 @@ export class DatepickerComponent implements OnInit, OnDestroy {
   @AutoUnsubscribe()
   private subscription = Subscription.EMPTY;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: UntypedFormBuilder) {
   }
 
   format = kalDefaultDateFormat;

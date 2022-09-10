@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { KalRadioChange } from '@kalidea/kaligraphi';
 
 @Component({
@@ -20,7 +20,7 @@ export class RadioComponent implements OnInit {
   /**
    * The form control of the radio button group
    */
-  control = new FormControl(this.value);
+  control = new UntypedFormControl(this.value);
 
 
   /**

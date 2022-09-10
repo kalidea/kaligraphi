@@ -1,6 +1,6 @@
 import { EventEmitter, forwardRef, HostBinding, Injector, Input, OnChanges, OnDestroy, Output, Provider, SimpleChanges, Directive } from '@angular/core';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { AbstractControl, FormControl, NG_ASYNC_VALIDATORS, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
+import { AbstractControl, UntypedFormControl, NG_ASYNC_VALIDATORS, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 
@@ -101,7 +101,7 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
    */
   public ngControl: NgControl;
 
-  public control: FormControl;
+  public control: UntypedFormControl;
 
   /**
    * private property storing value for this form element
@@ -235,7 +235,7 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
   /**
    * create control
    */
-  protected createControlAndSubscriptions(injector: Injector, updateOnOverride?: FormHooks): FormControl {
+  protected createControlAndSubscriptions(injector: Injector, updateOnOverride?: FormHooks): UntypedFormControl {
 
     this.ngControl = injector.get(NgControl, null);
     let disabled = this.disabled;
@@ -243,13 +243,13 @@ export class FormElementComponent<T = string> extends FormControlAccessComponent
     let value = this._value;
 
     if (!this.superControl) {
-      return new FormControl({value, disabled}, {updateOn});
+      return new UntypedFormControl({value, disabled}, {updateOn});
     }
 
     ({disabled, updateOn, value} = this.superControl);
     updateOn = updateOnOverride || updateOn; // override value
 
-    this.control = new FormControl({value, disabled}, {updateOn});
+    this.control = new UntypedFormControl({value, disabled}, {updateOn});
 
     return this.control;
   }

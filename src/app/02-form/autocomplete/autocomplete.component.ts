@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { AutoUnsubscribe, KalAutocompleteOption } from '@kalidea/kaligraphi';
 import { Subscription } from 'rxjs';
 
@@ -17,7 +17,7 @@ export class AutocompleteComponent implements OnDestroy {
 
   emperors: string[];
 
-  control = new FormControl('');
+  control = new UntypedFormControl('');
 
   emperorsList = [
     'Charlemagne',

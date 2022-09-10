@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-checkbox',
@@ -19,7 +19,7 @@ export class CheckboxComponent implements OnInit {
   /**
    * control that contains the checkbox value
    */
-  control = new FormControl(true);
+  control = new UntypedFormControl(true);
 
   /**
    * The disabled state of the checkbox

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { Component, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import {
@@ -41,8 +41,8 @@ import {
 class TestComponent {
   @ViewChild(KalStepperComponent, {static: true}) stepper: KalStepperComponent;
 
-  form = new FormGroup({
-    email: new FormControl('')
+  form = new UntypedFormGroup({
+    email: new UntypedFormControl('')
   });
 
   orientation = 'horizontal';

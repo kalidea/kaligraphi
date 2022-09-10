@@ -16,7 +16,7 @@ import { KalIconModule } from 'projects/kalidea/kaligraphi/src/lib/01-typography
 import { KalUtilityModule } from 'projects/kalidea/kaligraphi/src/lib/99-utility/kal-utility.module';
 import { createDuplicateIdTest } from '../../utils/forms/form-element.spec';
 import { KalSelectModule } from './kal-select.module';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormControl, ReactiveFormsModule } from '@angular/forms';
 
 function configureTestingModule(declarations: any[], modules: any[] = []) {
   TestBed.configureTestingModule({
@@ -454,8 +454,8 @@ createDuplicateIdTest('kal-select', KalSelectComponent, [KalSelectModule]);
 `
 })
 class TestBlurSelectComponent {
-  control1 = new FormControl('', {updateOn: 'blur'});
-  control2 = new FormControl('', {updateOn: 'submit'});
+  control1 = new UntypedFormControl('', {updateOn: 'blur'});
+  control2 = new UntypedFormControl('', {updateOn: 'submit'});
   @ViewChild('select1', {static: true}) select1: KalSelectComponent;
   @ViewChild('select2', {static: true}) select2: KalSelectComponent;
   @ViewChild('select3', {static: true}) select3: KalSelectComponent;

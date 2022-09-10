@@ -8,7 +8,7 @@ import { KalTabComponent } from 'projects/kalidea/kaligraphi/src/lib/03-layout/k
 import { KalTabHeaderComponent } from 'projects/kalidea/kaligraphi/src/lib/03-layout/kal-tabs/kal-tab-header/kal-tab-header.component';
 import { KalTabBodyComponent } from 'projects/kalidea/kaligraphi/src/lib/03-layout/kal-tabs/kal-tab-body/kal-tab-body.component';
 import { KalTabLabelDirective } from 'projects/kalidea/kaligraphi/src/lib/03-layout/kal-tabs/kal-tab-label.directive';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormControl, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   template: `
@@ -212,7 +212,7 @@ describe('KalTabGroupComponent', () => {
 })
 class TestGroupWithTemplateLabelComponent {
   disabled = false;
-  tabControl = new FormControl('tab1');
+  tabControl = new UntypedFormControl('tab1');
 }
 
 describe('KalTabGroupComponent', () => {

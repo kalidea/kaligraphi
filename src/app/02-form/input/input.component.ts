@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-input',
@@ -25,9 +25,9 @@ export class InputComponent {
 
   content = '';
 
-  controlChange = new FormControl('', {updateOn: 'change'});
+  controlChange = new UntypedFormControl('', {updateOn: 'change'});
 
-  controlBlur = new FormControl('', {updateOn: 'blur'});
+  controlBlur = new UntypedFormControl('', {updateOn: 'blur'});
 
   lastIconClicked;
 

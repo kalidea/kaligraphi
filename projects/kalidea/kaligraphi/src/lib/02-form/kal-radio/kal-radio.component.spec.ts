@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { Component, DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormControl, ReactiveFormsModule } from '@angular/forms';
 import { KalRadioModule } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-radio/kal-radio.module';
 import { KalRadioComponent, KalRadioGroupComponent } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-radio/kal-radio.component';
 import { KalRadioChange } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-radio/kal-radio-change';
@@ -23,7 +23,7 @@ import { createDuplicateIdTest } from '../../utils/forms/form-element.spec';
   `
 })
 class TestRadioGroupWithControlComponent {
-  control = new FormControl('');
+  control = new UntypedFormControl('');
 }
 
 // eslint-disable-next-line max-classes-per-file
