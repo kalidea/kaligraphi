@@ -68,25 +68,25 @@ export class TreeComponent {
     this.dataSource.data = TREE_DATA;
   }
 
-  hasNestedChild = (_: number, nodeData: KalTreeNode) => !!nodeData.children;
+  hasNestedChild: (_: number, nodeData: KalTreeNode) => boolean = (_: number, nodeData: KalTreeNode) => !!nodeData.children;
 
-  select(id: string) {
+  select(id: string): void {
     this.dataSource.selectNode(id);
   }
 
-  changed($event) {
+  changed($event): void {
     // console.log($event);
   }
 
-  drop($event) {
+  drop($event): void {
     console.log($event);
   }
 
-  collapseAll() {
+  collapseAll(): void {
     this.treeControl.collapseAll();
   }
 
-  expandAll() {
+  expandAll(): void {
     this.treeControl.expandAll();
   }
 }

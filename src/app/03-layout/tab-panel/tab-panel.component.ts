@@ -51,19 +51,19 @@ export class TabPanelComponent implements OnInit {
     'Episode IX – The Rise of Skywalker',
   ];
 
-  drop(event: CdkDragDrop<string[]>) {
+  drop(event: CdkDragDrop<string[]>): void {
     moveItemInArray(this.movies, event.previousIndex, event.currentIndex);
   }
 
-  changeTab() {
+  changeTab(): void {
     this.formControl.patchValue((this.formControl.value + 1) % 3);
   }
 
-  toggleTab() {
+  toggleTab(): void {
     this.showTab = !this.showTab;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
   }
 
 }

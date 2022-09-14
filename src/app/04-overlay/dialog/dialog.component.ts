@@ -40,7 +40,7 @@ export class DialogComponent implements OnDestroy {
   /**
    * get default dialog config
    */
-  private get config() {
+  private get config(): {disableClose: boolean, hasBackdrop: boolean} {
     return {
       disableClose: this.disableClose,
       hasBackdrop: this.hasBackdrop
@@ -50,7 +50,7 @@ export class DialogComponent implements OnDestroy {
   /**
    * open confirm dialog
    */
-  openConfirmDialog() {
+  openConfirmDialog(): void {
     const config = new KalDialogConfig<ExampleDialogData>({
       title: 'Confirm deletion',
       ...this.config,
@@ -69,7 +69,7 @@ export class DialogComponent implements OnDestroy {
   /**
    * open dialog
    */
-  openDialog() {
+  openDialog(): void {
 
     const config = new KalDialogConfig<ExampleDialogData>({
       title: 'Modal\'s title',

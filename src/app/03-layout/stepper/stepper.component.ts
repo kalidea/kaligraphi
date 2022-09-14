@@ -19,10 +19,10 @@ export class StepperComponent implements OnInit {
   constructor(private formBuilder: UntypedFormBuilder) {
   }
 
-  selectionUpdated($event) {
+  selectionUpdated($event): void {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.firstFormGroup = this.formBuilder.group({
       email: ['', [Validators.required]]
     });

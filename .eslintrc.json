@@ -19,15 +19,6 @@
         "plugin:@angular-eslint/template/process-inline-templates"
       ],
       "rules": {
-        "@typescript-eslint/semi": [
-          "error"
-        ],
-        "@typescript-eslint/explicit-function-return-type": [
-          "error",
-          {
-            "allowExpressions": true
-          }
-        ],
         "@angular-eslint/no-empty-lifecycle-method": [
           "off"
         ],

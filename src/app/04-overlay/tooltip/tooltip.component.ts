@@ -20,7 +20,7 @@ export class TooltipComponent implements OnInit {
     return this.themes ? this.themes.find(t => t === 'reverse') !== undefined : false;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
   }
 
 }
