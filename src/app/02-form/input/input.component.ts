@@ -35,12 +35,12 @@ export class InputComponent {
   constructor() {
   }
 
-  iconClicked($event) {
+  iconClicked($event): void {
     console.log($event);
     this.lastIconClicked = $event;
   }
 
-  updateDisable($event) {
+  updateDisable($event): void {
     if (this.disabled) {
       this.controlChange.enable();
       this.controlBlur.enable();

@@ -10,7 +10,7 @@ export class ChipComponent {
 
   result: string;
 
-  dismiss() {
+  dismiss(): void {
     this.result = `clicked at ${new Date().getTime()}`;
   }
 

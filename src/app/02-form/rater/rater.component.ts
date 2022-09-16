@@ -25,7 +25,7 @@ export class RaterComponent implements OnInit {
     return this.control.value;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     // init rating with a default value of 2
     this.control = new UntypedFormControl(2);
   }

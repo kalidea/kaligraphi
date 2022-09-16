@@ -47,12 +47,12 @@ export class AutocompleteComponent implements OnDestroy {
     this.subscription = this.control.valueChanges.subscribe(d => console.log({d}));
   }
 
-  updateEmperors() {
+  updateEmperors(): void {
     this.dataSource = this.emperors.map(name => ({value: name, label: name}));
   }
 
 
-  choicePicked($event) {
+  choicePicked($event): void {
     this.result = $event;
   }
 

@@ -41,11 +41,11 @@ export class FormFieldComponent {
 
   newValue = '';
 
-  get themes() {
+  get themes(): string {
     return this.reverse ? 'reverse' : '';
   }
 
-  updateValue($event: string) {
+  updateValue($event: string): void {
     this.control1.setValue($event);
     this.control1.updateValueAndValidity();
   }
