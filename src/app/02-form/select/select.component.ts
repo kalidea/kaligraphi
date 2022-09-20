@@ -10,10 +10,10 @@ import { UntypedFormControl } from '@angular/forms';
 })
 export class SelectComponent implements OnInit {
 
-
   themes = [];
 
   selection;
+
   optionGroupSelection;
 
   hasCheckbox = false;
@@ -23,6 +23,7 @@ export class SelectComponent implements OnInit {
   disableOptionGroup2 = false;
 
   options: { value: number, disabled: boolean }[] = [];
+
   secondOptionsGroup: { value: number, disabled: boolean }[] = [];
 
   toggleOptionStateControl = new UntypedFormControl();
