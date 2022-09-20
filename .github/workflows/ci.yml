@@ -13,7 +13,7 @@ on:
       - 'releases/**'
 
 env:
-  NODE_RELEASE_VERSION: 18 # release version created by NODE 10
+  NODE_RELEASE_VERSION: 16 # release version created by NODE 10
 
 jobs:
   test-and-build:
@@ -23,7 +23,7 @@ jobs:
     # run this workflow on multiple node version
     strategy:
       matrix:
-        node: [18]
+        node: [16]
     steps:
       - name: Checkout project
         uses: actions/checkout@v2
