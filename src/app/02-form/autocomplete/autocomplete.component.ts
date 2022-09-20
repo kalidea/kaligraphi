@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { AutoUnsubscribe, KalAutocompleteOption } from '@kalidea/kaligraphi';
 import { Subscription } from 'rxjs';
 
@@ -17,7 +17,7 @@ export class AutocompleteComponent implements OnDestroy {
 
   emperors: string[];
 
-  control = new FormControl('');
+  control = new UntypedFormControl('');
 
   emperorsList = [
     'Charlemagne',
@@ -47,12 +47,12 @@ export class AutocompleteComponent implements OnDestroy {
     this.subscription = this.control.valueChanges.subscribe(d => console.log({d}));
   }
 
-  updateEmperors() {
+  updateEmperors(): void {
     this.dataSource = this.emperors.map(name => ({value: name, label: name}));
   }
 
 
-  choicePicked($event) {
+  choicePicked($event): void {
     this.result = $event;
   }
 

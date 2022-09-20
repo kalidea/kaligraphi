@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { Component, ViewChild } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormControl, ReactiveFormsModule } from '@angular/forms';
 
 import { KalSliderComponent } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-slider/kal-slider.component';
 
@@ -144,7 +144,7 @@ describe('KalSliderComponent logic', () => {
   `
 })
 export class KalTestComponent {
-  control = new FormControl();
+  control = new UntypedFormControl();
 
   from = 0;
 

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-rater',
@@ -13,7 +13,7 @@ export class RaterComponent implements OnInit {
 
   maxRate = 5;
 
-  control: FormControl;
+  control: UntypedFormControl;
 
   constructor() {
   }
@@ -25,9 +25,9 @@ export class RaterComponent implements OnInit {
     return this.control.value;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     // init rating with a default value of 2
-    this.control = new FormControl(2);
+    this.control = new UntypedFormControl(2);
   }
 
 }

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { KalRadioChange } from '@kalidea/kaligraphi';
 
 @Component({
@@ -20,7 +20,7 @@ export class RadioComponent implements OnInit {
   /**
    * The form control of the radio button group
    */
-  control = new FormControl(this.value);
+  control = new UntypedFormControl(this.value);
 
 
   /**
@@ -46,14 +46,14 @@ export class RadioComponent implements OnInit {
   constructor() {
   }
 
-  get hasReverseTheme() {
+  get hasReverseTheme(): boolean {
     return this.themes ? this.themes.find(t => t === 'reverse') !== undefined : false;
   }
 
   /**
    * Change radio button group value by using control
    */
-  changeRadioValueWithControl(value: string) {
+  changeRadioValueWithControl(value: string): void {
     console.log(value);
     this.control.patchValue(value);
   }
@@ -61,19 +61,19 @@ export class RadioComponent implements OnInit {
   /**
    * Change radio button group value by using input
    */
-  changeRadioValueWithEvent(value: string) {
+  changeRadioValueWithEvent(value: string): void {
     this.value = value;
   }
 
   /**
    * Display the selected radio button id and its value
    */
-  displayValue($event: KalRadioChange) {
+  displayValue($event: KalRadioChange): void {
     this.id = $event.source.id;
     this.value = $event.value;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
   }
 
 }

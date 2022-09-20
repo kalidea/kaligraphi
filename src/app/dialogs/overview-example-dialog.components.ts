@@ -74,7 +74,7 @@ export class OverviewExampleDialogComponent implements OnDestroy {
   /**
    * close dialog
    */
-  submitDialog() {
+  submitDialog(): void {
     this.data.closed = this.id;
     this.dialogRef.close(this.data);
   }
@@ -82,7 +82,7 @@ export class OverviewExampleDialogComponent implements OnDestroy {
   /**
    * Open Dialog
    */
-  openDialog() {
+  openDialog(): void {
 
     const config = new KalDialogConfig<ExampleDialogData>({
       id: 'test',

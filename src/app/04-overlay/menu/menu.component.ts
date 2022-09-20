@@ -16,20 +16,20 @@ export class MenuComponent implements OnInit {
   constructor() { }
 
 
-  get reverse() {
+  get reverse(): boolean {
     return this.themes.some(t => t === 'reverse');
   }
 
-  updateOptions() {
+  updateOptions(): void {
     this.optionsList = ['Option A', 'Option B', 'Option C'];
   }
 
-  selected($event) {
+  selected($event): void {
     console.log('selected', $event);
   }
 
 
-  ngOnInit() {
+  ngOnInit(): void {
   }
 
 }

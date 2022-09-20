@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { Component, ViewChild } from '@angular/core';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { UntypedFormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { KalFormFieldComponent } from 'projects/kalidea/kaligraphi/src/lib/02-form/kal-form-field/kal-form-field.component';
@@ -91,7 +91,7 @@ export class Test2Component {
   @ViewChild(KalFormFieldComponent, {static: true})
   formField: KalFormFieldComponent;
 
-  inputCtrl = new FormControl('', [Validators.email, Validators.required]);
+  inputCtrl = new UntypedFormControl('', [Validators.email, Validators.required]);
 }
 
 describe('KalFormFieldComponent Reactive form', () => {
@@ -154,7 +154,7 @@ export class InceptionComponent {
   @ViewChild(KalFormFieldComponent, {static: true})
   formField: KalFormFieldComponent;
 
-  inputCtrl = new FormControl('', [Validators.email, Validators.required]);
+  inputCtrl = new UntypedFormControl('', [Validators.email, Validators.required]);
 }
 
 describe('KalFormFieldComponent Inception', () => {
@@ -193,7 +193,7 @@ describe('KalFormFieldComponent Inception', () => {
 export class Inception2Component {
   @ViewChild(KalFormFieldComponent, {static: true})
   formField: KalFormFieldComponent;
-  inputCtrl = new FormControl('', [Validators.email, Validators.required]);
+  inputCtrl = new UntypedFormControl('', [Validators.email, Validators.required]);
 }
 
 describe('KalFormFieldComponent Inception2', () => {
@@ -242,7 +242,7 @@ describe('KalFormFieldComponent Inception2', () => {
 export class RequiredAsteriskInLabelComponent {
   label = 'my label';
 
-  inputCtrl = new FormControl('', [Validators.email, Validators.required]);
+  inputCtrl = new UntypedFormControl('', [Validators.email, Validators.required]);
 }
 
 describe('KalFormFieldComponent Inception', () => {

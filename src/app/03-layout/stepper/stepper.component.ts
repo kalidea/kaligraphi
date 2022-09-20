@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-stepper',
@@ -10,19 +10,19 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class StepperComponent implements OnInit {
 
-  firstFormGroup: FormGroup;
+  firstFormGroup: UntypedFormGroup;
 
-  secondFormGroup: FormGroup;
+  secondFormGroup: UntypedFormGroup;
 
   linear = true;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: UntypedFormBuilder) {
   }
 
-  selectionUpdated($event) {
+  selectionUpdated($event): void {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.firstFormGroup = this.formBuilder.group({
       email: ['', [Validators.required]]
     });

@@ -20,11 +20,11 @@ export class CardComponent implements OnInit {
 
   constructor() { }
 
-  dismissed() {
+  dismissed(): void {
     console.log('dismissed');
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
   }
 
 }

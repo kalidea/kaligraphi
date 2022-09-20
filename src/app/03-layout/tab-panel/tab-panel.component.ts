@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
@@ -11,7 +11,7 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 })
 export class TabPanelComponent implements OnInit {
 
-  formControl = new FormControl(2);
+  formControl = new UntypedFormControl(2);
 
   showTab = true;
 
@@ -51,19 +51,19 @@ export class TabPanelComponent implements OnInit {
     'Episode IX – The Rise of Skywalker',
   ];
 
-  drop(event: CdkDragDrop<string[]>) {
+  drop(event: CdkDragDrop<string[]>): void {
     moveItemInArray(this.movies, event.previousIndex, event.currentIndex);
   }
 
-  changeTab() {
+  changeTab(): void {
     this.formControl.patchValue((this.formControl.value + 1) % 3);
   }
 
-  toggleTab() {
+  toggleTab(): void {
     this.showTab = !this.showTab;
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
   }
 
 }

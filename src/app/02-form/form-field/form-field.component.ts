@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, ViewEncapsulation} from '@angular/core';
-import {FormControl, Validators} from '@angular/forms';
+import {UntypedFormControl, Validators} from '@angular/forms';
 import {KAL_FORM_FIELDS_GLOBAL_OPTIONS, KalFormFieldOptions} from '@kalidea/kaligraphi';
 
 @Component({
@@ -24,8 +24,8 @@ import {KAL_FORM_FIELDS_GLOBAL_OPTIONS, KalFormFieldOptions} from '@kalidea/kali
   ]
 })
 export class FormFieldComponent {
-  control1 = new FormControl('john', [Validators.email, Validators.minLength(4)]);
-  control2 = new FormControl('jeanne', [Validators.email, Validators.maxLength(10), Validators.required]);
+  control1 = new UntypedFormControl('john', [Validators.email, Validators.minLength(4)]);
+  control2 = new UntypedFormControl('jeanne', [Validators.email, Validators.maxLength(10), Validators.required]);
 
   /**
    * Is form element disabled
@@ -41,11 +41,11 @@ export class FormFieldComponent {
 
   newValue = '';
 
-  get themes() {
+  get themes(): string {
     return this.reverse ? 'reverse' : '';
   }
 
-  updateValue($event: string) {
+  updateValue($event: string): void {
     this.control1.setValue($event);
     this.control1.updateValueAndValidity();
   }

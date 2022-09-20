@@ -67,11 +67,11 @@ export class ListComponent implements OnInit {
     this.listSelection = $event;
   }
 
-  highlightItem($event) {
+  highlightItem($event): void {
     this.highlightedItem = $event;
   }
 
-  changeDataSource() {
+  changeDataSource(): void {
     this.virtualScrollConfig = null;
 
     this.dataSource = range(1, 20000).map(
@@ -90,18 +90,18 @@ export class ListComponent implements OnInit {
   /**
    * Add a function that group all items
    */
-  addGroupByFunction() {
+  addGroupByFunction(): void {
     this.groupByFunction = !this.groupByFunction ? (item) => item['name'].charAt(0).toLocaleUpperCase() : null;
   }
 
   /**
    * Add a function that disable rows
    */
-  disableRow() {
+  disableRow(): void {
     this.disableRowsFunction = !this.disableRowsFunction ? (item) => item['disabled'] : null;
   }
 
-  selectAll() {
+  selectAll(): void {
     if (this.listSelection && this.listSelection.format().all) {
       this.kalListComponent.clear();
     } else {
@@ -109,25 +109,25 @@ export class ListComponent implements OnInit {
     }
   }
 
-  selectMultipleRows() {
+  selectMultipleRows(): void {
     this.icon = 'keyboard_arrow_right';
     this.selectionMode = 'multiple';
     this.listSelection.clear();
   }
 
-  unselectRows() {
+  unselectRows(): void {
     this.icon = null;
     this.selectionMode = 'none';
     this.listSelection.clear();
   }
 
-  selectSingleRow() {
+  selectSingleRow(): void {
     this.icon = 'keyboard_arrow_right';
     this.selectionMode = null;
     this.listSelection.clear();
   }
 
-  changeSelection() {
+  changeSelection(): void {
     this.listSelection = new KalSelectionModel<{ id: string }>({added: [{id: '1'}], all: false});
   }
 

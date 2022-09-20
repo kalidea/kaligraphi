@@ -1,22 +1,20 @@
-import { ScrollDispatcher, ScrollStrategy } from '@angular/cdk/overlay';
-import { OverlayReference } from '@angular/cdk/overlay/overlay-reference';
+import { CdkScrollable, OverlayRef, ScrollDispatcher, ScrollStrategy } from '@angular/cdk/overlay';
 import { NgZone } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { CdkScrollable } from '@angular/cdk/scrolling/scrollable';
 
 import { KalAutocompleteComponent } from './kal-autocomplete.component';
 
 
 export class KalAutocompleteScrollStrategy implements ScrollStrategy {
   private _scrollSubscription: Subscription|null = null;
-  private _overlayRef: OverlayReference;
+  private _overlayRef: OverlayRef;
 
   constructor(private _scrollDispatcher: ScrollDispatcher,
               private _ngZone: NgZone) {
   }
 
-  attach(overlayRef: OverlayReference): void {
+  attach(overlayRef: OverlayRef): void {
     this._overlayRef = overlayRef;
   }
 

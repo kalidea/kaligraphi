@@ -79,7 +79,7 @@ export class KalTextareaComponent extends FormElementComponent<string> implement
 
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
   }
 
 }

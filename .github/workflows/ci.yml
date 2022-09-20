@@ -1,4 +1,3 @@
-
 name: CI
 
 # trigger this build on push & pull_request
@@ -13,7 +12,7 @@ on:
       - 'releases/**'
 
 env:
-  NODE_RELEASE_VERSION: 12 # release version created by NODE 10
+  NODE_RELEASE_VERSION: 16 # release version created by NODE 10
 
 jobs:
   test-and-build:
@@ -23,7 +22,7 @@ jobs:
     # run this workflow on multiple node version
     strategy:
       matrix:
-        node: [12, 14]
+        node: [16]
     steps:
       - name: Checkout project
         uses: actions/checkout@v2
@@ -45,11 +44,11 @@ jobs:
 
       - name: Build Lib & Playground
         run: |
-          npm run build
+          npm run build:lib
           npm run build:playground -- --base-href /kaligraphi/
 
       - name: Upload to Github Pages
-        # deploy only once to github page
+        # deploy only once to GitHub page
         if: matrix.node == env.NODE_RELEASE_VERSION
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:

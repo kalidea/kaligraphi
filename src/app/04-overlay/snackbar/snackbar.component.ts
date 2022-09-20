@@ -19,7 +19,7 @@ export class SnackbarComponent implements OnInit {
   constructor(private snackbarService: KalSnackbarService) {
   }
 
-  addSnackbar() {
+  addSnackbar(): void {
     const config: KalSnackbarConfig = {
       title: this.title,
       duration: this.duration
@@ -36,7 +36,7 @@ export class SnackbarComponent implements OnInit {
     this.snackbarService.open(config);
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
   }
 
 }
