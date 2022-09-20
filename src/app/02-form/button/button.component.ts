@@ -10,6 +10,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
 export class ButtonComponent {
 
   disabled = false;
+
   themes;
 
 }
