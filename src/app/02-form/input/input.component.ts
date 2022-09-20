@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 
 @Component({
@@ -16,7 +16,9 @@ export class InputComponent {
   placeholder = '';
 
   clearable = false;
+
   readonly = false;
+
   disabled = false;
 
   defaultValue = '0';
@@ -30,7 +32,6 @@ export class InputComponent {
   controlBlur = new UntypedFormControl('', {updateOn: 'blur'});
 
   lastIconClicked;
-
 
   constructor() {
   }

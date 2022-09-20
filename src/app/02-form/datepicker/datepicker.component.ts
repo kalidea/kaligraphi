@@ -12,6 +12,7 @@ import { Subscription } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DatepickerComponent implements OnInit, OnDestroy {
+
   reverse = false;
 
   minYear = 1900;
