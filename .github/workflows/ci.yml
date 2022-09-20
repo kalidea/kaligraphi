@@ -45,11 +45,11 @@ jobs:
 
       - name: Build Lib & Playground
         run: |
-          npm run build
+          npm run build:lib
           npm run build:playground -- --base-href /kaligraphi/
 
       - name: Upload to Github Pages
-        # deploy only once to github page
+        # deploy only once to GitHub page
         if: matrix.node == env.NODE_RELEASE_VERSION
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
