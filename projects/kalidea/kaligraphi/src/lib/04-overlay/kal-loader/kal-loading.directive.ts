@@ -1,6 +1,6 @@
 import { Directive, ElementRef, HostBinding, Injector, Input, OnDestroy, Optional, Self, ViewContainerRef } from '@angular/core';
 import { Overlay, OverlayRef, PositionStrategy } from '@angular/cdk/overlay';
-import { ComponentPortal, PortalInjector } from '@angular/cdk/portal';
+import { ComponentPortal } from '@angular/cdk/portal';
 import { Subscription, timer } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { KalOverlayManager } from '../../utils/classes/kal-overlay-manager';
@@ -84,10 +84,12 @@ export class KalLoadingDirective extends KalOverlayManager implements OnDestroy 
    * create injector for loader portal
    */
   private createInjector() {
-    const injectionTokens = new WeakMap<any, any>([
-      [KalLoaderData, {message: this.kalLoadingMessage}]
-    ]);
-    return new PortalInjector(this.injector, injectionTokens);
+    const injectionTokens = [{
+      provide: KalLoaderData,
+      useValue: {message: this.kalLoadingMessage}
+    }];
+
+    return Injector.create({providers: injectionTokens, parent: this.injector});
   }
 
   /**

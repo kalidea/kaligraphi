@@ -7,7 +7,7 @@ import {
   ScrollDispatcher,
   ScrollStrategy
 } from '@angular/cdk/overlay';
-import { ComponentPortal, PortalInjector } from '@angular/cdk/portal';
+import { ComponentPortal } from '@angular/cdk/portal';
 import { DOCUMENT } from '@angular/common';
 import {
   Directive,
@@ -16,7 +16,6 @@ import {
   Host,
   HostListener,
   Inject,
-  InjectionToken,
   Injector,
   Input,
   NgZone,
@@ -251,15 +250,19 @@ export class KalAutocompleteDirective<T = string> implements OnInit, OnDestroy {
    * build injector of KAL_AUTOCOMPLETE_DATA for KalAutocompleteComponent
    */
   private getPortalInjector() {
-    const injectionTokens = new WeakMap<InjectionToken<KalAutocompleteComponentOption>, KalAutocompleteComponentOption>([
-      [KAL_AUTOCOMPLETE_DATA, {
-        width: this.input.inputElement.nativeElement.getBoundingClientRect().width + 'px',
-        height: this.kalAutocompleteHeight,
-        className: this.kalAutocompleteClassName,
-        optionTemplate: this.kalAutocompleteOptionTemplate
-      }],
-    ]);
-    return new PortalInjector(this.injector, injectionTokens);
+    const injectionTokens = [
+      {
+        provide: KAL_AUTOCOMPLETE_DATA,
+        useValue: {
+          width: this.input.inputElement.nativeElement.getBoundingClientRect().width + 'px',
+          height: this.kalAutocompleteHeight,
+          className: this.kalAutocompleteClassName,
+          optionTemplate: this.kalAutocompleteOptionTemplate
+        }
+      }
+    ];
+
+    return Injector.create({providers: injectionTokens, parent: this.injector});
   }
 
   /** Stream of clicks outside of the autocomplete panel. */

@@ -48,6 +48,8 @@ export interface KalSelectOptions {
 export const KAL_SELECT_GLOBAL_OPTIONS =
   new InjectionToken<KalSelectOptions>('KAL_SELECT_GLOBAL_OPTIONS');
 
+const INFORMATION_BASE_CLASS_NAME = 'kal-select__';
+
 @Component({
   selector: 'kal-select',
   exportAs: 'kalSelect',
@@ -61,9 +63,8 @@ export class KalSelectComponent
   extends FormElementComponent<any>
   implements OnInit, OnDestroy, AfterContentInit {
 
-  private static readonly informationBaseClassName = 'kal-select__';
-  static readonly overlayClassName = KalSelectComponent.informationBaseClassName + 'overlay';
-  static readonly multipleClassName = KalSelectComponent.informationBaseClassName + 'multiple';
+  static readonly overlayClassName = INFORMATION_BASE_CLASS_NAME + 'overlay';
+  static readonly multipleClassName = INFORMATION_BASE_CLASS_NAME + 'multiple';
 
   @Coerce('boolean')
   @Input()
