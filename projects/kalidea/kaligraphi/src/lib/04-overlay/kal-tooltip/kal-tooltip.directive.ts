@@ -12,7 +12,7 @@ import {
   Optional,
   ViewContainerRef
 } from '@angular/core';
-import { CdkPortal, ComponentPortal, PortalInjector } from '@angular/cdk/portal';
+import { CdkPortal, ComponentPortal } from '@angular/cdk/portal';
 import { Overlay, OverlayConfig, OverlayRef, PositionStrategy } from '@angular/cdk/overlay';
 import { animate, AnimationEvent, state, style, transition, trigger } from '@angular/animations';
 
@@ -68,13 +68,18 @@ export class KalTooltipDirective extends KalOverlayManager implements OnDestroy 
   @HostListener('touchstart')
   showTooltip(): void {
     if (!this.hasAttached()) {
-      const injector = new PortalInjector(this.injector, new WeakMap([
-        [KalTooltipConfig, {
-          contentAsTemplate: this.contentAsTemplate,
-          content: this.kalTooltip,
-          theme: this.theme ? this.theme.rawThemes : ''
-        } as KalTooltipConfig]
-      ]));
+      const injector = Injector.create({
+        providers: [{
+          provide: KalTooltipConfig,
+          useValue: {
+            contentAsTemplate: this.contentAsTemplate,
+            content: this.kalTooltip,
+            theme: this.theme ? this.theme.rawThemes : ''
+          } as KalTooltipConfig
+        }],
+        parent: this.injector
+      });
+
       const portal = new ComponentPortal(KalTooltipComponent, this.viewContainerRef, injector);
       this.componentRef = this.getOverlayRef().attach(portal);
       this.manageClickOutside();
