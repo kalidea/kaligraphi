@@ -1,6 +1,6 @@
 {
   "name": "kaligraphi",
-  "version": "15.2.1",
+  "version": "16.2.0",
   "scripts": {
     "dev": "ng build @kalidea/kaligraphi --watch",
     "serve": "ng serve --open",
