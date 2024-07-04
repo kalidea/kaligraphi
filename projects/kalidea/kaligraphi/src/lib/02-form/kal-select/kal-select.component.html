@@ -30,9 +30,16 @@
 </div>
 
 <ng-template #optionsPortal="cdkPortal" cdkPortal>
-  <div
-    [class]="overlayClassList"
-    [kalTheme]="theme">
+  <div [class]="overlayClassList"
+       [kalTheme]="theme">
+    <div class="kal-select__searchbar"
+         *ngIf="displaySearchbar">
+      <kal-input [formControl]="searchbarFormControl"
+                 [kalTheme]="theme"
+                 icon="search"
+                 [placeholder]="searchbarPlaceholder">
+      </kal-input>
+    </div>
     <ng-content></ng-content>
   </div>
 </ng-template>

@@ -18,6 +18,8 @@ export class SelectComponent implements OnInit {
 
   hasCheckbox = false;
 
+  hasSearchbar = false;
+
   isMultiple = false;
 
   disableOptionGroup2 = false;

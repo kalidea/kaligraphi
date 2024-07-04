@@ -25,7 +25,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { NgControl } from '@angular/forms';
+import { FormControl, NgControl } from '@angular/forms';
 import isEqual from 'lodash-es/isEqual';
 import { merge, Subscription } from 'rxjs';
 import { filter, first, startWith, switchMap, tap } from 'rxjs/operators';
@@ -66,6 +66,10 @@ export class KalSelectComponent
   static readonly overlayClassName = INFORMATION_BASE_CLASS_NAME + 'overlay';
   static readonly multipleClassName = INFORMATION_BASE_CLASS_NAME + 'multiple';
 
+  searchbarFormControl = new FormControl<string>('');
+
+  @Input() searchbarPlaceholder = 'Rechercher...';
+
   @Coerce('boolean')
   @Input()
   disableFirstOptionSelection = false;
@@ -101,6 +105,9 @@ export class KalSelectComponent
    * Whether the component is in multiple selection mode
    */
   private isMultiple: boolean;
+
+  private _displaySearchbar = false;
+
   /**
    * Overlay Reference
    */
@@ -123,6 +130,8 @@ export class KalSelectComponent
   private optionsChangesSubscription: Subscription;
 
   private optionsDisabledSubscriptionMap: { [key: string]: Subscription } = {};
+
+  private optionsSearchbarSubscription: Subscription;
 
   constructor(private readonly overlay: Overlay,
               private readonly elementRef: ElementRef<HTMLElement>,
@@ -178,6 +187,20 @@ export class KalSelectComponent
     }
 
     this.updateCheckboxOnOptions();
+  }
+
+  @Input()
+  get displaySearchbar(): boolean {
+    return this._displaySearchbar;
+  }
+
+  set displaySearchbar(value: boolean) {
+    this._displaySearchbar = coerceBooleanProperty(value);
+
+    if (!this._displaySearchbar && !this.options.toArray().every(option => !option.hidden)) {
+      this.options.forEach(option => option.hidden = false);
+      this.searchbarFormControl.reset('', {emitEvent: false});
+    }
   }
 
   /**
@@ -247,7 +270,7 @@ export class KalSelectComponent
   /**
    * get themes applied on host
    */
-  get theme() {
+  get theme(): string | string[] {
     return this.themeDirective ? this.themeDirective.rawThemes : '';
   }
 
@@ -262,7 +285,7 @@ export class KalSelectComponent
   /**
    * Toggles the overlay panel open or closed
    */
-  toggleOverlay() {
+  toggleOverlay(): void {
     if (!this.isPanelOpen) {
       this.open();
     } else {
@@ -364,7 +387,7 @@ export class KalSelectComponent
    * Blur the select element
    */
   @HostListener('blur')
-  blur() {
+  blur(): void {
     if (!this.panelOpen) {
       this.isFocused = false;
       this.close();
@@ -398,7 +421,7 @@ export class KalSelectComponent
   /**
    * @inheritDoc
    */
-  writeValue(value: any) {
+  writeValue(value: any): void {
     Promise.resolve().then(() => {
       if (!this.hasDefaultValue) {
         this.select(value);
@@ -412,7 +435,7 @@ export class KalSelectComponent
   /**
    * Handles enter ans space keydown events on the select
    */
-  private handleSelectKeyEvent() {
+  private handleSelectKeyEvent(): void {
     if (!this.panelOpen) {
       this.open();
     } else if (this.keyManager.activeItem) {
@@ -423,7 +446,7 @@ export class KalSelectComponent
   /**
    * create overlayRef
    */
-  private createOverlay() {
+  private createOverlay(): void {
     const positionStrategy = this.overlay
       .position()
       .flexibleConnectedTo(this.elementRef)
@@ -605,7 +628,7 @@ export class KalSelectComponent
   /**
    * Multiple selection sort option to keep order
    */
-  private sortSelection() {
+  private sortSelection(): void {
     this.selection.sort((x, y) => {
       return this.options.toArray().indexOf(x) > this.options.toArray().indexOf(y) ? 1 : -1;
     });
@@ -614,7 +637,7 @@ export class KalSelectComponent
   /**
    * update checkbox visibility on kal-option
    */
-  private updateCheckboxOnOptions() {
+  private updateCheckboxOnOptions(): void {
     // set checkbox on option when select is in multiple selection mode
     if (this.displayCheckboxOnMultipleSelection ?? this.selectOptions.displayCheckboxOnMultipleSelection) {
       this.options?.forEach(o => o.checkbox = this.isMultiple);
@@ -624,19 +647,19 @@ export class KalSelectComponent
   /**
    * adds a subscription into a map to remove the option if it becomes disabled
    */
-  private addOptionToDisabledSubscriptionMap(option: KalOptionComponent) {
+  private addOptionToDisabledSubscriptionMap(option: KalOptionComponent): void {
     this.optionsDisabledSubscriptionMap[option.value] = option.disabled$.pipe(
       first(v => v === true),
       tap(() => this.unselect(option.value, !this.isBlur)),
     ).subscribe();
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.ngControl = this.injector.get(NgControl, null);
     this.selection = [];
   }
 
-  ngAfterContentInit() {
+  ngAfterContentInit(): void {
     this.initKeyManager();
     this.optionsChangesSubscription = this.options.changes
       .pipe(
@@ -670,15 +693,31 @@ export class KalSelectComponent
       this.hasDefaultValue = true;
     }
 
+    this.optionsSearchbarSubscription = this.searchbarFormControl.valueChanges.pipe(
+      tap(value => {
+        if (!value || value.trim() === '') {
+          this.options.forEach(o => o.hidden = false);
+        } else {
+          const stringToLowerCase = (input: string): string => input.toLowerCase();
+
+          this.options.forEach(o => o.hidden = true);
+
+          this.options
+            .filter(o => stringToLowerCase(o.getLabel()).includes(stringToLowerCase(value)))
+            .forEach(o => o.hidden = false);
+        }
+      })
+    ).subscribe();
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     super.ngOnDestroy();
     if (this.overlayRef) {
       this.overlayRef.dispose();
     }
 
     this.optionsChangesSubscription?.unsubscribe();
+    this.optionsSearchbarSubscription?.unsubscribe();
     Object.keys(this.optionsDisabledSubscriptionMap).forEach(key => this.optionsDisabledSubscriptionMap[key].unsubscribe());
   }
 }

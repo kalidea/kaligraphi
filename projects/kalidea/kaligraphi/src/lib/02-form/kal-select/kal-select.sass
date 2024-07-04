@@ -74,6 +74,22 @@
       color: get('overlay.option.color', $theme-parameters)
       &[disabled="true"]
         color: get('overlay.option.disabled.color', $theme-parameters)
+    .kal-select__searchbar
+      margin-bottom: 42px
+      position: relative
+      kal-input
+          position: absolute
+          top: 0
+          left: 0
+          right: 0
+          div
+            input
+              background-color: white
+              padding: 8px 30px 8px 8px
+              margin: 0 12px 12px 12px
+              + kal-icon
+                right: 20px
+                top: 40%
 
     &.kal-theme--reverse
       background-color: get('reverse.overlay.background-color', $theme-parameters)

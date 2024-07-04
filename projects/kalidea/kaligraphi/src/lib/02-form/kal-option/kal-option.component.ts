@@ -61,6 +61,10 @@ export class KalOptionComponent implements AfterViewInit, Highlightable, OnDestr
    */
   private isDisabled: boolean;
   /**
+   * Whether or not the option is hidden from the template
+   */
+  private isHidden: boolean;
+  /**
    * Store subscription
    */
   private optionGroupDisabledSubscription: Subscription;
@@ -79,7 +83,7 @@ export class KalOptionComponent implements AfterViewInit, Highlightable, OnDestr
 
   @Input()
   @Coerce('boolean')
-  get checkbox() {
+  get checkbox(): boolean {
     return this._checkbox;
   }
 
@@ -108,7 +112,7 @@ export class KalOptionComponent implements AfterViewInit, Highlightable, OnDestr
   /**
    *  Whether or not the option is currently active / selected
    */
-  get active() {
+  get active(): boolean {
     return this.isActive;
   }
 
@@ -118,6 +122,19 @@ export class KalOptionComponent implements AfterViewInit, Highlightable, OnDestr
   set active(isActive: boolean) {
     this.isActive = isActive;
     this.formControl.setValue(isActive);
+    this.cdr.markForCheck();
+  }
+
+  /**
+   * Whether or not the option is hidden from the template
+   */
+  @Input()
+  get hidden(): boolean {
+    return this.isHidden;
+  }
+
+  set hidden(isHidden: boolean) {
+    this.isHidden = coerceBooleanProperty(isHidden);
     this.cdr.markForCheck();
   }
 
