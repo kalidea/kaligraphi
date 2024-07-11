@@ -8,6 +8,7 @@
         [kalTheme]="themes"
         [multiple]="isMultiple"
         placeholder="Select an item"
+        [displaySearchbar]="hasSearchbar"
         tabindex="1">
         <kal-option
           *ngFor="let option of options"
@@ -31,6 +32,7 @@
         [(ngModel)]="optionGroupSelection"
         [kalTheme]="themes"
         [multiple]="isMultiple"
+        [displaySearchbar]="hasSearchbar"
         placeholder="Select an item with option groups"
         tabindex="1">
         <kal-option-group label="1st half">
@@ -65,7 +67,7 @@
 <div class="configurator">
 
   <kal-form-field>
-    <kal-select [(ngModel)]="themes" [multiple]="true" label="themes">
+    <kal-select [(ngModel)]="themes" [multiple]="true" [displaySearchbar]="hasSearchbar" label="themes">
       <kal-option value="">default</kal-option>
       <kal-option value="secondary">secondary</kal-option>
       <kal-option value="reverse">reverse</kal-option>
@@ -76,10 +78,15 @@
     <kal-checkbox [(ngModel)]="isMultiple" label="multiple selection"></kal-checkbox>
   </kal-form-field>
 
+  <kal-form-field>
+    <kal-checkbox [(ngModel)]="hasSearchbar" label="with searchbar"></kal-checkbox>
+  </kal-form-field>
+
 
   <kal-form-field>
     <kal-select
       [formControl]="toggleOptionStateControl"
+      [displaySearchbar]="hasSearchbar"
       label="toggle disabled state"
       placeholder="select option to toggle"
       tabindex="1">
