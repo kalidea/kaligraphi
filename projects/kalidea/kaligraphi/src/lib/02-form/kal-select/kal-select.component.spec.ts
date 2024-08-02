@@ -20,9 +20,9 @@ import { UntypedFormControl, ReactiveFormsModule } from '@angular/forms';
 
 function configureTestingModule(declarations: any[], modules: any[] = []) {
   TestBed.configureTestingModule({
-    declarations: [KalSelectComponent, CdkPortal, ...declarations],
+    declarations: [KalSelectComponent, ...declarations],
     providers: [Overlay],
-    imports: [KalOptionModule, KalIconModule, KalUtilityModule, ...modules]
+    imports: [KalOptionModule, KalIconModule, KalUtilityModule, CdkPortal, ...modules]
   }).compileComponents();
 }
 

@@ -197,7 +197,7 @@ export class KalSelectComponent
   set displaySearchbar(value: boolean) {
     this._displaySearchbar = coerceBooleanProperty(value);
 
-    if (!this._displaySearchbar && !this.options.toArray().every(option => !option.hidden)) {
+    if (!this._displaySearchbar && !(this.options?.toArray() || []).every(option => !option.hidden)) {
       this.options.forEach(option => option.hidden = false);
       this.searchbarFormControl.reset('', {emitEvent: false});
     }
