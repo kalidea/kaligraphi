@@ -1,79 +1,83 @@
 <ng-container *ngIf="row">
 
-  <ng-container *ngIf="!disabledVirtualScroll || hasDataSource; else noVirtualScroll">
+  <div [kalLoading]="loading">
 
-    <cdk-virtual-scroll-viewport [style.height]="virtualScrollConfig.height"
-                                 [itemSize]="virtualScrollConfig.itemSize">
+    <ng-container *ngIf="!disabledVirtualScroll || hasDataSource; else noVirtualScroll">
 
-      <div *cdkVirtualFor="let item of results; index as i" class="kal-list__row">
+      <cdk-virtual-scroll-viewport [style.height]="virtualScrollConfig.height"
+                                   [itemSize]="virtualScrollConfig.itemSize">
+
+        <div *cdkVirtualFor="let item of results; index as i" class="kal-list__row">
+
+          <ng-container *ngTemplateOutlet="rowTemplate; context: {item: item, i: i}"></ng-container>
+
+        </div>
+
+      </cdk-virtual-scroll-viewport>
+
+    </ng-container>
+
+    <ng-template #noVirtualScroll>
+
+      <div *ngFor="let item of results; index as i" class="kal-list__row">
 
         <ng-container *ngTemplateOutlet="rowTemplate; context: {item: item, i: i}"></ng-container>
 
       </div>
 
-    </cdk-virtual-scroll-viewport>
-
-  </ng-container>
-
-  <ng-template #noVirtualScroll>
-
-    <div *ngFor="let item of results; index as i" class="kal-list__row">
-
-      <ng-container *ngTemplateOutlet="rowTemplate; context: {item: item, i: i}"></ng-container>
-
-    </div>
-
-  </ng-template>
-
-  <ng-template #rowTemplate let-item="item" let-i="i">
-
-    <div *ngIf="getSlugName(item) as slug; else separator"
-         class="kal-list__group">
-      <h2>{{ slug }}</h2>
-    </div>
-
-    <ng-template #separator>
-      <div class="kal-list__separate"></div>
     </ng-template>
 
-    <div kalListItemSelection
-         class="kal-list__item"
-         [ngClass]="row?.ngClass ? row.ngClass(item) : null"
-         [disabled]="isRowDisabled(item)"
-         [class.kal-list__item--selected]="isRowSelected(item)"
-         [class.kal-list__item--disabled]="isRowDisabled(item)"
-         [class.kal-list__item--highlighted]="isHighlighted(item)"
-         [class.kal-list-item--selectionNone]="selectionMode === 'none'"
-         (click)="selectItem(item)">
+    <ng-template #rowTemplate let-item="item" let-i="i">
 
-      <div class="kal-list__content">
+      <div *ngIf="getSlugName(item) as slug; else separator"
+           class="kal-list__group">
+        <h2>{{ slug }}</h2>
+      </div>
 
-        <div *ngIf="selectionMode === 'multiple'">
+      <ng-template #separator>
+        <div class="kal-list__separate"></div>
+      </ng-template>
+
+      <div kalListItemSelection
+           class="kal-list__item"
+           [ngClass]="row?.ngClass ? row.ngClass(item) : null"
+           [disabled]="isRowDisabled(item)"
+           [class.kal-list__item--selected]="isRowSelected(item)"
+           [class.kal-list__item--disabled]="isRowDisabled(item)"
+           [class.kal-list__item--highlighted]="isHighlighted(item)"
+           [class.kal-list-item--selectionNone]="selectionMode === 'none'"
+           (click)="selectItem(item)">
+
+        <div class="kal-list__content">
+
+          <div *ngIf="selectionMode === 'multiple'">
 
             <kal-checkbox [value]="isRowSelected(item)"
                           [disabled]="isRowDisabled(item)"
                           (click)="selectCheckbox(item, $event)">
             </kal-checkbox>
 
-        </div>
+          </div>
 
-        <ng-container *ngTemplateOutlet="row.view; context: {
+          <ng-container *ngTemplateOutlet="row.view; context: {
         item: item,
         index: i,
         selected: isRowSelected(item),
         disabled: isRowDisabled(item),
         highlighted: isHighlighted(item)
         }">
-        </ng-container>
-      </div>
+          </ng-container>
+        </div>
 
-      <span *ngIf="icon"
-            class="kal-list__icon">
+        <span *ngIf="icon"
+              class="kal-list__icon">
         <kal-icon>{{ icon }}</kal-icon>
       </span>
 
-    </div>
+      </div>
 
-  </ng-template>
+    </ng-template>
+
+  </div>
 
 </ng-container>
