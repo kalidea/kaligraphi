@@ -8,6 +8,7 @@ import { KalCheckboxModule } from '../../02-form/kal-checkbox/kal-checkbox.modul
 import { KalListComponent } from './kal-list.component';
 import { KalListItemDirective } from './kal-list-item.directive';
 import { KalListItemSelectionDirective } from './kal-list-item-selection.directive';
+import { KalLoaderModule } from '../../04-overlay/kal-loader/kal-loader.module';
 
 export * from './kal-list.component';
 export * from './kal-list-item.directive';
@@ -21,12 +22,13 @@ const exports = [
   imports: [
     CommonModule,
     KalIconModule,
+    KalLoaderModule,
     ScrollingModule,
-    KalCheckboxModule
+    KalCheckboxModule,
   ],
   declarations: [
     ...exports,
-    KalListItemSelectionDirective
+    KalListItemSelectionDirective,
   ],
   exports
 })
